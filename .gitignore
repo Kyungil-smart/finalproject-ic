@@ -109,8 +109,8 @@ XNode.csproj
 XNodeEditor.csproj
 
 # ingore imported assets
-ImportAssets/*
-Plugins/*
-WorkSpace/*
+ImportAssets
+Plugins
+WorkSpace
 *.idea*
 *_Recovery*
