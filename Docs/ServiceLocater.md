@@ -18,7 +18,7 @@ public Interface ISomeManager
 public class SomeManager : Manager, ISomeManager
 {
     protected override Register() => ServiceLocater.Register<ISomeManager>(this);
-    protected override Unregister() => ServiceLocater.Unregister<ISomeManager>();
+    protected override Unregister() => ServiceLocater.Unregister<ISomeManager>(this);
 
     // 구현
     private void OnEnable() => Register();
