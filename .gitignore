@@ -101,16 +101,19 @@ InitTestScene*.unity*
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
-# Ignore imported assets
-Assets/Imports/**
-
 # xnode
 XNode.csproj
 XNodeEditor.csproj
 
-# ingore imported assets
-ImportAssets
-Plugins
-WorkSpace
+# ingore Customs
+Assets/ImportAssets/*
+Assets/Plugins/*
+Assets/WorkSpace/*
+Assets/Editor Default Resources*
+Assets/ExternalDependencyManager*
+Assets/Firebase*
+Assets/GeneratedLocalRepo*
+google-services*
+
 *.idea*
 *_Recovery*
