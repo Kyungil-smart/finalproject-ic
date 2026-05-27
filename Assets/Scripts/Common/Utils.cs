@@ -27,4 +27,9 @@ namespace Utils
 
         public static JObject LoadFromString(string jsonString) => JObject.Parse(jsonString);
     }
+    
+    public static class Environment
+    {
+        public static bool isDevelopment = true;
+    }
 }
