@@ -114,6 +114,7 @@ Assets/ExternalDependencyManager*
 Assets/Firebase*
 Assets/GeneratedLocalRepo*
 google-services*
+Assets/Packages*
 
 *.idea*
 *_Recovery*
