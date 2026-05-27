@@ -38,8 +38,7 @@
 
 | Method Name | Parameters | Description |
 |--|--|--|
-| SetData | Enum eventType, params EvnetParams | UI 렌더링을 위한 데이터 전달 |
-| Render | - | UI 렌더링 하기 |
+| Render | Enum eventType, params EvnetParams | UI 렌더링을 위한 데이터 전달 및 렌더링 |
 | Open | - | Panel 열기 |
 | Close | - | Panel 닫기 |
 
