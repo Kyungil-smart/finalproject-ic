@@ -38,6 +38,7 @@ public class TextLoader : MonoBehaviour
     private void OnDisable() => _postManager?.Unsubscribe<bool>(Channel.RequestChangeText, UpdateText);
     private void UpdateText(bool dummy)
     {
+        if (textId == 0) return;  // ID 가 0 이면 아무 것도 하지 않음.
         if (_textGui == null) _textGui = GetComponent<TextMeshProUGUI>();
         try
         {
