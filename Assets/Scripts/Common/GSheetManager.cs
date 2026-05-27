@@ -14,7 +14,7 @@ public class GSheetManager : IGsheetManager
     {
         this.gSheetId = gSheetId;
         this.gid = gid;
-        LoadDataFromGsheet();
+        UniTask.Void(async () => { await LoadDataFromGsheet(); });
     }
     
     // 1. 정상적인 URL 을 만들어줘야 한다. => 함수

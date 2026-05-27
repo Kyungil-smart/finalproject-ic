@@ -42,27 +42,25 @@ public class EventUIRenderer : MonoBehaviour
     [SerializeField] private Image _gradeImage;
     [SerializeField] private RewardEventOptions[] _options;
     
-    public Action<int> OnItemSelected;
-    
-    public void Render(EventType eventType, EventParams @eventParams)
+    public void Render(EventType eventType, EventUIParams eventUIParams)
     {
         _normalPanel.SetActive(eventType != EventType.Reward);
         _rewardPanel.SetActive(eventType == EventType.Reward);
 
-        if (eventType == EventType.Reward && @eventParams is RewardEventParams rewardEventParams)
+        if (eventType == EventType.Reward && eventUIParams is RewardEventUIParams rewardEventParams)
         {
             _rewardMainTextLoader.TextId = rewardEventParams.mainTextId;
             _gradeImage.sprite = rewardEventParams.gradeImage;
             RenderRewardEvent(rewardEventParams);
         }
-        else if (eventType != EventType.Reward && @eventParams is NormalEventParams normalEventParams)
+        else if (eventType != EventType.Reward && eventUIParams is NormalEventUIParams normalEventParams)
         {
             _normalMainTextLoader.TextId = normalEventParams.mainTextId;
             RenderNormalEvent(normalEventParams);
         }
     }
 
-    private void RenderNormalEvent(NormalEventParams data)
+    private void RenderNormalEvent(NormalEventUIParams data)
     {
         if (data.choices.Count == 1) // confirm 
         {
@@ -71,7 +69,7 @@ public class EventUIRenderer : MonoBehaviour
             
             _confirm.textLoader.TextId = data.choices[0].textId;
             _confirm.button.onClick.RemoveAllListeners();
-            _confirm.button.onClick.AddListener(() => OnItemSelected?.Invoke(data.choices[0].id));
+            _confirm.button.onClick.AddListener(() => data.callback(data.choices[0].id));
         }
         else // choice
         {
@@ -81,12 +79,12 @@ public class EventUIRenderer : MonoBehaviour
             {
                 _choices[i].textLoader.TextId = data.choices[i].textId;
                 _choices[i].button.onClick.RemoveAllListeners();
-                _choices[i].button.onClick.AddListener(() => OnItemSelected?.Invoke(data.choices[i].id));
+                _choices[i].button.onClick.AddListener(() => data.callback(data.choices[i].id));
             }
         }
     }
 
-    private void RenderRewardEvent(RewardEventParams data)
+    private void RenderRewardEvent(RewardEventUIParams data)
     {
         for (int i = 0; i < _options.Length; i++)
         {
@@ -94,7 +92,7 @@ public class EventUIRenderer : MonoBehaviour
             opt.image.sprite = data.options[i].icon;
             opt.textLoader.TextId = data.options[i].textId;
             opt.button.onClick.RemoveAllListeners();
-            opt.button.onClick.AddListener(() => OnItemSelected?.Invoke(data.options[i].id));
+            opt.button.onClick.AddListener(() => data.callback(data.options[i].id));
         }
     }
     

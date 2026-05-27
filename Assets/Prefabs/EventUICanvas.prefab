@@ -2550,30 +2550,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EventUIRenderer
   _mainPanel: {fileID: 5164439782663001670}
   _normalPanel: {fileID: 6956475339660542727}
-  _normalMainText: {fileID: 2988585437062902432}
+  _normalMainTextLoader: {fileID: 2019367919448023425}
   _confirmPanel: {fileID: 3469457082601781038}
   _confirm:
     button: {fileID: 8807775061040709004}
-    tmPro: {fileID: 2008912978410794076}
+    textLoader: {fileID: 0}
   _choicePanel: {fileID: 4666457303557926721}
   _choices:
   - button: {fileID: 157188502986305971}
-    tmPro: {fileID: 1620624961124271444}
+    textLoader: {fileID: 0}
   - button: {fileID: 734640113736030905}
-    tmPro: {fileID: 8200810499668230829}
+    textLoader: {fileID: 0}
   _rewardPanel: {fileID: 273941653118438175}
-  _rewardMainText: {fileID: 3967654660849535801}
+  _rewardMainTextLoader: {fileID: 1690358602954933646}
   _gradeImage: {fileID: 6572296349080411561}
   _options:
   - button: {fileID: 3091827735808209215}
     image: {fileID: 5621729890746514137}
-    tmPro: {fileID: 7099859857774042308}
+    textLoader: {fileID: 0}
   - button: {fileID: 910649058780356215}
     image: {fileID: 7817769172925349167}
-    tmPro: {fileID: 2016536291638729073}
+    textLoader: {fileID: 0}
   - button: {fileID: 582645955132079073}
     image: {fileID: 6002845743600114359}
-    tmPro: {fileID: 480603398385241882}
+    textLoader: {fileID: 0}
 --- !u!1 &5269260210717864036
 GameObject:
   m_ObjectHideFlags: 0

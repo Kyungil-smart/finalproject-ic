@@ -1,22 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DataDispatcher;
 using UnityEngine;
 using Channel = DataDispatcher.Channel;
 
+[Serializable]
+public struct UITextLanguage
+{
+    public LanguageType language;
+    public string gid;
+}
 
 public class UITextManager : Manager, IUITextManager
 {
     [Header("GSheet Information")]
     [SerializeField] string _gSheetId;
-    [SerializeField] string _gid;
+    [SerializeField] UITextLanguage[] _textTypes;
 
     [Header("UI Text Data")]
-    [SerializeField] private UITextSOScript uiTextSoScript;
+    [SerializeField] private LanguageType _currentLanguage = LanguageType.Korean;
+    [SerializeField] private UITextSOScript[] uiTextSOs;
     
-    
+    private List<(LanguageType language, GSheetManager manager)> _gSheetManagers;
     private IPostManager _postManager;
-    private List<(int id, string data)> _texts = new();
+    private List<Line> _texts = new();
     public bool IsDataUpdated { get; set; }
 
     private void Awake() => Init();
@@ -27,6 +35,9 @@ public class UITextManager : Manager, IUITextManager
     protected override void Init()
     {
         _postManager = ServiceLocater.Get<IPostManager>();
+        foreach (var textType in _textTypes)
+            _gSheetManagers.Add((textType.language, new GSheetManager(_gSheetId, textType.gid)));
+        
         UpdateUITextData();
     }
     
@@ -57,20 +68,41 @@ public class UITextManager : Manager, IUITextManager
     
     private async UniTask GetDataFromGSheet()
     {   // SO 에 데이터 담기
-        
+        foreach (var (language, gSheetManager) in _gSheetManagers)
+        {
+            var data = gSheetManager.GetData();
+            if (data.Count == 0)
+            {
+                Debug.LogWarning($"{language}: No GSheet Data.");
+                continue;
+            }
+            foreach (var so in uiTextSOs)
+            {
+                if (so.language != language) continue;
+                so.lines.Clear();
+                foreach (var soData in data)
+                    so.lines.Add(new Line(soData["Text_ID"], soData["Text_Value"]));
+            }
+        }
     }
 
     private async UniTask ConvertSOtoData()
     {   // Language 에 따라 runtime 으로 옮기기
-        
+        foreach (var so in uiTextSOs)
+        {
+            if (so.language != _currentLanguage) continue;
+            _texts = so.lines;
+            break;
+        }
     }
 
     public void ApplyAllText() => _postManager?.Post(Channel.UpdateAllUITexts, true);
-    
+    public void ChangeCurrentLanguage(LanguageType language) => _currentLanguage = language;
+
     private string GetText(int textId)
     {
         foreach (var text in _texts)
-            if (text.id == textId) return text.data;
+            if (text.id == textId) return text.text;
         return $"Not Found Text ID : {textId}";
     }
 }
