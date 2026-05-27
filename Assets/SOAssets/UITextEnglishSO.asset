@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed1e6205b33fbd5459870a3220b30c23, type: 3}
-  m_Name: UITextSO
+  m_Name: UITextEnglishSO
   m_EditorClassIdentifier: Assembly-CSharp::UITextSOScript
-  language: 0
+  language: 1
   lines: []
