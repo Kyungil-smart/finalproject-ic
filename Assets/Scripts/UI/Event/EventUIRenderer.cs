@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public struct NormalEventChoices
 {
     public Button button;   // 데모용. 추후 개발 방향에 따라 변경 가능.
-    public TextMeshProUGUI tmPro;
+    public TextLoader textLoader;
 }
 
 [Serializable]
@@ -16,7 +16,7 @@ public struct RewardEventOptions
 {
     public Button button;
     public Image image;
-    public TextMeshProUGUI tmPro;
+    public TextLoader textLoader;
 }
 
 public class EventUIRenderer : MonoBehaviour
@@ -26,7 +26,7 @@ public class EventUIRenderer : MonoBehaviour
     
     [Header("Normal Common Event")]
     [SerializeField] private GameObject _normalPanel;
-    [SerializeField] private TextMeshProUGUI _normalMainText;
+    [SerializeField] private TextLoader _normalMainTextLoader;
     
     [Header("Normal Confirm Event")]
     [SerializeField] private GameObject _confirmPanel;
@@ -38,7 +38,7 @@ public class EventUIRenderer : MonoBehaviour
 
     [Header("Reward Event")]
     [SerializeField] private GameObject _rewardPanel;
-    [SerializeField] private TextMeshProUGUI _rewardMainText;
+    [SerializeField] private TextLoader _rewardMainTextLoader;
     [SerializeField] private Image _gradeImage;
     [SerializeField] private RewardEventOptions[] _options;
     
@@ -51,13 +51,13 @@ public class EventUIRenderer : MonoBehaviour
 
         if (eventType == EventType.Reward && @eventParams is RewardEventParams rewardEventParams)
         {
-            _rewardMainText.text = rewardEventParams.mainText;
+            _rewardMainTextLoader.TextId = rewardEventParams.mainTextId;
             _gradeImage.sprite = rewardEventParams.gradeImage;
             RenderRewardEvent(rewardEventParams);
         }
         else if (eventType != EventType.Reward && @eventParams is NormalEventParams normalEventParams)
         {
-            _normalMainText.text = normalEventParams.mainText;
+            _normalMainTextLoader.TextId = normalEventParams.mainTextId;
             RenderNormalEvent(normalEventParams);
         }
     }
@@ -69,7 +69,7 @@ public class EventUIRenderer : MonoBehaviour
             _confirmPanel.SetActive(true);
             _choicePanel.SetActive(false);
             
-            _confirm.tmPro.text = data.choices[0].text;
+            _confirm.textLoader.TextId = data.choices[0].textId;
             _confirm.button.onClick.RemoveAllListeners();
             _confirm.button.onClick.AddListener(() => OnItemSelected?.Invoke(data.choices[0].id));
         }
@@ -79,7 +79,7 @@ public class EventUIRenderer : MonoBehaviour
             _choicePanel.SetActive(true);
             for (int i = 0; i < data.choices.Count; i++)
             {
-                _choices[i].tmPro.text = data.choices[i].text;
+                _choices[i].textLoader.TextId = data.choices[i].textId;
                 _choices[i].button.onClick.RemoveAllListeners();
                 _choices[i].button.onClick.AddListener(() => OnItemSelected?.Invoke(data.choices[i].id));
             }
@@ -92,7 +92,7 @@ public class EventUIRenderer : MonoBehaviour
         {
             var opt = _options[i];
             opt.image.sprite = data.options[i].icon;
-            opt.tmPro.text = data.options[i].text;
+            opt.textLoader.TextId = data.options[i].textId;
             opt.button.onClick.RemoveAllListeners();
             opt.button.onClick.AddListener(() => OnItemSelected?.Invoke(data.options[i].id));
         }

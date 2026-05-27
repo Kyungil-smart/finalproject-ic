@@ -9,6 +9,16 @@ public class TextLoader : MonoBehaviour
     private TextMeshProUGUI _textGui;
     private IPostManager _postManager;
 
+    public int TextId
+    {
+        get => textId;
+        set
+        {
+            textId = value;
+            UpdateText(true);
+        }
+    }
+
     private void Awake()
     {
         _textGui = GetComponent<TextMeshProUGUI>();

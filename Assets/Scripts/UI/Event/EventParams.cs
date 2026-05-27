@@ -5,13 +5,13 @@ public abstract class EventParams { }
 
 public class NormalEventParams : EventParams
 {   // 외부 요인, 직원, 연계 이벤트 관련
-    public string mainText;
-    public List<(int id, string text)> choices = new();
+    public int mainTextId;
+    public List<(int id, int textId)> choices = new();
 }
 
 public class RewardEventParams : EventParams
 {
-    public string mainText;
+    public int mainTextId;
     public Sprite gradeImage;
-    public List<(int id, Sprite icon, string text)> options = new();
+    public List<(int id, Sprite icon, int textId)> options = new();
 }
