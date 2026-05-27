@@ -3,7 +3,7 @@
     public enum Channel
     {
         // 채널명 기입
-        RequestChangeText,
-        UITextRequest,
-    }    
+        UpdateAllUITexts,
+        GetUIText,
+    }
 }

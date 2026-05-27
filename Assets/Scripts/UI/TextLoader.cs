@@ -11,7 +11,6 @@ public class TextLoader : MonoBehaviour
 
     public int TextId
     {
-        get => textId;
         set
         {
             textId = value;
@@ -32,20 +31,15 @@ public class TextLoader : MonoBehaviour
             Debug.LogWarning("[TextLoader] Could not load the Post Manager.");
             return;
         }
+        _postManager?.Subscribe<bool>(Channel.UpdateAllUITexts, UpdateText);
         UpdateText(true);
     }
 
-    private void OnDisable() => _postManager?.Unsubscribe<bool>(Channel.RequestChangeText, UpdateText);
+    private void OnDisable() => _postManager?.Unsubscribe<bool>(Channel.UpdateAllUITexts, UpdateText);
     private void UpdateText(bool dummy)
     {
         if (textId == 0) return;  // ID 가 0 이면 아무 것도 하지 않음.
         if (_textGui == null) _textGui = GetComponent<TextMeshProUGUI>();
-        try
-        {
-            _textGui.text = _postManager?.Request<int, string>(Channel.UITextRequest, textId);
-        }
-        catch{
-            Debug.Log($"[TextLoader] {textId} has not {Channel.UITextRequest} text.");
-        }
+        _textGui.text = _postManager?.Request<int, string>(Channel.GetUIText, textId);
     }
 }
