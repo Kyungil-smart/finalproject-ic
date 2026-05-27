@@ -7,6 +7,7 @@ public class UITextManager : Manager, IUITextManager
     private IPostManager _postManager;
     private List<(int id, string data)> _texts = new();
     
+    
     private void Awake() => _postManager = ServiceLocater.Get<IPostManager>();
 
     private void OnEnable() => Register();
