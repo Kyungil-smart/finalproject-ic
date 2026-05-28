@@ -44,13 +44,13 @@ public class InGameBootstrap : MonoBehaviour
 
     private UniTask ServiceLocaterRegistration()
     {
-        ServiceLocater.Register<IProcessUIRouter>(new ProcessUIRouter());
+        ServiceLocater.Register<IUIRouter>(new UIRouter());
         return UniTask.CompletedTask;
     }
 
     private UniTask ServiceLocatorRegistration()
     {
-        ServiceLocater.Unregister<IProcessUIRouter>();
+        ServiceLocater.Unregister<IUIRouter>();
         return UniTask.CompletedTask;
     }
 }
