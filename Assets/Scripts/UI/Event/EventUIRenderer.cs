@@ -50,18 +50,18 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
     
     public void Render(UIRenderData renderData)
     {
-        if (renderData is EventUIParams data)
+        if (renderData is EventUIRenderData data)
         {
             _normalPanel.SetActive(data.eventType != EventType.Reward);
             _rewardPanel.SetActive(data.eventType == EventType.Reward);
 
-            if (data.eventType == EventType.Reward && renderData is RewardEventUIParams rewardEventParams)
+            if (data.eventType == EventType.Reward && renderData is RewardEventUIRenderData rewardEventParams)
             {
                 _rewardMainTextLoader.TextId = rewardEventParams.mainTextId;
                 _gradeImage.sprite = rewardEventParams.gradeImage;
                 RenderRewardEvent(rewardEventParams);
             }
-            else if (data.eventType != EventType.Reward && renderData is NormalEventUIParams normalEventParams)
+            else if (data.eventType != EventType.Reward && renderData is NormalEventUIRenderData normalEventParams)
             {
                 _normalMainTextLoader.TextId = normalEventParams.mainTextId;
                 RenderNormalEvent(normalEventParams);
@@ -77,7 +77,7 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
         }
     }
 
-    private void RenderNormalEvent(NormalEventUIParams data)
+    private void RenderNormalEvent(NormalEventUIRenderData data)
     {
         if (data.choices.Count == 1) // confirm 
         {
@@ -101,7 +101,7 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
         }
     }
 
-    private void RenderRewardEvent(RewardEventUIParams data)
+    private void RenderRewardEvent(RewardEventUIRenderData data)
     {
         for (int i = 0; i < _options.Length; i++)
         {
