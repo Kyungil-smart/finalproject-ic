@@ -66,7 +66,7 @@ public class UITextManager : Manager, IUITextManager
         IsDataUpdated = true;
     }
     
-    private async UniTask GetDataFromGSheet()
+    private UniTask GetDataFromGSheet()
     {   // SO 에 데이터 담기
         foreach (var (language, gSheetManager) in _gSheetManagers)
         {
@@ -84,9 +84,10 @@ public class UITextManager : Manager, IUITextManager
                     so.lines.Add(new Line(soData["Text_ID"], soData["Text_Value"]));
             }
         }
+        return UniTask.CompletedTask;
     }
 
-    private async UniTask ConvertSOtoData()
+    private UniTask ConvertSOtoData()
     {   // Language 에 따라 runtime 으로 옮기기
         foreach (var so in uiTextSOs)
         {
@@ -94,6 +95,7 @@ public class UITextManager : Manager, IUITextManager
             _texts = so.lines;
             break;
         }
+        return UniTask.CompletedTask;
     }
 
     public void ApplyAllText() => _postManager?.Post(Channel.UpdateAllUITexts, true);

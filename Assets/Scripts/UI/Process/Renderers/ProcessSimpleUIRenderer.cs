@@ -6,6 +6,9 @@ using UnityEngine.UI;
 /// </summary>
 public class ProcessSimpleUIRenderer : MonoBehaviour, IUIRender
 {
+    [Header("UI Elements - Panel")]
+    [SerializeField] private GameObject _panelObject;
+    
     [Header("UI Elements - Main Session")]
     [SerializeField] private TextLoader _mainTxtLd;
     
@@ -23,11 +26,15 @@ public class ProcessSimpleUIRenderer : MonoBehaviour, IUIRender
     {
         if (renderData is SimpleUIRenderData data)
         {
-            
+            _mainTxtLd.TextId = data.mainTextId;
+            _confirmBt.onClick.RemoveAllListeners();
+            _confirmBt.onClick.AddListener(() => _panelObject.SetActive(false));
+            _confirmBt.onClick.AddListener(() => data.btCallback());
+            _panelObject.SetActive(true);
         }
         else
         {
-            Debug.LogError($"[ProcessListUIRenderer] Not Supported Data Type {renderData.GetType().Name}");
+            Debug.LogError($"[ProcessSimpleUIRenderer] Not Supported Data Type {renderData.GetType().Name}");
         }
     }
 }

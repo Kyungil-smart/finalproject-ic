@@ -6,7 +6,14 @@ using UnityEngine.UI;
 /// </summary>
 public class ProcessListToggleUIRenderer : MonoBehaviour, IUIRender
 {
+    [Header("UI Elements - Panel")]
+    [SerializeField] private GameObject _panelObject;
+    
+    [Header("UI Elements - Button Session")]
     [SerializeField] private Button _confirmBt;
+    [SerializeField] private TextLoader _confirmTl;
+    
+    [Header("UI Elements - Item Prefab")]
     [SerializeField] private GameObject _itemPrefab;
     
     public void OnEnable()
