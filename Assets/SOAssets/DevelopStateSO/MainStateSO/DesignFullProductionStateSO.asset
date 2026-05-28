@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10a8263f0868126438f337f440f9f24c, type: 3}
+  m_Name: DesignFullProductionStateSO
+  m_EditorClassIdentifier: Assembly-CSharp::DevStateSO
+  StateID: 7
+  StateName: DesignFullProductionState
+  IsSubState: 0
+  prevState: {fileID: 11400000, guid: 3adae461990ee5345a65359edb6ab0d3, type: 2}
+  nextState: {fileID: 11400000, guid: ff7a59e4906ef3b4bab9123ccd3312fa, type: 2}
+  subStates:
+  - {fileID: 11400000, guid: 7a74815a4a776974eaa20148f7867c2e, type: 2}
+  - {fileID: 11400000, guid: 9cc3ee18343bf564b9ac27d72941db72, type: 2}
+  IsLastSubStateFinished: 0
