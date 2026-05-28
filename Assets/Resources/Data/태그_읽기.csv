@@ -1,0 +1,11 @@
+Tag_Id,Tag_Type,Tag_Name,Tag_A_Effect_Name,Tag_A_Effect_Value,Tag_A_Effect_Ratio,Tag_B_Effect_Name,Tag_B_Effect_Value,Tag_B_Effect_Ratio
+20001,1,집중력 강화,Staff_Concentration,5,1,Staff_Effect_None,0,1
+20002,1,창의적 발상,Staff_Creativity,5,1,Staff_Effect_None,0,1
+20003,1,소통 마스터,Staff_Communication,5,1,Staff_Effect_None,0,1
+20004,1,야근 내성,Staff_Concentration,3,1,Staff_Dev,2,1
+20005,1,완벽주의자,Staff_Design,4,1,Staff_Concentration,2,1
+20006,1,독불장군,Staff_Design,6,1,Staff_Communication,-2,1
+20007,1,빠른 학습자,Staff_Creativity,0,1.1,Staff_Dev,2,1
+20008,1,기획 천재,Staff_Design,0,1.15,Staff_Concentration,0,0.95
+21001,2,아이디어형,Staff_Creativity,0,1.1,Staff_Communication,2,1
+21002,2,분석형,Staff_Design,0,1.05,Staff_Dev,0,1.05
