@@ -12,7 +12,7 @@ using UnityEngine;
 /// </summary>
 public class InGameBootstrap : MonoBehaviour
 {
-    private void OnEnable() => Init();
+    private void Awake() => Init();
     private void OnDisable() => Dispose();
     private void OnDestroy() => Destory();
     
@@ -21,6 +21,7 @@ public class InGameBootstrap : MonoBehaviour
         UniTask.Void(async () =>
         {
             // Async 함수들은 여기에 적어주세요.
+            await ServiceLocaterRegistration();
         });    
     }
 
