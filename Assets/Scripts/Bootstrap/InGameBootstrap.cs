@@ -30,6 +30,7 @@ public class InGameBootstrap : MonoBehaviour
         UniTask.Void(async () =>
         {
             // Async 함수들은 여기에 적어주세요.
+            await ServiceLocatorRegistration();
         });
     }
     
@@ -41,13 +42,15 @@ public class InGameBootstrap : MonoBehaviour
         });
     }
 
-    private async UniTask ServiceLocaterRegistration()
+    private UniTask ServiceLocaterRegistration()
     {
         ServiceLocater.Register<IProcessUIRouter>(new ProcessUIRouter());
+        return UniTask.CompletedTask;
     }
 
-    private async UniTask ServiceLocatorRegistration()
+    private UniTask ServiceLocatorRegistration()
     {
         ServiceLocater.Unregister<IProcessUIRouter>();
+        return UniTask.CompletedTask;
     }
 }

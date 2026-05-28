@@ -1,4 +1,4 @@
 ﻿public interface IProcessUIRender
 {
-    public void Render();    
+    public void Render(UIRenderData data);
 }
