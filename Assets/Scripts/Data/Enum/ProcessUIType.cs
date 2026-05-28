@@ -1,5 +1,6 @@
 ﻿public enum ProcessUIType
 {
     SimpleUI,
-    ListUI
+    ListUI,
+    ListToggleUI
 }

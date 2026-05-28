@@ -1,9 +1,16 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
+/// <summary>
+/// ProcessSimpleUIRenderer 용 데이터 정의
+/// </summary>
 public class SimpleUIRenderData : UIRenderData
 {
-    
+    public int mainTextId;
+    public int btTextId;
+    public Action btCallback;
 }
 
 /// <summary>
@@ -11,6 +18,9 @@ public class SimpleUIRenderData : UIRenderData
 /// </summary>
 public class ProcessSimpleUIRenderer : MonoBehaviour, IProcessUIRender
 {
+    [SerializeField] private TextMeshProUGUI _mainTmp;
+    [SerializeField] private Button _confirmBt;
+    
     public void OnEnable()
     {
         ServiceLocater.Get<IProcessUIRouter>()
