@@ -1,0 +1,101 @@
+﻿using System;
+using R3;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+[Serializable]
+public struct NormalEventChoices
+{
+    public Button button;   // 데모용. 추후 개발 방향에 따라 변경 가능.
+    public TextLoader textLoader;
+}
+
+[Serializable]
+public struct RewardEventOptions
+{
+    public Button button;
+    public Image image;
+    public TextLoader textLoader;
+}
+
+public class EventUIRenderer : MonoBehaviour
+{
+    [Header("Main Panel")]
+    [SerializeField] private GameObject _mainPanel;
+    
+    [Header("Normal Common Event")]
+    [SerializeField] private GameObject _normalPanel;
+    [SerializeField] private TextLoader _normalMainTextLoader;
+    
+    [Header("Normal Confirm Event")]
+    [SerializeField] private GameObject _confirmPanel;
+    [SerializeField] private NormalEventChoices _confirm; 
+    
+    [Header("Normal Choice Event")]
+    [SerializeField] private GameObject _choicePanel;
+    [SerializeField] private NormalEventChoices[] _choices;
+
+    [Header("Reward Event")]
+    [SerializeField] private GameObject _rewardPanel;
+    [SerializeField] private TextLoader _rewardMainTextLoader;
+    [SerializeField] private Image _gradeImage;
+    [SerializeField] private RewardEventOptions[] _options;
+    
+    public void Render(EventType eventType, EventUIParams eventUIParams)
+    {
+        _normalPanel.SetActive(eventType != EventType.Reward);
+        _rewardPanel.SetActive(eventType == EventType.Reward);
+
+        if (eventType == EventType.Reward && eventUIParams is RewardEventUIParams rewardEventParams)
+        {
+            _rewardMainTextLoader.TextId = rewardEventParams.mainTextId;
+            _gradeImage.sprite = rewardEventParams.gradeImage;
+            RenderRewardEvent(rewardEventParams);
+        }
+        else if (eventType != EventType.Reward && eventUIParams is NormalEventUIParams normalEventParams)
+        {
+            _normalMainTextLoader.TextId = normalEventParams.mainTextId;
+            RenderNormalEvent(normalEventParams);
+        }
+    }
+
+    private void RenderNormalEvent(NormalEventUIParams data)
+    {
+        if (data.choices.Count == 1) // confirm 
+        {
+            _confirmPanel.SetActive(true);
+            _choicePanel.SetActive(false);
+            
+            _confirm.textLoader.TextId = data.choices[0].textId;
+            _confirm.button.onClick.RemoveAllListeners();
+            _confirm.button.onClick.AddListener(() => data.callback(data.choices[0].id));
+        }
+        else // choice
+        {
+            _confirmPanel.SetActive(false);
+            _choicePanel.SetActive(true);
+            for (int i = 0; i < data.choices.Count; i++)
+            {
+                _choices[i].textLoader.TextId = data.choices[i].textId;
+                _choices[i].button.onClick.RemoveAllListeners();
+                _choices[i].button.onClick.AddListener(() => data.callback(data.choices[i].id));
+            }
+        }
+    }
+
+    private void RenderRewardEvent(RewardEventUIParams data)
+    {
+        for (int i = 0; i < _options.Length; i++)
+        {
+            var opt = _options[i];
+            opt.image.sprite = data.options[i].icon;
+            opt.textLoader.TextId = data.options[i].textId;
+            opt.button.onClick.RemoveAllListeners();
+            opt.button.onClick.AddListener(() => data.callback(data.options[i].id));
+        }
+    }
+    
+    public void Open() => _mainPanel.SetActive(true);
+    public void Close() => _mainPanel.SetActive(false);
+}
