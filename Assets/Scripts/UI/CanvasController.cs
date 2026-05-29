@@ -1,4 +1,5 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [Serializable]
@@ -12,10 +13,22 @@ public class CanvasController : MonoBehaviour, ICanvasController
 {
     [SerializeField] private CanvasList[] _canvasList;
     private CanvasList _currentEnableCanvas;
-    
-    private void OnEnable()
+
+    private void OnEnable() => Initialize().Forget();
+        
+    private async UniTaskVoid Initialize()
     {
-        Debug.Log("[CanvasController] OnEnable");
+        var sl = ServiceLocater.Get<IBootStrap>();
+        while (true)
+        {
+            if (sl == null)
+            {
+                await UniTask.Yield();
+                continue;
+            }
+            if (sl.IsCompleted) break;
+        }
+            
         ServiceLocater.Get<IUIRouter>().ConnectCanvasController(this);
     }
     
