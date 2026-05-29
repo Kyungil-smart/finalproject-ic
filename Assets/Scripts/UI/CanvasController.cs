@@ -18,18 +18,22 @@ public class CanvasController : MonoBehaviour, ICanvasController
         
     private async UniTaskVoid Initialize()
     {
-        var sl = ServiceLocater.Get<IBootStrap>();
-        while (true)
+        bool bootstrapComplete = false;
+        for (int i = 0; i < 10; i++)
         {
+            var sl = ServiceLocater.Get<IBootStrap>();
             if (sl == null)
+                await UniTask.WaitForSeconds(0.2f);
+            else if (sl.IsCompleted)
             {
-                await UniTask.Yield();
-                continue;
+                bootstrapComplete = true;
+                break;
             }
-            if (sl.IsCompleted) break;
         }
-            
-        ServiceLocater.Get<IUIRouter>().ConnectCanvasController(this);
+        if (bootstrapComplete)
+            ServiceLocater.Get<IUIRouter>().ConnectCanvasController(this);
+        else
+            Debug.LogError("[UIRouter] Could not connect CanvasController to UIRouter");
     }
     
     public void Enable(UIType uiType)

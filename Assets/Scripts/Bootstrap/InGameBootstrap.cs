@@ -13,7 +13,7 @@ using UnityEngine;
 public class InGameBootstrap : MonoBehaviour, IBootStrap
 {
     private bool _isCompleted;
-    public bool IsCompleted { get; }
+    public bool IsCompleted { get => _isCompleted; }
     
     private void Awake() => Init();
     private void OnDisable() => Dispose();
