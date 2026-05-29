@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// ProcessListUIRenderer 용 데이터 정의
@@ -17,13 +18,14 @@ public class ListItemUIRenderData
 
 public class ListUIRenderData : UIRenderData
 {
-    public ListItemUIRenderData[] items;
+    public int titleTextId;
     public int confirmBtTextId;
     public Action confirmBtCallback;
-
-    public ListUIRenderData(ListItemUIRenderData[] items, int confirmBtTextId, Action confirmBtCallback)
+    // public List<ListItemUIRenderData> items = new();
+    public List<string> items = new();
+    
+    public ListUIRenderData(int confirmBtTextId, Action confirmBtCallback)
     {
-        this.items = items;
         this.confirmBtTextId = confirmBtTextId;
         this.confirmBtCallback = confirmBtCallback;
     }
