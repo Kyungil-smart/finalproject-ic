@@ -15,12 +15,16 @@ public class MarketTrandSubState : MonoBehaviour, IProcessState
     public void Enter()
     {
         IsFinished = false;
-        Debug.Log("[StaffManagingState] : 2-2 상태 진입");
+
+        Debug.Log("[MarketTrandSubState] : 2-2 상태 진입");
+
         Execute();
     }
 
     public void Execute()
     {
+        Debug.Log("[MarketTrandSubState] : 2-2 트랜드 장르 및 테마 확인 진행");
+
         Exit();
     }
 

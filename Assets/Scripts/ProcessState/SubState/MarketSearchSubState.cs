@@ -15,15 +15,16 @@ public class MarketSearchSubState : MonoBehaviour, IProcessState
     public void Enter()
     {
         IsFinished = false;
-        Debug.Log("[StaffManagingState] : 2-1 진입 전 이벤트 발동");
 
-        Debug.Log("[StaffManagingState] : 2-1 상태 진입");
+        Debug.Log("[MarketSearchSubState] : 2-1 상태 진입");
         
         Execute();
     }
 
     public void Execute()
     {
+        Debug.Log("[MarketSearchSubState] : 2-1 트랜드 탐색 이벤트 진행");
+
         Exit();
     }
 

@@ -21,6 +21,8 @@ public class StaffHireSubState : MonoBehaviour, IProcessState
 
     public void Execute()
     {
+        Debug.Log("[StaffManagingState] : 보유 직원 리스트 및 채용 진행");
+
         Exit();
     }
 

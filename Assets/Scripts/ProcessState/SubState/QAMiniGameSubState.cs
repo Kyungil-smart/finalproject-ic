@@ -18,6 +18,8 @@ public class QAMiniGameSubState : MonoBehaviour, IProcessState
     {
         IsFinished = false;
 
+        doMinigame = true;
+
         Debug.Log("[QAMiniGameSubState] : 10-1 상태 진입");
 
         Execute();
@@ -26,7 +28,8 @@ public class QAMiniGameSubState : MonoBehaviour, IProcessState
 
     public void Execute()
     {
-        
+        // 미니게임 실행 여부
+
         if(doMinigame)
         {
             Debug.Log("[QAMiniGameSubState] : 10-1 미니게임 실행");

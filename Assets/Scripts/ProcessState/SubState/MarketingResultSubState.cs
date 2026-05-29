@@ -11,10 +11,6 @@ public class MarketingResultSubState : MonoBehaviour, IProcessState
 
     public event Action<IProcessState> OnStateFinished;
 
-    // 아래는 이 서브 상태에서만 사용하는 함수
-    // 부모의 상태 구분, 추후 메인 상태에서 주입해줘야
-    // 프리 프로덕션 ~ 플 프로덕션의 이벤트 형식이 모두 동일해서 필요
-    [field: SerializeField] public EMainState ParentState { get; private set; }
 
     public void Enter()
     {
