@@ -27,6 +27,7 @@ public class ProcessSimpleUIRenderer : MonoBehaviour, IUIRender
         if (renderData is SimpleUIRenderData data)
         {
             _mainTxtLd.TextId = data.mainTextId;
+            _confirmBtTxtLd.TextId = data.btTextId;
             _confirmBt.onClick.RemoveAllListeners();
             _confirmBt.onClick.AddListener(() => _panelObject.SetActive(false));
             _confirmBt.onClick.AddListener(() => data.btCallback());
