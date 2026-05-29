@@ -3,12 +3,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class ReleaseReviewCriticSubState : MonoBehaviour, IProcessState
-
-
-
-
-
-
 {
     [Header("이 상태의 SO")]
     [field: SerializeField] public ProcessStateSO StateData { get; private set; }   // 현재 상태

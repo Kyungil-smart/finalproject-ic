@@ -2,10 +2,6 @@ using System;
 using UnityEngine;
 
 public class StaffAssignmentSubState : MonoBehaviour, IProcessState
-
-
-
-
 {
     [Header("이 상태의 SO")]
     [field: SerializeField] public ProcessStateSO StateData { get; private set; }   // 현재 상태
