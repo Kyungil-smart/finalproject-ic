@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class DevStateMachine : MonoBehaviour
+public class ProcessStateMachine : MonoBehaviour
 {
     [Header("첫 상태")]
     [SerializeField] private ProcessStateSO startState;
