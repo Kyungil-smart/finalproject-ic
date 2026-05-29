@@ -49,7 +49,7 @@ public class TextLoader : MonoBehaviour
 
     private UniTask ChangeText()
     {
-        if (textId == 0) return UniTask.CompletedTask;  // ID 가 0 이면 아무 것도 하지 않음.
+        if (textId == -1) return UniTask.CompletedTask;  // ID 가 -1 이면 아무 것도 하지 않음.
         if (_textGui == null) _textGui = GetComponent<TextMeshProUGUI>();
         _textGui.text = _postManager?.Request<int, string>(Channel.GetUIText, textId);
         return UniTask.CompletedTask;
