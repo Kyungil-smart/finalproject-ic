@@ -23,6 +23,16 @@ public static class ServiceLocater
         }
     }
     
+    public static void Unregister<T>()
+    {   // pure class 에서만 진행
+        var type = typeof(T);
+        if (_services.TryGetValue(type, out var current))
+        {
+            if (current is IDisposable disposable) disposable.Dispose();
+            _services.Remove(type);
+        }
+    }
+    
     // 서비스 획득
     public static T Get<T>()
     {

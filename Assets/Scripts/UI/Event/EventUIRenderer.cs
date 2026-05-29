@@ -12,14 +12,14 @@ public struct NormalEventChoices
 }
 
 [Serializable]
-public struct RewardEventOptions
+public class RewardEventOptions
 {
     public Button button;
     public Image image;
     public TextLoader textLoader;
 }
 
-public class EventUIRenderer : MonoBehaviour
+public class EventUIRenderer : MonoBehaviour, IUIRender
 {
     [Header("Main Panel")]
     [SerializeField] private GameObject _mainPanel;
@@ -42,25 +42,42 @@ public class EventUIRenderer : MonoBehaviour
     [SerializeField] private Image _gradeImage;
     [SerializeField] private RewardEventOptions[] _options;
     
-    public void Render(EventType eventType, EventUIParams eventUIParams)
+    public void OnEnable()
     {
-        _normalPanel.SetActive(eventType != EventType.Reward);
-        _rewardPanel.SetActive(eventType == EventType.Reward);
+        ServiceLocater.Get<IUIRouter>()
+            .RegisterUIRender(UIType.EventUI, this);
+    }
+    
+    public void Render(UIRenderData renderData)
+    {
+        if (renderData is EventUIRenderData data)
+        {
+            _normalPanel.SetActive(data.eventType != EventType.Reward);
+            _rewardPanel.SetActive(data.eventType == EventType.Reward);
 
-        if (eventType == EventType.Reward && eventUIParams is RewardEventUIParams rewardEventParams)
-        {
-            _rewardMainTextLoader.TextId = rewardEventParams.mainTextId;
-            _gradeImage.sprite = rewardEventParams.gradeImage;
-            RenderRewardEvent(rewardEventParams);
+            if (data.eventType == EventType.Reward && renderData is RewardEventUIRenderData rewardEventParams)
+            {
+                _rewardMainTextLoader.TextId = rewardEventParams.mainTextId;
+                _gradeImage.sprite = rewardEventParams.gradeImage;
+                RenderRewardEvent(rewardEventParams);
+            }
+            else if (data.eventType != EventType.Reward && renderData is NormalEventUIRenderData normalEventParams)
+            {
+                _normalMainTextLoader.TextId = normalEventParams.mainTextId;
+                RenderNormalEvent(normalEventParams);
+            }
+            else
+            {
+                Debug.LogError($"[EventUIRenderer] Not Supported Data Type {renderData.GetType().Name}");    
+            }
         }
-        else if (eventType != EventType.Reward && eventUIParams is NormalEventUIParams normalEventParams)
+        else
         {
-            _normalMainTextLoader.TextId = normalEventParams.mainTextId;
-            RenderNormalEvent(normalEventParams);
+            Debug.LogError($"[EventUIRenderer] Not Supported Data Type {renderData.GetType().Name}");
         }
     }
 
-    private void RenderNormalEvent(NormalEventUIParams data)
+    private void RenderNormalEvent(NormalEventUIRenderData data)
     {
         if (data.choices.Count == 1) // confirm 
         {
@@ -84,7 +101,7 @@ public class EventUIRenderer : MonoBehaviour
         }
     }
 
-    private void RenderRewardEvent(RewardEventUIParams data)
+    private void RenderRewardEvent(RewardEventUIRenderData data)
     {
         for (int i = 0; i < _options.Length; i++)
         {
