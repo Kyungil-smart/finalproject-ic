@@ -115,9 +115,6 @@ Assets/Firebase*
 Assets/GeneratedLocalRepo*
 Assets/Packages*
 google-services*
-Assets/Packages*
-Assets/AddressableAssetsData*
-Assets/TextMesh*
 
 *.idea*
 *_Recovery*
