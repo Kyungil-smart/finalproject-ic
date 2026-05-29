@@ -15,13 +15,8 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 00ba0b3e8dedd5d41bda92f4318e1927
   m_SerializeEntries:
-  - m_GUID: 27819b6f71ddd704a85abb964b343bc8
-    m_Address: Assets/WorkSpace/Scripts/AudioDataSO.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8d5373607a3ea4147a88aa62d6ec33fa
-    m_Address: Assets/WorkSpace/Scripts/AudioContext.asset
+  - m_GUID: 598f294e4c1da314d814b8cf18c4f78f
+    m_Address: GoldEventData
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
