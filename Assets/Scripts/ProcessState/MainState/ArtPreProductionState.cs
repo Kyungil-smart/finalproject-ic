@@ -8,7 +8,7 @@ public class ArtPreProductionState : MonoBehaviour, IProcessState
     [field: SerializeField] public ProcessStateSO StateData { get; private set; }   // 현재 상태
 
     [Header("상태 종료 여부")]
-    [field: SerializeField] public bool IsFinished { get; private set; }    // 상태가 끝났는지 여부
+    [SerializeField] private bool _isFinished;    // 상태가 끝났는지 여부
 
     public event Action<IProcessState> OnStateFinished;
 
@@ -32,7 +32,7 @@ public class ArtPreProductionState : MonoBehaviour, IProcessState
     public void Enter()
     {
         // 들어갈 시 다시 초기화
-        IsFinished = false;
+        _isFinished = false;
         _currentSubStateIndex = 0;
 
         Debug.Log("[StaffManagingState] : 5 상태 진입");
@@ -67,7 +67,7 @@ public class ArtPreProductionState : MonoBehaviour, IProcessState
             _currentSubState.Exit();
         }
 
-        IsFinished = true;
+        _isFinished = true;
 
 
         OnStateFinished?.Invoke(this);

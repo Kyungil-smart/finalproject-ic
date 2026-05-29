@@ -9,13 +9,13 @@ public class ReleaseAwardsSubState : MonoBehaviour, IProcessState
     [field: SerializeField] public ProcessStateSO StateData { get; private set; }   // 현재 상태
 
     [Header("상태 종료 여부")]
-    [field: SerializeField] public bool IsFinished { get; private set; }    // 상태가 끝났는지 여부를 나타내는 프로퍼티
+    [SerializeField] private bool _isFinished;    // 상태가 끝났는지 여부
 
     public event Action<IProcessState> OnStateFinished;
 
     public void Enter()
     {
-        IsFinished = false;
+        _isFinished = false;
 
         Debug.Log("[StaffManagingState] : 12-4 상태 진입");
 
@@ -33,7 +33,7 @@ public class ReleaseAwardsSubState : MonoBehaviour, IProcessState
 
     public void Exit()
     {
-        IsFinished = true;
+        _isFinished = true;
         OnStateFinished?.Invoke(this);
     }
 
