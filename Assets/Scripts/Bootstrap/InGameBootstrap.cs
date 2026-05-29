@@ -10,19 +10,26 @@ using UnityEngine;
 /// Unity 생명주기에 따라 필요한 내용 추가해도 상관 없음.
 /// 되도록 Unitask 를 이용하여 비동기로 진행할 것.
 /// </summary>
-public class InGameBootstrap : MonoBehaviour
+public class InGameBootstrap : MonoBehaviour, IBootStrap
 {
+    private bool _isCompleted;
+    public bool IsCompleted { get => _isCompleted; }
+    
     private void Awake() => Init();
     private void OnDisable() => Dispose();
     private void OnDestroy() => Destory();
     
     private void Init()
     {   // 게임 씬에서 필요한 것들
+        _isCompleted = false;
+        ServiceLocater.Register<IBootStrap>(this);
+        
         UniTask.Void(async () =>
         {
             // Async 함수들은 여기에 적어주세요.
             await ServiceLocaterRegistration();
-        });    
+        });
+        _isCompleted = true;
     }
 
     private void Dispose()
@@ -32,6 +39,7 @@ public class InGameBootstrap : MonoBehaviour
             // Async 함수들은 여기에 적어주세요.
             await ServiceLocatorRegistration();
         });
+        ServiceLocater.Unregister<IBootStrap>(this);
     }
     
     private void Destory()

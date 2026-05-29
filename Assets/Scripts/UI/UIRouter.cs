@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 
 public class UIRenderData { }
@@ -12,7 +13,10 @@ public class UIRouter : IUIRouter, IDisposable
     ICanvasController _canvasController;
 
     public void ConnectCanvasController(ICanvasController canvasController)
-        => _canvasController = canvasController;
+    {
+        _canvasController = canvasController;
+        Debug.Log("[UIRouter] ConnectCanvasController Success");
+    }
     
     public void RegisterUIRender(UIType uiType, IUIRender uiRender) 
         => _renders[uiType] = uiRender;

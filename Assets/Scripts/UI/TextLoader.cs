@@ -1,7 +1,9 @@
+using Cysharp.Threading.Tasks;
 using R3;
 using DataDispatcher;
 using UnityEngine;
 using TMPro;
+using Channel = DataDispatcher.Channel;
 
 public class TextLoader : MonoBehaviour
 {
@@ -38,8 +40,25 @@ public class TextLoader : MonoBehaviour
     private void OnDisable() => _postManager?.Unsubscribe<bool>(Channel.UpdateAllUITexts, UpdateText);
     private void UpdateText(bool dummy)
     {
-        if (textId == 0) return;  // ID 가 0 이면 아무 것도 하지 않음.
+        UniTask.Void(async() =>
+        {
+            await DataLoading();
+            await ChangeText();
+        });
+    }
+
+    private UniTask ChangeText()
+    {
+        if (textId == -1) return UniTask.CompletedTask;  // ID 가 -1 이면 아무 것도 하지 않음.
         if (_textGui == null) _textGui = GetComponent<TextMeshProUGUI>();
         _textGui.text = _postManager?.Request<int, string>(Channel.GetUIText, textId);
+        return UniTask.CompletedTask;
+    }
+
+    private UniTask DataLoading()
+    {
+        while (!ServiceLocater.Get<IUITextManager>().IsDataUpdated)
+            UniTask.WaitForSeconds(0.1f);
+        return UniTask.CompletedTask;
     }
 }

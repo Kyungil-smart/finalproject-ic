@@ -22,7 +22,7 @@ public class UITextManager : Manager, IUITextManager
     [SerializeField] private LanguageType _currentLanguage = LanguageType.Korean;
     [SerializeField] private UITextSOScript[] uiTextSOs;
     
-    private List<(LanguageType language, GSheetManager manager)> _gSheetManagers;
+    private List<(LanguageType language, GSheetManager manager)> _gSheetManagers = new();
     private IPostManager _postManager;
     private List<Line> _texts = new();
     public bool IsDataUpdated { get; set; }
@@ -66,10 +66,13 @@ public class UITextManager : Manager, IUITextManager
         IsDataUpdated = true;
     }
     
-    private UniTask GetDataFromGSheet()
+    private async UniTask GetDataFromGSheet()
     {   // SO 에 데이터 담기
         foreach (var (language, gSheetManager) in _gSheetManagers)
         {
+            while (!gSheetManager.IsDownload)
+                await UniTask.Yield();
+            
             var data = gSheetManager.GetData();
             if (data.Count == 0)
             {
@@ -84,7 +87,6 @@ public class UITextManager : Manager, IUITextManager
                     so.lines.Add(new Line(soData["Text_ID"], soData["Text_Value"]));
             }
         }
-        return UniTask.CompletedTask;
     }
 
     private UniTask ConvertSOtoData()
@@ -105,6 +107,13 @@ public class UITextManager : Manager, IUITextManager
     {
         foreach (var text in _texts)
             if (text.id == textId) return text.text;
-        return $"Not Found Text ID : {textId}";
+        Debug.LogWarning($"Not Found Text ID : {textId}");
+        return textId.ToString();
+    }
+
+    [ContextMenu("Load Data")]
+    private void LoadData()
+    {
+        Init();
     }
 }

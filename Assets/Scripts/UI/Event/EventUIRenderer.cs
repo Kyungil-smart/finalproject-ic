@@ -7,6 +7,7 @@ using UnityEngine.UI;
 [Serializable]
 public struct NormalEventChoices
 {
+    public int btId;
     public Button button;   // 데모용. 추후 개발 방향에 따라 변경 가능.
     public TextLoader textLoader;
 }
@@ -14,6 +15,7 @@ public struct NormalEventChoices
 [Serializable]
 public class RewardEventOptions
 {
+    public int btId;
     public Button button;
     public Image image;
     public TextLoader textLoader;
@@ -79,14 +81,17 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
 
     private void RenderNormalEvent(NormalEventUIRenderData data)
     {
+        Open();
         if (data.choices.Count == 1) // confirm 
         {
             _confirmPanel.SetActive(true);
             _choicePanel.SetActive(false);
             
             _confirm.textLoader.TextId = data.choices[0].textId;
+            _confirm.btId = data.choices[0].id;
             _confirm.button.onClick.RemoveAllListeners();
-            _confirm.button.onClick.AddListener(() => data.callback(data.choices[0].id));
+            _confirm.button.onClick.AddListener(() => data.callback(_confirm.btId));
+            _confirm.button.onClick.AddListener(Close);
         }
         else // choice
         {
@@ -94,25 +99,37 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
             _choicePanel.SetActive(true);
             for (int i = 0; i < data.choices.Count; i++)
             {
-                _choices[i].textLoader.TextId = data.choices[i].textId;
-                _choices[i].button.onClick.RemoveAllListeners();
-                _choices[i].button.onClick.AddListener(() => data.callback(data.choices[i].id));
+                var choice = _choices[i];
+                choice.textLoader.TextId = data.choices[i].textId;
+                choice.button.onClick.RemoveAllListeners();
+                choice.btId = data.choices[i].id;
+                choice.button.onClick.AddListener(() => data.callback(choice.btId));
+                choice.button.onClick.AddListener(Close);
             }
         }
     }
-
+    
     private void RenderRewardEvent(RewardEventUIRenderData data)
     {
+        Open();
         for (int i = 0; i < _options.Length; i++)
         {
             var opt = _options[i];
             opt.image.sprite = data.options[i].icon;
             opt.textLoader.TextId = data.options[i].textId;
             opt.button.onClick.RemoveAllListeners();
-            opt.button.onClick.AddListener(() => data.callback(data.options[i].id));
+            opt.button.onClick.AddListener(() => data.callback(opt.btId));
+            opt.button.onClick.AddListener(Close);
         }
     }
-    
-    public void Open() => _mainPanel.SetActive(true);
-    public void Close() => _mainPanel.SetActive(false);
+
+    private void Open()
+    {
+        _mainPanel.SetActive(true);
+    }
+
+    private void Close()
+    {
+        _mainPanel.SetActive(false);
+    }
 }
