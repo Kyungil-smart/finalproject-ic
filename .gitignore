@@ -116,6 +116,7 @@ Assets/GeneratedLocalRepo*
 Assets/Packages*
 google-services*
 Assets/Packages*
+Assets/AddressableAssetsData*
 
 *.idea*
 *_Recovery*
