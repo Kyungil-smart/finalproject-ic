@@ -3,15 +3,6 @@ using System.Linq;
 using UnityEngine;
 
 public class QAState : MonoBehaviour, IProcessState
-
-
-
-
-
-
-
-
-
 {
     [Header("이 상태의 SO")]
     [field: SerializeField] public ProcessStateSO StateData { get; private set; }   // 현재 상태
@@ -44,7 +35,7 @@ public class QAState : MonoBehaviour, IProcessState
         IsFinished = false;
         _currentSubStateIndex = 0;
 
-        Debug.Log("[StaffManagingState] : 10 상태 진입");
+        Debug.Log("[QAState] : 10 상태 진입");
 
         // Execute();
 

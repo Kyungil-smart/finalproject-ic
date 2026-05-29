@@ -2,11 +2,6 @@ using System;
 using UnityEngine;
 
 public class QAMiniGameSubState : MonoBehaviour, IProcessState
-
-
-
-
-
 {
     [Header("이 상태의 SO")]
     [field: SerializeField] public ProcessStateSO StateData { get; private set; }   // 현재 상태
@@ -23,14 +18,15 @@ public class QAMiniGameSubState : MonoBehaviour, IProcessState
     {
         IsFinished = false;
 
-
-        Debug.Log("[QAMiniGameSubState] : 10-1 미니게임 여부 확인");
+        Debug.Log("[QAMiniGameSubState] : 10-1 상태 진입");
 
         Execute();
     }
 
+
     public void Execute()
     {
+        
         if(doMinigame)
         {
             Debug.Log("[QAMiniGameSubState] : 10-1 미니게임 실행");
@@ -39,13 +35,16 @@ public class QAMiniGameSubState : MonoBehaviour, IProcessState
         {
             // 미니 게임 실행 안함
         }
+        
+
+        Debug.Log("[QAMiniGameSubState] : 10-1 미니게임 결과 포함 결과 산출");
 
         Exit();
     }
 
     public void Exit()
     {
-        Debug.Log("[QAMiniGameSubState] : 10-1 미니게임 결과 포함 결과 산출");
+        
         IsFinished = true;
         OnStateFinished?.Invoke(this);
     }

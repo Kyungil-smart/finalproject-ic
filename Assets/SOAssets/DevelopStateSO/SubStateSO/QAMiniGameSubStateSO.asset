@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10a8263f0868126438f337f440f9f24c, type: 3}
   m_Name: QAMiniGameSubStateSO
-  m_EditorClassIdentifier: Assembly-CSharp::DevStateSO
+  m_EditorClassIdentifier: Assembly-CSharp::ProcessStateSO
   StateID: 1001
   StateName: QAMiniGameSubState
   IsSubState: 1
