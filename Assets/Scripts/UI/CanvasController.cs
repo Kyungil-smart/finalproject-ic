@@ -15,6 +15,7 @@ public class CanvasController : MonoBehaviour, ICanvasController
     
     private void OnEnable()
     {
+        Debug.Log("[CanvasController] OnEnable");
         ServiceLocater.Get<IUIRouter>().ConnectCanvasController(this);
     }
     

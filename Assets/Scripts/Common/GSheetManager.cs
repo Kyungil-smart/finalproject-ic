@@ -9,6 +9,8 @@ public class GSheetManager : IGsheetManager
     private string gSheetId;
     private string gid;
     private List<Dictionary<string, string>> data = new();
+    private bool _isDownload;
+    public bool IsDownload { get => _isDownload; }
     
     public GSheetManager(string gSheetId, string gid)
     {
@@ -24,6 +26,8 @@ public class GSheetManager : IGsheetManager
     // 3. 받아온 JSON string 을 JObject 화 시켜서 private JObject 에 저장한다. => 함수
     private async UniTask LoadDataFromGsheet()
     {
+        _isDownload = false;
+        Debug.Log($"[GSheetManager] Loading sheet: {gSheetId}");
         UnityWebRequest request = UnityWebRequest.Get(CombineURL());
         var operation = request.SendWebRequest();
         while (!operation.isDone)
@@ -51,6 +55,8 @@ public class GSheetManager : IGsheetManager
                 data.Add(row);
             }
         }
+        Debug.Log("[GSheetManager] Finish to Load");
+        _isDownload = true;
     }
     
     public List<Dictionary<string, string>> GetData() => data;

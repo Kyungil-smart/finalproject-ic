@@ -45,6 +45,7 @@ public class InGameBootstrap : MonoBehaviour
     private UniTask ServiceLocaterRegistration()
     {
         ServiceLocater.Register<IUIRouter>(new UIRouter());
+        Debug.Log("[InGameBootstrap] ServiceLocaterRegistration - UIRouter");
         return UniTask.CompletedTask;
     }
 
