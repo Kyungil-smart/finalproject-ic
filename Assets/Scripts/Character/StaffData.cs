@@ -29,7 +29,7 @@ public class StaffInitData
     // 핵심 성향
     public StaffGrade Grade; // 시트에서 읽은 확률 표에 따라 랜덤 결정.
     public DiscType DISC_Type; // 랜덤 결정.
-    public int Fixed_Tag; // 등급에 따라 개수 만큼 랜덤 결정 
+    public int Fixed_Tag; // 등급에 따라 개수 만큼 랜덤 결정하게 리스트로 나중에 변경
 
     // 능력치: 레벨에 의해 기본 결정 -> 태그, 등급에 적힌 능력치 배율or(+값) 적용하여 초기 능력치 결정  
     // 가챠로 뽑혔을 때의 베이스 스탯 및 경력 (StaffInitData의 Base와 StaffRuntimeData의 Added를 더하여 현재 스탯값계산)

@@ -71,8 +71,11 @@ public static class StaffDataFactory
         int tagCountToDraw = Random.Range(gradeData.Tag_Min, gradeData.Tag_Max + 1);
         List<TagRow> pickedTags = DataManager.TagList.OrderBy(t => Random.value).Take(tagCountToDraw).ToList();
 
-        // 지금은 Fixed_Tag가 int 1개라서 첫번째 태그만 넣음. (나중에 여러개 되면 List<int>로 수정할 것)
-        data.Fixed_Tag = pickedTags.Count > 0 ? pickedTags[0].Tag_Id : 0; 
+        // 지금은 Fixed_Tag
+        var type2Tags = DataManager.TagList.Where(t => t.Tag_Type == 2).ToList();
+
+        // 필터링된 리스트 중 랜덤으로 1개 뽑아서 ID 할당
+        data.Fixed_Tag = type2Tags[Random.Range(0, type2Tags.Count)].Tag_Id; 
 
         foreach (var tag in pickedTags)
         {
@@ -141,6 +144,7 @@ public static class StaffDataFactory
     {
         float gradeCost = data.Grade switch { StaffGrade.D => 0.5f, StaffGrade.C => 0.75f, StaffGrade.B => 1.0f, StaffGrade.A => 1.5f, StaffGrade.S => 2.0f, _ => 1.0f };
         int totalBaseStats = data.Base_Common_Concentration + data.Base_Common_Creativity + data.Base_Job_Planning; // 약식 합산
+        // totalBaseStats 식은 나중에 직업군 별 스탯 배율?을 적용 (자신의 직업과 연관되지 않은 스탯 * 0.X)
         
         data.Salary = Mathf.RoundToInt((2000 + (totalBaseStats * gradeCost)) / 100f) * 100;
         data.Hire_Cost = Mathf.RoundToInt(data.Salary * gradeCost);

@@ -29,12 +29,12 @@ public class StaffManager : MonoBehaviour
 
     
     // 신규 직원 영입 파이프라인 (팩토리 가챠 -> 빌더 조립)
-    private async UniTaskVoid HireStaffAsync()
+    public async UniTask HireStaffAsync()
     {
         Debug.Log("직원 채용 시작");
 
         // 팩토리: 랜덤 가챠 데이터 생성 (비동기 대기)
-        StaffInitData newData = await StaffDataFactory.CreateRandomDataAsync(playerLevel: 3);
+        StaffInitData newData = await StaffDataFactory.CreateRandomDataAsync(playerLevel: 3); //레벨 3으로 테스트 
         Debug.Log($"가챠 완료 에셋 로딩 중... (설정된 연봉: {newData.Salary})");
 
         // 빌더: InitData와 에셋을 주입하여 조립 (비동기 대기)
