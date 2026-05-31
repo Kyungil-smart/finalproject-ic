@@ -58,8 +58,8 @@ public static class StaffDataFactory
         data.Base_Job_Development = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
         data.Base_Job_Art = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
 
-        // 등급 스탯 보너스(Stat_Bonus) 배율 적용
-        float gradeMultiplier = 1f + gradeData.Stat_Bonus;
+        // 등급 스탯 보너스(Grade_XP) 배율 적용
+        float gradeMultiplier = gradeData.Grade_XP;
         data.Base_Common_Concentration = Mathf.RoundToInt(data.Base_Common_Concentration * gradeMultiplier);
         data.Base_Common_Creativity = Mathf.RoundToInt(data.Base_Common_Creativity * gradeMultiplier);
         data.Base_Common_Communication = Mathf.RoundToInt(data.Base_Common_Communication * gradeMultiplier);
@@ -92,15 +92,28 @@ public static class StaffDataFactory
     // 확률에 따른 등급 결정 (시트 데이터 기준)
     private static GradeRow RollGradeFromTable()
     {
+        int currentLevel = 1; 
+
         float roll = Random.value; 
         float cumulative = 0f;
 
-        foreach (var grade in DataManager.GradeList)
+        // 1레벨 확률표 데이터가 존재하는지 확인
+        if (DataManager.GradeRatioDict.TryGetValue(currentLevel, out List<GradeRatioRow> ratioList))
         {
-            cumulative += grade.Ratio;
-            if (roll <= cumulative) return grade;
+            // 1레벨 확률표를 순회하며 가챠 실행
+            foreach (var ratioData in ratioList)
+            {
+                cumulative += ratioData.Ratio;
+                if (roll <= cumulative)
+                {
+                    // 당첨된 등급 이름("S" 같은 것)으로 등급 상세 정보 테이블(GradeList)을 검색해서 반환
+                    return DataManager.GradeList.Find(g => g.Grade == ratioData.Grade);
+                }
+            }
         }
-        return DataManager.GradeList.Last(); 
+        
+        // 예외 처리 (데이터가 없거나 확률 계산이 어긋났을 때 기본으로 반환)
+        return DataManager.GradeList.Last();
     }
 
     // 문자열로 된 태그 효과를 실제 스탯에 계산.

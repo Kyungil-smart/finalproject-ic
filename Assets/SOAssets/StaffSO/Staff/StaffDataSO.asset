@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fefaa274534cef4a8a53e347c33da77, type: 3}
+  m_Name: StaffDataSO
+  m_EditorClassIdentifier: Assembly-CSharp::StaffDataSO
+  staffList:
+  - Staff_ID: 10001
+    Staff_Name: "\uC2B9\uC815\uD558"
+    Staff_Name_ID: 
+    Staff_Job: "\uAE30\uD68D"
+    Staff_Job_ID: 
+    Staff_Gender: "\uB0A8"
+    Staff_Gender_ID: 
+  - Staff_ID: 10002
+    Staff_Name: "\uAE40\uC11C\uD604"
+    Staff_Name_ID: 
+    Staff_Job: "\uAC1C\uBC1C"
+    Staff_Job_ID: 
+    Staff_Gender: "\uC5EC"
+    Staff_Gender_ID: 
+  - Staff_ID: 10003
+    Staff_Name: "\uCC44\uBCD1\uD76C"
+    Staff_Name_ID: 
+    Staff_Job: "\uC544\uD2B8"
+    Staff_Job_ID: 
+    Staff_Gender: "\uB0A8"
+    Staff_Gender_ID: 
+  - Staff_ID: 10004
+    Staff_Name: "\uBC15\uC9C0\uBBFC"
+    Staff_Name_ID: 
+    Staff_Job: "\uAE30\uD68D"
+    Staff_Job_ID: 
+    Staff_Gender: "\uC5EC"
+    Staff_Gender_ID: 
+  - Staff_ID: 10005
+    Staff_Name: "\uC774\uC900\uD601"
+    Staff_Name_ID: 
+    Staff_Job: "\uAC1C\uBC1C"
+    Staff_Job_ID: 
+    Staff_Gender: "\uB0A8"
+    Staff_Gender_ID: 
+  - Staff_ID: 10006
+    Staff_Name: "\uCD5C\uC720\uC9C4"
+    Staff_Name_ID: 
+    Staff_Job: "\uC544\uD2B8"
+    Staff_Job_ID: 
+    Staff_Gender: "\uC5EC"
+    Staff_Gender_ID: 
+  - Staff_ID: 10007
+    Staff_Name: "\uAC15\uBBFC\uC900"
+    Staff_Name_ID: 
+    Staff_Job: "\uAE30\uD68D"
+    Staff_Job_ID: 
+    Staff_Gender: "\uB0A8"
+    Staff_Gender_ID: 
+  - Staff_ID: 10008
+    Staff_Name: "\uC724\uC11C\uC5F0"
+    Staff_Name_ID: 
+    Staff_Job: "\uAC1C\uBC1C"
+    Staff_Job_ID: 
+    Staff_Gender: "\uC5EC"
+    Staff_Gender_ID: 
+  - Staff_ID: 10009
+    Staff_Name: "\uC784\uB3C4\uD604"
+    Staff_Name_ID: 
+    Staff_Job: "\uC544\uD2B8"
+    Staff_Job_ID: 
+    Staff_Gender: "\uB0A8"
+    Staff_Gender_ID: 
+  - Staff_ID: 10010
+    Staff_Name: "\uC815\uD558\uC740"
+    Staff_Name_ID: 
+    Staff_Job: "\uAE30\uD68D"
+    Staff_Job_ID: 
+    Staff_Gender: "\uC5EC"
+    Staff_Gender_ID: 

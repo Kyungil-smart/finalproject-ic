@@ -1,0 +1,240 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78cc091cb92ece347b7d553d27c6de08, type: 3}
+  m_Name: GradeRatioDataSO
+  m_EditorClassIdentifier: Assembly-CSharp::GradeRatioDataSO
+  ratioList:
+  - Level: 1
+    Grade: D
+    Ratio: 0.5
+  - Level: 1
+    Grade: C
+    Ratio: 0.3
+  - Level: 1
+    Grade: B
+    Ratio: 0.15
+  - Level: 1
+    Grade: A
+    Ratio: 0.05
+  - Level: 1
+    Grade: S
+    Ratio: 0
+  - Level: 2
+    Grade: D
+    Ratio: 0.45
+  - Level: 2
+    Grade: C
+    Ratio: 0.33
+  - Level: 2
+    Grade: B
+    Ratio: 0.17
+  - Level: 2
+    Grade: A
+    Ratio: 0.05
+  - Level: 2
+    Grade: S
+    Ratio: 0
+  - Level: 3
+    Grade: D
+    Ratio: 0.4
+  - Level: 3
+    Grade: C
+    Ratio: 0.35
+  - Level: 3
+    Grade: B
+    Ratio: 0.2
+  - Level: 3
+    Grade: A
+    Ratio: 0.05
+  - Level: 3
+    Grade: S
+    Ratio: 0
+  - Level: 4
+    Grade: D
+    Ratio: 0.35
+  - Level: 4
+    Grade: C
+    Ratio: 0.36
+  - Level: 4
+    Grade: B
+    Ratio: 0.23
+  - Level: 4
+    Grade: A
+    Ratio: 0.05
+  - Level: 4
+    Grade: S
+    Ratio: 1
+  - Level: 5
+    Grade: D
+    Ratio: 0.3
+  - Level: 5
+    Grade: C
+    Ratio: 0.39
+  - Level: 5
+    Grade: B
+    Ratio: 0.25
+  - Level: 5
+    Grade: A
+    Ratio: 0.05
+  - Level: 5
+    Grade: S
+    Ratio: 1
+  - Level: 6
+    Grade: D
+    Ratio: 0.25
+  - Level: 6
+    Grade: C
+    Ratio: 0.38
+  - Level: 6
+    Grade: B
+    Ratio: 0.24
+  - Level: 6
+    Grade: A
+    Ratio: 0.08
+  - Level: 6
+    Grade: S
+    Ratio: 0.05
+  - Level: 7
+    Grade: D
+    Ratio: 0.2
+  - Level: 7
+    Grade: C
+    Ratio: 0.35
+  - Level: 7
+    Grade: B
+    Ratio: 0.28
+  - Level: 7
+    Grade: A
+    Ratio: 0.12
+  - Level: 7
+    Grade: S
+    Ratio: 0.05
+  - Level: 8
+    Grade: D
+    Ratio: 0.15
+  - Level: 8
+    Grade: C
+    Ratio: 0.32
+  - Level: 8
+    Grade: B
+    Ratio: 0.31
+  - Level: 8
+    Grade: A
+    Ratio: 0.17
+  - Level: 8
+    Grade: S
+    Ratio: 0.05
+  - Level: 9
+    Grade: D
+    Ratio: 0.12
+  - Level: 9
+    Grade: C
+    Ratio: 0.28
+  - Level: 9
+    Grade: B
+    Ratio: 0.35
+  - Level: 9
+    Grade: A
+    Ratio: 0.2
+  - Level: 9
+    Grade: S
+    Ratio: 0.05
+  - Level: 10
+    Grade: D
+    Ratio: 0.1
+  - Level: 10
+    Grade: C
+    Ratio: 0.25
+  - Level: 10
+    Grade: B
+    Ratio: 0.37
+  - Level: 10
+    Grade: A
+    Ratio: 0.23
+  - Level: 10
+    Grade: S
+    Ratio: 0.05
+  - Level: 11
+    Grade: D
+    Ratio: 0.09
+  - Level: 11
+    Grade: C
+    Ratio: 0.2
+  - Level: 11
+    Grade: B
+    Ratio: 0.38
+  - Level: 11
+    Grade: A
+    Ratio: 0.23
+  - Level: 11
+    Grade: S
+    Ratio: 0.1
+  - Level: 12
+    Grade: D
+    Ratio: 0.08
+  - Level: 12
+    Grade: C
+    Ratio: 0.17
+  - Level: 12
+    Grade: B
+    Ratio: 0.35
+  - Level: 12
+    Grade: A
+    Ratio: 0.3
+  - Level: 12
+    Grade: S
+    Ratio: 0.1
+  - Level: 13
+    Grade: D
+    Ratio: 0.07
+  - Level: 13
+    Grade: C
+    Ratio: 0.14
+  - Level: 13
+    Grade: B
+    Ratio: 0.32
+  - Level: 13
+    Grade: A
+    Ratio: 0.37
+  - Level: 13
+    Grade: S
+    Ratio: 0.1
+  - Level: 14
+    Grade: D
+    Ratio: 0.06
+  - Level: 14
+    Grade: C
+    Ratio: 0.12
+  - Level: 14
+    Grade: B
+    Ratio: 0.28
+  - Level: 14
+    Grade: A
+    Ratio: 0.44
+  - Level: 14
+    Grade: S
+    Ratio: 0.1
+  - Level: 15
+    Grade: D
+    Ratio: 0.05
+  - Level: 15
+    Grade: C
+    Ratio: 0.1
+  - Level: 15
+    Grade: B
+    Ratio: 0.25
+  - Level: 15
+    Grade: A
+    Ratio: 0.5
+  - Level: 15
+    Grade: S
+    Ratio: 0.1

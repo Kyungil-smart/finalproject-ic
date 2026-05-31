@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2e248004bf0c244eaae2fa4f01dbd78, type: 3}
+  m_Name: GradeDataSO
+  m_EditorClassIdentifier: Assembly-CSharp::GradeDataSO
+  gradeList:
+  - Grade: D
+    Tag_Min: 0
+    Tag_Max: 1
+    Grade_XP: 0.5
+  - Grade: C
+    Tag_Min: 1
+    Tag_Max: 2
+    Grade_XP: 0.7
+  - Grade: B
+    Tag_Min: 1
+    Tag_Max: 3
+    Grade_XP: 1
+  - Grade: A
+    Tag_Min: 2
+    Tag_Max: 3
+    Grade_XP: 1.2
+  - Grade: S
+    Tag_Min: 3
+    Tag_Max: 4
+    Grade_XP: 1.5
