@@ -94,7 +94,7 @@ public class SubProcessStateMachine : MonoBehaviour
         if (_subStateObject != null)
         {
             _subStateObject.OnStateFinished -= HandleSubStateFinished;
-            _subStateObject.Exit();
+            // _subStateObject.Exit();
         }
 
         // 현재 서브 상태 정보 갱신
@@ -102,6 +102,11 @@ public class SubProcessStateMachine : MonoBehaviour
 
         // 캐싱된 전체 서브 상태 컴포넌트 중, 인스펙터에 매칭된 SO와 같은 컴포넌트 찾기
         _subStateObject = _subStates.Find(state => state.CurrentStateDataSO == newState);
+
+        /* // 이름으로 매칭하는 방식 (버그가 있어서 사용 안함)
+        _subStateObject = _subStates.Find(state =>
+            state.GetType().Name.Contains(newState.StateName));
+        */
 
         if (_subStateObject != null)
         {
