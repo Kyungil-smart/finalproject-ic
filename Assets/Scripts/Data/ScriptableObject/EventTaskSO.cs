@@ -1,18 +1,19 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using MackySoft.SerializeReferenceExtensions;
 
-[CreateAssetMenu(fileName = "EventTask", menuName = "Scriptable Objects/EventTask")]
-public class EventTask : ScriptableObject
+[CreateAssetMenu(fileName = "EventTaskSO", menuName = "Scriptable Objects/EventTaskSO")]
+public class EventTaskSO : ScriptableObject
 {
     [SerializeField]
     [SerializeReference]
     [SubclassSelector]
     private List<IUniEvent> _uniEvents = new();
+
     private List<int> _remainingIndexes = new();
+
     public int Count => _uniEvents.Count;
 
     public void Reset()
@@ -24,10 +25,11 @@ public class EventTask : ScriptableObject
     public async UniTask Execute(CancellationToken token)
     {
         if (_remainingIndexes.Count == 0) return;
-        
+
         var randomIndex = Random.Range(0, _remainingIndexes.Count);
         var index = _remainingIndexes[randomIndex];
         _remainingIndexes.RemoveAt(randomIndex);
+
         if (_uniEvents[index] == null) return;
         token.ThrowIfCancellationRequested();
         await _uniEvents[index].Execute(token);
