@@ -35,6 +35,11 @@ public class CanvasController : MonoBehaviour, ICanvasController
         else
             Debug.LogError("[UIRouter] Could not connect CanvasController to UIRouter");
     }
+
+    private void OnDisable()
+    {
+        ServiceLocater.Get<IUIRouter>()?.DisconnectCanvasController();
+    }
     
     public void Enable(UIType uiType)
     {

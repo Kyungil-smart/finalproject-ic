@@ -3,5 +3,7 @@
     ProcessSimpleUI,
     ProcessListUI,
     ProcessListToggleUI,
-    EventUI
+    EventUI,
+    LastProjectUI,
+    StaffUI
 }

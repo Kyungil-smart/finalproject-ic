@@ -612,59 +612,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1091148779
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1091148781}
-  - component: {fileID: 1091148780}
-  m_Layer: 0
-  m_Name: 'CanvasController '
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1091148780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1091148779}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14a39faddb2e4c8ea91ff8c565c52560, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CanvasController
-  _canvasList:
-  - uiType: 3
-    uiCanvas: {fileID: 1488113384}
-  - uiType: 0
-    uiCanvas: {fileID: 1714776045}
-  - uiType: 1
-    uiCanvas: {fileID: 1714776045}
-  - uiType: 2
-    uiCanvas: {fileID: 1714776045}
---- !u!4 &1091148781
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1091148779}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 321.04132, y: 626.52356, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1488113383
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -921,6 +868,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5112458417443789547
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 984630853935725015, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 321.04132
+      objectReference: {fileID: 0}
+    - target: {fileID: 984630853935725015, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 626.52356
+      objectReference: {fileID: 0}
+    - target: {fileID: 984630853935725015, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 984630853935725015, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 984630853935725015, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 984630853935725015, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 984630853935725015, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 984630853935725015, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 984630853935725015, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 984630853935725015, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506589654167689876, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: m_Name
+      value: 'CanvasController '
+      objectReference: {fileID: 0}
+    - target: {fileID: 8432046678240271561, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: _canvasList.Array.data[0].uiCanvas
+      value: 
+      objectReference: {fileID: 1488113384}
+    - target: {fileID: 8432046678240271561, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: _canvasList.Array.data[1].uiCanvas
+      value: 
+      objectReference: {fileID: 1714776045}
+    - target: {fileID: 8432046678240271561, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: _canvasList.Array.data[2].uiCanvas
+      value: 
+      objectReference: {fileID: 1714776045}
+    - target: {fileID: 8432046678240271561, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
+      propertyPath: _canvasList.Array.data[3].uiCanvas
+      value: 
+      objectReference: {fileID: 1714776045}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2d6fea5e5daa67a4da81329df1533098, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -931,7 +951,7 @@ SceneRoots:
   - {fileID: 577694506}
   - {fileID: 2055399006}
   - {fileID: 927333729}
-  - {fileID: 1091148781}
+  - {fileID: 5112458417443789547}
   - {fileID: 1488113383}
   - {fileID: 1714776044}
   - {fileID: 274517201}

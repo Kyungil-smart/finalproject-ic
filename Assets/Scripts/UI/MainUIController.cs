@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using R3;
 using TMPro;
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -57,17 +58,12 @@ public class MainUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nextStepNum;
     
     [Header("Bottom UI")]
-    [SerializeField] private TextLoader currentProcessTl;
     [SerializeField] private Button lastProjectsButton;
     [SerializeField] private TextLoader lastProjectsTl;
     [SerializeField] private Button goNextProcessButton;
     [SerializeField] private TextLoader goNextProcessTl;
     [SerializeField] private Button staffListButton;
     [SerializeField] private TextLoader staffListTl;
-    
-    [Header("Popup UIs")]
-    [SerializeField] private LastProjectRenderer lastProjectRenderer;
-    [SerializeField] private StaffListRenderer staffListRenderer;
 
     // R3 구독 해제를 관리하기 위한 디스포저 컨테이너
     private readonly CompositeDisposable _disposables = new();
@@ -144,13 +140,13 @@ public class MainUIController : MonoBehaviour
         // ToDo. Project 는 Game Manager 에서 관리 할 것. 따라서 해당 매니저에게 데이터 요청 진행.
         var dataList = _dummyGameData.GetLastProjects();
         LastProjectRenderData data = new();
-        lastProjectRenderer.Render(data);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LastProjectUI, data);
     }
     
     private void OnClickViewStaffList()
     {
         // ToDo. Staff 로부터 Staff 데이터를 받을 수 있도록 요청하기.
         StaffListRenderData data = new();
-        staffListRenderer.Render(data);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffUI, data);
     }
 }
