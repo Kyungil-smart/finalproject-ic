@@ -1,0 +1,4 @@
+﻿public class StaffDetailRenderData: UIRenderData
+{
+    
+}
