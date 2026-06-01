@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Random = UnityEngine.Random;
-
 
 public class EventManager : MonoBehaviour
 {
+    [SerializeField] private EventTaskSO _staff;
+    [SerializeField] private EventTaskSO _linkage;
+    [SerializeField] private EventTaskSO _regular;
+    [SerializeField] private EventTaskSO _reward;
+    
+    private CancellationTokenSource _cts;
     private bool _running;
     public bool IsRunning => _running;
     
-    private Dictionary<EventType, IEventTask>  _eventTasks = new();
+    private Dictionary<EventType, EventTaskSO>  _eventTasks = new();
     
     private void Awake()
     {
@@ -22,30 +26,36 @@ public class EventManager : MonoBehaviour
 
     private void InitEvent()
     {
-        _eventTasks[EventType.Staff] = new StaffEventTask();
-        _eventTasks[EventType.Linkage] = new LinkageEventTask();
-        _eventTasks[EventType.Regular] = new RegularEventTask();
-        _eventTasks[EventType.Reward] = new RewardEventTask();
+        if (_staff)   _eventTasks[EventType.Staff]   = _staff;
+        if (_linkage) _eventTasks[EventType.Linkage] = _linkage;
+        if (_regular) _eventTasks[EventType.Regular] = _regular;
+        if (_reward)  _eventTasks[EventType.Reward]  = _reward;
     }
 
-    public void ResetEvent()
+    private void ResetEvent()
     {
         foreach (var task in _eventTasks.Values) task.Reset();
     }
     
     private void OnDestroy()
     {
+        CancelCurrentEvent();
+        _cts?.Dispose();
+        _cts = null;
+        
         ServiceLocater.Unregister(this);
     }
     
     public async UniTaskVoid OccurEvent(EventType type)
     {
         if (!_eventTasks.TryGetValue(type, out var task)) return;
+        if (_running) CancelCurrentEvent();
+        _cts = new CancellationTokenSource();
         _running = true;
 
         try
         {
-            await task.Execute();
+            await task.Execute(_cts.Token);
         }
         catch (Exception e)
         {
@@ -54,6 +64,13 @@ public class EventManager : MonoBehaviour
         finally
         {
             _running = false;
+            _cts?.Dispose();
+            _cts = null;
         }
+    }
+
+    private void CancelCurrentEvent()
+    {
+        _cts?.Cancel();
     }
 }

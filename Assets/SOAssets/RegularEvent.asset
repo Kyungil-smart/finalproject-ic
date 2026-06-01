@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 084961780d2ea8943bf9e87326ef15c9, type: 3}
-  m_Name: RegularTask
-  m_EditorClassIdentifier: Assembly-CSharp::EventTask
+  m_Script: {fileID: 11500000, guid: 1f1bfbe6955b520409924be4f3e61d45, type: 3}
+  m_Name: RegularEvent
+  m_EditorClassIdentifier: Assembly-CSharp::EventTaskSO
   _uniEvents:
-  - rid: 4305589235660882225
+  - rid: 4862858477874970733
   references:
     version: 2
     RefIds:
-    - rid: 4305589235660882225
+    - rid: 4862858477874970733
       type: {class: GoldEvent, ns: , asm: Assembly-CSharp}
       data: 
