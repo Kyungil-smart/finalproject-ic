@@ -16,7 +16,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService
     // 신규 직원 영입 파이프라인 (팩토리 가챠 -> 빌더 조립)
     public async UniTask HireStaffAsync(int playerLevel)
     {
-        Debug.Log("직원 채용 시작");
+        Debug.Log("직원 채용 시작"); 
 
         // 팩토리: 랜덤 가챠 데이터 생성 (비동기 대기)
         StaffInitData newData = await _dataFactory.CreateRandomDataAsync(playerLevel);
