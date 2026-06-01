@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IEventTask
 {
-    void Init(List<int> ids);
+    void Init(List<string> ids);
     UniTask Execute();
     void Reset();
 }

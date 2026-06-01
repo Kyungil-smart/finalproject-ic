@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class RewardEventTask : IEventTask
 {
-    public void Init(List<int> ids)
+    public void Init(List<string> ids)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public UniTask Execute()
@@ -16,6 +16,6 @@ public class RewardEventTask : IEventTask
 
     public void Reset()
     {
-        throw new System.NotImplementedException();
+        
     }
 }

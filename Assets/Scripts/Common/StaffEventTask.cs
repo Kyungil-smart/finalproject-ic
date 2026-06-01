@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StaffEventTask : IEventTask
 {
-    public void Init(List<int> ids)
+    public void Init(List<string> ids)
     {
         
     }

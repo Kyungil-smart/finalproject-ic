@@ -23,7 +23,7 @@ public class InGameBootstrap : MonoBehaviour, IBootStrap
     {   // 게임 씬에서 필요한 것들
         _isCompleted = false;
         ServiceLocater.Register<IBootStrap>(this);
-        
+        ServiceLocater.Register(new ManagementData());
         UniTask.Void(async () =>
         {
             // Async 함수들은 여기에 적어주세요.
