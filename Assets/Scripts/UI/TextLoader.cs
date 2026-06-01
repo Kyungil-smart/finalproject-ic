@@ -51,7 +51,9 @@ public class TextLoader : MonoBehaviour
     {
         if (textId == -1) return UniTask.CompletedTask;  // ID 가 -1 이면 아무 것도 하지 않음.
         if (_textGui == null) _textGui = GetComponent<TextMeshProUGUI>();
-        _textGui.text = _postManager?.Request<int, string>(Channel.GetUIText, textId);
+        if (_postManager == null) _postManager = ServiceLocater.Get<IPostManager>();
+        var text = _postManager?.Request<int, string>(Channel.GetUIText, textId);
+        _textGui.text = text;
         return UniTask.CompletedTask;
     }
 
