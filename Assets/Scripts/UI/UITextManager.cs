@@ -34,7 +34,6 @@ public class UITextManager : Manager, IUITextManager
 
     protected override void Init()
     {
-        _postManager = ServiceLocater.Get<IPostManager>();
         foreach (var textType in _textTypes)
             _gSheetManagers.Add((textType.language, new GSheetManager(_gSheetId, textType.gid)));
         
@@ -44,13 +43,29 @@ public class UITextManager : Manager, IUITextManager
     protected override void Register()
     {
         ServiceLocater.Register<IUITextManager>(this);
-        _postManager?.Subscribe<int, string>(Channel.GetUIText, GetText);
+        SubscribeChannel().Forget();
     }
 
     protected override void Unregister()
     {
         ServiceLocater.Unregister<IUITextManager>(this);
-        _postManager?.Unsubscribe<int, string>(Channel.GetUIText, GetText);
+        _postManager.Unsubscribe<int, string>(Channel.GetUIText, GetText);
+        _postManager = null;
+    }
+
+    private async UniTaskVoid SubscribeChannel()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            _postManager = ServiceLocater.Get<IPostManager>();
+            if (_postManager == null)
+                await UniTask.WaitForSeconds(0.1f);
+            else
+            {
+                ServiceLocater.Get<IPostManager>().Subscribe<int, string>(Channel.GetUIText, GetText);
+                break;    
+            }
+        }
     }
 
     private void UpdateUITextData()
@@ -93,9 +108,11 @@ public class UITextManager : Manager, IUITextManager
     {   // Language 에 따라 runtime 으로 옮기기
         foreach (var so in uiTextSOs)
         {
-            if (so.language != _currentLanguage) continue;
-            _texts = so.lines;
-            break;
+            if (so.language == _currentLanguage)
+            {
+                _texts = so.lines;
+                break;    
+            }
         }
         return UniTask.CompletedTask;
     }
@@ -107,7 +124,7 @@ public class UITextManager : Manager, IUITextManager
     {
         foreach (var text in _texts)
             if (text.id == textId) return text.text;
-        Debug.LogWarning($"Not Found Text ID : {textId}");
+        Debug.LogWarning($"[UITextManager] Not Found Text ID : {textId}");
         return textId.ToString();
     }
 
