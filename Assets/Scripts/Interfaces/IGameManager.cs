@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using R3;
 
-public interface IGameManager : IProjectListViewer
+public interface IGameManager
 {
     string PlayerName { get; }
     ReadOnlyReactiveProperty<int> Money { get; }
