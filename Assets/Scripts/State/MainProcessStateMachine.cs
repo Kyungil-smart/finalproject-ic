@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -5,11 +6,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
+[Serializable]
+public struct StateData
+{
+    public GameDevProcName name;
+    public ProcessStateSO stateSO;
+}
+
 
 public class MainProcessStateMachine : MonoBehaviour, IStateInformation
 {
     [Header("현재 실행 중인 메인 상태")]
-    [field: SerializeField] public ProcessStateSO CurrentMainState { get; private set; }
+    [SerializeField] private ProcessStateSO _currentMainState;
+    [SerializeField] private List<StateData> _mainStates;
 
     [Header("서브 상태 머신")]
     [SerializeField] private SubProcessStateMachine _subStateMachine; // 서브 상태 머신 스크립트 직접 참조
@@ -44,10 +53,23 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
 
     }
 
+
+    public void SetCurrentMainState(GameDevProcName name)
+    {
+        foreach(var s in _mainStates)
+        {
+            if (s.name == name)
+            {
+               _currentMainState = s.stateSO;
+                return;
+            }          
+        }
+    }
+
  
     public void Run()
     {
-        if(CurrentMainState != null)
+        if(_currentMainState != null)
         {
             RunSubMachine();
         }
@@ -57,7 +79,7 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
 
     private void ChangeState(ProcessStateSO nextState)
     {
-        CurrentMainState = nextState;
+        _currentMainState = nextState;
         UpdateStateInformation();
     }
 
@@ -65,12 +87,13 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
     private void HandleAllSubStatesFinished()
     {
         // 현재 메인 상태 스크립트에게 다음 순환할 메인 상태 SO 데이터를 요구
-        ProcessStateSO nextState = CurrentMainState.nextState;
+        ProcessStateSO nextState = _currentMainState.nextState;
 
         if (nextState != null)
         {
             ChangeState(nextState);
-            SceneManager.LoadScene("MainScene");
+            // SceneManager.LoadScene("MainScene");
+            Debug.Log($"[MainProcessStateMachine] : 다음 메인 상태로 전환 - {_currentMainState.StateName}");
         }
         else
         {
@@ -81,7 +104,7 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
 
     private void RunSubMachine()
     {       
-        _subStateMachine.ChangeSubStateList(CurrentMainState.subStates);
+        _subStateMachine.ChangeSubStateList(_currentMainState.subStates);
         _subStateMachine.RunSubState();
     }
 
@@ -93,11 +116,19 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
         PreviousStateName = CurrentStateName != null ? CurrentStateName : "None";
 
         // 상태 정보 업데이트 로직 구현
-        CurrentStateID = CurrentMainState != null ? CurrentMainState.StateID : -1;
-        CurrentStateName = CurrentMainState != null ? CurrentMainState.StateName : "None";
+        CurrentStateID = _currentMainState != null ? _currentMainState.StateID : -1;
+        CurrentStateName = _currentMainState != null ? _currentMainState.StateName : "None";
 
         // 다음 상태 정보는 메인 프로세스 상태 SO에서 가져옴
-        NextStateID = CurrentMainState != null && CurrentMainState.nextState != null ? CurrentMainState.nextState.StateID : -1;
-        NextStateName = CurrentMainState != null && CurrentMainState.nextState != null ? CurrentMainState.nextState.StateName : "None";
+        NextStateID = _currentMainState != null && _currentMainState.nextState != null ? _currentMainState.nextState.StateID : -1;
+        NextStateName = _currentMainState != null && _currentMainState.nextState != null ? _currentMainState.nextState.StateName : "None";
+    }
+
+
+    [ContextMenu("테스트용 메인 상태 머신 실행")]
+    private void TestStateMachine()
+    {
+        SetCurrentMainState(GameDevProcName.HumanResources);
+        Run();
     }
 }
