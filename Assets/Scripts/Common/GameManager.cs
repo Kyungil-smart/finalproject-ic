@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using R3;
 using UnityEngine;
 
-public class GameManager : Manager, IGameManager, IProjectListViewer
+public class GameManager : Manager, IGameManager
 {
     private ReactiveProperty<int> _money = new (0);     // 재화
     private ReactiveProperty<int> _heart = new (0);
@@ -16,17 +16,9 @@ public class GameManager : Manager, IGameManager, IProjectListViewer
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
-    protected override void Register()
-    {
-        ServiceLocater.Register<IGameManager>(this);
-        ServiceLocater.Register<IProjectListViewer>(this);
-    }
-
-    protected override void Unregister()
-    {
-        ServiceLocater.Unregister<IGameManager>(this);
-        ServiceLocater.Unregister<IProjectListViewer>(this);
-    }
+    protected override void Register() => ServiceLocater.Register<IGameManager>(this);
+    
+    protected override void Unregister() => ServiceLocater.Unregister<IGameManager>(this);
 
     public void SetPlayerName(string playerName) => PlayerName = playerName;
     public void AddMoney(int money) => _money.Value += money;
