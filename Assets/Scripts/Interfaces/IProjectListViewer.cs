@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface IProjectListViewer
 {
-    IReadOnlyList<ProjectData> Projects { get; }
+    public IReadOnlyList<ProjectData> Projects { get; }
 }
