@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 using System.Collections;
 
@@ -6,8 +6,8 @@ using System.Collections;
 
 public class MainState : MonoBehaviour, IProcessState
 {
-    [Header("ÀÌ »óÅÂÀÇ SO")]
-    [field: SerializeField] public ProcessStateSO CurrentStateDataSO { get; private set; }   // ÇöÀç »óÅÂ
+    [Header("ì´ ìƒíƒœì˜ SO")]
+    [field: SerializeField] public ProcessStateSO CurrentStateDataSO { get; private set; }   // í˜„ì¬ ìƒíƒœ
 
     public event Action<IProcessState> OnStateFinished;
 
@@ -16,7 +16,7 @@ public class MainState : MonoBehaviour, IProcessState
 
     public void Enter()
     {
-        Debug.Log($"[MainStateNew] : {CurrentStateDataSO.StateName} »óÅÂ ÁøÀÔ");
+        Debug.Log($"[MainStateNew] : {CurrentStateDataSO.StateName} ìƒíƒœ ì§„ì…");
         Execute();
     }
 
@@ -31,13 +31,13 @@ public class MainState : MonoBehaviour, IProcessState
         OnStateFinished?.Invoke(this);
     }
 
-    // Enter ½Ã ÀÚ½ÅÀÇ »óÅÂ¸¦ º¯°æ
+    // Enter ì‹œ ìì‹ ì˜ ìƒíƒœë¥¼ ë³€ê²½
     public void ChangeMyState(ProcessStateSO newStateSO)
     {
         CurrentStateDataSO = newStateSO;
     }
 
-    // ¿ÜºÎ¿¡¼­ È£Ãâ ½Ã ´ë»ó¿¡ »óÅÂ Àü´Ş
+    // ì™¸ë¶€ì—ì„œ í˜¸ì¶œ ì‹œ ëŒ€ìƒì— ìƒíƒœ ì „ë‹¬
     public ProcessStateSO ChangeMachineState()
     {
         return CurrentStateDataSO.nextState;
