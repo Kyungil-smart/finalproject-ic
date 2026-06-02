@@ -4,7 +4,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class EventManager : MonoBehaviour, IEventManager
+public class EventManager : Manager, IEventManager
 {
     // [SerializeField] private EventTaskSO _staff;
     // [SerializeField] private EventTaskSO _linkage;
@@ -15,10 +15,16 @@ public class EventManager : MonoBehaviour, IEventManager
     public bool IsRunning => _running;
     
     private Dictionary<EventType, IEventTask>  _eventTasks = new();
-    
-    private void Awake()
+
+    private void OnEnable() => Register();
+    private void OnDisable() => Unregister();
+
+    protected override void Register() => ServiceLocater.Register<IEventManager>(this);
+
+    protected override void Unregister() => ServiceLocater.Unregister<IEventManager>(this);
+
+    protected override void Init()
     {
-        ServiceLocater.Register(this);
         InitEvent();
         ResetEvent();
     }
