@@ -28,15 +28,17 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
     
     [Header("Normal Common Event")]
     [SerializeField] private GameObject _normalPanel;
+    [SerializeField] private TextLoader _titleTl;
     [SerializeField] private TextLoader _normalMainTextLoader;
-    
-    [Header("Normal Confirm Event")]
-    [SerializeField] private GameObject _confirmPanel;
-    [SerializeField] private NormalEventChoices _confirm; 
     
     [Header("Normal Choice Event")]
     [SerializeField] private GameObject _choicePanel;
-    [SerializeField] private NormalEventChoices[] _choices;
+    [SerializeField] private GameObject _choice1Btns;
+    [SerializeField] private GameObject _choice2Btns;
+    [SerializeField] private GameObject _choice3Btns;
+    [SerializeField] private NormalEventChoices[] _confirm;
+    [SerializeField] private NormalEventChoices[] _2choices;
+    [SerializeField] private NormalEventChoices[] _3choices;
 
     [Header("Reward Event")]
     [SerializeField] private GameObject _rewardPanel;
@@ -81,31 +83,43 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
 
     private void RenderNormalEvent(NormalEventUIRenderData data)
     {
+        if (!(data.choices.Count > 0 && data.choices.Count < 4))
+            throw new Exception($"[EventUIRenderer] Not Supported Choices {data.choices.Count}");
+        
         Open();
-        if (data.choices.Count == 1) // confirm 
+        NormalEventChoices[] choices;
+        _choicePanel.SetActive(true);
+
+        switch (data.choices.Count)
         {
-            _confirmPanel.SetActive(true);
-            _choicePanel.SetActive(false);
-            
-            _confirm.textLoader.TextId = data.choices[0].textId;
-            _confirm.btId = data.choices[0].id;
-            _confirm.button.onClick.RemoveAllListeners();
-            _confirm.button.onClick.AddListener(() => data.callback(_confirm.btId));
-            _confirm.button.onClick.AddListener(Close);
+            case 2:
+                choices = _2choices;
+                _choice1Btns.SetActive(false);
+                _choice2Btns.SetActive(true);
+                _choice3Btns.SetActive(false);
+                break;
+            case 3:
+                choices = _3choices;
+                _choice1Btns.SetActive(false);
+                _choice2Btns.SetActive(false);
+                _choice3Btns.SetActive(true);
+                break;
+            default:
+                choices = _confirm;
+                _choice1Btns.SetActive(true);
+                _choice2Btns.SetActive(false);
+                _choice3Btns.SetActive(true);
+                break;
         }
-        else // choice
+        
+        for (int i = 0; i < data.choices.Count; i++)
         {
-            _confirmPanel.SetActive(false);
-            _choicePanel.SetActive(true);
-            for (int i = 0; i < data.choices.Count; i++)
-            {
-                var choice = _choices[i];
-                choice.textLoader.TextId = data.choices[i].textId;
-                choice.button.onClick.RemoveAllListeners();
-                choice.btId = data.choices[i].id;
-                choice.button.onClick.AddListener(() => data.callback(choice.btId));
-                choice.button.onClick.AddListener(Close);
-            }
+            var choice = choices[i];
+            choice.textLoader.TextId = data.choices[i].textId;
+            choice.button.onClick.RemoveAllListeners();
+            choice.btId = data.choices[i].id;
+            choice.button.onClick.AddListener(() => data.callback(choice.btId));
+            choice.button.onClick.AddListener(Close);
         }
     }
     
@@ -131,5 +145,8 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
     private void Close()
     {
         _mainPanel.SetActive(false);
+        _choicePanel.SetActive(false);
+        _normalPanel.SetActive(false);
+        _rewardPanel.SetActive(false);
     }
 }

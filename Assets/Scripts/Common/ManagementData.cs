@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// 임시로 사용하는 파일
 public class ManagementData
 {
     public int Money { get; private set; }

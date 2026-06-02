@@ -15,7 +15,12 @@ public class InGameBootstrap : MonoBehaviour, IBootStrap
     private bool _isCompleted;
     public bool IsCompleted { get => _isCompleted; }
     
-    private void Awake() => Init();
+    private void Awake()
+    {
+        Init();
+        SetDonDestroyOnLoad();
+    }
+
     private void OnDisable() => Dispose();
     private void OnDestroy() => Destory();
     
@@ -30,6 +35,18 @@ public class InGameBootstrap : MonoBehaviour, IBootStrap
             await ServiceLocaterRegistration();
         });
         _isCompleted = true;
+    }
+
+    private void SetDonDestroyOnLoad()
+    {
+        transform.SetParent(null);
+        var candidates = GameObject.FindGameObjectsWithTag("ddolObject");
+        if (candidates.Length > 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Dispose()
