@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 
 [Serializable]
 public struct StateData
@@ -13,9 +10,27 @@ public struct StateData
     public ProcessStateSO stateSO;
 }
 
-
-public class MainProcessStateMachine : MonoBehaviour, IStateInformation
+[Serializable]
+public struct SimpleStateData
 {
+    public int id;
+    public string name;
+}
+
+[Serializable]
+public struct StateViewData
+{
+    public SimpleStateData prev;
+    public SimpleStateData current;
+    public SimpleStateData next;
+}
+
+
+public class MainProcessStateMachine : Manager, IMainStateMachine
+{
+    [Header("테스트 플래그")] 
+    [SerializeField] private bool isTest = true;
+    
     [Header("현재 실행 중인 메인 상태")]
     [SerializeField] private ProcessStateSO _currentMainState;
     [SerializeField] private List<StateData> _mainStates;
@@ -23,17 +38,13 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
     [Header("서브 상태 머신")]
     [SerializeField] private SubProcessStateMachine _subStateMachine; // 서브 상태 머신 스크립트 직접 참조
 
-    // IStateInformation 인터페이스 구현
-    [field: Header("메인 프로세스 상태 정보 (IStateInformation)")]
-    [field: SerializeField] public int PreviousStateID { get; private set; }
-    [field: SerializeField] public int CurrentStateID { get; private set; }
-    [field: SerializeField] public int NextStateID { get; private set; }
-    [field: SerializeField] public string PreviousStateName { get; private set; }
-    [field: SerializeField] public string CurrentStateName { get; private set; }
-    [field: SerializeField] public string NextStateName { get; private set; }
-
-
-
+    [Header("메인 프로세스 상태 정보 (IStateInformation)")]
+    [SerializeField] private StateViewData stateViewData;
+    public StateViewData StateViewData => stateViewData;
+    
+    public void OnEnable() => Register();
+    public void OnDisable() => Unregister();
+    
     private void Start()
     {
         // 서브 상태 머신 구독
@@ -45,20 +56,18 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
 
     private void OnDestroy()
     {
-
         if (_subStateMachine != null)
         {
             _subStateMachine.OnAllSubStatesFinished -= HandleAllSubStatesFinished;
         }
-
     }
 
 
-    public void SetCurrentMainState(GameDevProcName name)
+    public void SetCurrentMainState(GameDevProcName stepName)
     {
         foreach(var s in _mainStates)
         {
-            if (s.name == name)
+            if (s.name == stepName)
             {
                _currentMainState = s.stateSO;
                 return;
@@ -69,18 +78,12 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
  
     public void Run()
     {
-        if(_currentMainState != null)
-        {
-            RunSubMachine();
-        }
-        
+        if(_currentMainState != null) RunSubMachine();
+        else Debug.LogError("[MainProcessStateMachine] Must set the current main state before running this machine.");
     }
-
 
     private void ChangeState(ProcessStateSO nextState)
     {
-
-
         _currentMainState = nextState;
         UpdateStateInformation();
     }
@@ -94,7 +97,7 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
         if (nextState != null)
         {
             ChangeState(nextState);
-            // SceneManager.LoadScene("MainScene");
+            if (!isTest) SceneManager.LoadScene("MainScene");
             Debug.Log($"[MainProcessStateMachine] : 다음 메인 상태로 전환 - {_currentMainState.StateName}");
         }
         else
@@ -111,23 +114,31 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
     }
 
 
-    // IStateInformation 인터페이스 구현
     public void UpdateStateInformation()
     {
-        // TODO -> 현재 제대로 안 나옴
-        PreviousStateID = CurrentStateID != 0 ? CurrentStateID : -1;
-        PreviousStateName = CurrentStateName != null ? CurrentStateName : "None";
+        if (_currentMainState == null)
+        {
+            Debug.LogWarning("[MainProcessStateMachine] Step UI 용 데이터 획득 불가");
+            return;
+        }
+        
+        var previous = _currentMainState.prevState;
+        stateViewData.prev.id = previous != null ? previous.StateID : -1; 
+        stateViewData.prev.name = previous != null ? previous.StateName : "None";
+        
 
-        // 상태 정보 업데이트 로직 구현
-        CurrentStateID = _currentMainState != null ? _currentMainState.StateID : -1;
-        CurrentStateName = _currentMainState != null ? _currentMainState.StateName : "None";
+        var current = _currentMainState; 
+        stateViewData.current.id = current != null ? current.StateID : -1;
+        stateViewData.current.name = current != null ? current.StateName : "None";
 
-        // 다음 상태 정보는 메인 프로세스 상태 SO에서 가져옴
-        NextStateID = _currentMainState != null && _currentMainState.nextState != null ? _currentMainState.nextState.StateID : -1;
-        NextStateName = _currentMainState != null && _currentMainState.nextState != null ? _currentMainState.nextState.StateName : "None";
+        var next = _currentMainState.nextState;
+        stateViewData.next.id = next != null ? next.StateID : -1;
+        stateViewData.next.name = next != null ? next.StateName : "None";
     }
 
-
+    protected override void Register() => ServiceLocater.Register<IMainStateMachine>(this);
+    protected override void Unregister() =>  ServiceLocater.Unregister<IMainStateMachine>(this);
+    
     [ContextMenu("테스트용 메인 상태 머신 실행")]
     private void TestStateMachine()
     {
