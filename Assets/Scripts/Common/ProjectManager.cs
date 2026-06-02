@@ -165,23 +165,7 @@ public class ProjectManager : Manager, IProjectManager
 
     public ProjectData GetProjectData() => _projectData;
 
-    public ProjectDataForUI GetProjectDataForUI()
-    {
-        var data = new ProjectDataForUI();
-        data.totalQuality = _projectData.Qualities.Value.total;
-        data.devQuality = _projectData.Qualities.Value.development;
-        data.artQuality = _projectData.Qualities.Value.art;
-        data.designQuality = _projectData.Qualities.Value.design;
-        data.isCompleted = _projectData.IsCompleted.Value;
-        data.name = _projectData.name;
-        data.genreTextId = _projectData.genre.textId;
-        data.themeTextId = _projectData.theme.textId;
-        data.cost = _projectData.cost;
-        data.income = _projectData.income;
-        data.awardTextId = _projectData.award.textId;
-        return data;
-    }
-
+    
     protected override void Register() => ServiceLocater.Register<IProjectManager>(this);
     protected override void Unregister()=> ServiceLocater.Unregister<IProjectManager>(this);
 }

@@ -6,39 +6,6 @@ using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.UI;
 
-// ToDO. UI 개발을 위한 Dummy 내용. 실물 구현시 삭제 예정
-public interface IDummyGameData
-{
-    public ReactiveProperty<int> Gold { get; }
-    public ReactiveProperty<DateTime> Date { get; }
-    public List<string> GetLastProjects();
-}
-
-// ToDO. UI 개발을 위한 Dummy 내용. 실물 구현시 삭제 예정
-public class DummyGameData : Manager, IDummyGameData
-{
-    public ReactiveProperty<int> Gold { get; } = new (0);
-    public ReactiveProperty<DateTime> Date { get; } = new ();
-    
-    protected override void Register()
-    {
-        ServiceLocater.Register<IDummyGameData>(this);
-    }
-
-    protected override void Unregister()
-    {
-        ServiceLocater.Unregister<IDummyGameData>(this);
-    }
-
-    public List<string> GetLastProjects()
-    {
-        var data = new List<string>();
-        data.Add("JSON_STRING?");
-        return data;
-    }
-}
-
-
 /// <summary>
 /// Main Scene 에서 상시 뜨고 있어야 한다. 이벤트 성으로 UI 를 뛰워주는 것이 아니기 때문에 MonoBehaviour 로 충분히 대처.
 /// </summary>
@@ -67,8 +34,8 @@ public class MainUIController : MonoBehaviour
 
     // R3 구독 해제를 관리하기 위한 디스포저 컨테이너
     private readonly CompositeDisposable _disposables = new();
-    private IDummyGameData _dummyGameData; // 추후 진짜 게임 데이터로 변경
-
+    private IGameManager _gameManager;
+    private IProjectListViewer _projectListViewer;
     
     private void Awake() => Initialize();
 
@@ -81,7 +48,8 @@ public class MainUIController : MonoBehaviour
 
     private void Start()
     {
-        _dummyGameData = ServiceLocater.Get<IDummyGameData>();
+        _gameManager = ServiceLocater.Get<IGameManager>();
+        _projectListViewer = ServiceLocater.Get<IProjectListViewer>();
         UpdateGoldUI();
         UpdateDateUI();
         UpdateProcessData();
@@ -106,7 +74,7 @@ public class MainUIController : MonoBehaviour
 
     private void UpdateGoldUI()
     {
-        _dummyGameData.Gold
+        _gameManager.Money
             .Subscribe(gold =>
             {
                 goldText.text = $"{gold}";
@@ -115,7 +83,7 @@ public class MainUIController : MonoBehaviour
 
     private void UpdateDateUI()
     {
-        _dummyGameData.Date
+        _gameManager.Date
             .DistinctUntilChanged()
             .Subscribe(date =>
             {
@@ -138,7 +106,7 @@ public class MainUIController : MonoBehaviour
     private void OnClickViewLastProject()
     {
         // ToDo. Project 는 Game Manager 에서 관리 할 것. 따라서 해당 매니저에게 데이터 요청 진행.
-        var dataList = _dummyGameData.GetLastProjects();
+        var dataList = _projectListViewer.Projects;
         LastProjectRenderData data = new();
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LastProjectUI, data);
     }
