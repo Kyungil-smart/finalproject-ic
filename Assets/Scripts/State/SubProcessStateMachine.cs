@@ -22,13 +22,13 @@ public class SubProcessStateMachine : MonoBehaviour
     [Header("현재 활성화된 서브 상태 컴포넌트 (구독 대상)")]
     [SerializeField] private IProcessState _subStateObject;
 
-    [Header("발동할 서브 상태 큐 (전달받은 목록)")]
+    [Header("발동할 서브 상태 리스트 (전달받은 목록)")]
     [SerializeField] private List<ProcessStateSO> _subStateSOList = new List<ProcessStateSO>();
 
     // 모든 서브 상태가 종료되었음을 메인 상태 머신에 통보
     public event Action OnAllSubStatesFinished;
 
-    // 큐에서 실행 중인 서브 상태의 인덱스
+    // 리스트에서 실행 중인 서브 상태의 인덱스
     private int _currentSubStateIndex = 0;
 
 
@@ -68,7 +68,7 @@ public class SubProcessStateMachine : MonoBehaviour
     }
 
 
-    // 메인 상태 머신에서 서브 상태 리스트를 전달 -> 실행은 다른 곳에서
+    // 메인 상태 머신에서 서브 상태 리스트를 전달 -> 실행은 다른곳에서 RunSubState() 호출하여 담당
     public void ChangeSubStateList(List<ProcessStateSO> subStates)
     {
         _subStateSOList = subStates;
@@ -88,7 +88,6 @@ public class SubProcessStateMachine : MonoBehaviour
         if (_subStateObject != null)
         {
             _subStateObject.OnStateFinished -= HandleSubStateFinished;
-            // _subStateObject.Exit();
         }
 
         // 현재 서브 상태 정보 갱신
@@ -96,11 +95,6 @@ public class SubProcessStateMachine : MonoBehaviour
 
         // 캐싱된 전체 서브 상태 컴포넌트 중, 인스펙터에 매칭된 SO와 같은 컴포넌트 찾기
         _subStateObject = _subStates.Find(state => state.CurrentStateDataSO == CurrentSubState);
-
-        /* // 이름으로 매칭하는 방식 (버그가 있어서 사용 안함)
-        _subStateObject = _subStates.Find(state =>
-            state.GetType().Name.Contains(newState.StateName));
-        */
 
         if (_subStateObject != null)
         {
@@ -112,27 +106,6 @@ public class SubProcessStateMachine : MonoBehaviour
             _subStateObject.Exit();
             // -> 추후 
 
-
-            /*
-            if (newState != null && newState.HasEvent)
-            {
-                // ServiceLocater를 통해 등록된 EventManager의 인터페이스를 가져옴
-                IEventManager eventManager = ServiceLocater.Get<IEventManager>();
-
-                if (eventManager != null)
-                {
-                    // 외부 요인 이벤트를 비동기(UniTaskVoid)로 발생
-                    // 본 개발 절차가 시작되기 직전 타이밍에 고정적으로 실행
-                    eventManager.OccurEvent(newState.RelatedEventType);
-
-                    Debug.Log($"[SubStateMachine] : 이벤트 발동 완료 {newState.RelatedEventType} (상태: {newState.StateName})");
-                }
-                else
-                {
-                    Debug.LogWarning("[SubStateMachine] : EventManager를 ServiceLocater에서 찾을 수 없음");
-                }
-            }
-            */
         }
         else
         {
@@ -145,7 +118,6 @@ public class SubProcessStateMachine : MonoBehaviour
     // 발동했던 자식 오브젝트 기능이 끝나 OnStateFinished 이벤트를 보내왔을 때 실행되는 핸들러
     private void HandleSubStateFinished(IProcessState finishedState)
     {
-        // 이벤트 구독 해제
         finishedState.OnStateFinished -= HandleSubStateFinished;
 
         // 다음 인덱스 반복 처리를 위한 함수 호출
@@ -155,7 +127,7 @@ public class SubProcessStateMachine : MonoBehaviour
     // 반복 및 종료 처리를 담당하는 함수
     private void MoveToNextSubState()
     {
-        _currentSubStateIndex++; // 인덱스 증가
+        _currentSubStateIndex++;
 
         // 만약 리스트에 다음 서브 상태가 더 남아있다면 다시 ChangeSubState 발동
         if (_currentSubStateIndex < _subStateSOList.Count)
@@ -165,13 +137,10 @@ public class SubProcessStateMachine : MonoBehaviour
         // 더 이상 서브 상태가 없다면 (모두 끝났다면)
         else
         {
-            // Debug.Log("[ProcessSubStateMachine] : 모든 서브 상태 루프 완료");
             _subStateObject = null;
             CurrentSubState = null;
 
             OnAllSubStatesFinished?.Invoke();
         }
     }
-
-
 }
