@@ -193,11 +193,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: SubStateMachine
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8739103640563408829, guid: a126f91815528a24a820a9990e39404d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6766124358163831380, guid: a126f91815528a24a820a9990e39404d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1144839228617546009}
   m_SourcePrefab: {fileID: 100100000, guid: a126f91815528a24a820a9990e39404d, type: 3}
+--- !u!1 &7177486120785215612 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6766124358163831380, guid: a126f91815528a24a820a9990e39404d, type: 3}
+  m_PrefabInstance: {fileID: 4502922156606888488}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1144839228617546009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7177486120785215612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e22f57bc484114880b2a1948eed8ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaffHireSubState
+  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: 9d9dfa53c88a02c40a0013bd2b47af22, type: 2}
 --- !u!4 &8620092918818663300 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5322462074729787820, guid: a126f91815528a24a820a9990e39404d, type: 3}

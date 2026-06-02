@@ -16,30 +16,16 @@ public class ReleaseAwardsSubState : MonoBehaviour, IProcessState
     public void Enter()
     {
         Debug.Log($"[ReleaseAwardsSubState] : {CurrentStateDataSO.StateName} Sub 상태 진입");
-        Execute();
     }
 
     public void Execute()
     {
-        StartCoroutine(Wait1SecondsRoutine(0.5f));
-        // Exit();  // 코루틴을 위해 임시로 주석 처리
+
     }
 
     public void Exit()
     {
         OnStateFinished?.Invoke(this);
-    }
-
-
-
-    // 메모리 누수 확인 용 지연 코루틴 (한 번에 모든 순환이 작동하면 판단하기 힘들어 추가)
-    IEnumerator Wait1SecondsRoutine(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-
-        Debug.Log($"{seconds}초 경과");
-
-        Exit();
     }
 
 

@@ -79,6 +79,8 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
 
     private void ChangeState(ProcessStateSO nextState)
     {
+
+
         _currentMainState = nextState;
         UpdateStateInformation();
     }
@@ -103,7 +105,7 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
 
 
     private void RunSubMachine()
-    {       
+    {
         _subStateMachine.ChangeSubStateList(_currentMainState.subStates);
         _subStateMachine.RunSubState();
     }
@@ -112,6 +114,7 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
     // IStateInformation 인터페이스 구현
     public void UpdateStateInformation()
     {
+        // TODO -> 현재 제대로 안 나옴
         PreviousStateID = CurrentStateID != 0 ? CurrentStateID : -1;
         PreviousStateName = CurrentStateName != null ? CurrentStateName : "None";
 

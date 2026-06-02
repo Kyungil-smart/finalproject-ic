@@ -84,11 +84,13 @@ public class SubProcessStateMachine : MonoBehaviour
     // 실제 서브 상태 변경을 담당하는 함수
     public void RunSubState()
     {
+        
         // 기존에 실행 중이던 서브 상태 컴포넌트가 있다면 구독 해제 및 종료 처리
         if (_subStateObject != null)
         {
             _subStateObject.OnStateFinished -= HandleSubStateFinished;
         }
+        
 
         // 현재 서브 상태 정보 갱신
         CurrentSubState = _subStateSOList[_currentSubStateIndex];
