@@ -57,7 +57,7 @@ public class EventDataLoader
         ServiceLocater.Register(this);
         Debug.Log($"Load {_eventData.Count}");
         Debug.Log($"Staff:{staffIds.Count} Linkage:{linkageIds.Count} Regular:{regularIds.Count} Reward:{rewardIds.Count}");
-        var eventManager = ServiceLocater.Get<EventManager>();
+        var eventManager = ServiceLocater.Get<IEventManager>();
         eventManager.InitEventIds(EventType.Staff, staffIds);
         eventManager.InitEventIds(EventType.Linkage, linkageIds);
         eventManager.InitEventIds(EventType.Regular, regularIds);
