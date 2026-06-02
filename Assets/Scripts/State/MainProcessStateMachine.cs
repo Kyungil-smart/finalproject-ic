@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 
@@ -14,17 +15,17 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
     [field: SerializeField] public ProcessStateSO FirstMainState { get; private set; }
 
     [Header("메인 상태 컴포넌트 연결")]
-    [field: SerializeField] public GameObject ProcessStateObject { get; private set; }
-    [SerializeField] private IProcessState _mainStateObject;
+    [field: SerializeField] public MainState _mainStateObject { get; private set; }   // private로 
+    // [SerializeField] private IProcessState _mainStateObject;
 
     [Header("현재 서브 상태 목록")]
     [field: SerializeField] public List<ProcessStateSO> SubStates { get; private set; } = new List<ProcessStateSO>();
 
     [Header("서브 상태 머신")]
-    [SerializeField] private GameObject _subStateObject; // 서브 상태 머신 연결
-    private SubProcessStateMachine _subStateMachine; // 서브 상태 머신 스크립트 직접 참조
+    // [SerializeField] private GameObject _subStateObject; // 서브 상태 머신 연결
+    [SerializeField] private SubProcessStateMachine _subStateMachine; // 서브 상태 머신 스크립트 직접 참조
 
-    private ProcessStateSO nextState; // 다음 메인 상태 정보 저장용 변수
+    // private ProcessStateSO nextState; // 다음 메인 상태 정보 저장용 변수
 
     // IStateInformation 인터페이스 구현
     [field: Header("메인 프로세스 상태 정보 (IStateInformation)")]
@@ -39,18 +40,18 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
 
     private void Start()
     {
-        _mainStateObject = ProcessStateObject.GetComponent<IProcessState>();
+        // _mainStateObject = ProcessStateObject.GetComponent<IProcessState>();
 
         // _mainStateObject.OnStateFinished += HandleStateFinished;
 
+
         // 서브 상태 머신 구독
-        if (_subStateObject != null)
+        if (_subStateMachine != null)
         {
-            _subStateMachine = _subStateObject.GetComponent<SubProcessStateMachine>();
             _subStateMachine.OnAllSubStatesFinished += HandleAllSubStatesFinished;
         }
 
-        Init(FirstMainState);
+        // Init(FirstMainState);
     }
 
     private void OnDestroy()
@@ -69,19 +70,31 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
 
     }
 
-
-    // 세이브 로드 있을까봐 public 처리
-    public void Init(ProcessStateSO startState)
+ 
+    public void Run()
     {
-        ChangeMainState(FirstMainState);
+        if(_mainStateObject != null && CurrentMainState != null)
+        {
+            _mainStateObject.Enter(CurrentMainState); // Execute 하기 위한 준비 동작
+
+            _mainStateObject.Exit();  // Execute 한 것 초기화
+        }
         
+    }
+
+
+    private void ChangeState(ProcessStateSO nextState)
+    {
+        CurrentMainState = nextState;
     }
 
 
     private void HandleAllSubStatesFinished()
     {
         // 현재 메인 상태 스크립트에게 다음 순환할 메인 상태 SO 데이터를 요구
-        nextState = _mainStateObject.ChangeMachineState();
+        //nextState = _mainStateObject.ChangeMachineState();
+        ProcessStateSO nextState = CurrentMainState.nextState;
+
 
         if (nextState != null)
         {
@@ -90,12 +103,37 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
             // 이전 메인 상태 종료시키고 다음 메인 상태를 가지고 1번부터 다시 반복
             // ChangeMainState(nextState);
             // Debug.Log($"[MainProcessStateMachine] : 모든 SubProcess 완료");
+            _mainStateObject.Exit();
+            ChangeState(nextState);
+            SceneManager.LoadScene("MainScene");
         }
         else
         {
             Debug.LogError($"[MainProcessStateMachine] : 다음 메인 상태가 없음");
         }
     }
+
+
+    private void RunSubMachine()
+    {
+        
+        _subStateMachine.ChangeSubStateList(CurrentMainState.subStates);
+    }
+
+
+
+
+
+
+
+
+    // 세이브 로드 있을까봐 public 처리
+    private void Init(ProcessStateSO startState)
+    {
+        ChangeMainState(FirstMainState);
+        
+    }
+
 
 
     // 한 메인 상태 끝나면 메인 상태 SO 변경하기
@@ -135,7 +173,7 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
         // ChangeSubState(SubStates);
     }
 
-    public void ChanggSubStateList(ProcessStateSO newState)
+    public void ChangeSubStateList(ProcessStateSO newState)
     {
         // 서브 상태 초기화
         SubStates.Clear();
@@ -187,7 +225,7 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
     {
         if (_mainStateObject != null)
         {
-            _mainStateObject.Enter();
+            // _mainStateObject.Enter();
         }
     }
 

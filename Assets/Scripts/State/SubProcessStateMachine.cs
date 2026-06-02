@@ -23,7 +23,7 @@ public class SubProcessStateMachine : MonoBehaviour
     [SerializeField] private IProcessState _subStateObject;
 
     [Header("발동할 서브 상태 큐 (전달받은 목록)")]
-    [SerializeField] private List<ProcessStateSO> _subStateQueue = new List<ProcessStateSO>();
+    [SerializeField] private List<ProcessStateSO> _subStateSOList = new List<ProcessStateSO>();
 
     // 모든 서브 상태가 종료되었음을 메인 상태 머신에 통보
     public event Action OnAllSubStatesFinished;
@@ -68,27 +68,21 @@ public class SubProcessStateMachine : MonoBehaviour
     }
 
 
-    // 메인 상태 머신에서 서브 상태 리스트를 전달받아 큐에 저장하고 첫 번째 서브 상태 발동
+    // 메인 상태 머신에서 서브 상태 리스트를 전달 -> 실행은 다른 곳에서
     public void ChangeSubStateList(List<ProcessStateSO> subStates)
     {
-        _subStateQueue = subStates?.ToList() ?? new List<ProcessStateSO>();
+        _subStateSOList = subStates;
         _currentSubStateIndex = 0; // 인덱스 초기화
 
-        if (_subStateQueue.Count > 0)
+        if(_subStateSOList.Count == 0)
         {
-            // 첫 번째 서브 상태를 가지고 상태 변경 기능 발동
-            ChangeSubState(_subStateQueue[_currentSubStateIndex]);
-        }
-        else
-        {
-            // 처리할 서브 상태가 없다면 즉시 메인 머신에 완료 통보
             OnAllSubStatesFinished?.Invoke();
         }
     }
 
 
     // 실제 서브 상태 변경을 담당하는 함수
-    public void ChangeSubState(ProcessStateSO newState)
+    public void RunSubState()
     {
         // 기존에 실행 중이던 서브 상태 컴포넌트가 있다면 구독 해제 및 종료 처리
         if (_subStateObject != null)
@@ -98,10 +92,10 @@ public class SubProcessStateMachine : MonoBehaviour
         }
 
         // 현재 서브 상태 정보 갱신
-        CurrentSubState = newState;
+        CurrentSubState = _subStateSOList[_currentSubStateIndex];
 
         // 캐싱된 전체 서브 상태 컴포넌트 중, 인스펙터에 매칭된 SO와 같은 컴포넌트 찾기
-        _subStateObject = _subStates.Find(state => state.CurrentStateDataSO == newState);
+        _subStateObject = _subStates.Find(state => state.CurrentStateDataSO == CurrentSubState);
 
         /* // 이름으로 매칭하는 방식 (버그가 있어서 사용 안함)
         _subStateObject = _subStates.Find(state =>
@@ -112,8 +106,10 @@ public class SubProcessStateMachine : MonoBehaviour
         {
             // 찾은 자식 오브젝트 스크립트 기능 발동 및 이벤트 구독
             _subStateObject.OnStateFinished += HandleSubStateFinished; // 완료 이벤트 구독
-            _subStateObject.ChangeMyState(newState);                  // 데이터 갱신
+            _subStateObject.ChangeMyState(CurrentSubState);                  // 데이터 갱신
             _subStateObject.Enter();                                  // 기능 발동 -> 매니저가 발동하도록 수정
+            _subStateObject.Execute();
+            _subStateObject.Exit();
             // -> 추후 
 
 
@@ -141,7 +137,7 @@ public class SubProcessStateMachine : MonoBehaviour
         else
         {
             // 만약 대응하는 컴포넌트를 찾지 못했다면 경고를 띄우고 패스
-            Debug.LogError($"[ProcessSubStateMachine] : {newState.StateName} 데이터에 대응하는 자식 컴포넌트를 찾을 수 없음");
+            Debug.LogError($"[ProcessSubStateMachine] : {CurrentSubState.StateName} 데이터에 대응하는 자식 컴포넌트를 찾을 수 없음");
             MoveToNextSubState();
         }
     }
@@ -162,9 +158,9 @@ public class SubProcessStateMachine : MonoBehaviour
         _currentSubStateIndex++; // 인덱스 증가
 
         // 만약 리스트에 다음 서브 상태가 더 남아있다면 다시 ChangeSubState 발동
-        if (_currentSubStateIndex < _subStateQueue.Count)
+        if (_currentSubStateIndex < _subStateSOList.Count)
         {
-            ChangeSubState(_subStateQueue[_currentSubStateIndex]);
+            RunSubState();
         }
         // 더 이상 서브 상태가 없다면 (모두 끝났다면)
         else
@@ -178,12 +174,4 @@ public class SubProcessStateMachine : MonoBehaviour
     }
 
 
-    // 서브 프로세스 상태 Excute 발동
-    public void ExecuteCurrentSubState()
-    {
-        if (_subStateObject != null)
-        {
-            _subStateObject.Execute();
-        }
-    }
 }

@@ -21,7 +21,7 @@ public class ProcessStateSO : ScriptableObject
     public ProcessStateSO nextState;
 
     [Header("하위 단계")]
-    public ProcessStateSO[] subStates;    // 기획상 게임 중간에 삽입되지 않을 예정이니 list 대신 배열 사용
+    public List<ProcessStateSO> subStates;    // 기획상 게임 중간에 삽입되지 않을 예정이니 list 대신 배열 사용
 
 
     // 추가로 필요한 정보
