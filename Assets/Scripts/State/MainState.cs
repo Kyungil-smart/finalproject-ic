@@ -17,7 +17,7 @@ public class MainState : MonoBehaviour, IProcessState
     public void Enter()
     {
         Debug.Log($"[MainStateNew] : {CurrentStateDataSO.StateName} 상태 진입");
-        Execute();
+        // Execute();
     }
 
     public void Execute()

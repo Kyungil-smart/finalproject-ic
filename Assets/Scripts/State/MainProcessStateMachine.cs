@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -22,6 +23,8 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
     [Header("서브 상태 머신")]
     [SerializeField] private GameObject _subStateObject; // 서브 상태 머신 연결
     private SubProcessStateMachine _subStateMachine; // 서브 상태 머신 스크립트 직접 참조
+
+    private ProcessStateSO nextState; // 다음 메인 상태 정보 저장용 변수
 
     // IStateInformation 인터페이스 구현
     [field: Header("메인 프로세스 상태 정보 (IStateInformation)")]
@@ -74,55 +77,46 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
         
     }
 
-    /*  // 메인 상태가 아닌 서브 상태가 끝나야 발동해서 주석 처리
-    private void HandleStateFinished(IProcessState finishedState)
-    {
-        // 다음 상태 가져오기
-        ProcessStateSO nextState = _mainStateObject.ChangeMachineState();
-
-        if (nextState != null)
-        {
-            
-            ChangeMainState(nextState);
-        }
-        else
-        {
-            
-            Debug.Log($"[ProcessStateMachineNew] : 다음 상태 확인 불가");
-        }
-
-    }
-    */
 
     private void HandleAllSubStatesFinished()
     {
         // 현재 메인 상태 스크립트에게 다음 순환할 메인 상태 SO 데이터를 요구
-        ProcessStateSO nextState = _mainStateObject.ChangeMachineState();
+        nextState = _mainStateObject.ChangeMachineState();
 
         if (nextState != null)
         {
             // Debug.Log($"[ProcessStateMachineNew] -> 서브 머신 완료 확인. 다음 메인 상태 [{nextState.name}]로 재발동");
 
             // 이전 메인 상태 종료시키고 다음 메인 상태를 가지고 1번부터 다시 반복
-            ChangeMainState(nextState);
+            // ChangeMainState(nextState);
+            // Debug.Log($"[MainProcessStateMachine] : 모든 SubProcess 완료");
         }
         else
         {
-            Debug.Log($"[ProcessStateMachineNew] -> 다음 메인 상태가 없음 상태 머신 종료");
+            Debug.LogError($"[MainProcessStateMachine] : 다음 메인 상태가 없음");
         }
     }
 
 
-
     // 한 메인 상태 끝나면 메인 상태 SO 변경하기
+    // 원래는 ChangeMainState에서 다양한 기능을 처리했으나 기능을 분리 -> TempGodFuntion() 보면 원래 기능 넣음
     public void ChangeMainState(ProcessStateSO newState)
     {
+        /*
+        if (newState == null)
+        {
+            Debug.LogError($"[MainProcessStateMachine] : ChangeMainState의 newState가 null");
+            return;
+        }
+        */
+        
         // 메인 상태 관리
         // 현재 상태 있다면 종료 처리
         if (CurrentMainState != null)
         {           
-            _mainStateObject.Exit();
+            _mainStateObject.Exit();    // -> 코드 드러내고 별도 함수로 트리거
         }
+        
 
         // 메인 상태 다음 것으로 초기화
         CurrentMainState = newState;
@@ -130,17 +124,22 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
 
         // 메인 상태 컴포넌트에 새로운 상태 정보 전달
         _mainStateObject.ChangeMyState(newState);
-        _mainStateObject.Enter();   // 자동으로 시작
+        // _mainStateObject.Enter();   // 자동으로 시작 -> 기다리도록 체인지는 체인지만, 코드 드러내고 별도 함수로 트리거
 
 
         // 서브 상태 초기화
-        SubStates = new List<ProcessStateSO>();   
-        SubStates = newState.subStates?.ToList() ?? new List<ProcessStateSO>();
+        // SubStates.Clear();
+        // SubStates = newState.subStates?.ToList() ?? new List<ProcessStateSO>();
 
         // 서브 상태 머신 발동
-        ChangeSubState(SubStates);
+        // ChangeSubState(SubStates);
+    }
 
-
+    public void ChanggSubStateList(ProcessStateSO newState)
+    {
+        // 서브 상태 초기화
+        SubStates.Clear();
+        SubStates = newState.subStates?.ToList() ?? new List<ProcessStateSO>();
     }
 
 
@@ -154,14 +153,7 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
     }
 
 
-    // 메인 상태 Excute 발동
-    public void ExecuteCurrentMainState()
-    {
-        if (_mainStateObject != null)
-        {
-            _mainStateObject.Execute();
-        }
-    }
+
 
 
     // IStateInformation 인터페이스 구현
@@ -186,4 +178,55 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
             $"현재: {CurrentStateName} ({CurrentStateID}), 다음: {NextStateName} ({NextStateID})");
         */
     }
+
+
+
+
+    // 외부에서 메인 상태 머신에게 메인 프로세스 상태를 Enter 하라고 요청하는 함수
+    public void EnterCurrentMainState()
+    {
+        if (_mainStateObject != null)
+        {
+            _mainStateObject.Enter();
+        }
+    }
+
+
+    // 외부에서 메인 상태 머신에게 메인 프로세스 상태를 Excute 하라고 요청하는 함수
+    public void ExecuteCurrentMainState()
+    {
+        if (_mainStateObject != null)
+        {
+            _mainStateObject.Execute();
+        }
+    }
+
+
+    // 외부에서 메인 상태 머신에게 메인 프로세스 상태를 Exit 하라고 요청하는 함수
+    public void ExitCurrentMainState()
+    {
+        if (_mainStateObject != null)
+        {
+            _mainStateObject.Exit();
+        }
+    }
+
+
+    // 기능이 잘 작동하는지 보기 위해 임시로 모든 진행을 알아서 해주는 함수 -> 추후 제거 필요
+    public void TempGodFuntion(ProcessStateSO newState)
+    {
+        /*
+        if (nextState == null)
+        {
+            Debug.LogError($"[MainProcessStateMachine] : TempGodFuntion 실행 실패");
+            return;
+        }*/
+
+        Init(FirstMainState);
+        ExitCurrentMainState();
+        ChangeMainState(nextState);
+        EnterCurrentMainState();
+        ChangeSubState(SubStates);
+    }
+
 }

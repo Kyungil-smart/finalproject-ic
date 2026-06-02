@@ -22,3 +22,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 69c59756e3c2f3a42a5579eb8ceff4d1, type: 2}
   - {fileID: 11400000, guid: c6727bdc3c267fd4681fd450f58c325a, type: 2}
   IsLastSubStateFinished: 0
+  _hasEvent: 0
+  _eventType: 

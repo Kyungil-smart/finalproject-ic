@@ -113,7 +113,30 @@ public class SubProcessStateMachine : MonoBehaviour
             // 찾은 자식 오브젝트 스크립트 기능 발동 및 이벤트 구독
             _subStateObject.OnStateFinished += HandleSubStateFinished; // 완료 이벤트 구독
             _subStateObject.ChangeMyState(newState);                  // 데이터 갱신
-            _subStateObject.Enter();                                  // 기능 발동
+            _subStateObject.Enter();                                  // 기능 발동 -> 매니저가 발동하도록 수정
+            // -> 추후 
+
+
+            /*
+            if (newState != null && newState.HasEvent)
+            {
+                // ServiceLocater를 통해 등록된 EventManager의 인터페이스를 가져옴
+                IEventManager eventManager = ServiceLocater.Get<IEventManager>();
+
+                if (eventManager != null)
+                {
+                    // 외부 요인 이벤트를 비동기(UniTaskVoid)로 발생
+                    // 본 개발 절차가 시작되기 직전 타이밍에 고정적으로 실행
+                    eventManager.OccurEvent(newState.RelatedEventType);
+
+                    Debug.Log($"[SubStateMachine] : 이벤트 발동 완료 {newState.RelatedEventType} (상태: {newState.StateName})");
+                }
+                else
+                {
+                    Debug.LogWarning("[SubStateMachine] : EventManager를 ServiceLocater에서 찾을 수 없음");
+                }
+            }
+            */
         }
         else
         {

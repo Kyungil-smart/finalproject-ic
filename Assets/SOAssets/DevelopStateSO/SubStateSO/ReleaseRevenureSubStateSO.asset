@@ -19,3 +19,5 @@ MonoBehaviour:
   nextState: {fileID: 11400000, guid: c6727bdc3c267fd4681fd450f58c325a, type: 2}
   subStates: []
   IsLastSubStateFinished: 0
+  _hasEvent: 1
+  _eventType: 00000000
