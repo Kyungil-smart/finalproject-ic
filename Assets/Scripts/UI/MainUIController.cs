@@ -4,6 +4,7 @@ using R3;
 using TMPro;
 using Unity.Android.Gradle.Manifest;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -64,11 +65,15 @@ public class MainUIController : MonoBehaviour
     
     private void Initialize()
     {
-        goldTl.TextId = 0;
         lastProjectsTl.TextId = 0;
         goNextProcessTl.TextId = 0;
         staffListTl.TextId = 0;
+        previousStepNum.text = StepString(0);  
+        currentStepNum.text = StepString(0);
+        nextStepNum.text = StepString(0);
     }
+
+    private string StepString(int stepNum) => $"{stepNum:2D}/12";
     
     // ------------ R3 Property Bind 할 것들 -------------
 
@@ -94,13 +99,13 @@ public class MainUIController : MonoBehaviour
     private void UpdateProcessData()
     {
         // ToDo. Main State Machine 에게 State 관련 데이터 정보 요청 진행.
-        // ToDo. 해당 데이터는 R3-ReactProperty 로 관리 요청 하기?
     }
     
     // ------------ 버튼 핸들러들 -------------
     private void OnClickNextProcess()
     {
-        
+        // ToDo. MainStateMachine 에게 다음 시작 Trigger 전송
+        SceneManager.LoadScene("ProcessScene");
     }
 
     private void OnClickViewLastProject()
