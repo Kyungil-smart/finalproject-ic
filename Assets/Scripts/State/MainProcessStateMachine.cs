@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public class MainProcessStateMachine : MonoBehaviour
+public class MainProcessStateMachine : MonoBehaviour, IStateInformation
 {
     [Header("현재 실행 중인 메인 상태")]
     [field: SerializeField] public ProcessStateSO CurrentMainState { get; private set; }
@@ -22,6 +22,16 @@ public class MainProcessStateMachine : MonoBehaviour
     [Header("서브 상태 머신")]
     [SerializeField] private GameObject _subStateObject; // 서브 상태 머신 연결
     private SubProcessStateMachine _subStateMachine; // 서브 상태 머신 스크립트 직접 참조
+
+    // IStateInformation 인터페이스 구현
+    [field: Header("메인 프로세스 상태 정보 (IStateInformation)")]
+    [field: SerializeField] public int PreviousStateID { get; private set; }
+    [field: SerializeField] public int CurrentStateID { get; private set; }
+    [field: SerializeField] public int NextStateID { get; private set; }
+    [field: SerializeField] public string PreviousStateName { get; private set; }
+    [field: SerializeField] public string CurrentStateName { get; private set; }
+    [field: SerializeField] public string NextStateName { get; private set; }
+
 
 
     private void Start()
@@ -116,6 +126,7 @@ public class MainProcessStateMachine : MonoBehaviour
 
         // 메인 상태 다음 것으로 초기화
         CurrentMainState = newState;
+        UpdateStateInformation();   // 상태 머신의 메인 프로세스 상태 정보 업데이트
 
         // 메인 상태 컴포넌트에 새로운 상태 정보 전달
         _mainStateObject.ChangeMyState(newState);
@@ -140,5 +151,29 @@ public class MainProcessStateMachine : MonoBehaviour
         {
             _subStateMachine.ChangeSubStateList(subStates);
         }
+    }
+
+
+    // IStateInformation 인터페이스 구현
+    public void UpdateStateInformation()
+    {
+        // 현재 메인 프로세스 상태를 이전 메인 프로세스 상태로 저장
+        // 메인 프로세스 상태 SO의 PrevState가 아닌, 실제 데이터를 기반으로 업데이트하기 전에 이전 상태 정보를 저장
+        // 처음에는 -1과 "None"으로 초기화
+        PreviousStateID = CurrentStateID != 0 ? CurrentStateID : -1;
+        PreviousStateName = CurrentStateName != null ? CurrentStateName : "None";
+
+        // 상태 정보 업데이트 로직 구현
+        CurrentStateID = CurrentMainState != null ? CurrentMainState.StateID : -1;
+        CurrentStateName = CurrentMainState != null ? CurrentMainState.StateName : "None";
+
+        // 다음 상태 정보는 메인 프로세스 상태 SO에서 가져옴
+        NextStateID = CurrentMainState != null && CurrentMainState.nextState != null ? CurrentMainState.nextState.StateID : -1;
+        NextStateName = CurrentMainState != null && CurrentMainState.nextState != null ? CurrentMainState.nextState.StateName : "None";
+
+        /*  // 테스트용 로그
+        Debug.Log($"[MainProcessStateMachine] : 상태 정보 업데이트 - 이전: {PreviousStateName} ({PreviousStateID})," +
+            $"현재: {CurrentStateName} ({CurrentStateID}), 다음: {NextStateName} ({NextStateID})");
+        */
     }
 }
