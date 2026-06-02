@@ -153,4 +153,14 @@ public class SubProcessStateMachine : MonoBehaviour
             OnAllSubStatesFinished?.Invoke();
         }
     }
+
+
+    // 서브 프로세스 상태 Excute 발동
+    public void ExecuteCurrentSubState()
+    {
+        if (_subStateObject != null)
+        {
+            _subStateObject.Execute();
+        }
+    }
 }

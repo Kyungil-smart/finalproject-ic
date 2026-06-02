@@ -154,6 +154,16 @@ public class MainProcessStateMachine : MonoBehaviour, IStateInformation
     }
 
 
+    // 메인 상태 Excute 발동
+    public void ExecuteCurrentMainState()
+    {
+        if (_mainStateObject != null)
+        {
+            _mainStateObject.Execute();
+        }
+    }
+
+
     // IStateInformation 인터페이스 구현
     public void UpdateStateInformation()
     {
