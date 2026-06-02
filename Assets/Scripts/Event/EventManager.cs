@@ -4,7 +4,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class EventManager : MonoBehaviour
+public class EventManager : MonoBehaviour, IEventManager
 {
     // [SerializeField] private EventTaskSO _staff;
     // [SerializeField] private EventTaskSO _linkage;
