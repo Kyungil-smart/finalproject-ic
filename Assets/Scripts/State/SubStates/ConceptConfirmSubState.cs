@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 
@@ -8,36 +9,26 @@ public class ConceptConfirmSubState : MonoBehaviour, IProcessState
 
     public event Action<IProcessState> OnStateFinished;
 
-
-
-
     public void Enter()
     {
         Debug.Log($"[ConceptConfirmSubState] : {CurrentStateDataSO.StateName} Sub 상태 진입");
+        // TODO : 3. 게임 장르/테마 선정 시작
     }
 
-    public void Execute()
+    public async UniTask Execute()
     {
-
+        SelectTheme();
     }
 
     public void Exit()
     {
         OnStateFinished?.Invoke(this);
+        // TODO : 3. 게임 장르/테마 선정 종료
     }
 
-
-    // 아래는 서브 스테이트에서 현재 사용 안하나 확장 가능성 + 인터페이스 고려해 놔둠
-    // Enter 시 자신의 상태를 변경
-    public void ChangeMyState(ProcessStateSO newStateSO)
+    public void SelectTheme()
     {
-        // CurrentStateDataSO = newStateSO;
+        Debug.Log($"[ConceptConfirmSubState] : 테마 및 장르 결정 시작");
+        //TODO : 제작할 게임의 테마 및 장르 결정
     }
-
-    // 외부에서 호출 시 대상에 상태 전달
-    public ProcessStateSO ChangeMachineState()
-    {
-        return null;
-    }
-
 }

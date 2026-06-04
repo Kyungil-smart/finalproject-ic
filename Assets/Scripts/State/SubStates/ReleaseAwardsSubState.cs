@@ -1,6 +1,7 @@
+using Cysharp.Threading.Tasks;
 using System;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 
 public class ReleaseAwardsSubState : MonoBehaviour, IProcessState
@@ -11,16 +12,15 @@ public class ReleaseAwardsSubState : MonoBehaviour, IProcessState
     public event Action<IProcessState> OnStateFinished;
 
 
-
-
     public void Enter()
     {
         Debug.Log($"[ReleaseAwardsSubState] : {CurrentStateDataSO.StateName} Sub 상태 진입");
     }
 
-    public void Execute()
+    public async UniTask Execute()
     {
-
+        CalculateAwards();
+        CheckAwards();
     }
 
     public void Exit()
@@ -28,18 +28,15 @@ public class ReleaseAwardsSubState : MonoBehaviour, IProcessState
         OnStateFinished?.Invoke(this);
     }
 
-
-
-    // 아래는 서브 스테이트에서 현재 사용 안하나 확장 가능성 + 인터페이스 고려해 놔둠
-    // Enter 시 자신의 상태를 변경
-    public void ChangeMyState(ProcessStateSO newStateSO)
+    public void CalculateAwards()
     {
-        // CurrentStateDataSO = newStateSO;
+        Debug.Log($"[ReleaseAwardsSubState] : 수상 계산");
+        // TODO : 수상 계산 로직
     }
 
-    // 외부에서 호출 시 대상에 상태 전달
-    public ProcessStateSO ChangeMachineState()
+    public void CheckAwards()
     {
-        return null;
+        Debug.Log($"[ReleaseAwardsSubState] : 수상 내역 확인");
+        // TODO : 수상 내역 확인 로직
     }
 }

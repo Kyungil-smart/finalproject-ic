@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 
@@ -9,33 +10,26 @@ public class ReleaseRevenureSubState : MonoBehaviour, IProcessState
     public event Action<IProcessState> OnStateFinished;
 
 
-
-
     public void Enter()
     {
         Debug.Log($"[ReleaseRevenureSubState] : {CurrentStateDataSO.StateName} Sub 상태 진입");
+        // TODO : 12. 출시 - 시작
     }
 
-    public void Execute()
+    public async UniTask Execute()
     {
-
+        CalculateRevenue();
     }
 
     public void Exit()
     {
         OnStateFinished?.Invoke(this);
+        // TODO : 12. 출시 -  종료
     }
 
-    // 아래는 서브 스테이트에서 현재 사용 안하나 확장 가능성 + 인터페이스 고려해 놔둠
-    // Enter 시 자신의 상태를 변경
-    public void ChangeMyState(ProcessStateSO newStateSO)
+    public void CalculateRevenue()
     {
-        // CurrentStateDataSO = newStateSO;
-    }
-
-    // 외부에서 호출 시 대상에 상태 전달
-    public ProcessStateSO ChangeMachineState()
-    {
-        return null;
+        Debug.Log($"[ReleaseRevenureSubState] : 매출 계산");
+        // TODO : 매출 계산 로직
     }
 }

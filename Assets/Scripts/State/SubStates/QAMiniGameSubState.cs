@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 
@@ -9,33 +10,33 @@ public class QAMiniGameSubState : MonoBehaviour, IProcessState
     public event Action<IProcessState> OnStateFinished;
 
 
-
-
     public void Enter()
     {
         Debug.Log($"[QAMiniGameSubState] : {CurrentStateDataSO.StateName} Sub 상태 진입");
+        // TODO : 10. QA 시작
     }
 
-    public void Execute()
+    public async UniTask Execute()
     {
-
+        StartQAMiniGame();
+        CalculateResult();
     }
 
     public void Exit()
     {
         OnStateFinished?.Invoke(this);
+        // TODO : 10. QA 종료
     }
 
-    // 아래는 서브 스테이트에서 현재 사용 안하나 확장 가능성 + 인터페이스 고려해 놔둠
-    // Enter 시 자신의 상태를 변경
-    public void ChangeMyState(ProcessStateSO newStateSO)
+    public void StartQAMiniGame()
     {
-        // CurrentStateDataSO = newStateSO;
+        Debug.Log($"[QAMiniGameSubState] : QA 미니게임 시작");
+        // TODO : 작업 진행 (미니게임 또는 랜덤)
     }
 
-    // 외부에서 호출 시 대상에 상태 전달
-    public ProcessStateSO ChangeMachineState()
+    public void CalculateResult()
     {
-        return null;
+        Debug.Log($"[QAMiniGameSubState] : 보정 결과 계산");
+        // TODO : 퀄리티 보정 계수 산출
     }
 }

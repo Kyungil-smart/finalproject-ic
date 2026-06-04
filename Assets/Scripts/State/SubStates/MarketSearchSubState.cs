@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 
@@ -14,28 +15,30 @@ public class MarketSearchSubState : MonoBehaviour, IProcessState
     public void Enter()
     {
         Debug.Log($"[MarketSearchSubState] : {CurrentStateDataSO.StateName} Sub 상태 진입");
+        // TODO : 2. 시장 조사 시작
     }
 
-    public void Execute()
+    public async UniTask Execute()
     {
-
+        ResearchTrend();
+        CheckTrend();
     }
 
     public void Exit()
     {
         OnStateFinished?.Invoke(this);
+        // TODO : 2. 시장 조사 종료
     }
 
-    // 아래는 서브 스테이트에서 현재 사용 안하나 확장 가능성 + 인터페이스 고려해 놔둠
-    // Enter 시 자신의 상태를 변경
-    public void ChangeMyState(ProcessStateSO newStateSO)
+    public void ResearchTrend()
     {
-        // CurrentStateDataSO = newStateSO;
+        Debug.Log($"[MarketSearchSubState] : 트렌드 조사");
+        //TODO : 트렌드 탐색
     }
 
-    // 외부에서 호출 시 대상에 상태 전달
-    public ProcessStateSO ChangeMachineState()
+    public void CheckTrend()
     {
-        return null;
+        Debug.Log($"[MarketSearchSubState] : 트렌드 조사");
+        //TODO : 트렌드 장르와 테마 확인
     }
 }

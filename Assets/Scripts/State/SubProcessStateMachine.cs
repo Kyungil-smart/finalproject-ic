@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
 public class SubProcessStateMachine : MonoBehaviour
 {
 
@@ -30,7 +31,6 @@ public class SubProcessStateMachine : MonoBehaviour
 
     // 리스트에서 실행 중인 서브 상태의 인덱스
     private int _currentSubStateIndex = 0;
-
 
 
     private void Awake()
@@ -102,7 +102,6 @@ public class SubProcessStateMachine : MonoBehaviour
         {
             // 찾은 자식 오브젝트 스크립트 기능 발동 및 이벤트 구독
             _subStateObject.OnStateFinished += HandleSubStateFinished; // 완료 이벤트 구독
-            _subStateObject.ChangeMyState(CurrentSubState);                  // 데이터 갱신
             _subStateObject.Enter();                                  // 기능 발동 -> 매니저가 발동하도록 수정
             _subStateObject.Execute();
             _subStateObject.Exit();

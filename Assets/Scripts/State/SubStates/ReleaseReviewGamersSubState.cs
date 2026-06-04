@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 
@@ -9,33 +10,51 @@ public class ReleaseReviewGamersSubState : MonoBehaviour, IProcessState
     public event Action<IProcessState> OnStateFinished;
 
 
-
-
     public void Enter()
     {
         Debug.Log($"[ReleaseReviewGamersSubState] : {CurrentStateDataSO.StateName} Sub 상태 진입");
+        // TODO : 12. 출시 시작
     }
 
-    public void Execute()
+    public async UniTask Execute()
     {
-
+        ReviewGamers();
+        ReviewCritics();
+        WorkOnProcess();
+        CalculateRevenue();
+        NominatedAwards();
     }
 
     public void Exit()
     {
         OnStateFinished?.Invoke(this);
+        // TODO : 12. 출시 종료
     }
 
-    // 아래는 서브 스테이트에서 현재 사용 안하나 확장 가능성 + 인터페이스 고려해 놔둠
-    // Enter 시 자신의 상태를 변경
-    public void ChangeMyState(ProcessStateSO newStateSO)
+    public void ReviewGamers()
     {
-        // CurrentStateDataSO = newStateSO;
+        Debug.Log($"[ReleaseReviewGamersSubState] : 게이머 리뷰 진행");
+        // TODO : 유저 반응 확인
     }
 
-    // 외부에서 호출 시 대상에 상태 전달
-    public ProcessStateSO ChangeMachineState()
+    public void ReviewCritics()
     {
-        return null;
+        Debug.Log($"[ReleaseReviewGamersSubState] : 평론가 리뷰 진행");
+        // TODO : 평론가 반응 확인
+    }
+
+    public void WorkOnProcess()
+    {
+        // TODO : 작업 진행 페이즈
+    }
+
+    public void CalculateRevenue()
+    {
+        // TODO : 매출 발생
+    }
+
+    public void NominatedAwards()
+    {
+        // TODO : 어워즈 선정
     }
 }
