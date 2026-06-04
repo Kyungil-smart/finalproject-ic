@@ -17,6 +17,8 @@ public class UIRouter : IUIRouter, IDisposable
         _canvasController = canvasController;
         Debug.Log("[UIRouter] ConnectCanvasController Success");
     }
+    
+    public bool IsCanvasConnected() => _canvasController != null;
 
     public void DisconnectCanvasController()
     {

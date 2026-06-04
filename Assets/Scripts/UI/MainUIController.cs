@@ -11,7 +11,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Main Scene 에서 상시 뜨고 있어야 한다. 이벤트 성으로 UI 를 뛰워주는 것이 아니기 때문에 MonoBehaviour 로 충분히 대처.
 /// </summary>
-public class MainUIController : MonoBehaviour
+public class MainUIController : MonoBehaviour, IMainUIReadyable
 {
     [Header("Top UI")]
     [SerializeField] private TextLoader goldTl;
@@ -34,6 +34,9 @@ public class MainUIController : MonoBehaviour
     [SerializeField] private Button staffListButton;
     [SerializeField] private TextLoader staffListTl;
 
+    private bool _isReady = false;
+    public bool IsReady { get => _isReady; }    
+    
     // R3 구독 해제를 관리하기 위한 디스포저 컨테이너
     private readonly CompositeDisposable _disposables = new();
     private IGameManager _gameManager;   
@@ -47,6 +50,7 @@ public class MainUIController : MonoBehaviour
         lastProjectsButton.onClick.AddListener(OnClickViewLastProject);
         goNextProcessButton.onClick.AddListener(OnClickNextProcess);
         staffListButton.onClick.AddListener(OnClickViewStaffList);
+        ServiceLocater.Register<IMainUIReadyable>(this);
     }
 
     private void Start()
@@ -57,17 +61,21 @@ public class MainUIController : MonoBehaviour
         UpdateGoldUI();
         UpdateDateUI();
         _postManager.Subscribe<StateViewData>(Channel.ProcessUIUpdate, UpdateProcessData);
+        _isReady = true;
     }
 
     private void OnDisable()
     {
+        ServiceLocater.Unregister<IMainUIReadyable>(this);
         lastProjectsButton.onClick.RemoveListener(OnClickViewLastProject);
         goNextProcessButton.onClick.RemoveListener(OnClickNextProcess);
         staffListButton.onClick.RemoveListener(OnClickViewStaffList);
+        _postManager.Unsubscribe<StateViewData>(Channel.ProcessUIUpdate, UpdateProcessData);
     }
     
     private void Initialize()
     {
+        _isReady = false;
         lastProjectsTl.TextId = -1;
         goNextProcessTl.TextId = -1;
         staffListTl.TextId = -1;
@@ -76,7 +84,7 @@ public class MainUIController : MonoBehaviour
         nextStepNum.text = StepString(0);
     }
 
-    private string StepString(int stepNum) => $"{stepNum:2D}/12";
+    private string StepString(int stepNum) => $"{stepNum:D2}/12";
     
     // ------------ R3 Property Bind 할 것들 -------------
 
@@ -101,11 +109,7 @@ public class MainUIController : MonoBehaviour
 
     private void UpdateProcessData(StateViewData stateView)
     {
-        Debug.Log($"[MainUIController:UpdateProcessData] - {_gameManager.ProcName}");
-        
-        Debug.Log($"[MainUIController:UpdateProcessData] - prev: {stateView.prev.name}");
-        Debug.Log($"[MainUIController:UpdateProcessData] - cur: {stateView.current.name}");
-        Debug.Log($"[MainUIController:UpdateProcessData] - next: {stateView.next.name}");
+        Debug.Log("[MainUIController:UpdateProcessData] Get Data");
         if (stateView.prev.id <= 0)
         {
             previousStepTl.TextId = 0;
@@ -114,11 +118,11 @@ public class MainUIController : MonoBehaviour
         else
         {
             previousStepTl.Text = stateView.prev.name;  // ToDo. TextID 화 시키기
-            previousStepNum.text = $"{stateView.prev.id}/12";
+            previousStepNum.text = StepString(stateView.prev.id);
         }
 
         currentStepTl.Text = stateView.current.name;  // ToDo. TextID 화 시키기
-        currentStepNum.text = $"{stateView.current.id}/12";
+        currentStepNum.text = StepString(stateView.current.id);
         
         if (stateView.next.id <= 0)
         {
@@ -128,13 +132,14 @@ public class MainUIController : MonoBehaviour
         else
         {
             nextStepTl.Text = stateView.next.name;  // ToDo. TextID 화 시키기
-            nextStepNum.text = $"{stateView.next.id}/12";
+            nextStepNum.text = StepString(stateView.next.id);
         } 
     }
     
     // ------------ 버튼 핸들러들 -------------
     private void OnClickNextProcess()
     {
+        
         _stateMachine.SetCurrentMainState(_gameManager.ProcName.CurrentValue);
         _stateMachine.Run();
         SceneManager.LoadScene("ProcessScene");
