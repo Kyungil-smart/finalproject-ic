@@ -46,21 +46,8 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
     public void OnEnable() => Register();
     public void OnDisable() => Unregister();
 
-
-    [SerializeField] private string _gSheetID;
-    [SerializeField] private string _gID;
-
-    private GSheetManager _gSheetManager;
-
-
-
-
     private void Start()
     {
-        // GSheet 연결 및 데이터 로드
-        _ = ConnectGSheet();
-
-
         // 서브 상태 머신 구독
         if (_subStateMachine != null)
         {
@@ -149,19 +136,6 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         stateViewData.next.id = next != null ? next.StateID : -1;
         stateViewData.next.name = next != null ? next.StateName : "None";
     }
-
-
-    private async UniTask ConnectGSheet()
-    {
-        _gSheetManager = new GSheetManager(_gSheetID, _gID);
-
-        await UniTask.Delay(1000);  // GSheetManager 초기화 대기 (TODO : 더 나은 방법으로 변경 필요)
-
-        var loader = new EventDataLoader();
-        loader.LoadEvent(_gSheetManager);
-    }
-
-
 
     protected override void Register() => ServiceLocater.Register<IMainStateMachine>(this);
     protected override void Unregister() =>  ServiceLocater.Unregister<IMainStateMachine>(this);
