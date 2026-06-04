@@ -57,7 +57,7 @@ public class EventManager : Manager, IEventManager
             rewardTaskSO = rewardTasks
         };
         var gsManager = new GSheetManager(gSheetId, gid);
-        await UniTask.WaitUntil(() => gsManager.IsDownload);
+        await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsManager.IsDownload);
         loader.LoadEvent(gsManager);
         _wasDownloaded = true;
     }

@@ -27,15 +27,23 @@ public class UITextManager : Manager, IUITextManager
     private List<Line> _texts = new();
     public bool IsDataUpdated { get; set; }
 
-    private void Awake() => Init();
-
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
-
+    
     protected override void Init()
     {
+        InitAsync().Forget();
+    }
+
+    private async UniTaskVoid InitAsync()
+    {
         foreach (var textType in _textTypes)
-            _gSheetManagers.Add((textType.language, new GSheetManager(_gSheetId, textType.gid)));
+        {
+            var gsManager = new GSheetManager(_gSheetId, textType.gid);
+            await UniTask.WaitUntil(() => gsManager.IsDownload);
+            _gSheetManagers.Add((textType.language, gsManager));
+        }
+            
         if (IsDataUpdated) return;
         UpdateUITextData();
     }
@@ -55,17 +63,8 @@ public class UITextManager : Manager, IUITextManager
 
     private async UniTaskVoid SubscribeChannel()
     {
-        for (int i = 0; i < 10; i++)
-        {
-            _postManager = ServiceLocater.Get<IPostManager>();
-            if (_postManager == null)
-                await UniTask.WaitForSeconds(0.1f);
-            else
-            {
-                ServiceLocater.Get<IPostManager>().Subscribe<int, string>(Channel.GetUIText, GetText);
-                break;    
-            }
-        }
+        await Utils.TaskAsync.WaitUntilOrThrowAsync(() => ServiceLocater.Get<IPostManager>() != null);
+        ServiceLocater.Get<IPostManager>().Subscribe<int, string>(Channel.GetUIText, GetText);
     }
 
     private void UpdateUITextData()
@@ -76,18 +75,19 @@ public class UITextManager : Manager, IUITextManager
             {
                 await GetDataFromGSheet();
                 await ConvertSOtoData();
+                IsDataUpdated = true;
             });
         }
-        IsDataUpdated = true;
+        else
+        {
+            IsDataUpdated = true;    
+        }
     }
-    
+
     private async UniTask GetDataFromGSheet()
     {   // SO 에 데이터 담기
         foreach (var (language, gSheetManager) in _gSheetManagers)
         {
-            while (!gSheetManager.IsDownload)
-                await UniTask.Yield();
-            
             var data = gSheetManager.GetData();
             if (data.Count == 0)
             {
@@ -102,6 +102,7 @@ public class UITextManager : Manager, IUITextManager
                     so.lines.Add(new Line(soData["Text_ID"], soData["Text_Value"]));
             }
         }
+        await UniTask.Yield();
     }
 
     private UniTask ConvertSOtoData()
@@ -131,6 +132,6 @@ public class UITextManager : Manager, IUITextManager
     [ContextMenu("Load Data")]
     private void LoadData()
     {
-        Init();
+        InitAsync().Forget();
     }
 }

@@ -3,6 +3,7 @@ using R3;
 using DataDispatcher;
 using UnityEngine;
 using TMPro;
+using Utils;
 using Channel = DataDispatcher.Channel;
 
 public class TextLoader : MonoBehaviour
@@ -39,18 +40,14 @@ public class TextLoader : MonoBehaviour
             Debug.LogWarning("[TextLoader] Could not load the Post Manager.");
             return;
         }
-        _postManager?.Subscribe<bool>(Channel.UpdateAllUITexts, UpdateText);
+        _postManager.Subscribe<bool>(Channel.UpdateAllUITexts, UpdateText);
         UpdateText(true);
     }
 
     private void OnDisable() => _postManager?.Unsubscribe<bool>(Channel.UpdateAllUITexts, UpdateText);
     private void UpdateText(bool dummy)
     {
-        UniTask.Void(async() =>
-        {
-            await DataLoading();
-            await ChangeText();
-        });
+        UniTask.Void(async() => { await ChangeText(); });
     }
 
     private void OverrideText(string text)
@@ -72,13 +69,6 @@ public class TextLoader : MonoBehaviour
         {
             _textGui.text = "";
         }
-        return UniTask.CompletedTask;
-    }
-
-    private UniTask DataLoading()
-    {
-        while (!ServiceLocater.Get<IUITextManager>().IsDataUpdated)
-            UniTask.WaitForSeconds(0.1f);
         return UniTask.CompletedTask;
     }
 }
