@@ -17,6 +17,8 @@ public class UIRouter : IUIRouter, IDisposable
         _canvasController = canvasController;
         Debug.Log("[UIRouter] ConnectCanvasController Success");
     }
+    
+    public bool IsCanvasConnected() => _canvasController != null;
 
     public void DisconnectCanvasController()
     {
@@ -26,6 +28,9 @@ public class UIRouter : IUIRouter, IDisposable
 
     public void RegisterUIRender(UIType uiType, IUIRender uiRender) 
         => _renders[uiType] = uiRender;
+    
+    public void UnregisterUIRender(UIType uiType) 
+        => _renders.Remove(uiType);
 
     public void NavigateTo(UIType uiType, UIRenderData data)
     {
@@ -33,7 +38,7 @@ public class UIRouter : IUIRouter, IDisposable
         _renders[uiType].Render(data);
     }
 
-    public void CloseCurrentCanvas() => _canvasController.DisableCurrentCanvas();
+    public void CloseCurrentCanvas() => _canvasController?.DisableCurrentCanvas();
     
     public void Dispose() 
         => _renders.Clear();

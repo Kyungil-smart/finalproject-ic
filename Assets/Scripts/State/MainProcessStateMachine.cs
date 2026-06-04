@@ -1,8 +1,13 @@
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using DataDispatcher;
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Channel = DataDispatcher.Channel;
+using Utils;
 
 [Serializable]
 public struct StateData
@@ -42,6 +47,7 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
     [Header("메인 프로세스 상태 정보 (IStateInformation)")]
     [SerializeField] private StateViewData stateViewData;
     public StateViewData StateViewData => stateViewData;
+    private IPostManager _postManager;
     
     public void OnEnable() => Register();
     public void OnDisable() => Unregister();
@@ -53,6 +59,7 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         {
             _subStateMachine.OnAllSubStatesFinished += HandleAllSubStatesFinished;
         }
+        _postManager =  ServiceLocater.Get<IPostManager>();
     }
 
     private void OnDestroy()
@@ -63,71 +70,107 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         }
     }
 
-
-    public void SetCurrentMainState(GameDevProcName stepName)
+    public UniTask SetCurrentMainState(GameDevProcName stepName)
     {
         foreach(var s in _mainStates)
         {
             if (s.name == stepName)
             {
-               _currentMainState = s.stateSO;
-                return;
+                _currentMainState = s.stateSO;
+                UpdateStateInformation();
+                return UniTask.CompletedTask;
             }          
         }
+        return UniTask.CompletedTask;
     }
 
- 
+    private GameDevProcName GetStateEnum(ProcessStateSO stateSO)
+    {
+        foreach(var s in _mainStates)
+        {
+            if (s.stateSO == stateSO)
+            {
+                return s.name;
+            }          
+        }
+
+        return GameDevProcName.Initialization;
+    }
+
+    private void ChangeState(ProcessStateSO nxSo)
+    {
+        _currentMainState = nxSo;
+        ServiceLocater.Get<IGameManager>().ChangeState(GetStateEnum(_currentMainState));
+    }
+
+    private async UniTask ReadyToRunSubMachine()
+    {
+        await UniTask.WaitUntil(() => SceneManager.GetActiveScene().name == "ProcessScene");
+        await UniTask.WaitUntil(() => ServiceLocater.Get<IUIRouter>() != null);
+        await UniTask.WaitUntil(() => ServiceLocater.Get<IUIRouter>().IsCanvasConnected());
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
+        ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
+    }
+    
     public void Run()
     {
-        if(_currentMainState != null) RunSubMachine();
-        else Debug.LogError("[MainProcessStateMachine] Must set the current main state before running this machine.");
+        // 씬 넘어가고, 넘어간 후에 제대로 진행하도록 해야하네
+        UniTask.Void(async () =>
+        {
+            await ReadyToRunSubMachine();
+            if(_currentMainState != null) await RunSubMachine();
+            else Debug.LogError("[MainProcessStateMachine] Must set the current main state before running this machine.");
+        });
     }
-
-    private void ChangeState(ProcessStateSO nextState)
-    {
-        _currentMainState = nextState;
-        UpdateStateInformation();
-    }
-
 
     private void HandleAllSubStatesFinished()
     {
         // 현재 메인 상태 스크립트에게 다음 순환할 메인 상태 SO 데이터를 요구
         ProcessStateSO nextState = _currentMainState.nextState;
-
-        if (nextState != null)
+        
+        if (nextState != null) ChangeState(nextState);
+        else SetCurrentMainState(GameDevProcName.HumanResources);
+        
+        if (!isTest)
         {
-            ChangeState(nextState);
-            if (!isTest) SceneManager.LoadScene("MainScene");
-            Debug.Log($"[MainProcessStateMachine] : 다음 메인 상태로 전환 - {_currentMainState.StateName}");
+            UniTask.Void(async () =>
+            {
+                ServiceLocater.Get<ISceneChanger>().ChangeScene("MainScene");
+                await UniTask.WaitUntil(() => ServiceLocater.Get<ISceneChanger>().GetCurrentSceneName() == "MainScene");
+                await UniTask.WaitUntil(() => ServiceLocater.Get<IMainUIReadyable>() != null);
+                await UniTask.WaitUntil(() => ServiceLocater.Get<IMainUIReadyable>().IsReady);
+                await UpdateStateInformation();
+                // 메인 씬으로 넘어 온 후 Loading 이 꺼지는 구간
+                await TaskAsync.WaitUntilOrThrowAsync(() => ServiceLocater.Get<IUIRouter>() != null);
+                await TaskAsync.WaitUntilOrThrowAsync(() => ServiceLocater.Get<IUIRouter>().IsCanvasConnected());
+                ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
+                ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
+            });
         }
-        else
-        {
-            Debug.LogError($"[MainProcessStateMachine] : 다음 메인 상태가 없음");
-        }
+        Debug.Log($"[MainProcessStateMachine] : 다음 메인 상태로 전환 - {_currentMainState.StateName}");
     }
 
 
-    private void RunSubMachine()
+    private UniTask RunSubMachine()
     {
         _subStateMachine.ChangeSubStateList(_currentMainState.subStates);
         _subStateMachine.RunSubState();
+        return UniTask.CompletedTask;
     }
 
 
-    public void UpdateStateInformation()
+    public UniTask UpdateStateInformation()
     {
         if (_currentMainState == null)
         {
             Debug.LogWarning("[MainProcessStateMachine] Step UI 용 데이터 획득 불가");
-            return;
+            return UniTask.CompletedTask;
         }
         
         var previous = _currentMainState.prevState;
         stateViewData.prev.id = previous != null ? previous.StateID : -1; 
         stateViewData.prev.name = previous != null ? previous.StateName : "None";
         
-
         var current = _currentMainState; 
         stateViewData.current.id = current != null ? current.StateID : -1;
         stateViewData.current.name = current != null ? current.StateName : "None";
@@ -135,6 +178,10 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         var next = _currentMainState.nextState;
         stateViewData.next.id = next != null ? next.StateID : -1;
         stateViewData.next.name = next != null ? next.StateName : "None";
+        
+        Debug.Log("[MainProcessStateMachine:UpdateStateInformation] Post Data");
+        _postManager.Post(Channel.ProcessUIUpdate, stateViewData);
+        return UniTask.CompletedTask;
     }
 
     protected override void Register() => ServiceLocater.Register<IMainStateMachine>(this);

@@ -16,5 +16,4 @@
     public void LoadProject(string jsonData);
     public string ToJsonData();
     public ProjectData GetProjectData();
-    public ProjectDataForUI GetProjectDataForUI();
 }

@@ -1,48 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using DataDispatcher;
 using R3;
 using TMPro;
 using Unity.Android.Gradle.Manifest;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
-// ToDO. UI 개발을 위한 Dummy 내용. 실물 구현시 삭제 예정
-public interface IDummyGameData
-{
-    public ReactiveProperty<int> Gold { get; }
-    public ReactiveProperty<DateTime> Date { get; }
-    public List<string> GetLastProjects();
-}
-
-// ToDO. UI 개발을 위한 Dummy 내용. 실물 구현시 삭제 예정
-public class DummyGameData : Manager, IDummyGameData
-{
-    public ReactiveProperty<int> Gold { get; } = new (0);
-    public ReactiveProperty<DateTime> Date { get; } = new ();
-    
-    protected override void Register()
-    {
-        ServiceLocater.Register<IDummyGameData>(this);
-    }
-
-    protected override void Unregister()
-    {
-        ServiceLocater.Unregister<IDummyGameData>(this);
-    }
-
-    public List<string> GetLastProjects()
-    {
-        var data = new List<string>();
-        data.Add("JSON_STRING?");
-        return data;
-    }
-}
-
 
 /// <summary>
 /// Main Scene 에서 상시 뜨고 있어야 한다. 이벤트 성으로 UI 를 뛰워주는 것이 아니기 때문에 MonoBehaviour 로 충분히 대처.
 /// </summary>
-public class MainUIController : MonoBehaviour
+public class MainUIController : MonoBehaviour, IMainUIReadyable
 {
     [Header("Top UI")]
     [SerializeField] private TextLoader goldTl;
@@ -65,10 +34,14 @@ public class MainUIController : MonoBehaviour
     [SerializeField] private Button staffListButton;
     [SerializeField] private TextLoader staffListTl;
 
+    private bool _isReady = false;
+    public bool IsReady { get => _isReady; }    
+    
     // R3 구독 해제를 관리하기 위한 디스포저 컨테이너
     private readonly CompositeDisposable _disposables = new();
-    private IDummyGameData _dummyGameData; // 추후 진짜 게임 데이터로 변경
-
+    private IGameManager _gameManager;   
+    private IMainStateMachine _stateMachine;
+    private IPostManager _postManager;
     
     private void Awake() => Initialize();
 
@@ -77,36 +50,47 @@ public class MainUIController : MonoBehaviour
         lastProjectsButton.onClick.AddListener(OnClickViewLastProject);
         goNextProcessButton.onClick.AddListener(OnClickNextProcess);
         staffListButton.onClick.AddListener(OnClickViewStaffList);
+        ServiceLocater.Register<IMainUIReadyable>(this);
     }
 
     private void Start()
     {
-        _dummyGameData = ServiceLocater.Get<IDummyGameData>();
+        _gameManager = ServiceLocater.Get<IGameManager>();      
+        _stateMachine = ServiceLocater.Get<IMainStateMachine>();
+        _postManager = ServiceLocater.Get<IPostManager>();
         UpdateGoldUI();
         UpdateDateUI();
-        UpdateProcessData();
+        _postManager.Subscribe<StateViewData>(Channel.ProcessUIUpdate, UpdateProcessData);
+        _isReady = true;
     }
 
     private void OnDisable()
     {
+        ServiceLocater.Unregister<IMainUIReadyable>(this);
         lastProjectsButton.onClick.RemoveListener(OnClickViewLastProject);
         goNextProcessButton.onClick.RemoveListener(OnClickNextProcess);
         staffListButton.onClick.RemoveListener(OnClickViewStaffList);
+        _postManager.Unsubscribe<StateViewData>(Channel.ProcessUIUpdate, UpdateProcessData);
     }
     
     private void Initialize()
     {
-        goldTl.TextId = 0;
-        lastProjectsTl.TextId = 0;
-        goNextProcessTl.TextId = 0;
-        staffListTl.TextId = 0;
+        _isReady = false;
+        lastProjectsTl.TextId = -1;
+        goNextProcessTl.TextId = -1;
+        staffListTl.TextId = -1;
+        previousStepNum.text = StepString(0);  
+        currentStepNum.text = StepString(0);
+        nextStepNum.text = StepString(0);
     }
+
+    private string StepString(int stepNum) => $"{stepNum:D2}/12";
     
     // ------------ R3 Property Bind 할 것들 -------------
 
     private void UpdateGoldUI()
     {
-        _dummyGameData.Gold
+        _gameManager.Money
             .Subscribe(gold =>
             {
                 goldText.text = $"{gold}";
@@ -115,7 +99,7 @@ public class MainUIController : MonoBehaviour
 
     private void UpdateDateUI()
     {
-        _dummyGameData.Date
+        _gameManager.Date
             .DistinctUntilChanged()
             .Subscribe(date =>
             {
@@ -123,22 +107,47 @@ public class MainUIController : MonoBehaviour
             }).AddTo(_disposables);
     }
 
-    private void UpdateProcessData()
+    private void UpdateProcessData(StateViewData stateView)
     {
-        // ToDo. Main State Machine 에게 State 관련 데이터 정보 요청 진행.
-        // ToDo. 해당 데이터는 R3-ReactProperty 로 관리 요청 하기?
+        Debug.Log("[MainUIController:UpdateProcessData] Get Data");
+        if (stateView.prev.id <= 0)
+        {
+            previousStepTl.TextId = 0;
+            previousStepNum.text = "";
+        }
+        else
+        {
+            previousStepTl.Text = stateView.prev.name;  // ToDo. TextID 화 시키기
+            previousStepNum.text = StepString(stateView.prev.id);
+        }
+
+        currentStepTl.Text = stateView.current.name;  // ToDo. TextID 화 시키기
+        currentStepNum.text = StepString(stateView.current.id);
+        
+        if (stateView.next.id <= 0)
+        {
+            nextStepTl.TextId = 0;
+            nextStepNum.text = "";
+        }
+        else
+        {
+            nextStepTl.Text = stateView.next.name;  // ToDo. TextID 화 시키기
+            nextStepNum.text = StepString(stateView.next.id);
+        } 
     }
     
     // ------------ 버튼 핸들러들 -------------
     private void OnClickNextProcess()
     {
-        
+        _stateMachine.SetCurrentMainState(_gameManager.ProcName.CurrentValue);
+        _stateMachine.Run();
+        ServiceLocater.Get<ISceneChanger>().ChangeScene("ProcessScene"); 
     }
 
     private void OnClickViewLastProject()
     {
         // ToDo. Project 는 Game Manager 에서 관리 할 것. 따라서 해당 매니저에게 데이터 요청 진행.
-        var dataList = _dummyGameData.GetLastProjects();
+        var dataList = _gameManager.Projects;
         LastProjectRenderData data = new();
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LastProjectUI, data);
     }

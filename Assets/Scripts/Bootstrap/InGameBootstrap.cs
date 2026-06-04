@@ -14,27 +14,28 @@ public class InGameBootstrap : MonoBehaviour, IBootStrap
 {
     private bool _isCompleted;
     public bool IsCompleted { get => _isCompleted; }
+    private bool initializable;
     
     private void Awake()
     {
-        Init();
         SetDonDestroyOnLoad();
+        if (initializable) Init();
     }
 
-    private void OnDisable() => Dispose();
     private void OnDestroy() => Destory();
     
     private void Init()
     {   // 게임 씬에서 필요한 것들
         _isCompleted = false;
+        Debug.Log("[InGameBootstrap] Start Init ... ");
         ServiceLocater.Register<IBootStrap>(this);
-        ServiceLocater.Register(new ManagementData());
+        Debug.Log("[InGameBootstrap] Start Init ... Register IBootStrap");
         UniTask.Void(async () =>
         {
             // Async 함수들은 여기에 적어주세요.
             await ServiceLocaterRegistration();
+            _isCompleted = true;
         });
-        _isCompleted = true;
     }
 
     private void SetDonDestroyOnLoad()
@@ -46,18 +47,20 @@ public class InGameBootstrap : MonoBehaviour, IBootStrap
             Destroy(gameObject);
             return;
         }
+
+        initializable = true;
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Dispose()
-    {   // 게임 씬이 아닌 곳에서는 제거할 것들 (파괴가 아닙니다)
-        UniTask.Void(async () =>
-        {
-            // Async 함수들은 여기에 적어주세요.
-            await ServiceLocatorRegistration();
-        });
-        ServiceLocater.Unregister<IBootStrap>(this);
-    }
+    // private void Dispose()
+    // {   // 게임 씬이 아닌 곳에서는 제거할 것들 (파괴가 아닙니다)
+    //     UniTask.Void(async () =>
+    //     {
+    //         // Async 함수들은 여기에 적어주세요.
+    //         await ServiceLocatorUnregistration();
+    //         ServiceLocater.Unregister<IBootStrap>(this);
+    //     });
+    // }
     
     private void Destory()
     {   // 게임 씬이 아닌 곳에서 파괴가 필요한 것들.
@@ -70,12 +73,16 @@ public class InGameBootstrap : MonoBehaviour, IBootStrap
     private UniTask ServiceLocaterRegistration()
     {
         ServiceLocater.Register<IUIRouter>(new UIRouter());
+        Debug.Log("[InGameBootstrap] Start Init ... Register IUIRouter");
+        // ToDo. 메모리 누수 발생 위험 있음. 추후 변경 필요.
+        ServiceLocater.Register(new ManagementData());
         return UniTask.CompletedTask;
     }
 
-    private UniTask ServiceLocatorRegistration()
+    private UniTask ServiceLocatorUnregistration()
     {
         ServiceLocater.Unregister<IUIRouter>();
+        Debug.Log("[InGameBootstrap] Start Init ... Unregister IUIRouter");
         return UniTask.CompletedTask;
     }
 }
