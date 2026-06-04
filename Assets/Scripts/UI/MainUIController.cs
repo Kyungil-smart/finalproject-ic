@@ -139,10 +139,9 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     // ------------ 버튼 핸들러들 -------------
     private void OnClickNextProcess()
     {
-        
         _stateMachine.SetCurrentMainState(_gameManager.ProcName.CurrentValue);
         _stateMachine.Run();
-        SceneManager.LoadScene("ProcessScene");
+        ServiceLocater.Get<ISceneChanger>().ChangeScene("ProcessScene"); 
     }
 
     private void OnClickViewLastProject()

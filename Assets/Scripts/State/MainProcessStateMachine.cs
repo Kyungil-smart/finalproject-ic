@@ -6,6 +6,7 @@ using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Channel = DataDispatcher.Channel;
+using Utils;
 
 [Serializable]
 public struct StateData
@@ -68,7 +69,6 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         }
     }
 
-
     public UniTask SetCurrentMainState(GameDevProcName stepName)
     {
         foreach(var s in _mainStates)
@@ -107,6 +107,8 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         await UniTask.WaitUntil(() => SceneManager.GetActiveScene().name == "ProcessScene");
         await UniTask.WaitUntil(() => ServiceLocater.Get<IUIRouter>() != null);
         await UniTask.WaitUntil(() => ServiceLocater.Get<IUIRouter>().IsCanvasConnected());
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
+        ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
     }
     
     public void Run()
@@ -130,13 +132,18 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         
         if (!isTest)
         {
-            SceneManager.LoadScene("MainScene");
             UniTask.Void(async () =>
             {
-                await UniTask.WaitUntil(() => SceneManager.GetActiveScene().name == "MainScene");
+                ServiceLocater.Get<ISceneChanger>().ChangeScene("MainScene");
+                await UniTask.WaitUntil(() => ServiceLocater.Get<ISceneChanger>().GetCurrentSceneName() == "MainScene");
                 await UniTask.WaitUntil(() => ServiceLocater.Get<IMainUIReadyable>() != null);
                 await UniTask.WaitUntil(() => ServiceLocater.Get<IMainUIReadyable>().IsReady);
                 await UpdateStateInformation();
+                // 메인 씬으로 넘어 온 후 Loading 이 꺼지는 구간
+                await TaskAsync.WaitUntilOrThrowAsync(() => ServiceLocater.Get<IUIRouter>() != null);
+                await TaskAsync.WaitUntilOrThrowAsync(() => ServiceLocater.Get<IUIRouter>().IsCanvasConnected());
+                ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
+                ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
             });
         }
         Debug.Log($"[MainProcessStateMachine] : 다음 메인 상태로 전환 - {_currentMainState.StateName}");
