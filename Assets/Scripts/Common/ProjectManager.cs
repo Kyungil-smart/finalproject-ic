@@ -3,6 +3,21 @@ using R3;
 using UnityEngine;
 
 [Serializable]
+public struct AssignedStaffData
+{
+    public int staffId;
+    public string name;
+    public JobType job;
+    public DiscType disc;
+    public int concetration;
+    public int creativity;
+    public int communication;
+    public int planning;
+    public int development;
+    public int art;
+}
+
+[Serializable]
 public struct NameTag
 {
     public int id;
