@@ -1,5 +1,15 @@
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
+
+
+[Serializable]
+public struct SubStateEventData
+{
+    public EventType eventType;
+    public int occurRate;   // 이벤트 발생 확률 (0~100)
+}
+
 
 [CreateAssetMenu(fileName = "DevStateSO", menuName = "Scriptable Objects/DevStateSO")]
 public class ProcessStateSO : ScriptableObject
@@ -30,9 +40,9 @@ public class ProcessStateSO : ScriptableObject
 
     [Header("이벤트 설정")]
     [SerializeField] private bool _hasEvent; // 이 상태가 시작될 때 이벤트를 실행할지 여부
-    [SerializeField] private List<EventType> _eventType; // 실행할 이벤트의 종류
+    [SerializeField] private List<SubStateEventData> _eventData; // 실행할 이벤트의 데이터
 
     // 외부에서 읽을 수 있도록 프로퍼티 제공 (OOP 캡슐화)
     public bool HasEvent => _hasEvent;
-    public List<EventType> RelatedEventType => _eventType;
+    public List<SubStateEventData> RelatedEventData => _eventData;
 }
