@@ -3486,9 +3486,37 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4186639826436564214, guid: f473bbad8bc786f46bddf9ee6bba4b92, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4186639826436564214, guid: f473bbad8bc786f46bddf9ee6bba4b92, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5706918420323873130, guid: f473bbad8bc786f46bddf9ee6bba4b92, type: 3}
       propertyPath: m_Name
       value: LastProjectCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5706918420323873130, guid: f473bbad8bc786f46bddf9ee6bba4b92, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6754092705085587149, guid: f473bbad8bc786f46bddf9ee6bba4b92, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -612.0986
+      objectReference: {fileID: 0}
+    - target: {fileID: 7546445643049891327, guid: f473bbad8bc786f46bddf9ee6bba4b92, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7546445643049891327, guid: f473bbad8bc786f46bddf9ee6bba4b92, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7546445643049891327, guid: f473bbad8bc786f46bddf9ee6bba4b92, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -27
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

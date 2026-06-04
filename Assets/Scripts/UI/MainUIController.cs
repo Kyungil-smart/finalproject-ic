@@ -35,8 +35,7 @@ public class MainUIController : MonoBehaviour
 
     // R3 구독 해제를 관리하기 위한 디스포저 컨테이너
     private readonly CompositeDisposable _disposables = new();
-    private IGameManager _gameManager;
-    private IProjectListViewer _projectListViewer;
+    private IGameManager _gameManager;   
     
     private void Awake() => Initialize();
 
@@ -49,8 +48,7 @@ public class MainUIController : MonoBehaviour
 
     private void Start()
     {
-        _gameManager = ServiceLocater.Get<IGameManager>();
-        _projectListViewer = ServiceLocater.Get<IProjectListViewer>();
+        _gameManager = ServiceLocater.Get<IGameManager>();        
         UpdateGoldUI();
         UpdateDateUI();
         UpdateProcessData();
@@ -111,7 +109,7 @@ public class MainUIController : MonoBehaviour
     private void OnClickViewLastProject()
     {
         // ToDo. Project 는 Game Manager 에서 관리 할 것. 따라서 해당 매니저에게 데이터 요청 진행.
-        var dataList = _projectListViewer.Projects;
+        var dataList = _gameManager.Projects;
         LastProjectRenderData data = new();
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LastProjectUI, data);
     }
