@@ -20,3 +20,5 @@ MonoBehaviour:
   subStates:
   - {fileID: 11400000, guid: 9017b6004cbfc3249887dd9e225b4758, type: 2}
   IsLastSubStateFinished: 0
+  _hasEvent: 0
+  _eventType: 

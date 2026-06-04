@@ -17,13 +17,11 @@ public class StaffHireSubState : MonoBehaviour, IProcessState
     public void Enter()
     {
         Debug.Log($"[StaffHireSubState] : {CurrentStateDataSO.StateName} Sub 상태 진입");
-        Execute();
     }
 
     public void Execute()
     {
-        // StartCoroutine(Wait1SecondsRoutine(0.5f));
-        Exit();
+
     }
 
     public void Exit()
