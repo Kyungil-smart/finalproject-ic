@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DataDispatcher;
 using R3;
 using TMPro;
 using Unity.Android.Gradle.Manifest;
@@ -36,6 +37,8 @@ public class MainUIController : MonoBehaviour
     // R3 구독 해제를 관리하기 위한 디스포저 컨테이너
     private readonly CompositeDisposable _disposables = new();
     private IGameManager _gameManager;   
+    private IMainStateMachine _stateMachine;
+    private IPostManager _postManager;
     
     private void Awake() => Initialize();
 
@@ -48,10 +51,12 @@ public class MainUIController : MonoBehaviour
 
     private void Start()
     {
-        _gameManager = ServiceLocater.Get<IGameManager>();        
+        _gameManager = ServiceLocater.Get<IGameManager>();      
+        _stateMachine = ServiceLocater.Get<IMainStateMachine>();
+        _postManager = ServiceLocater.Get<IPostManager>();
         UpdateGoldUI();
         UpdateDateUI();
-        UpdateProcessData();
+        _postManager.Subscribe<StateViewData>(Channel.ProcessUIUpdate, UpdateProcessData);
     }
 
     private void OnDisable()
@@ -63,9 +68,9 @@ public class MainUIController : MonoBehaviour
     
     private void Initialize()
     {
-        lastProjectsTl.TextId = 0;
-        goNextProcessTl.TextId = 0;
-        staffListTl.TextId = 0;
+        lastProjectsTl.TextId = -1;
+        goNextProcessTl.TextId = -1;
+        staffListTl.TextId = -1;
         previousStepNum.text = StepString(0);  
         currentStepNum.text = StepString(0);
         nextStepNum.text = StepString(0);
@@ -94,15 +99,44 @@ public class MainUIController : MonoBehaviour
             }).AddTo(_disposables);
     }
 
-    private void UpdateProcessData()
+    private void UpdateProcessData(StateViewData stateView)
     {
-        // ToDo. Main State Machine 에게 State 관련 데이터 정보 요청 진행.
+        Debug.Log($"[MainUIController:UpdateProcessData] - {_gameManager.ProcName}");
+        
+        Debug.Log($"[MainUIController:UpdateProcessData] - prev: {stateView.prev.name}");
+        Debug.Log($"[MainUIController:UpdateProcessData] - cur: {stateView.current.name}");
+        Debug.Log($"[MainUIController:UpdateProcessData] - next: {stateView.next.name}");
+        if (stateView.prev.id <= 0)
+        {
+            previousStepTl.TextId = 0;
+            previousStepNum.text = "";
+        }
+        else
+        {
+            previousStepTl.Text = stateView.prev.name;  // ToDo. TextID 화 시키기
+            previousStepNum.text = $"{stateView.prev.id}/12";
+        }
+
+        currentStepTl.Text = stateView.current.name;  // ToDo. TextID 화 시키기
+        currentStepNum.text = $"{stateView.current.id}/12";
+        
+        if (stateView.next.id <= 0)
+        {
+            nextStepTl.TextId = 0;
+            nextStepNum.text = "";
+        }
+        else
+        {
+            nextStepTl.Text = stateView.next.name;  // ToDo. TextID 화 시키기
+            nextStepNum.text = $"{stateView.next.id}/12";
+        } 
     }
     
     // ------------ 버튼 핸들러들 -------------
     private void OnClickNextProcess()
     {
-        // ToDo. MainStateMachine 에게 다음 시작 Trigger 전송
+        _stateMachine.SetCurrentMainState(_gameManager.ProcName.CurrentValue);
+        _stateMachine.Run();
         SceneManager.LoadScene("ProcessScene");
     }
 

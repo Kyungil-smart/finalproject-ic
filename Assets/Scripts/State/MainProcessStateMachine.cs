@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using DataDispatcher;
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -41,6 +43,7 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
     [Header("메인 프로세스 상태 정보 (IStateInformation)")]
     [SerializeField] private StateViewData stateViewData;
     public StateViewData StateViewData => stateViewData;
+    private IPostManager _postManager;
     
     public void OnEnable() => Register();
     public void OnDisable() => Unregister();
@@ -52,6 +55,7 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         {
             _subStateMachine.OnAllSubStatesFinished += HandleAllSubStatesFinished;
         }
+        _postManager =  ServiceLocater.Get<IPostManager>();
     }
 
     private void OnDestroy()
@@ -70,30 +74,43 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
             if (s.name == stepName)
             {
                _currentMainState = s.stateSO;
+               UpdateStateInformation();
                 return;
             }          
         }
     }
 
- 
+    private GameDevProcName GetStateEnum(ProcessStateSO stateSO)
+    {
+        foreach(var s in _mainStates)
+        {
+            if (s.stateSO == stateSO)
+            {
+                return s.name;
+            }          
+        }
+
+        return GameDevProcName.Initialization;
+    }
+
+    private void ChangeState(ProcessStateSO nxSo)
+    {
+        _currentMainState = nxSo;
+        UpdateStateInformation();
+        ServiceLocater.Get<IGameManager>().ChangeState(GetStateEnum(_currentMainState));
+    }
+    
     public void Run()
     {
         if(_currentMainState != null) RunSubMachine();
         else Debug.LogError("[MainProcessStateMachine] Must set the current main state before running this machine.");
     }
 
-    private void ChangeState(ProcessStateSO nextState)
-    {
-        _currentMainState = nextState;
-        UpdateStateInformation();
-    }
-
-
     private void HandleAllSubStatesFinished()
     {
         // 현재 메인 상태 스크립트에게 다음 순환할 메인 상태 SO 데이터를 요구
         ProcessStateSO nextState = _currentMainState.nextState;
-
+        
         if (nextState != null)
         {
             ChangeState(nextState);
@@ -126,7 +143,6 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         stateViewData.prev.id = previous != null ? previous.StateID : -1; 
         stateViewData.prev.name = previous != null ? previous.StateName : "None";
         
-
         var current = _currentMainState; 
         stateViewData.current.id = current != null ? current.StateID : -1;
         stateViewData.current.name = current != null ? current.StateName : "None";
@@ -134,6 +150,8 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         var next = _currentMainState.nextState;
         stateViewData.next.id = next != null ? next.StateID : -1;
         stateViewData.next.name = next != null ? next.StateName : "None";
+        
+        _postManager.Post(Channel.ProcessUIUpdate, stateViewData);
     }
 
     protected override void Register() => ServiceLocater.Register<IMainStateMachine>(this);

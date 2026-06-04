@@ -54,7 +54,7 @@ public class CanvasController : MonoBehaviour, ICanvasController
 
     public void DisableCurrentCanvas()
     {
-        _currentEnableCanvas.uiCanvas.gameObject.SetActive(false);
+        _currentEnableCanvas?.uiCanvas.gameObject.SetActive(false);
         _currentEnableCanvas = null;
     }
 }
