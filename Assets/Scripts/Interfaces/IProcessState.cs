@@ -1,6 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+
 
 public interface IProcessState
 {
@@ -14,11 +16,7 @@ public interface IProcessState
 
 
     public void Enter();
-    public void Execute();
+    public UniTask Execute();
     public void Exit();
 
-
-    public void ChangeMyState(ProcessStateSO newState); // 자신의 상태를 변경하는 기능, 상태 머신에서 호출함
-
-    public ProcessStateSO ChangeMachineState(); // 상태 머신에게 다음 상태를 알려주는 기능
 }
