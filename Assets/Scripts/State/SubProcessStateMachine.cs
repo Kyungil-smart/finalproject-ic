@@ -13,7 +13,7 @@ public class SubProcessStateMachine : MonoBehaviour
     [SerializeField] private List<GameObject> _subStateObjects = new List<GameObject>();    
 
     // 실제 코드에서 사용할 인터페이스 리스트
-    private List<IProcessState> _subStates = new List<IProcessState>();
+    private List<IProcessTaskRunnerExecute> _subStates = new List<IProcessTaskRunnerExecute>();
 
 
     [Header("현재 실행 중인 서브 상태 데이터 (SO)")]
@@ -21,7 +21,7 @@ public class SubProcessStateMachine : MonoBehaviour
 
 
     [Header("현재 활성화된 서브 상태 컴포넌트 (구독 대상)")]
-    [SerializeField] private IProcessState _subStateObject;
+    [SerializeField] private IProcessTaskRunnerExecute _subTaskRunnerExecuteObject;
 
     [Header("발동할 서브 상태 리스트 (전달받은 목록)")]
     [SerializeField] private List<ProcessStateSO> _subStateSOList = new List<ProcessStateSO>();
@@ -40,7 +40,7 @@ public class SubProcessStateMachine : MonoBehaviour
         {
             if (obj != null)
             {
-                _subStates.Add(obj.GetComponent<IProcessState>());
+                _subStates.Add(obj.GetComponent<IProcessTaskRunnerExecute>());
             }
         }
     }
@@ -59,7 +59,7 @@ public class SubProcessStateMachine : MonoBehaviour
             if (obj == null) continue;
 
             // IProcessState 컴포넌트가 있는지 검사
-            if (obj.GetComponent<IProcessState>() == null)
+            if (obj.GetComponent<IProcessTaskRunnerExecute>() == null)
             {
                 Debug.LogWarning($"[{obj.name}] 오브젝트에 IProcessState를 구현한 컴포넌트가 없음");
                 _subStateObjects.RemoveAt(i); // 유효하지 않은 오브젝트는 리스트에서 삭제
@@ -86,9 +86,9 @@ public class SubProcessStateMachine : MonoBehaviour
     {
         
         // 기존에 실행 중이던 서브 상태 컴포넌트가 있다면 구독 해제 및 종료 처리
-        if (_subStateObject != null)
+        if (_subTaskRunnerExecuteObject != null)
         {
-            _subStateObject.OnStateFinished -= HandleSubStateFinished;
+            // _subTaskRunnerObject.OnStateFinished -= HandleSubTaskRunnerFinished;
         }
         
 
@@ -96,30 +96,29 @@ public class SubProcessStateMachine : MonoBehaviour
         CurrentSubState = _subStateSOList[_currentSubStateIndex];
 
         // 캐싱된 전체 서브 상태 컴포넌트 중, 인스펙터에 매칭된 SO와 같은 컴포넌트 찾기
-        _subStateObject = _subStates.Find(state => state.CurrentStateDataSO == CurrentSubState);
+        // _subTaskRunnerObject = _subStates.Find(state => state.CurrentStateDataSO == CurrentSubState);
 
-        if (_subStateObject != null)
+        if (_subTaskRunnerExecuteObject != null)
         {
             // 찾은 자식 오브젝트 스크립트 기능 발동 및 이벤트 구독
-            _subStateObject.OnStateFinished += HandleSubStateFinished; // 완료 이벤트 구독
-            _subStateObject.Enter();                                  // 기능 발동 -> 매니저가 발동하도록 수정
-            _subStateObject.Execute();
-            _subStateObject.Exit();
+            // _subTaskRunnerObject.OnStateFinished += HandleSubTaskRunnerFinished; // 완료 이벤트 구독
+            // _subTaskRunnerObject.Enter();                                  // 기능 발동 -> 매니저가 발동하도록 수정
+            _subTaskRunnerExecuteObject.Execute();
+            // _subTaskRunnerObject.Exit();
             // -> 추후 
 
         }
         else
         {
             // 만약 대응하는 컴포넌트를 찾지 못했다면 경고를 띄우고 패스
-            Debug.LogError($"[ProcessSubStateMachine] : {CurrentSubState.StateName} 데이터에 대응하는 자식 컴포넌트를 찾을 수 없음");
             MoveToNextSubState();
         }
     }
 
     // 발동했던 자식 오브젝트 기능이 끝나 OnStateFinished 이벤트를 보내왔을 때 실행되는 핸들러
-    private void HandleSubStateFinished(IProcessState finishedState)
+    private void HandleSubTaskRunnerFinished(IProcessTaskRunnerExecute finishedTaskRunnerExecute)
     {
-        finishedState.OnStateFinished -= HandleSubStateFinished;
+        // finishedTaskRunner.OnStateFinished -= HandleSubTaskRunnerFinished;
 
         // 다음 인덱스 반복 처리를 위한 함수 호출
         MoveToNextSubState();
@@ -138,7 +137,7 @@ public class SubProcessStateMachine : MonoBehaviour
         // 더 이상 서브 상태가 없다면 (모두 끝났다면)
         else
         {
-            _subStateObject = null;
+            _subTaskRunnerExecuteObject = null;
             CurrentSubState = null;
 
             OnAllSubStatesFinished?.Invoke();

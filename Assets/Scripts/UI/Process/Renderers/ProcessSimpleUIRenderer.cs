@@ -16,10 +16,15 @@ public class ProcessSimpleUIRenderer : MonoBehaviour, IUIRender
     [SerializeField] private Button _confirmBt;
     [SerializeField] private TextLoader _confirmBtTxtLd;
     
-    public void OnEnable()
+    private void OnEnable()
     {
         ServiceLocater.Get<IUIRouter>()
             .RegisterUIRender(UIType.ProcessSimpleUI, this);
+    }
+
+    private void OnDisable()
+    {
+        ServiceLocater.Get<IUIRouter>().UnregisterUIRender(UIType.ProcessSimpleUI);
     }
 
     public void Render(UIRenderData renderData)

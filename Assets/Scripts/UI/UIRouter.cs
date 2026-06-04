@@ -15,7 +15,7 @@ public class UIRouter : IUIRouter, IDisposable
     public void ConnectCanvasController(ICanvasController canvasController)
     {
         _canvasController = canvasController;
-        Debug.Log("[UIRouter] ConnectCanvasController Success");
+        Debug.Log("[UIRouter] ConnectCanvasController ... Success");
     }
     
     public bool IsCanvasConnected() => _canvasController != null;
@@ -24,6 +24,7 @@ public class UIRouter : IUIRouter, IDisposable
     {
         _canvasController?.DisableCurrentCanvas();
         _canvasController = null;
+        Debug.Log("[UIRouter] DisconnectCanvasController ... Success");
     }
 
     public void RegisterUIRender(UIType uiType, IUIRender uiRender) 

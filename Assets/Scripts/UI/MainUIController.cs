@@ -120,11 +120,11 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         }
         else
         {
-            previousStepTl.Text = stateView.prev.name;  // ToDo. TextID 화 시키기
+            previousStepTl.TextId = stateView.prev.textId;  // ToDo. TextID 화 시키기
             previousStepNum.text = StepString(stateView.prev.id);
         }
 
-        currentStepTl.Text = stateView.current.name;  // ToDo. TextID 화 시키기
+        currentStepTl.TextId = stateView.current.textId;  // ToDo. TextID 화 시키기
         currentStepNum.text = StepString(stateView.current.id);
         
         if (stateView.next.id <= 0)
@@ -134,7 +134,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         }
         else
         {
-            nextStepTl.Text = stateView.next.name;  // ToDo. TextID 화 시키기
+            nextStepTl.TextId = stateView.next.textId;  // ToDo. TextID 화 시키기
             nextStepNum.text = StepString(stateView.next.id);
         } 
     }
