@@ -46,11 +46,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd08fb7de66b20644a60c4b5949690ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProcessStateMachineNew
-  <CurrentMainState>k__BackingField: {fileID: 0}
-  <FirstMainState>k__BackingField: {fileID: 11400000, guid: beaa3482265bf91459ae251713b57f57, type: 2}
-  <ProcessStateObject>k__BackingField: {fileID: 7550993760144409710}
-  <SubStates>k__BackingField: []
-  _subStateObject: {fileID: 7276548558136582302}
+  _currentMainState: {fileID: 0}
+  _mainStates:
+  - name: 1
+    stateSO: {fileID: 11400000, guid: beaa3482265bf91459ae251713b57f57, type: 2}
+  - name: 2
+    stateSO: {fileID: 11400000, guid: b49967aab8a6a0b4b8f65ee4683dabd5, type: 2}
+  - name: 3
+    stateSO: {fileID: 11400000, guid: 793db0d70e1e6ff4ca81099189517397, type: 2}
+  - name: 4
+    stateSO: {fileID: 11400000, guid: 62b202f4cf42f9c4c971d5526b173d7e, type: 2}
+  - name: 6
+    stateSO: {fileID: 11400000, guid: 90f387541716dd7448a949a1d019176f, type: 2}
+  - name: 5
+    stateSO: {fileID: 11400000, guid: 14e7edb5e7c9e5f4388ffb116eea3dee, type: 2}
+  - name: 7
+    stateSO: {fileID: 11400000, guid: 28f21367c6093674f84a57cc09a45785, type: 2}
+  - name: 9
+    stateSO: {fileID: 11400000, guid: fb6e3da276d631241ba4aaef0538f4e1, type: 2}
+  - name: 8
+    stateSO: {fileID: 11400000, guid: fdcafc9419f27ec4ebbd9fdee999564c, type: 2}
+  - name: 10
+    stateSO: {fileID: 11400000, guid: b9c7a5ed41efdf74b9b287d0f0675ac8, type: 2}
+  - name: 11
+    stateSO: {fileID: 11400000, guid: 21cd1334cd8340444935fbf1c3014d94, type: 2}
+  - name: 12
+    stateSO: {fileID: 11400000, guid: 3521371ec1764064f9f85a388081ea19, type: 2}
+  _subStateMachine: {fileID: 9014923191466814657}
+  <PreviousStateID>k__BackingField: 0
+  <CurrentStateID>k__BackingField: 0
+  <NextStateID>k__BackingField: 0
+  <PreviousStateName>k__BackingField: 
+  <CurrentStateName>k__BackingField: 
+  <NextStateName>k__BackingField: 
 --- !u!1001 &2801788929994550311
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -113,11 +141,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1779653725229209621, guid: 9cde43bcf68f2de45bd955b634b11ab2, type: 3}
   m_PrefabInstance: {fileID: 2801788929994550311}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7550993760144409710 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5632719997687769161, guid: 9cde43bcf68f2de45bd955b634b11ab2, type: 3}
-  m_PrefabInstance: {fileID: 2801788929994550311}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4502922156606888488
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -170,18 +193,46 @@ PrefabInstance:
       propertyPath: m_Name
       value: SubStateMachine
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8739103640563408829, guid: a126f91815528a24a820a9990e39404d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6766124358163831380, guid: a126f91815528a24a820a9990e39404d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1144839228617546009}
   m_SourcePrefab: {fileID: 100100000, guid: a126f91815528a24a820a9990e39404d, type: 3}
---- !u!1 &7276548558136582302 stripped
+--- !u!1 &7177486120785215612 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 6523157864869444278, guid: a126f91815528a24a820a9990e39404d, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6766124358163831380, guid: a126f91815528a24a820a9990e39404d, type: 3}
   m_PrefabInstance: {fileID: 4502922156606888488}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1144839228617546009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7177486120785215612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e22f57bc484114880b2a1948eed8ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaffHireSubState
+  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: 9d9dfa53c88a02c40a0013bd2b47af22, type: 2}
 --- !u!4 &8620092918818663300 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5322462074729787820, guid: a126f91815528a24a820a9990e39404d, type: 3}
   m_PrefabInstance: {fileID: 4502922156606888488}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9014923191466814657 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4856823480752371433, guid: a126f91815528a24a820a9990e39404d, type: 3}
+  m_PrefabInstance: {fileID: 4502922156606888488}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 693f39a92a02cd84ca40abc2c5ae1585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProcessSubStateMachine

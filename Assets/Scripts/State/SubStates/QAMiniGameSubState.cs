@@ -14,13 +14,11 @@ public class QAMiniGameSubState : MonoBehaviour, IProcessState
     public void Enter()
     {
         Debug.Log($"[QAMiniGameSubState] : {CurrentStateDataSO.StateName} Sub 상태 진입");
-        Execute();
     }
 
     public void Execute()
     {
 
-        Exit();
     }
 
     public void Exit()

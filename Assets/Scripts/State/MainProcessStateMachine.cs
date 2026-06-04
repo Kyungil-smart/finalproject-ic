@@ -1,144 +1,148 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-
-
-public class MainProcessStateMachine : MonoBehaviour
+[Serializable]
+public struct StateData
 {
+    public GameDevProcName name;
+    public ProcessStateSO stateSO;
+}
+
+[Serializable]
+public struct SimpleStateData
+{
+    public int id;
+    public string name;
+}
+
+[Serializable]
+public struct StateViewData
+{
+    public SimpleStateData prev;
+    public SimpleStateData current;
+    public SimpleStateData next;
+}
+
+
+public class MainProcessStateMachine : Manager, IMainStateMachine
+{
+    [Header("테스트 플래그")] 
+    [SerializeField] private bool isTest = true;
+    
     [Header("현재 실행 중인 메인 상태")]
-    [field: SerializeField] public ProcessStateSO CurrentMainState { get; private set; }
-
-    [Header("초기 메인 상태")]
-    [field: SerializeField] public ProcessStateSO FirstMainState { get; private set; }
-
-    [Header("메인 상태 컴포넌트 연결")]
-    [field: SerializeField] public GameObject ProcessStateObject { get; private set; }
-    [SerializeField] private IProcessState _mainStateObject;
-
-    [Header("현재 서브 상태 목록")]
-    [field: SerializeField] public List<ProcessStateSO> SubStates { get; private set; } = new List<ProcessStateSO>();
+    [SerializeField] private ProcessStateSO _currentMainState;
+    [SerializeField] private List<StateData> _mainStates;
 
     [Header("서브 상태 머신")]
-    [SerializeField] private GameObject _subStateObject; // 서브 상태 머신 연결
-    private SubProcessStateMachine _subStateMachine; // 서브 상태 머신 스크립트 직접 참조
+    [SerializeField] private SubProcessStateMachine _subStateMachine; // 서브 상태 머신 스크립트 직접 참조
 
-
+    [Header("메인 프로세스 상태 정보 (IStateInformation)")]
+    [SerializeField] private StateViewData stateViewData;
+    public StateViewData StateViewData => stateViewData;
+    
+    public void OnEnable() => Register();
+    public void OnDisable() => Unregister();
+    
     private void Start()
     {
-        _mainStateObject = ProcessStateObject.GetComponent<IProcessState>();
-
-        // _mainStateObject.OnStateFinished += HandleStateFinished;
-
         // 서브 상태 머신 구독
-        if (_subStateObject != null)
+        if (_subStateMachine != null)
         {
-            _subStateMachine = _subStateObject.GetComponent<SubProcessStateMachine>();
             _subStateMachine.OnAllSubStatesFinished += HandleAllSubStatesFinished;
         }
-
-        Init(FirstMainState);
     }
 
     private void OnDestroy()
     {
-        /*
-        if (_mainStateObject != null)
-        {
-            _mainStateObject.OnStateFinished -= HandleStateFinished;
-        }
-        */
-
         if (_subStateMachine != null)
         {
             _subStateMachine.OnAllSubStatesFinished -= HandleAllSubStatesFinished;
         }
-
     }
 
 
-    // 세이브 로드 있을까봐 public 처리
-    public void Init(ProcessStateSO startState)
+    public void SetCurrentMainState(GameDevProcName stepName)
     {
-        ChangeMainState(FirstMainState);
-        
+        foreach(var s in _mainStates)
+        {
+            if (s.name == stepName)
+            {
+               _currentMainState = s.stateSO;
+                return;
+            }          
+        }
     }
 
-    /*  // 메인 상태가 아닌 서브 상태가 끝나야 발동해서 주석 처리
-    private void HandleStateFinished(IProcessState finishedState)
+ 
+    public void Run()
     {
-        // 다음 상태 가져오기
-        ProcessStateSO nextState = _mainStateObject.ChangeMachineState();
-
-        if (nextState != null)
-        {
-            
-            ChangeMainState(nextState);
-        }
-        else
-        {
-            
-            Debug.Log($"[ProcessStateMachineNew] : 다음 상태 확인 불가");
-        }
-
+        if(_currentMainState != null) RunSubMachine();
+        else Debug.LogError("[MainProcessStateMachine] Must set the current main state before running this machine.");
     }
-    */
+
+    private void ChangeState(ProcessStateSO nextState)
+    {
+        _currentMainState = nextState;
+        UpdateStateInformation();
+    }
+
 
     private void HandleAllSubStatesFinished()
     {
         // 현재 메인 상태 스크립트에게 다음 순환할 메인 상태 SO 데이터를 요구
-        ProcessStateSO nextState = _mainStateObject.ChangeMachineState();
+        ProcessStateSO nextState = _currentMainState.nextState;
 
         if (nextState != null)
         {
-            // Debug.Log($"[ProcessStateMachineNew] -> 서브 머신 완료 확인. 다음 메인 상태 [{nextState.name}]로 재발동");
-
-            // 이전 메인 상태 종료시키고 다음 메인 상태를 가지고 1번부터 다시 반복
-            ChangeMainState(nextState);
+            ChangeState(nextState);
+            if (!isTest) SceneManager.LoadScene("MainScene");
+            Debug.Log($"[MainProcessStateMachine] : 다음 메인 상태로 전환 - {_currentMainState.StateName}");
         }
         else
         {
-            Debug.Log($"[ProcessStateMachineNew] -> 다음 메인 상태가 없음 상태 머신 종료");
+            Debug.LogError($"[MainProcessStateMachine] : 다음 메인 상태가 없음");
         }
     }
 
 
-
-    // 한 메인 상태 끝나면 메인 상태 SO 변경하기
-    public void ChangeMainState(ProcessStateSO newState)
+    private void RunSubMachine()
     {
-        // 메인 상태 관리
-        // 현재 상태 있다면 종료 처리
-        if (CurrentMainState != null)
-        {           
-            _mainStateObject.Exit();
-        }
-
-        // 메인 상태 다음 것으로 초기화
-        CurrentMainState = newState;
-
-        // 메인 상태 컴포넌트에 새로운 상태 정보 전달
-        _mainStateObject.ChangeMyState(newState);
-        _mainStateObject.Enter();   // 자동으로 시작
-
-
-        // 서브 상태 초기화
-        SubStates = new List<ProcessStateSO>();   
-        SubStates = newState.subStates?.ToList() ?? new List<ProcessStateSO>();
-
-        // 서브 상태 머신 발동
-        ChangeSubState(SubStates);
-
-
+        _subStateMachine.ChangeSubStateList(_currentMainState.subStates);
+        _subStateMachine.RunSubState();
     }
 
 
-    // 서브 상태 머신에 발동할 서브 상태 전달
-    public void ChangeSubState(List<ProcessStateSO> subStates)
+    public void UpdateStateInformation()
     {
-        if (_subStateMachine != null)
+        if (_currentMainState == null)
         {
-            _subStateMachine.ChangeSubStateList(subStates);
+            Debug.LogWarning("[MainProcessStateMachine] Step UI 용 데이터 획득 불가");
+            return;
         }
+        
+        var previous = _currentMainState.prevState;
+        stateViewData.prev.id = previous != null ? previous.StateID : -1; 
+        stateViewData.prev.name = previous != null ? previous.StateName : "None";
+        
+
+        var current = _currentMainState; 
+        stateViewData.current.id = current != null ? current.StateID : -1;
+        stateViewData.current.name = current != null ? current.StateName : "None";
+
+        var next = _currentMainState.nextState;
+        stateViewData.next.id = next != null ? next.StateID : -1;
+        stateViewData.next.name = next != null ? next.StateName : "None";
+    }
+
+    protected override void Register() => ServiceLocater.Register<IMainStateMachine>(this);
+    protected override void Unregister() =>  ServiceLocater.Unregister<IMainStateMachine>(this);
+    
+    [ContextMenu("테스트용 메인 상태 머신 실행")]
+    private void TestStateMachine()
+    {
+        SetCurrentMainState(GameDevProcName.HumanResources);
+        Run();
     }
 }

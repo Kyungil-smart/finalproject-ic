@@ -1,48 +1,24 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 using System.Collections;
 
 
 
-public class MainState : MonoBehaviour, IProcessState
+public class MainState : MonoBehaviour
 {
-    [Header("ÀÌ »óÅÂÀÇ SO")]
-    [field: SerializeField] public ProcessStateSO CurrentStateDataSO { get; private set; }   // ÇöÀç »óÅÂ
-
-    public event Action<IProcessState> OnStateFinished;
+    [Header("ì´ ìƒíƒœì˜ SO")]
+    [field: SerializeField] public ProcessStateSO CurrentStateDataSO { get; private set; }   // í˜„ì¬ ìƒíƒœ
 
 
-
-
-    public void Enter()
+    public void Enter(ProcessStateSO currentStateSO)
     {
-        Debug.Log($"[MainStateNew] : {CurrentStateDataSO.StateName} »óÅÂ ÁøÀÔ");
-        Execute();
+        CurrentStateDataSO = currentStateSO;
+        Debug.Log($"[MainStateNew] : {CurrentStateDataSO.StateName} ìƒíƒœ ì§„ì…");
     }
 
-    public void Execute()
-    {
-
-        // Exit();
-    }
 
     public void Exit()
     {
-        OnStateFinished?.Invoke(this);
+        CurrentStateDataSO = null;
     }
-
-    // Enter ½Ã ÀÚ½ÅÀÇ »óÅÂ¸¦ º¯°æ
-    public void ChangeMyState(ProcessStateSO newStateSO)
-    {
-        CurrentStateDataSO = newStateSO;
-    }
-
-    // ¿ÜºÎ¿¡¼­ È£Ãâ ½Ã ´ë»ó¿¡ »óÅÂ Àü´Ş
-    public ProcessStateSO ChangeMachineState()
-    {
-        return CurrentStateDataSO.nextState;
-    }
-
-
-
 }
