@@ -36,7 +36,7 @@ public class UITextManager : Manager, IUITextManager
     {
         foreach (var textType in _textTypes)
             _gSheetManagers.Add((textType.language, new GSheetManager(_gSheetId, textType.gid)));
-        
+        if (IsDataUpdated) return;
         UpdateUITextData();
     }
     

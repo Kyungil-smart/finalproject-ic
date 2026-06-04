@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 
 public interface IEventManager
 {
-    void InitEventIds(EventType eventType, List<string> ids);
-    UniTask OccurEvent(EventType eventType);
-    bool IsRunning { get; }
+    public UniTask OccurEvent(EventType evtType);
+    public void ResetRunId();
+    public bool IsRunning { get; }
 }

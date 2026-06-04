@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class LinkageEventTask : IEventTask
+public class RewardEventTaskRunner : IEventTaskRunner
 {
-    public void Init(List<string> ids)
+
+    public void SetEventData(EventTaskData taskData)
     {
-        
+        throw new System.NotImplementedException();
     }
 
     public UniTask Execute()
