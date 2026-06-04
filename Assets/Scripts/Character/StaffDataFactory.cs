@@ -11,49 +11,71 @@ using Cysharp.Threading.Tasks;
 /// </summary>
 public class StaffDataFactory
 {
-    // 고용된 스태프 ID 저장용 (중복 뽑기 방지)
-    private HashSet<int> _hiredStaffIDs = new HashSet<int>();
-
-    public async UniTask<StaffInitData> CreateRandomDataAsync(int playerLevel)
+    // 기존 무작위 가챠 생성 파이프라인. HashSet hiredIDs를 받아서 중복되지 않는 직원 중 랜덤 한명 선택 후 값 넣기
+    // 현재 사용 안하는 중.
+    public async UniTask<StaffInitData> CreateRandomDataAsync(int playerLevel, HashSet<int> hiredIDs)
     {
-        // 비동기 구조(가챠 연출 등) 유지를 위해 1프레임 대기.
         await UniTask.Yield(); 
         
+        var dataManager = ServiceLocater.Get<StaffDataManager>();
+        if (dataManager == null) return null;
+        
+        // 미고용 인원 추출 .
+        var availableStaff = dataManager.StaffList
+            .Where(s => hiredIDs == null || !hiredIDs.Contains(s.Staff_ID))
+            .ToList();
+        
+        if (availableStaff.Count == 0)
+        {
+            Debug.LogWarning("더 이상 고용할 직원이 없음 (남은 미고용자 0명)");
+            return null; 
+        }
+
+        // 미고용자 중 랜덤 1명 선택
+        var picked = availableStaff[Random.Range(0, availableStaff.Count)];
+
+        // 가챠로직은 아래 함수로
+        return await CreateDataByStaffIDAsync(picked.Staff_ID, playerLevel);
+    }
+
+    // 특정 StaffID를 지정해서 능력치 및 등급을 랜덤 결정하는 핵심 함수
+    // 지정된 한명의 능력치 및 등급을 랜덤 결정
+    public async UniTask<StaffInitData> CreateDataByStaffIDAsync(int staffID, int playerLevel)
+    {
+        // 비동기 구조 유지를 위해 1프레임 대기
+        await UniTask.Yield();
+
         var dataManager = ServiceLocater.Get<StaffDataManager>();
         if (dataManager == null)
         {
             Debug.LogError("ServiceLocater에서 StaffDataManager를 찾을 수 없습니다");
             return null;
         }
-        
-        StaffInitData data = new StaffInitData();
-        
-        // 직원 뽑기 (남은 인원 중 랜덤)
-        var availableStaff = dataManager.StaffList.Where(s => !_hiredStaffIDs.Contains(s.Staff_ID)).ToList();
-        
-        if (availableStaff.Count == 0)
+
+        // 전체 명부에서 지정된 ID의 Row 찾기
+        var pickedStaff = dataManager.StaffList.FirstOrDefault(s => s.Staff_ID == staffID);
+        if (pickedStaff == null)
         {
-            Debug.LogWarning("더 이상 고용할 직원이 없음.");
-            return null; 
+            Debug.LogError($"StaffList에서 ID {staffID}에 해당하는 기본 스태프 정보를 찾을 수 없습니다.");
+            return null;
         }
 
-        var pickedStaff = availableStaff[Random.Range(0, availableStaff.Count)];
-        _hiredStaffIDs.Add(pickedStaff.Staff_ID);
-
-        // 시트 데이터 매핑
+        StaffInitData data = new StaffInitData();
+        
+        // StaffID에 따른 시트 기본 정보 매핑  
         data.Staff_ID = pickedStaff.Staff_ID;
         data.Staff_Name = pickedStaff.Staff_Name;
         data.Job = ParseJobType(pickedStaff.Staff_Job);
-        data.Staff_Gender = (pickedStaff.Staff_Gender == "남");
-        data.Avatar_ID = Random.Range(1, 1000); // 3D 모델 연결용 임시값 (나중에 어드레서블 키 등으로 수정)
+        data.Staff_Gender = (pickedStaff.Staff_Gender == "남"); // String -> Bool
+        data.Avatar_ID = Random.Range(1, 1000); // 3D 모델 연결용 임시값
 
-        // 등급 결정 (시트 확률 기반)
+        // 등급 결정 (여기부턴 시트 결정 방식에 따른 랜덤 결정)
         GradeRow gradeData = RollGradeFromTable(dataManager);
         data.Grade = gradeData.GradeEnum; 
         data.DISC_Type = (DiscType)Random.Range(0, 4); 
-        data.Base_Career = 0; // 신입 기준 (나중에 기획에 맞게 스탯 수치에 비례하게 공식적용해서 수정)
+        data.Base_Career = 0; 
 
-        // 레벨별 스탯 구간 지정 (시트에 데이터 없으면 1레벨로)
+        // 레벨별 스탯 구간 지정
         LevelStatRow levelData = dataManager.LevelStatDict.ContainsKey(playerLevel) 
             ? dataManager.LevelStatDict[playerLevel] 
             : dataManager.LevelStatDict[1];
@@ -65,7 +87,7 @@ public class StaffDataFactory
         data.Base_Job_Development = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
         data.Base_Job_Art = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
 
-        // 등급 스탯 보너스(Grade_XP) 배율 적용
+        // 등급 스탯 보너스 배율 적용
         float gradeMultiplier = gradeData.Grade_XP;
         data.Base_Common_Concentration = Mathf.RoundToInt(data.Base_Common_Concentration * gradeMultiplier);
         data.Base_Common_Creativity = Mathf.RoundToInt(data.Base_Common_Creativity * gradeMultiplier);
@@ -78,9 +100,12 @@ public class StaffDataFactory
         int tagCountToDraw = Random.Range(gradeData.Tag_Min, gradeData.Tag_Max + 1);
         List<TagRow> pickedTags = dataManager.TagList.OrderBy(t => Random.value).Take(tagCountToDraw).ToList();
 
-        // 필터링된 리스트 중 랜덤으로 1개 뽑아서 ID 할당
+        // 고정 태그 유형 할당
         var type2Tags = dataManager.TagList.Where(t => t.Tag_Type == 2).ToList();
-        data.Fixed_Tag = type2Tags[Random.Range(0, type2Tags.Count)].Tag_Id; 
+        if (type2Tags.Count > 0)
+        {
+            data.Fixed_Tag = type2Tags[Random.Range(0, type2Tags.Count)].Tag_Id; 
+        }
 
         foreach (var tag in pickedTags)
         {
@@ -93,7 +118,9 @@ public class StaffDataFactory
 
         return data;
     }
-
+    
+    // -- 계산 관련 함수 -----------------
+    
     // 확률에 따른 등급 결정 (시트 데이터 기준)
     private GradeRow RollGradeFromTable(StaffDataManager dataManager)
     {

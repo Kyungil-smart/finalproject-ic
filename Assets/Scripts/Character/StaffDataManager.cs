@@ -12,11 +12,11 @@ public class StaffRow
 {
     public int Staff_ID;
     public string Staff_Name;
-    public string Staff_Name_ID; 
+    public string Staff_Name_ID; // 아직 시트에 값이 안들어가있음.
     public string Staff_Job;
-    public string Staff_Job_ID;  
+    public string Staff_Job_ID;  // 아직 시트에 값이 안들어가있음.
     public string Staff_Gender;
-    public string Staff_Gender_ID; 
+    public string Staff_Gender_ID; // 아직 시트에 값이 안들어가있음.
 }
 
 // 태그 읽기 테이블에서 파싱 
@@ -30,7 +30,7 @@ public class TagRow
     public string Tag_Desc_ID;     
     public string Tag_Desc;        
     public string Tag_A_Effect_ID; 
-    public string Tag_A_Effect_Name; // 태그의 효과는 A, B 두개까지 가질 수 있음. 
+    public string Tag_A_Effect_Name; // 태그의 효과는 A, B 두개 가질 수 있음. 
     public int Tag_A_Effect_Value;
     public float Tag_A_Effect_Ratio;
     public string Tag_B_Effect_ID; 
@@ -72,7 +72,7 @@ public class GradeRatioRow
     
     public StaffGrade GradeEnum => (StaffGrade)System.Enum.Parse(typeof(StaffGrade), Grade);
 }
-public class StaffDataManager : MonoBehaviour
+public class StaffDataManager : MonoBehaviour, IStaffCodex
 {
     [Header("구워진 SO들 (베이크 툴로 자동 연결)")]
     [SerializeField] private StaffDataSO staffDataSO;
@@ -82,7 +82,7 @@ public class StaffDataManager : MonoBehaviour
     [SerializeField] private GradeRatioDataSO gradeRatioDataSO;
     
     // 데이터들 파싱해서 저장
-    public List<StaffRow> StaffList = new List<StaffRow>();
+    public List<StaffRow> StaffList = new List<StaffRow>();  
     public List<TagRow> TagList = new List<TagRow>();
     public Dictionary<int, LevelStatRow> LevelStatDict = new Dictionary<int, LevelStatRow>();
     public List<GradeRow> GradeList = new List<GradeRow>();
@@ -138,8 +138,85 @@ public class StaffDataManager : MonoBehaviour
             this.LevelStatDict[stat.Level] = stat;
         }
 
-        Debug.Log("런타임 동기화 완료! 다음 액션부터 수정된 밸런싱이 즉시 적용됩니다.");
+        Debug.Log("런타임 동기화 완료. 다음 액션부터 수정된 밸런싱이 즉시 적용됩니다.");
     }
+    
+    
+
+    private void InitData()
+    {
+        if (staffDataSO != null) StaffList = staffDataSO.staffList;
+        if (tagDataSO != null) TagList = tagDataSO.tagList;
+        if (gradeDataSO != null) GradeList = gradeDataSO.gradeList;
+        
+        if (gradeRatioDataSO != null) 
+        {
+            GradeRatioDict.Clear();
+            foreach (var row in gradeRatioDataSO.ratioList)
+            {
+                if (!GradeRatioDict.ContainsKey(row.Level))
+                {
+                    GradeRatioDict[row.Level] = new List<GradeRatioRow>();
+                }
+                GradeRatioDict[row.Level].Add(row);
+            }
+        }
+        
+        if (levelStatDataSO != null)
+        {
+            LevelStatDict.Clear();
+            foreach (var stat in levelStatDataSO.levelStatList)
+            {
+                LevelStatDict[stat.Level] = stat;
+            }
+        }
+
+        Debug.Log($"모든 데이터 메모리 로드 완료 (스태프:{StaffList.Count}개, 태그:{TagList.Count}개, 레벨스탯:{LevelStatDict.Count}개, 등급:{GradeList.Count}개)");
+    }
+    
+    // 시트에서 받은 전체 스태프들 목록. 데이터 반환형식은 다른 UI 인터페이스와의 호환 을 생각해서 StaffViewData형식으로 작성.
+    public List<StaffViewData> GetAllStaffViewDataList()
+    {
+        List<StaffViewData> viewList = new List<StaffViewData>();
+
+        foreach (var row in StaffList)
+        {
+            StaffViewData viewData = new StaffViewData();
+
+            // 고정 신상 정보 매핑 (시트 원본 데이터)
+            viewData.Staff_ID = row.Staff_ID;
+            viewData.Staff_Name = row.Staff_Name;
+            viewData.Job_Name = row.Staff_Job;
+            viewData.Staff_Gender = (row.Staff_Gender == "남" || row.Staff_Gender == "Male");
+
+            // 가챠 전이므로 알 수 없는 데이터들은 도감같은 것들 용도로 기본값(??? 또는 0) 처리
+            viewData.Avatar_ID = 0; 
+            viewData.Grade = "???";
+            viewData.DISC_Type = "???";
+            
+            viewData.Current_State = "None";
+            viewData.Current_Level = 0;
+            viewData.Current_Exp = 0;
+            
+            viewData.Salary = 0;
+            viewData.Hire_Cost = 0;
+            
+            viewData.Final_Career = 0;
+            viewData.Final_Common_Concentration = 0;
+            viewData.Final_Common_Creativity = 0;
+            viewData.Final_Common_Communication = 0;
+            viewData.Final_Job_Planning = 0;
+            viewData.Final_Job_Development = 0;
+            viewData.Final_Job_Art = 0;
+            
+            viewData.All_Tags = new List<int>();
+
+            viewList.Add(viewData);
+        }
+
+        return viewList;
+    }
+    
     
     [ContextMenu("Load Data Test")]
     public void TestLoadData()
@@ -179,36 +256,5 @@ public class StaffDataManager : MonoBehaviour
             var tag = TagList[0];
             Debug.Log($"[태그 테스트] 태그명: {tag.Tag_Name} | 효과1: {tag.Tag_A_Effect_Name} (+{tag.Tag_A_Effect_Value})");
         }
-    }
-
-    private void InitData()
-    {
-        if (staffDataSO != null) StaffList = staffDataSO.staffList;
-        if (tagDataSO != null) TagList = tagDataSO.tagList;
-        if (gradeDataSO != null) GradeList = gradeDataSO.gradeList;
-        
-        if (gradeRatioDataSO != null) 
-        {
-            GradeRatioDict.Clear();
-            foreach (var row in gradeRatioDataSO.ratioList)
-            {
-                if (!GradeRatioDict.ContainsKey(row.Level))
-                {
-                    GradeRatioDict[row.Level] = new List<GradeRatioRow>();
-                }
-                GradeRatioDict[row.Level].Add(row);
-            }
-        }
-        
-        if (levelStatDataSO != null)
-        {
-            LevelStatDict.Clear();
-            foreach (var stat in levelStatDataSO.levelStatList)
-            {
-                LevelStatDict[stat.Level] = stat;
-            }
-        }
-
-        Debug.Log($"모든 데이터 메모리 로드 완료 (스태프:{StaffList.Count}개, 태그:{TagList.Count}개, 레벨스탯:{LevelStatDict.Count}개, 등급:{GradeList.Count}개)");
     }
 }
