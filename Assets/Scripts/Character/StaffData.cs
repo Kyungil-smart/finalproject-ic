@@ -11,7 +11,7 @@ using System.Collections.Generic;
 /// </summary>
 public enum JobType { Planner, Developer, Artist }
 public enum StaffGrade { D, C, B, A, S }
-public enum DiscType { D, I, S, C }
+public enum DiscType { D = 1, I = 2, S = 4, C = 8 }
 public enum StaffState { Idle, Working, Rest }
 
 [Serializable]

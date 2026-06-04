@@ -1,21 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using R3;
 using UnityEngine;
-
-[Serializable]
-public struct AssignedStaffData
-{
-    public int staffId;
-    public string name;
-    public JobType job;
-    public DiscType disc;
-    public int concetration;
-    public int creativity;
-    public int communication;
-    public int planning;
-    public int development;
-    public int art;
-}
 
 [Serializable]
 public struct NameTag
@@ -81,6 +67,7 @@ public class ProjectManager : Manager, IProjectManager
 {
     private ProjectData _projectData;
 
+    private List<int> _assignedStaff = new();
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
 
@@ -195,6 +182,22 @@ public class ProjectManager : Manager, IProjectManager
         data.income = _projectData.income;
         data.awardTextId = _projectData.award.textId;
         return data;
+    }
+
+    // 변동될수 있음
+    public void AssignStaff(int staffId)
+    {
+        _assignedStaff.Add(staffId);
+    }
+
+    public void ClearStaffs()
+    {
+        _assignedStaff.Clear();
+    }
+
+    public IReadOnlyList<int> GetAssignedStaff()
+    {
+        return _assignedStaff;
     }
 
     protected override void Register() => ServiceLocater.Register<IProjectManager>(this);
