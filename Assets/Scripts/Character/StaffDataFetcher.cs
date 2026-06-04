@@ -5,8 +5,8 @@ using Cysharp.Threading.Tasks;
 // 모바일/에디터 공용
 public class StaffDataFetcher
 {
-    private const string SHEET_ID = "1IuTAkokLxpxIBwdIwTID_xZ0_3VCJKKEjA1GAd2Q_ec";
-    private const string STAFF_GID = "0";
+    private const string SHEET_ID = "1IuTAkokLxpxIBwdIwTID_xZ0_3VCJKKEjA1GAd2Q_ec"; // 시트자체 ID 
+    private const string STAFF_GID = "0"; // 각 탭별 GID
     private const string TAG_GID = "708511556";
     private const string LEVEL_STAT_GID = "563784454";
     private const string GRADE_GID = "123973711";

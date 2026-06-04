@@ -1,6 +1,9 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-
+/// <summary>
+/// 스태프 데이터 빌딩 (빌드 패턴)
+/// StaffInitData, StaffRuntimeData, 에셋 넣어서 게임 오브젝트로 빌드 . 
+/// </summary>
 public class StaffBuilder
 {
     private StaffInitData _initData;
