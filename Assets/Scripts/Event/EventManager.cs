@@ -60,7 +60,7 @@ public class EventManager : Manager, IEventManager
         ServiceLocater.Unregister(this);
     }
     
-    public async UniTaskVoid OccurEvent(EventType type)
+    public async UniTask OccurEvent(EventType type)
     {
         if (!_eventTasks.TryGetValue(type, out var task)) return;
         // if (_running) CancelCurrentEvent();
