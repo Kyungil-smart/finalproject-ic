@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 
@@ -9,33 +10,45 @@ public class MarketingSelectionSubState : MonoBehaviour, IProcessState
     public event Action<IProcessState> OnStateFinished;
 
 
-
-
     public void Enter()
     {
         Debug.Log($"[MarketingSelectionSubState] : {CurrentStateDataSO.StateName} Sub 상태 진입");
+        // TODO : 11. 마케팅 시작
     }
 
-    public void Execute()
+    public async UniTask Execute()
     {
-
+        SelectMarketing();
+        WorkOnMarketing();
+        FinishMarketing();
     }
 
     public void Exit()
     {
         OnStateFinished?.Invoke(this);
+        // TODO : 11. 마케팅 종료
     }
 
-    // 아래는 서브 스테이트에서 현재 사용 안하나 확장 가능성 + 인터페이스 고려해 놔둠
-    // Enter 시 자신의 상태를 변경
-    public void ChangeMyState(ProcessStateSO newStateSO)
+    public void SelectMarketing()
     {
-        // CurrentStateDataSO = newStateSO;
+        Debug.Log($"[MarketingSelectionSubState] : 마케팅 선택");
+        // TODO : 마케팅 방식 선택
     }
 
-    // 외부에서 호출 시 대상에 상태 전달
-    public ProcessStateSO ChangeMachineState()
+    public void WorkOnMarketing()
     {
-        return null;
+        // TODO : 작업 진행 페이즈
+    }
+
+    public void FinishMarketing()
+    {
+        Debug.Log($"[MarketingSelectionSubState] : 마케팅 완료 및 산출");
+        // TODO : 마케팅 완료
+    }
+
+    public void CalculateMarketingResult()
+    {
+        Debug.Log($"[MarketingSelectionSubState] : 마케팅 완료 및 산출");
+        // TODO : 마케팅 효과 산출 및 저장
     }
 }
