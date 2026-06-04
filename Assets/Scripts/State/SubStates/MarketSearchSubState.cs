@@ -14,13 +14,11 @@ public class MarketSearchSubState : MonoBehaviour, IProcessState
     public void Enter()
     {
         Debug.Log($"[MarketSearchSubState] : {CurrentStateDataSO.StateName} Sub 상태 진입");
-        Execute();
     }
 
     public void Execute()
     {
 
-        Exit();
     }
 
     public void Exit()

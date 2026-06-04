@@ -19,3 +19,5 @@ MonoBehaviour:
   nextState: {fileID: 0}
   subStates: []
   IsLastSubStateFinished: 0
+  _hasEvent: 1
+  _eventType: 00000000

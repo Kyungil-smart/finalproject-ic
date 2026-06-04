@@ -15,8 +15,10 @@ MonoBehaviour:
   StateID: 1
   StateName: StaffManagingState
   IsSubState: 0
-  prevState: {fileID: 11400000, guid: 9fe348874e4683d48a4ccd49207e2d7b, type: 2}
+  prevState: {fileID: 0}
   nextState: {fileID: 11400000, guid: b49967aab8a6a0b4b8f65ee4683dabd5, type: 2}
   subStates:
   - {fileID: 11400000, guid: 9d9dfa53c88a02c40a0013bd2b47af22, type: 2}
   IsLastSubStateFinished: 0
+  _hasEvent: 0
+  _eventType: 

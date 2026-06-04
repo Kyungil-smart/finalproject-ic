@@ -9,18 +9,14 @@ public class StaffAssignmentSubState : MonoBehaviour, IProcessState
     public event Action<IProcessState> OnStateFinished;
 
 
-
-
     public void Enter()
     {
         Debug.Log($"[StaffAssignmentSubState] : {CurrentStateDataSO.StateName} Sub 상태 진입");
-        Execute();
     }
 
     public void Execute()
     {
 
-        Exit();
     }
 
     public void Exit()
