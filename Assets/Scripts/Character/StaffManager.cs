@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using Random = UnityEngine.Random;
 
+// 해당 클래스의 역할이 많은데 나중에 분리할 예정입니다 .
 public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IStaffRecruit
 {
     [Header("스태프 생성 설정")]
@@ -15,17 +18,42 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     
     // 세이브/로드용 고용된 리스트
     private List<StaffInitData> _hiredStaffList = new List<StaffInitData>();
-    private Dictionary<int, StaffRuntimeData> _hiredRuntimeDataDict = new Dictionary<int, StaffRuntimeData>(); // 런타임 데이터용. 키값은 StaffID
+    private Dictionary<int, StaffRuntimeData> _hiredRuntimeDataDict = new Dictionary<int, StaffRuntimeData>(); // 런타임 데이터용. 키값은 StaffInitData의 StaffID
+    
+    // 빌더로 실제로 완성된 게임 오브젝트들 저장하는 디셔너리. Key 값 = Staff_ID
+    // 나중에 _hiredStaffList의 StaffInitData랑 StaffEntity의 new StaffInitData 중복 선언된거 고치기. 
+    private Dictionary<int, StaffEntity> _spawnedEntities = new Dictionary<int, StaffEntity>();
     
     // 가챠 버튼 눌렀을 때 생성되어 UI 후보 리스트 창에 띄워질 실제 후보들 런타임 데이터
     private List<StaffInitData> _recruitCandidates = new List<StaffInitData>();
 
     private StaffDataFactory _dataFactory = new StaffDataFactory();
     
+    private void Awake()
+    {
+        // StaffManager 등록
+        ServiceLocater.Register<StaffManager>(this);
+        
+        // 연관 인터페이스로도 등록
+        ServiceLocater.Register<IStaffHireService>(this);
+        ServiceLocater.Register<IStaffRegister>(this);
+        ServiceLocater.Register<IStaffRecruit>(this);
+    }
+
+    private void OnDestroy()
+    {
+        ServiceLocater.Unregister<StaffManager>(this);
+        
+        ServiceLocater.Unregister<IStaffHireService>(this);
+        ServiceLocater.Unregister<IStaffRegister>(this);
+        ServiceLocater.Unregister<IStaffRecruit>(this);
+    }
+    
+    
     // 채용 프로세스 ----------------
     
     // ## 채용 1단계
-    // 카드 수에 채용 후보 리스트 생성 (가챠 UI 창 열거나 새로고침 시 호출)
+    // 카드 수만큼 채용 후보 리스트 생성 (가챠 UI 창 열거나 새로고침 시 호출)
     public async UniTask GenerateRecruitCandidatesAsync(int playerLevel, int cardCount) 
     {
         Debug.Log($"신규 채용 후보 {cardCount}명 생성 시작...");
@@ -82,7 +110,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     // 고용 버튼 눌렀을때 ViewList 중 해당 직원 뽑는 것은 UI쪽에서 처리? 
     
     // ## 채용 3단계
-    // 최종 계약 확정 (UI 목록에서 버튼을 눌러 채용할 때 사용)
+    // 최종 계약 확정 (UI 목록에서 버튼을 눌러 채용할 때 내부 데이터 업데이트 및 스태프 생성)
     public async UniTask ConfirmHireAsync(int targetStaffID)
     {
         // 채용 후보 리스트에 해당 사번이 실제로 대기 중인지 체크.
@@ -94,17 +122,34 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         }
         
 
-        // 후보 리스트에서 제거 후 정식 고용 리스트 및 딕셔너리로 이사
-        _recruitCandidates.Remove(targetData);
+        // 후보 리스트에서 제거 후 정식 고용 리스트 및 딕셔너리로 이사 
+        _recruitCandidates.Remove(targetData); 
         _hiredStaffList.Add(targetData);
-        _hiredRuntimeDataDict[targetData.Staff_ID] = new StaffRuntimeData();
-
+        for (int i = 0; i < _hiredStaffList.Count; i++)
+        {
+            //Debug.Log(_hiredStaffList[i].DISC_Type.ToString());
+        }
+        
+        
+        // runtimeData 새로만들어 넣어줘서 WithRuntimeData()에 매개변수로 클래스 참조로 대입하게 해서
+        // StaffEntity의 대이터와 StaffManager의 데이터 동기화 시킴.
+        StaffRuntimeData newRuntimeData = new StaffRuntimeData();
+        _hiredRuntimeDataDict[targetData.Staff_ID] = newRuntimeData; 
+        
         // 빌더 파이프라인으로 실제 캐릭터 프리팹 생성 및 배치
         IStaffInfo newStaff = await new StaffBuilder()
             .WithInitData(targetData)
+            .WithRuntimeData(newRuntimeData)
             .WithVisualAsset(tempCbtPrefab) 
             .BuildAsync(staffContainer);
-
+        
+        // 생성된 오브젝트 딕셔너리에 담기. 
+        if (newStaff is StaffEntity entity)
+        {
+            _spawnedEntities[targetData.Staff_ID] = entity;
+        }
+        
+        
         newStaff.DisplayInfo(); 
         if (((Component)newStaff).TryGetComponent(out IJobAction job))
         {
@@ -189,9 +234,35 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         Debug.Log("기존 직원 로드 및 씬 배치 완료");
     }
     
+    // 직원 해고 함수 (UI에서 해고 누를 시 함수 호출)
+    public void FireStaff(int targetStaffID)
+    {
+        // 고용 리스트에서 삭제.
+        _hiredStaffList.RemoveAll(x => x.Staff_ID == targetStaffID);
+        _hiredRuntimeDataDict.Remove(targetStaffID);
+        
+        // 오브젝트 삭제 및 오브젝트 딕셔너리에서 삭제.
+        if (_spawnedEntities.TryGetValue(targetStaffID, out StaffEntity targetEntity))
+        {
+            if (targetEntity != null)
+            {
+                Destroy(targetEntity.gameObject);
+            }
+            
+            _spawnedEntities.Remove(targetStaffID);
+        }
+        
+        // 재고용 불가 같은 것은 아직 고려하지 않음.(나중에 기획에 있으면 추가할 예정) 
+        
+        Debug.Log($"사번 ID: {targetStaffID}번 직원의 데이터와 3D 오브젝트가 제거완료.");
+    }
     
+    // -----ProjectManager 관련 함수 ---------
     
-    // IStaffRegister 구현: 고용된 직원 확인 기능
+    // IStaffRegister 구현: 고용된 직원 확인 기능 
+    // ProjectManager에서는 GetAllHiredStaffList로 모든 스태프의 StaffViewData를 받은 뒤에 작업 후(정보 볼때만 사용)
+    // StaffManager에 특정 사원의 Data를 업데이트 하는 경우 ServiceLocater에 등록된
+    // StaffManager.ModifyStaffData로 ID와 변경값을 넘겨줘서 변경.(값 변경 시 사용) 
     public List<StaffViewData> GetAllHiredStaffList()
     {
         List<StaffViewData> viewDataList = new List<StaffViewData>();
@@ -209,6 +280,57 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     
     
 
+    
+    // 상태변경 전용 함수. 
+    // Staff의 Current_State(Idle, Work)를 변경하여 고용된 직원의 상태를 변경.
+    // (Staff의 고용 상태변경할때만 사용 다른 데이터들은 바로 아래 함수 ModifyStaffData 를 사용해서 StaffManager의 Data 변경)
+    // 불필요시 삭제 예정.
+    public void ChangeStaffState(int targetStaffID, StaffState newState)
+    {
+        if (_hiredRuntimeDataDict.TryGetValue(targetStaffID, out var runtimeData))
+        {
+            runtimeData.Current_State = newState;
+            Debug.Log($"사번 {targetStaffID}번 직원이 {newState} 상태가 되었습니다.");
+            
+            // 애니메이션 처리? 
+        }
+        else
+        {
+            Debug.LogWarning("해당 직원을 찾을 수 없습니다.");
+        }
+    }
+    
+    // 특정 스태프의 아무 데이터나 변경시킬때 쓰는 범용 데이터 변경 함수.
+    // StaffID를 받아서 해당 스태프의 변경된 StaffRuntimeData 값을 StaffManager에 반영시켜주는 함수. (StaffInitData도 변경은 가능하게 설계) 
+    public void ModifyStaffData(int staffID, Action<StaffInitData, StaffRuntimeData> modifier)
+    {
+        //StaffID에 해당하는 InitData와 RuntimeData를 가져옴. (Init은 리스트, Runtime은 딕셔너리) 
+        var initData = _hiredStaffList.Find(x => x.Staff_ID == staffID);
+        if (initData != null && _hiredRuntimeDataDict.TryGetValue(staffID, out var runtimeData))
+        {
+            // 외부에서 넘겨준 수정 로직을 현재 StaffManager의 StaffID에 해당하는 사원의 initData, runtimeData에 반영. 
+            modifier?.Invoke(initData, runtimeData);
+            
+            // 오브젝트의 애니메이션 변경 등 나중에 필요시 추가. 
+            
+            Debug.Log($"{staffID}번 사원 데이터 통합 업데이트 완료");
+        }
+        else
+        {
+            Debug.LogWarning($"{staffID}번 직원을 찾을 수 없어 갱신에 실패했습니다.");
+        }
+        
+        // 해당 함수 사용법: 사용시 아래 코드 복붙 후 staffID에 실제 바꿀 스태프의 ID값을 넣고 람다식 안의 Data 수정할 부분만 바꿔주시면 됩니다.  
+        
+        // staffManager.ModifyStaffData(staffID, (StaffInitData initData, StaffRuntimeData runtimeData) => 
+        // {
+        //     runtimeData.Current_State = StaffState.Idle; // 해당 람다식 안에 데이터 수정할 부분만 넣어주시면 됩니다. 
+        //     runtimeData.Added_Common_Concentration += 30; // 여러 개 동시 변경 가능. 모든 데이터 수정 가능. 
+        //     // (InitData도 수정은 가능함)
+        // });
+    }
+    
+    // --------------------------
     
     
     // initData와 Runtime 데이터를 반영한 View용 StaffViewData 생성. 
@@ -255,8 +377,13 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
 
         return viewData;
     }
-
     // ------------------------------------------------------------------------
+    
+    
+    
+    
+    
+    
     // 컨텍스트 메뉴 테스트 코드
     [ContextMenu("직원 가챠 1회 테스트 (레벨 3고정)")]
     public void TestHireStaff()
@@ -300,5 +427,61 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         }
     }
     
+    
+    [ContextMenu("테스트 4: [동기화 검증] 첫 번째 직원 스탯 수정")]
+    public void ContextTest_Step4_ModifyData()
+    {
+        if (_hiredStaffList.Count == 0)
+        {
+            Debug.LogWarning("고용된 직원이 없습니다 컨텍스트 메뉴에있는 채용 1단계, 3단계를 먼저 실행해주세요.");
+            return;
+        }
+
+        // 고용된 첫 번째 직원의 사번 가져오기
+        int targetID = _hiredStaffList[0].Staff_ID;
+
+        // 씬에 스폰된 엔티티(3D 캐릭터)에서 직접 수정 전 데이터를 읽어옵니다.
+        int beforeConcentration = _spawnedEntities[targetID].GetTotalConcentration();
+        Debug.Log($"[수정 전] 사번 {targetID}의 집중력: {beforeConcentration}");
+
+        // 만능 수정 함수(ModifyStaffData)를 호출하여 데이터를 조작합니다.
+        ModifyStaffData(targetID, (init, runtime) => 
+        {
+            runtime.Added_Common_Concentration += 500; // 집중력 500 증가
+            runtime.Current_State = StaffState.Working; // 상태도 변경
+        });
+
+        // 엔티티를 다시 조회하여 값이 바뀌었는지 확인합니다.
+        int afterConcentration = _spawnedEntities[targetID].GetTotalConcentration();
+        Debug.Log($"[수정 후] 씬에 있는 캐릭터가 인식하는 집중력: {afterConcentration}");
+        
+        if (afterConcentration == beforeConcentration + 500)
+        {
+            Debug.Log("[성공] 매니저와 씬 오브젝트 간의 힙 메모리 동기화가 완벽하게 작동합니다");
+        }
+    }
+
+    [ContextMenu("테스트 5: 해고 검증 첫 번째 직원 해고")]
+    public void ContextTest_Step5_FireStaff()
+    {
+        if (_hiredStaffList.Count == 0)
+        {
+            Debug.LogWarning("고용된 직원이 없습니다.");
+            return;
+        }
+
+        int targetID = _hiredStaffList[0].Staff_ID;
+        
+        // 해고 함수 호출
+        FireStaff(targetID);
+
+        // 검증: 리스트에서 잘 지워졌는지, 씬에서 오브젝트가 날아갔는지 체크
+        Debug.Log($"남은 고용 인원 수: {_hiredStaffList.Count}명");
+        
+        if (_spawnedEntities.ContainsKey(targetID) == false)
+        {
+            Debug.Log("딕셔너리 및 씬의 3D 오브젝트가 깔끔하게 파괴되었습니다");
+        }
+    }
     
 }

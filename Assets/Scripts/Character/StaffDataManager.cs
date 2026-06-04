@@ -72,6 +72,10 @@ public class GradeRatioRow
     
     public StaffGrade GradeEnum => (StaffGrade)System.Enum.Parse(typeof(StaffGrade), Grade);
 }
+
+/// <summary>
+/// 스태프 원본 정보같은 시트의 내용을 꺼내볼 수 있게 들고 있는 역할
+/// </summary>
 public class StaffDataManager : MonoBehaviour, IStaffCodex
 {
     [Header("구워진 SO들 (베이크 툴로 자동 연결)")]
@@ -115,7 +119,7 @@ public class StaffDataManager : MonoBehaviour, IStaffCodex
         Debug.Log("런타임 실시간 데이터 동기화 시작...");
         
         StaffDataFetcher fetcher = new StaffDataFetcher();
-        var fetchedData = await fetcher.FetchAllDataAsync();
+        var fetchedData = await fetcher.FetchAllDataAsync(); //fetchedData에 시트에서 가져온 파싱값들 저장. 
 
         if (fetchedData == null) return;
 
