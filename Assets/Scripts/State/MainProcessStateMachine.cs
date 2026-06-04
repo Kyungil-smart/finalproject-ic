@@ -69,7 +69,7 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
     }
 
 
-    public void SetCurrentMainState(GameDevProcName stepName)
+    public UniTask SetCurrentMainState(GameDevProcName stepName)
     {
         foreach(var s in _mainStates)
         {
@@ -77,9 +77,10 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
             {
                 _currentMainState = s.stateSO;
                 UpdateStateInformation();
-                return;
+                return UniTask.CompletedTask;
             }          
         }
+        return UniTask.CompletedTask;
     }
 
     private GameDevProcName GetStateEnum(ProcessStateSO stateSO)
@@ -124,26 +125,21 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         // 현재 메인 상태 스크립트에게 다음 순환할 메인 상태 SO 데이터를 요구
         ProcessStateSO nextState = _currentMainState.nextState;
         
-        if (nextState != null)
+        if (nextState != null) ChangeState(nextState);
+        else SetCurrentMainState(GameDevProcName.HumanResources);
+        
+        if (!isTest)
         {
-            ChangeState(nextState);
-            if (!isTest)
+            SceneManager.LoadScene("MainScene");
+            UniTask.Void(async () =>
             {
-                SceneManager.LoadScene("MainScene");
-                UniTask.Void(async () =>
-                {
-                    await UniTask.WaitUntil(() => SceneManager.GetActiveScene().name == "MainScene");
-                    await UniTask.WaitUntil(() => ServiceLocater.Get<IMainUIReadyable>() != null);
-                    await UniTask.WaitUntil(() => ServiceLocater.Get<IMainUIReadyable>().IsReady);
-                    await UpdateStateInformation();
-                });
-            }
-            Debug.Log($"[MainProcessStateMachine] : 다음 메인 상태로 전환 - {_currentMainState.StateName}");
+                await UniTask.WaitUntil(() => SceneManager.GetActiveScene().name == "MainScene");
+                await UniTask.WaitUntil(() => ServiceLocater.Get<IMainUIReadyable>() != null);
+                await UniTask.WaitUntil(() => ServiceLocater.Get<IMainUIReadyable>().IsReady);
+                await UpdateStateInformation();
+            });
         }
-        else
-        {
-            Debug.LogError($"[MainProcessStateMachine] : 다음 메인 상태가 없음");
-        }
+        Debug.Log($"[MainProcessStateMachine] : 다음 메인 상태로 전환 - {_currentMainState.StateName}");
     }
 
 
