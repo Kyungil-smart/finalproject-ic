@@ -44,6 +44,10 @@ public class InGameBootstrap : MonoBehaviour, IBootStrap
         var candidates = GameObject.FindGameObjectsWithTag("ddolObject");
         if (candidates.Length > 1)
         {
+            foreach (Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
             Destroy(gameObject);
             return;
         }

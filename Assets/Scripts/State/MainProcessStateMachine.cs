@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using DataDispatcher;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Channel = DataDispatcher.Channel;
@@ -57,7 +58,8 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         {
             _subStateMachine.OnAllSubStatesFinished += HandleAllSubStatesFinished;
         }
-        _postManager =  ServiceLocater.Get<IPostManager>();
+        _postManager = ServiceLocater.Get<IPostManager>();
+        _postManager.Subscribe<bool, StateViewData>(Channel.ProcessUIUpdate, UpdateStateInformation);
     }
 
     private void OnDestroy()
@@ -75,7 +77,7 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
             if (s.name == stepName)
             {
                 _currentMainState = s.stateSO;
-                UpdateStateInformation();
+                UpdateStateInformation(true);
                 return UniTask.CompletedTask;
             }          
         }
@@ -100,22 +102,12 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         _currentMainState = nxSo;
         ServiceLocater.Get<IGameManager>().ChangeState(GetStateEnum(_currentMainState));
     }
-
-    private async UniTask ReadyToRunSubMachine()
-    {
-        await UniTask.WaitUntil(() => SceneManager.GetActiveScene().name == "ProcessScene");
-        await UniTask.WaitUntil(() => ServiceLocater.Get<IUIRouter>() != null);
-        await UniTask.WaitUntil(() => ServiceLocater.Get<IUIRouter>().IsCanvasConnected());
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
-        ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
-    }
     
     public void Run()
     {
         // 씬 넘어가고, 넘어간 후에 제대로 진행하도록 해야하네
         UniTask.Void(async () =>
         {
-            await ReadyToRunSubMachine();
             if(_currentMainState != null) await RunSubMachine();
             else Debug.LogError("[MainProcessStateMachine] Must set the current main state before running this machine.");
         });
@@ -137,12 +129,6 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
                 await UniTask.WaitUntil(() => ServiceLocater.Get<ISceneChanger>().GetCurrentSceneName() == "MainScene");
                 await UniTask.WaitUntil(() => ServiceLocater.Get<IMainUIReadyable>() != null);
                 await UniTask.WaitUntil(() => ServiceLocater.Get<IMainUIReadyable>().IsReady);
-                await UpdateStateInformation();
-                // 메인 씬으로 넘어 온 후 Loading 이 꺼지는 구간
-                await TaskAsync.WaitUntilOrThrowAsync(() => ServiceLocater.Get<IUIRouter>() != null);
-                await TaskAsync.WaitUntilOrThrowAsync(() => ServiceLocater.Get<IUIRouter>().IsCanvasConnected());
-                ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
-                ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
             });
         }
         Debug.Log($"[MainProcessStateMachine] : 다음 메인 상태로 전환 - {_currentMainState.StateName}");
@@ -157,12 +143,12 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
     }
 
 
-    public UniTask UpdateStateInformation()
+    public StateViewData UpdateStateInformation(bool dummy)
     {
         if (_currentMainState == null)
         {
             Debug.LogWarning("[MainProcessStateMachine] Step UI 용 데이터 획득 불가");
-            return UniTask.CompletedTask;
+            return new StateViewData();
         }
         
         var previous = _currentMainState.prevState;
@@ -176,14 +162,19 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         var next = _currentMainState.nextState;
         stateViewData.next.id = next != null ? next.StateID : -1;
         stateViewData.next.name = next != null ? next.StateName : "None";
-        
-        Debug.Log("[MainProcessStateMachine:UpdateStateInformation] Post Data");
-        _postManager.Post(Channel.ProcessUIUpdate, stateViewData);
-        return UniTask.CompletedTask;
+        return stateViewData;
     }
 
-    protected override void Register() => ServiceLocater.Register<IMainStateMachine>(this);
-    protected override void Unregister() =>  ServiceLocater.Unregister<IMainStateMachine>(this);
+    protected override void Register()
+    {
+        ServiceLocater.Register<IMainStateMachine>(this);
+    }
+
+    protected override void Unregister()
+    {
+        ServiceLocater.Unregister<IMainStateMachine>(this);
+        _postManager.Unsubscribe<bool, StateViewData>(Channel.ProcessUIUpdate, UpdateStateInformation);
+    }
     
     [ContextMenu("테스트용 메인 상태 머신 실행")]
     private void TestStateMachine()

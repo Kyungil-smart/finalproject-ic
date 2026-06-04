@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DataDispatcher;
 using R3;
 using TMPro;
@@ -7,6 +8,7 @@ using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Channel = DataDispatcher.Channel;
 
 /// <summary>
 /// Main Scene 에서 상시 뜨고 있어야 한다. 이벤트 성으로 UI 를 뛰워주는 것이 아니기 때문에 MonoBehaviour 로 충분히 대처.
@@ -58,10 +60,12 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         _gameManager = ServiceLocater.Get<IGameManager>();      
         _stateMachine = ServiceLocater.Get<IMainStateMachine>();
         _postManager = ServiceLocater.Get<IPostManager>();
+        var data = _postManager.Request<bool, StateViewData>(Channel.ProcessUIUpdate, true);
+        UpdateProcessData(data);
         UpdateGoldUI();
         UpdateDateUI();
-        _postManager.Subscribe<StateViewData>(Channel.ProcessUIUpdate, UpdateProcessData);
         _isReady = true;
+        CloseLoadingScreen().Forget();
     }
 
     private void OnDisable()
@@ -70,7 +74,6 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         lastProjectsButton.onClick.RemoveListener(OnClickViewLastProject);
         goNextProcessButton.onClick.RemoveListener(OnClickNextProcess);
         staffListButton.onClick.RemoveListener(OnClickViewStaffList);
-        _postManager.Unsubscribe<StateViewData>(Channel.ProcessUIUpdate, UpdateProcessData);
     }
     
     private void Initialize()
@@ -157,5 +160,11 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         // ToDo. Staff 로부터 Staff 데이터를 받을 수 있도록 요청하기.
         StaffListRenderData data = new();
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffUI, data);
+    }
+    
+    private async UniTaskVoid CloseLoadingScreen()
+    {   // ToDo. 임시 코드
+        await UniTask.WaitForSeconds(1f);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
     }
 }

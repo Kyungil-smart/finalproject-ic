@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
 
@@ -13,9 +14,11 @@ public class SceneChanger : Manager, ISceneChanger
     public void ChangeScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+        Debug.Log($"[SceneChanger] Change scene {_currentSceneName} => {sceneName}");
         UniTask.Void(async () =>
         {
             await UniTask.WaitUntil(() => SceneManager.GetSceneByName(sceneName).isLoaded);
+            _currentSceneName = sceneName;
             await TaskAsync.WaitUntilOrThrowAsync(() => ServiceLocater.Get<IUIRouter>() != null);
             await TaskAsync.WaitUntilOrThrowAsync(() => ServiceLocater.Get<IUIRouter>().IsCanvasConnected());
             await OpenLoadingPage();
@@ -24,6 +27,7 @@ public class SceneChanger : Manager, ISceneChanger
 
     private UniTask OpenLoadingPage()
     {
+        Debug.Log("[SceneChanger] Opening loading page");
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(true));
         return UniTask.CompletedTask;
     }
