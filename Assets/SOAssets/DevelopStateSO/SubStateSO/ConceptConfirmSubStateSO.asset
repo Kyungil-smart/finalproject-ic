@@ -20,4 +20,6 @@ MonoBehaviour:
   subStates: []
   IsLastSubStateFinished: 0
   _hasEvent: 1
-  _eventType: 00000000
+  _eventData:
+  - eventType: 2
+    occurRate: 100

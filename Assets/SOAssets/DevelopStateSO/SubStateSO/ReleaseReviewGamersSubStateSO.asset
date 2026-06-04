@@ -16,8 +16,10 @@ MonoBehaviour:
   StateName: ReleaseReviewGamersSubState
   IsSubState: 1
   prevState: {fileID: 0}
-  nextState: {fileID: 11400000, guid: 69c59756e3c2f3a42a5579eb8ceff4d1, type: 2}
+  nextState: {fileID: 0}
   subStates: []
   IsLastSubStateFinished: 0
   _hasEvent: 1
-  _eventType: 00000000
+  _eventData:
+  - eventType: 2
+    occurRate: 100

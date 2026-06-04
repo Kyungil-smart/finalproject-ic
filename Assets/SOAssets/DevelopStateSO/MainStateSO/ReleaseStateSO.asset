@@ -16,11 +16,11 @@ MonoBehaviour:
   StateName: ReleaseState
   IsSubState: 0
   prevState: {fileID: 11400000, guid: 21cd1334cd8340444935fbf1c3014d94, type: 2}
-  nextState: {fileID: 0}
+  nextState: {fileID: 11400000, guid: beaa3482265bf91459ae251713b57f57, type: 2}
   subStates:
   - {fileID: 11400000, guid: ab3cc07b1032312458732341ab240398, type: 2}
   - {fileID: 11400000, guid: 69c59756e3c2f3a42a5579eb8ceff4d1, type: 2}
   - {fileID: 11400000, guid: c6727bdc3c267fd4681fd450f58c325a, type: 2}
   IsLastSubStateFinished: 0
   _hasEvent: 0
-  _eventType: 
+  _eventData: []
