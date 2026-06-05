@@ -34,8 +34,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     
     private void Awake()
     {
-        // StaffManager 등록
-        ServiceLocater.Register<StaffManager>(this);
+        // ServiceLocater.Register<StaffManager>(this);
         
         // 연관 인터페이스로도 등록
         ServiceLocater.Register<IStaffHireService>(this);
@@ -45,7 +44,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
 
     private void OnDestroy()
     {
-        ServiceLocater.Unregister<StaffManager>(this);
+        // ServiceLocater.Unregister<StaffManager>(this);
         
         ServiceLocater.Unregister<IStaffHireService>(this);
         ServiceLocater.Unregister<IStaffRegister>(this);
