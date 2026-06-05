@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9388af536f6b5dc4686a519862a0863e, type: 3}
+  m_Name: LevelStatDataSO
+  m_EditorClassIdentifier: Assembly-CSharp::LevelStatDataSO
+  levelStatList:
+  - Level: 1
+    Common_Min: 20
+    Common_Max: 30
+    Job_Min: 20
+    Job_Max: 30
+  - Level: 2
+    Common_Min: 25
+    Common_Max: 35
+    Job_Min: 25
+    Job_Max: 35
+  - Level: 3
+    Common_Min: 30
+    Common_Max: 40
+    Job_Min: 30
+    Job_Max: 40
+  - Level: 4
+    Common_Min: 35
+    Common_Max: 45
+    Job_Min: 35
+    Job_Max: 45
+  - Level: 5
+    Common_Min: 40
+    Common_Max: 50
+    Job_Min: 40
+    Job_Max: 50
+  - Level: 6
+    Common_Min: 45
+    Common_Max: 55
+    Job_Min: 45
+    Job_Max: 55
+  - Level: 7
+    Common_Min: 50
+    Common_Max: 60
+    Job_Min: 50
+    Job_Max: 60
+  - Level: 8
+    Common_Min: 55
+    Common_Max: 65
+    Job_Min: 55
+    Job_Max: 65
+  - Level: 9
+    Common_Min: 60
+    Common_Max: 70
+    Job_Min: 60
+    Job_Max: 70
+  - Level: 10
+    Common_Min: 65
+    Common_Max: 75
+    Job_Min: 65
+    Job_Max: 75
+  - Level: 11
+    Common_Min: 70
+    Common_Max: 80
+    Job_Min: 70
+    Job_Max: 80
+  - Level: 12
+    Common_Min: 75
+    Common_Max: 85
+    Job_Min: 75
+    Job_Max: 85
+  - Level: 13
+    Common_Min: 80
+    Common_Max: 90
+    Job_Min: 80
+    Job_Max: 90
+  - Level: 14
+    Common_Min: 85
+    Common_Max: 95
+    Job_Min: 85
+    Job_Max: 95
+  - Level: 15
+    Common_Min: 90
+    Common_Max: 100
+    Job_Min: 90
+    Job_Max: 100

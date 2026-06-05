@@ -1,0 +1,56 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public static class ServiceLocater 
+{
+    private static readonly Dictionary<Type, object> _services = new ();
+
+    // 서비스 등록
+    public static void Register<T>(T service)
+    {
+        var type = typeof(T);
+        _services.TryAdd(type, service);
+    }
+
+    // 서비스 해제
+    public static void Unregister<T>(T service)
+    {
+        var type = typeof(T);
+        if (_services.TryGetValue(type, out var current) && ReferenceEquals(current, service))
+        {
+            _services.Remove(type);
+        }
+    }
+    
+    public static void Unregister<T>()
+    {   // pure class 에서만 진행
+        var type = typeof(T);
+        if (_services.TryGetValue(type, out var current))
+        {
+            if (current is IDisposable disposable) disposable.Dispose();
+            _services.Remove(type);
+        }
+    }
+    
+    // 서비스 획득
+    public static T Get<T>()
+    {
+        var type = typeof(T);
+        if (_services.TryGetValue(type, out var service))
+        {
+            return (T)service;
+        }
+        return default;
+    }
+
+    public static void PrintServices()
+    {
+        Debug.Log("------- `Service Locator` Service List ------");
+        foreach (var (key, value) in _services)
+        {
+            Debug.Log($"{key}:\t{value}");
+        }
+        Debug.Log("----------------------------------------------");
+    }
+}

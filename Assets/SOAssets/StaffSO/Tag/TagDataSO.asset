@@ -1,0 +1,155 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee05f62820077fb4eaf80c2ed19465ca, type: 3}
+  m_Name: TagDataSO
+  m_EditorClassIdentifier: Assembly-CSharp::TagDataSO
+  tagList:
+  - Tag_Id: 20001
+    Tag_Type: 1
+    Tag_Name: "\uC9D1\uC911\uB825 \uAC15\uD654"
+    Tag_Name_ID: 
+    Tag_Desc_ID: 
+    Tag_Desc: "\uD0DC\uADF8 \uC124\uBA85"
+    Tag_A_Effect_ID: "\uD6A8\uACFC A \uD55C\uAE00 ID"
+    Tag_A_Effect_Name: Staff_Concentration
+    Tag_A_Effect_Value: 5
+    Tag_A_Effect_Ratio: 1
+    Tag_B_Effect_ID: "\uD6A8\uACFC B \uD55C\uAE00 ID"
+    Tag_B_Effect_Name: Staff_Effect_None
+    Tag_B_Effect_Value: 0
+    Tag_B_Effect_Ratio: 1
+  - Tag_Id: 20002
+    Tag_Type: 1
+    Tag_Name: "\uCC3D\uC758\uC801 \uBC1C\uC0C1"
+    Tag_Name_ID: 
+    Tag_Desc_ID: 
+    Tag_Desc: 
+    Tag_A_Effect_ID: 
+    Tag_A_Effect_Name: Staff_Creativity
+    Tag_A_Effect_Value: 5
+    Tag_A_Effect_Ratio: 1
+    Tag_B_Effect_ID: 
+    Tag_B_Effect_Name: Staff_Effect_None
+    Tag_B_Effect_Value: 0
+    Tag_B_Effect_Ratio: 1
+  - Tag_Id: 20003
+    Tag_Type: 1
+    Tag_Name: "\uC18C\uD1B5 \uB9C8\uC2A4\uD130"
+    Tag_Name_ID: 
+    Tag_Desc_ID: 
+    Tag_Desc: 
+    Tag_A_Effect_ID: 
+    Tag_A_Effect_Name: Staff_Communication
+    Tag_A_Effect_Value: 5
+    Tag_A_Effect_Ratio: 1
+    Tag_B_Effect_ID: 
+    Tag_B_Effect_Name: Staff_Effect_None
+    Tag_B_Effect_Value: 0
+    Tag_B_Effect_Ratio: 1
+  - Tag_Id: 20004
+    Tag_Type: 1
+    Tag_Name: "\uC57C\uADFC \uB0B4\uC131"
+    Tag_Name_ID: 
+    Tag_Desc_ID: 
+    Tag_Desc: 
+    Tag_A_Effect_ID: 
+    Tag_A_Effect_Name: Staff_Concentration
+    Tag_A_Effect_Value: 3
+    Tag_A_Effect_Ratio: 1
+    Tag_B_Effect_ID: 
+    Tag_B_Effect_Name: Staff_Dev
+    Tag_B_Effect_Value: 2
+    Tag_B_Effect_Ratio: 1
+  - Tag_Id: 20005
+    Tag_Type: 1
+    Tag_Name: "\uC644\uBCBD\uC8FC\uC758\uC790"
+    Tag_Name_ID: 
+    Tag_Desc_ID: 
+    Tag_Desc: 
+    Tag_A_Effect_ID: 
+    Tag_A_Effect_Name: Staff_Design
+    Tag_A_Effect_Value: 4
+    Tag_A_Effect_Ratio: 1
+    Tag_B_Effect_ID: 
+    Tag_B_Effect_Name: Staff_Concentration
+    Tag_B_Effect_Value: 2
+    Tag_B_Effect_Ratio: 1
+  - Tag_Id: 20006
+    Tag_Type: 1
+    Tag_Name: "\uB3C5\uBD88\uC7A5\uAD70"
+    Tag_Name_ID: 
+    Tag_Desc_ID: 
+    Tag_Desc: 
+    Tag_A_Effect_ID: 
+    Tag_A_Effect_Name: Staff_Design
+    Tag_A_Effect_Value: 6
+    Tag_A_Effect_Ratio: 1
+    Tag_B_Effect_ID: 
+    Tag_B_Effect_Name: Staff_Communication
+    Tag_B_Effect_Value: -2
+    Tag_B_Effect_Ratio: 1
+  - Tag_Id: 20007
+    Tag_Type: 1
+    Tag_Name: "\uBE60\uB978 \uD559\uC2B5\uC790"
+    Tag_Name_ID: 
+    Tag_Desc_ID: 
+    Tag_Desc: 
+    Tag_A_Effect_ID: 
+    Tag_A_Effect_Name: Staff_Creativity
+    Tag_A_Effect_Value: 0
+    Tag_A_Effect_Ratio: 1.1
+    Tag_B_Effect_ID: 
+    Tag_B_Effect_Name: Staff_Dev
+    Tag_B_Effect_Value: 2
+    Tag_B_Effect_Ratio: 1
+  - Tag_Id: 20008
+    Tag_Type: 1
+    Tag_Name: "\uAE30\uD68D \uCC9C\uC7AC"
+    Tag_Name_ID: 
+    Tag_Desc_ID: 
+    Tag_Desc: 
+    Tag_A_Effect_ID: 
+    Tag_A_Effect_Name: Staff_Design
+    Tag_A_Effect_Value: 0
+    Tag_A_Effect_Ratio: 1.15
+    Tag_B_Effect_ID: 
+    Tag_B_Effect_Name: Staff_Concentration
+    Tag_B_Effect_Value: 0
+    Tag_B_Effect_Ratio: 0.95
+  - Tag_Id: 21001
+    Tag_Type: 2
+    Tag_Name: "\uC544\uC774\uB514\uC5B4\uD615"
+    Tag_Name_ID: 
+    Tag_Desc_ID: 
+    Tag_Desc: 
+    Tag_A_Effect_ID: 
+    Tag_A_Effect_Name: Staff_Creativity
+    Tag_A_Effect_Value: 0
+    Tag_A_Effect_Ratio: 1.1
+    Tag_B_Effect_ID: 
+    Tag_B_Effect_Name: Staff_Communication
+    Tag_B_Effect_Value: 2
+    Tag_B_Effect_Ratio: 1
+  - Tag_Id: 21002
+    Tag_Type: 2
+    Tag_Name: "\uBD84\uC11D\uD615"
+    Tag_Name_ID: 
+    Tag_Desc_ID: 
+    Tag_Desc: 
+    Tag_A_Effect_ID: 
+    Tag_A_Effect_Name: Staff_Design
+    Tag_A_Effect_Value: 0
+    Tag_A_Effect_Ratio: 1.05
+    Tag_B_Effect_ID: 
+    Tag_B_Effect_Name: Staff_Dev
+    Tag_B_Effect_Value: 0
+    Tag_B_Effect_Ratio: 1.05
