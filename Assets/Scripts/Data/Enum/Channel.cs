@@ -7,5 +7,6 @@
         GetUIText,
         EventAgree,
         EventDisagree,
+        ProcessUIUpdate
     }
 }

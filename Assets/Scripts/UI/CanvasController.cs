@@ -18,22 +18,9 @@ public class CanvasController : MonoBehaviour, ICanvasController
         
     private async UniTaskVoid Initialize()
     {
-        bool bootstrapComplete = false;
-        for (int i = 0; i < 10; i++)
-        {
-            var sl = ServiceLocater.Get<IBootStrap>();
-            if (sl == null)
-                await UniTask.WaitForSeconds(0.2f);
-            else if (sl.IsCompleted)
-            {
-                bootstrapComplete = true;
-                break;
-            }
-        }
-        if (bootstrapComplete)
-            ServiceLocater.Get<IUIRouter>().ConnectCanvasController(this);
-        else
-            Debug.LogError("[UIRouter] Could not connect CanvasController to UIRouter");
+        await UniTask.WaitUntil(() => ServiceLocater.Get<IBootStrap>() != null);
+        await UniTask.WaitUntil(() => ServiceLocater.Get<IUIRouter>() != null);
+        ServiceLocater.Get<IUIRouter>().ConnectCanvasController(this);
     }
 
     private void OnDisable()
@@ -54,7 +41,8 @@ public class CanvasController : MonoBehaviour, ICanvasController
 
     public void DisableCurrentCanvas()
     {
-        _currentEnableCanvas.uiCanvas.gameObject.SetActive(false);
+        if (_currentEnableCanvas != null && _currentEnableCanvas.uiCanvas != null)
+            _currentEnableCanvas.uiCanvas.gameObject.SetActive(false);
         _currentEnableCanvas = null;
     }
 }

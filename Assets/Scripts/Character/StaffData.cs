@@ -12,7 +12,7 @@ using System.Collections.Generic;
 public enum JobType { Planner, Developer, Artist }
 public enum StaffGrade { D, C, B, A, S }
 public enum DiscType { D, I, S, C }
-public enum StaffState { Idle, Working, Rest }
+public enum StaffState { Idle, Working, Rest } //Rest는 제거. 이것으로 고용된 인원중 프로젝트에 투입할 수 있는 인원 확인. 
 
 [Serializable]
 public class StaffInitData
@@ -51,7 +51,7 @@ public class StaffInitData
 [Serializable]
 public class StaffRuntimeData
 {
-    public StaffState Current_State = StaffState.Idle;
+    public StaffState Current_State = StaffState.Idle; // 프로젝트에 투입되었는지. 
     public int Current_Level = 1;
     public int Current_Exp = 0;
     

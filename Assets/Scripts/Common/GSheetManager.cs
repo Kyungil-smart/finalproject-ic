@@ -41,7 +41,7 @@ public class GSheetManager : IGsheetManager
         {
             string csvString = request.downloadHandler.text;
             string[] lines = csvString.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
-            
+            Debug.Log($"[GSheetManager] Download Success => {lines.Length}");
             // Header
             string[] headers = lines[0].Split(",");
             

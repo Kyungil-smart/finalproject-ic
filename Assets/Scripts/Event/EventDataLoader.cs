@@ -3,83 +3,74 @@ using UnityEngine;
 
 public class EventDataLoader
 {
-    private Dictionary<int, EventData> _eventData = new();
+    public EventTaskSO staffTaskSO;
+    public EventTaskSO regularTaskSO;
+    public EventTaskSO linkageTaskSO;
+    public EventTaskSO rewardTaskSO;
+
+    private void ClearData()
+    {
+        staffTaskSO.tasks.Clear();
+        regularTaskSO.tasks.Clear();
+        linkageTaskSO.tasks.Clear();
+        rewardTaskSO.tasks.Clear();
+    }
+    
     public void LoadEvent(GSheetManager gsheet)
     {
+        ClearData();
         var data = gsheet.GetData();
-
-        var staffIds = new List<string>();
-        var linkageIds = new List<string>();
-        var regularIds = new List<string>();
-        var rewardIds = new List<string>();
-        
+        Debug.Log($"[EventDataLoader] Download items => {data.Count}");
         foreach (var row in data)
         {
-            var eventData = new EventData
+            EventButtonData eventAButton = new()
             {
-                EventId = (int)float.Parse(row["Event_ID"]),
-                MainTextId = (int)float.Parse(row["Event_Title_ID"]),
-                DescId = (int)float.Parse(row["Event_Desc_ID"]),
-                Buttons = new List<ButtonData>
+                textId = int.Parse(row["Btn_A_Txt_ID"]),
+                target = row["Btn_A_Target"],
+                effectValue = int.Parse(row["Btn_A_Effect_Value"]),
+                effectRatio = float.Parse(row["Btn_A_Effect_Ratio"])
+            };
+
+            EventButtonData eventBButton = new()
+            {
+                textId = int.Parse(row["Btn_B_Txt_ID"]),
+                target = row["Btn_B_Target"],
+                effectValue = int.Parse(row["Btn_B_Effect_Value"]),
+                effectRatio = float.Parse(row["Btn_B_Effect_Ratio"])
+            };
+
+            EventButtonData eventCButton = new()
+            {
+                textId = int.Parse(row["Btn_C_Txt_ID"]),
+                target = row["Btn_C_Target"],
+                effectValue = int.Parse(row["Btn_C_Effect_Value"]),
+                effectRatio = float.Parse(row["Btn_C_Effect_Ratio"])
+            };
+
+            EventTaskData taskData = new()
+            {
+                id = int.Parse(row["Event_ID"]),
+                titleTextId = int.Parse(row["Event_Title_ID"]),
+                descTextId = int.Parse(row["Event_Desc_ID"]),
+                buttons = new List<EventButtonData>
                 {
-                    new ButtonData
-                    {
-                        TxtId = (int)float.Parse(row["Btn_A_Txt_ID"]),
-                        Target = row["Btn_A_Target"],
-                        EffectValue = int.Parse(row["Btn_A_Effect_Value"]),
-                        EffectRatio = float.Parse(row["Btn_A_Effect_Ratio"]),
-                    },
-                    new ButtonData
-                    {
-                        TxtId = (int)float.Parse(row["Btn_B_Txt_ID"]),
-                        Target = row["Btn_B_Target"],
-                        EffectValue = int.Parse(row["Btn_B_Effect_Value"]),
-                        EffectRatio = float.Parse(row["Btn_B_Effect_Ratio"]),
-                    },
-                    new ButtonData
-                    {
-                        TxtId = (int)float.Parse(row["Btn_C_Txt_ID"]),
-                        Target = row["Btn_C_Target"],
-                        EffectValue = int.Parse(row["Btn_C_Effect_Value"]),
-                        EffectRatio = float.Parse(row["Btn_C_Effect_Ratio"]),
-                    }
+                    eventAButton,
+                    eventBButton,
+                    eventCButton
                 }
             };
-            
-            _eventData[eventData.EventId] = eventData;
-            var id = eventData.EventId;
-            if (id > 31000 && id < 32001) staffIds.Add(id.ToString());
-            else if (id > 32000 && id < 33001) linkageIds.Add(id.ToString());
-            else if (id > 33000 && id < 34001) regularIds.Add(id.ToString());
-            else if (id > 34000 && id < 35001) rewardIds.Add(id.ToString());
+
+            if (taskData.id >= 31000 && taskData.id < 32000) staffTaskSO.tasks.Add(taskData);
+            else if (taskData.id >= 32000 && taskData.id < 33000) linkageTaskSO.tasks.Add(taskData);
+            else if (taskData.id >= 33000 && taskData.id < 34000) regularTaskSO.tasks.Add(taskData);
+            else if (taskData.id >= 34000 && taskData.id < 35000) rewardTaskSO.tasks.Add(taskData);
         }
         
         ServiceLocater.Register(this);
-        Debug.Log($"Load {_eventData.Count}");
-        Debug.Log($"Staff:{staffIds.Count} Linkage:{linkageIds.Count} Regular:{regularIds.Count} Reward:{rewardIds.Count}");
-        var eventManager = ServiceLocater.Get<IEventManager>();
-        eventManager.InitEventIds(EventType.Staff, staffIds);
-        eventManager.InitEventIds(EventType.Linkage, linkageIds);
-        eventManager.InitEventIds(EventType.Regular, regularIds);
-        eventManager.InitEventIds(EventType.Reward, rewardIds);
-        Debug.Log($"이벤트 매니저등록 완료");
+        Debug.Log($"[EventDataLoader] Load - StaffTask: {staffTaskSO.tasks.Count}");
+        Debug.Log($"[EventDataLoader] Load - LinkageTask: {linkageTaskSO.tasks.Count}");
+        Debug.Log($"[EventDataLoader] Load - RegularTask: {regularTaskSO.tasks.Count}");
+        Debug.Log($"[EventDataLoader] Load - RewardTask: {rewardTaskSO.tasks.Count}");
+        Debug.Log($"[EventDataLoader] Complete load and save the event to ScriptableObject.");
     }
-
-    public EventData GetEventData(int eventId) => _eventData.TryGetValue(eventId, out var data) ? data : null;
-}
-
-public class EventData
-{
-    public int EventId;
-    public int MainTextId;
-    public int DescId;
-    public List<ButtonData> Buttons = new();
-}
-
-public class ButtonData
-{
-    public int TxtId;
-    public string Target;
-    public int EffectValue;
-    public float EffectRatio;
 }
