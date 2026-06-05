@@ -75,6 +75,8 @@ public class GradeRatioRow
 
 /// <summary>
 /// 스태프 원본 정보같은 시트의 내용을 꺼내볼 수 있게 들고 있는 역할
+/// 시작 시에는 SO의 데이터를 참조해서 시트의 전체 내용을 가져오고. (InitData)
+/// 나중에 런타임 중에는 구글 시트에서 바로 가져옴. (아직 런타임 중 SO에 저장은 구현 X, SyncDataFromSheetAsync)
 /// </summary>
 public class StaffDataManager : MonoBehaviour, IStaffCodex
 {
@@ -85,7 +87,7 @@ public class StaffDataManager : MonoBehaviour, IStaffCodex
     [SerializeField] private GradeDataSO gradeDataSO;
     [SerializeField] private GradeRatioDataSO gradeRatioDataSO;
     
-    // 데이터들 파싱해서 저장
+    // 데이터들 파싱해서 저장. 이 리스트, 딕셔너리 들에 시트의 내용들 전체 저장. 
     public List<StaffRow> StaffList = new List<StaffRow>();  
     public List<TagRow> TagList = new List<TagRow>();
     public Dictionary<int, LevelStatRow> LevelStatDict = new Dictionary<int, LevelStatRow>();
@@ -114,6 +116,8 @@ public class StaffDataManager : MonoBehaviour, IStaffCodex
         SyncDataFromSheetAsync().Forget();
     }
 
+    // 초기 데이터는 SO에서 가져오고 실시간 데이터는 시트에서 StaffDataFetcher를 통해서 가져옴.
+    // SO에 저장은 아직 안하는 중. 변경하려면 #if UnityEditor 전처리 기문을 사용해야 해서 아직은 고민중.  
     private async UniTaskVoid SyncDataFromSheetAsync()
     {
         Debug.Log("런타임 실시간 데이터 동기화 시작...");
