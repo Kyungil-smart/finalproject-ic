@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using DataDispatcher;
 using R3;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Channel = DataDispatcher.Channel;
 
@@ -156,14 +153,18 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     
     private void OnClickViewStaffList()
     {
-        // ToDo. Staff 로부터 Staff 데이터를 받을 수 있도록 요청하기.
-        StaffListRenderData data = new();
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffUI, data);
+        StaffDetailRenderData data = new()
+        {
+            btnCallback = ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas,
+            staffDataList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList()
+        };
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.SlideUI, data);
     }
     
     private async UniTaskVoid CloseLoadingScreen()
     {   // ToDo. 임시 코드
         await UniTask.WaitForSeconds(1f);
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
+        ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
     }
 }

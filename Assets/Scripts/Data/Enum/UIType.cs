@@ -7,4 +7,5 @@
     LastProjectUI,
     StaffUI,
     LoadingUI,
+    SlideUI,
 }
