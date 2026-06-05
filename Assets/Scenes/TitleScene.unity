@@ -163,11 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 747e0159b0183684ca2143dd243adc39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffDataManager
-  staffDataSO: {fileID: 0}
-  tagDataSO: {fileID: 0}
-  levelStatDataSO: {fileID: 0}
-  gradeDataSO: {fileID: 0}
-  gradeRatioDataSO: {fileID: 0}
+  staffDataSO: {fileID: 11400000, guid: db5913b1dc1e10642b2daf11f57825a2, type: 2}
+  tagDataSO: {fileID: 11400000, guid: 350758774ab5cbe4699c36e4bffc2b6f, type: 2}
+  levelStatDataSO: {fileID: 11400000, guid: b38c33bdf8250354090cad38daf37ce7, type: 2}
+  gradeDataSO: {fileID: 11400000, guid: 55bb41d1187ee73449fcf2217638c850, type: 2}
+  gradeRatioDataSO: {fileID: 11400000, guid: 0be8d7be790763f4b964e8dd674f25e8, type: 2}
   StaffList: []
   TagList: []
   GradeList: []
@@ -721,7 +721,6 @@ Transform:
   - {fileID: 1220461253}
   - {fileID: 1708940382}
   - {fileID: 30760900}
-  - {fileID: 1669965582}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &742315640
@@ -1384,37 +1383,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0adc9b657b8a41e68c4cbcf38c1496ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectManager
---- !u!1 &1669965581
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1669965582}
-  m_Layer: 0
-  m_Name: Staffs
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1669965582
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1669965581}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 300.48502, y: 610.09143, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 620550707}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1708940381
 GameObject:
   m_ObjectHideFlags: 0
@@ -1459,7 +1427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f053c764f203f343914f6baaa518a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffManager
-  staffContainer: {fileID: 1669965582}
+  staffContainer: {fileID: 1708940382}
   tempCbtPrefab: {fileID: 7873112891841811078, guid: b2fcf728ef76d2d46b3db3e792b1418d, type: 3}
 --- !u!1 &1872334541
 GameObject:

@@ -58,7 +58,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     // 카드 수만큼 채용 후보 리스트 생성 (가챠 UI 창 열거나 새로고침 시 호출)
     public async UniTask GenerateRecruitCandidatesAsync(int playerLevel, int cardCount) 
     {
-        Debug.Log($"신규 채용 후보 {cardCount}명 생성 시작...");
+        Debug.Log($"[StaffManager] 신규 채용 후보 {cardCount}명 생성 시작...");
         _recruitCandidates.Clear(); // 이전 후보 데이터 초기화
 
         var dataManager = ServiceLocater.Get<StaffDataManager>();
@@ -70,7 +70,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
 
         if (unhiredRows.Count == 0)
         {
-            Debug.LogWarning("더 이상 가챠로 뽑을 수 있는 미고용 스태프가 원본 데이터에 없습니다.");
+            Debug.LogWarning("[StaffManager] 더 이상 가챠로 뽑을 수 있는 미고용 스태프가 원본 데이터에 없습니다.");
             return;
         }
 
@@ -87,7 +87,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
             }
         }
 
-        Debug.Log($"채용 후보 데이터 {_recruitCandidates.Count}명 확정 셋팅 완료.");
+        Debug.Log($"[StaffManager] 채용 후보 데이터 {_recruitCandidates.Count}명 확정 셋팅 완료.");
     }
     
     // ## 채용 2단계 

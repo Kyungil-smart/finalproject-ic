@@ -17,6 +17,7 @@ public class GameManager : Manager, IGameManager
     public ReadOnlyReactiveProperty<DateTime> Date => _date;
     public IReadOnlyList<ProjectData> Projects => _projects;
     public ReadOnlyReactiveProperty<GameDevProcName> ProcName => _procName;
+    public int SlotNum { get; set; }
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
