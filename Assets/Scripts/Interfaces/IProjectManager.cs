@@ -1,4 +1,6 @@
-﻿public interface IProjectManager
+﻿using System.Collections.Generic;
+
+public interface IProjectManager
 {
     // Data Update Part
     public float TotalQuality { get; }
@@ -16,4 +18,9 @@
     public void LoadProject(string jsonData);
     public string ToJsonData();
     public ProjectData GetProjectData();
+    
+    // Staff Part
+    public void AssignStaff(int staffId);
+    public void ClearStaffs();
+    public IReadOnlyList<int> GetAssignedStaff();
 }
