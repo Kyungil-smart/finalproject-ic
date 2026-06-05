@@ -158,6 +158,19 @@ public class EventManager : Manager, IEventManager
         }
     }
 
+    private Synergy GetSynergy()
+    {
+        var assignedIds = ServiceLocater.Get<IProjectManager>().GetAssignedStaff();
+        // Todo. assignedIds로 DISC값 조회 및 계산
+        int discSum = 0;
+
+        return discSum switch
+        {
+            // Todo. 기획쪽에서 아직 어디서부터 어디까지 좋고 나쁜시너지인지 안나옴.
+            _ => Synergy.Normal
+        };
+    }
+    
     [ContextMenu("데이터 다운로드")]
     private void DataDownload()
     {

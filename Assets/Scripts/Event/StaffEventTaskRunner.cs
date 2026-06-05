@@ -4,18 +4,14 @@ using UnityEngine;
 
 public class StaffEventTaskRunner : IEventTaskRunner
 {
-    public void SetEventData(EventTaskData taskData)
+    private EventTaskData _taskData;
+
+    public void SetEventData(EventTaskData taskData) => _taskData = taskData;
+
+    public async UniTask Execute()
     {
         throw new System.NotImplementedException();
-    }
-
-    public UniTask Execute()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Reset()
-    {
-        
     }
 }
+
+public enum Synergy {Good, Normal, Bad}
