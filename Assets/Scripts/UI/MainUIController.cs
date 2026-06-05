@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 using DataDispatcher;
 using R3;
 using TMPro;
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;

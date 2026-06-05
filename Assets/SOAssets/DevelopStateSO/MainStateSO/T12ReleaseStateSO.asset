@@ -16,4 +16,6 @@ MonoBehaviour:
   gameDevProcName: 12
   stateNameId: 9900035
   prevState: {fileID: 11400000, guid: 21cd1334cd8340444935fbf1c3014d94, type: 2}
-  nextState: {fileID: 11400000, guid: beaa3482265bf91459ae251713b57f57, type: 2}
+  nextState: {fileID: 0}
+  eventType: 
+  resetEvent: 0
