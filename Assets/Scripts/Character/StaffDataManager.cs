@@ -107,12 +107,6 @@ public class StaffDataManager : MonoBehaviour, IStaffCodex
         ServiceLocater.Unregister<StaffDataManager>(this);
     }
 
-    // 모바일 환경에서도 기획자가 시트 데이터를 실시간으로 동기화할 수 있는 함수
-    [ContextMenu("모바일 런타임 시트 실시간 동기화")]
-    public void SyncDataFromSheetRuntime()
-    {
-        SyncDataFromSheetAsync().Forget();
-    }
 
     private async UniTaskVoid SyncDataFromSheetAsync()
     {
@@ -221,6 +215,12 @@ public class StaffDataManager : MonoBehaviour, IStaffCodex
         return viewList;
     }
     
+    // 모바일 환경에서도 기획자가 시트 데이터를 실시간으로 동기화할 수 있는 함수
+    [ContextMenu("모바일 런타임 시트 실시간 동기화")]
+    public void SyncDataFromSheetRuntime()
+    {
+        SyncDataFromSheetAsync().Forget();
+    }
     
     [ContextMenu("Load Data Test")]
     public void TestLoadData()
