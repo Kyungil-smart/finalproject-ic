@@ -24,13 +24,14 @@ public class SlideUIController : MonoBehaviour, IUIRender
     private float _endTouchX;
     private bool _isSwapeMode = false;
     
+    
     public void Render(UIRenderData data)
     {
         var viewPortTf = contentTf.parent.GetComponent<RectTransform>();
         if (data is StaffDetailRenderData renderData)
         {
             foreach (var staff in renderData.staffDataList)
-            {
+            {   
                 var sd = Instantiate(staffDatailUIRenderer, contentTf);
                 _scrollPages.Add(sd.gameObject);
                 var sdTf = sd.GetComponent<RectTransform>();
