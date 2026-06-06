@@ -26,12 +26,15 @@ public class SlideUIController : MonoBehaviour, IUIRender
     
     public void Render(UIRenderData data)
     {
+        var viewPortTf = contentTf.parent.GetComponent<RectTransform>();
         if (data is StaffDetailRenderData renderData)
         {
             foreach (var staff in renderData.staffDataList)
             {
                 var sd = Instantiate(staffDatailUIRenderer, contentTf);
                 _scrollPages.Add(sd.gameObject);
+                var sdTf = sd.GetComponent<RectTransform>();
+                sdTf.sizeDelta = new Vector2(viewPortTf.rect.width, sdTf.sizeDelta.y);
                 sd.Render(staff, renderData.btnCallback);
             }
             Init();
@@ -47,6 +50,7 @@ public class SlideUIController : MonoBehaviour, IUIRender
     {
         _scrollPageValues = new float[contentTf.childCount];
         _maxPage = contentTf.childCount;
+        
         if (_maxPage <= 1)
         {
             _scrollPageValues[0] = 0;

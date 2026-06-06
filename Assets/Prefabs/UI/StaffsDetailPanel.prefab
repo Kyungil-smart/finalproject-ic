@@ -1478,7 +1478,7 @@ GameObject:
   m_Component:
   - component: {fileID: 220044845844430770}
   - component: {fileID: 2561693251475793010}
-  - component: {fileID: 6639930881311283056}
+  - component: {fileID: -6729261681447274593}
   m_Layer: 5
   m_Name: StaffsDetailPanel
   m_TagString: Untagged
@@ -1503,10 +1503,10 @@ RectTransform:
   - {fileID: 6030060424662870225}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 672, y: 897}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2561693251475793010
 MonoBehaviour:
@@ -1535,7 +1535,7 @@ MonoBehaviour:
   developText: {fileID: 4447791657829449362}
   artText: {fileID: 8470624438701031160}
   closeBtn: {fileID: 2889155329072542389}
---- !u!114 &6639930881311283056
+--- !u!114 &-6729261681447274593
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1550,8 +1550,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 672
-  m_PreferredHeight: 897
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
