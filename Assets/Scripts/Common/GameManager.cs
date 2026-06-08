@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GameManager : Manager, IGameManager
 {
+    private ReactiveProperty<int> _playerLevel = new(1);      // 회사 레벨
+    private int _playerMaxLevel = 10;                   // TODO: 최대 회사 레벨, 임시로 private 10을 최대로 넣었으나, 설정 파일 등을 통해 추후 수정 필요
     private ReactiveProperty<int> _money = new (0);     // 재화
     private ReactiveProperty<int> _heart = new (0);
     private ReactiveProperty<DateTime> _date = new ();
@@ -12,6 +14,7 @@ public class GameManager : Manager, IGameManager
     private ReactiveProperty<GameDevProcName> _procName = new();
     
     public string PlayerName { get; private set; }      // 회사 이름
+    public ReadOnlyReactiveProperty<int> PlayerLevel => _playerLevel;
     public ReadOnlyReactiveProperty<int> Money => _money;
     public ReadOnlyReactiveProperty<int> Heart => _heart;
     public ReadOnlyReactiveProperty<DateTime> Date => _date;
@@ -26,6 +29,11 @@ public class GameManager : Manager, IGameManager
     protected override void Unregister() => ServiceLocater.Unregister<IGameManager>(this);
 
     public void SetPlayerName(string playerName) => PlayerName = playerName;
+    public void AddPlayerLevel(int playerLevel)
+    {
+        if (_playerLevel.Value >= _playerMaxLevel) _playerLevel.Value = _playerMaxLevel;
+            _playerLevel.Value += playerLevel;
+    }
     public void AddMoney(int money) => _money.Value += money;
     public void AddHeart(int heart) => _heart.Value += heart;
     public void AddProject(ProjectData project) => _projects.Add(project);
