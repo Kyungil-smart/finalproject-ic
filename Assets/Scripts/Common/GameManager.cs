@@ -20,6 +20,7 @@ public class GameManager : Manager, IGameManager
     public ReadOnlyReactiveProperty<DateTime> Date => _date;
     public IReadOnlyList<ProjectData> Projects => _projects;
     public ReadOnlyReactiveProperty<GameDevProcName> ProcName => _procName;
+    private int _maxSlotNum = 8;
     public int SlotNum { get; set; }
 
     private void OnEnable() => Register();
@@ -47,5 +48,15 @@ public class GameManager : Manager, IGameManager
             _procName.Value = GameDevProcName.HumanResources;
             ServiceLocater.Get<IMainStateMachine>().SetCurrentMainState(GameDevProcName.HumanResources);
         }
+    }
+
+    public bool UnlockSlotNum()
+    {
+        if (SlotNum < _maxSlotNum)
+        {
+            SlotNum++;
+            return true;
+        }
+        return false;
     }
 }

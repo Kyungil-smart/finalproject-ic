@@ -32,6 +32,9 @@ public struct ProjectData
     public uint cost;  // 투자된 금액
     public uint income;  // 매출 금액
     public NameTag award;  // 수상 경력
+    // Todo. 품질산출 시 데이터 비교를 위해 선언함
+    public string trendGenre;  // 트랜드장르
+    public string trendTheme;  // 트랜드테마
 
     public ProjectData(string name)
     {
@@ -44,6 +47,8 @@ public struct ProjectData
         award = default;
         Qualities = new();
         IsCompleted = new();
+        trendGenre = default;
+        trendTheme = default;
     }
 }
 
@@ -66,6 +71,7 @@ public struct ProjectDataForUI
 public class ProjectManager : Manager, IProjectManager
 {
     private ProjectData _projectData;
+    // Todo.메인스태프와 서브스태프를 구분할 필요가 있음 ex) 0번이 메인, 1번이 서브로 스탯값 계산.
     private List<int> _assignedStaff = new();
     private IReadOnlyList<int> _getAssignedStaff;
     private void OnEnable() => Register();
