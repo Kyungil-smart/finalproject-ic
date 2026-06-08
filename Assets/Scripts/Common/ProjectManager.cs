@@ -34,9 +34,9 @@ public struct ProjectData
     public NameTag award;  // 수상 경력
     // 공식에서 스탯값 증폭시키는 역할
     public float state;  // 프로젝트 상태(사용 안할수도 있음)
-    // 시장조사때 유행?하는 장르&테마가 필요한가?는 잘 모르겠지만 일단 필요할 거같기도 해서 선언함.
-    public string _targetGenre;
-    public string _targetTheme;
+    // 시장조사때 유행?하는 장르&테마가 필요한가?는 잘 모르겠지만 일단 필요할 거같기도 해서 선언함
+    public string _trendGenre;
+    public string _trendTheme;
 
     public ProjectData(string name)
     {
@@ -50,8 +50,8 @@ public struct ProjectData
         Qualities = new();
         IsCompleted = new();
         state = 0;
-        _targetGenre = default;
-        _targetTheme = default;
+        _trendGenre = default;
+        _trendTheme = default;
     }
 }
 
