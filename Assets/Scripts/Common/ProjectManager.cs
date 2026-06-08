@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using R3;
 using UnityEngine;
 
@@ -65,7 +66,8 @@ public struct ProjectDataForUI
 public class ProjectManager : Manager, IProjectManager
 {
     private ProjectData _projectData;
-
+    private List<int> _assignedStaff = new();
+    private IReadOnlyList<int> _getAssignedStaff;
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
 
@@ -164,8 +166,13 @@ public class ProjectManager : Manager, IProjectManager
     }
 
     public ProjectData GetProjectData() => _projectData;
+    public void AssignStaff(int staffId) => _assignedStaff.Add(staffId);
 
-    
+    public void ClearStaffs() => _assignedStaff.Clear();
+
+    public IReadOnlyList<int> GetAssignedStaff() => _assignedStaff;
+
+
     protected override void Register() => ServiceLocater.Register<IProjectManager>(this);
     protected override void Unregister()=> ServiceLocater.Unregister<IProjectManager>(this);
 }
