@@ -73,7 +73,6 @@ public class ProjectManager : Manager, IProjectManager
     private ProjectData _projectData;
     // Todo.메인스태프와 서브스태프를 구분할 필요가 있음 ex) 0번이 메인, 1번이 서브로 스탯값 계산.
     private List<int> _assignedStaff = new();
-    private IReadOnlyList<int> _getAssignedStaff;
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
 
