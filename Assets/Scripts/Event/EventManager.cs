@@ -116,7 +116,6 @@ public class EventManager : Manager, IEventManager
         var data = evtType == EventType.Staff
             ? await _eventRandom.GetStaffRandomly(dataStruct.so.tasks, dataStruct.runIds, GetSynergy())
             : await _eventRandom.GetRandomly(dataStruct.so.tasks, dataStruct.runIds);
-        // var data = await GetEventTaskDataRandomly(evtType, dataStruct.runIds.Count);
         if (data == null)
         {
             Debug.Log("[EventManager] 실행 가능한 이벤트가 존재하지 않습니다.");
@@ -145,50 +144,6 @@ public class EventManager : Manager, IEventManager
     {
         _cts?.Cancel();
     }
-    
-    // private async UniTask<EventTaskData> GetEventTaskDataRandomly(EventType evtType, int totalEventCount)
-    // {
-    //     while (true)
-    //     {
-    //         var index = UnityEngine.Random.Range(0, totalEventCount);
-    //         if (!_eventTasks.TryGetValue(evtType, out var mdStruct)) return null;
-    //         var task = mdStruct.so.tasks[index];
-    //         if (mdStruct.runIds.Count < totalEventCount)
-    //         {
-    //             if (!mdStruct.runIds.Contains(task.id))
-    //                 return task;
-    //             await UniTask.Yield();
-    //         }
-    //         return null;
-    //     }
-    // }
-
-    // Todo. 범위지정 및 데이터 조회가 아직 안되어 에러가 떠서 주석처리해둠.
-    // private async UniTask<EventTaskData> GetStaffEventTaskDataRandomly(EventType evtType)
-    // {
-    //     if (!_eventTasks.TryGetValue(evtType, out var mdStruct)) return null;
-    //     var synergy = GetSynergy();
-    //     var filtered = synergy switch
-    //     {
-    //         Synergy.Good   => mdStruct.so.tasks.FindAll(t => t.id),
-    //         Synergy.Normal => mdStruct.so.tasks.FindAll(t => t.id),
-    //         Synergy.Bad    => mdStruct.so.tasks.FindAll(t => t.id), Todo. 기획에서 범위가 아직 안나옴
-    //         _              => mdStruct.so.tasks
-    //     };
-    //     int totalEventCount = filtered.Count;
-    //     while (true)
-    //     {
-    //         var index = UnityEngine.Random.Range(0, totalEventCount);
-    //         var task = mdStruct.so.tasks[index];
-    //         if (mdStruct.runIds.Count < totalEventCount)
-    //         {
-    //             if (!mdStruct.runIds.Contains(task.id))
-    //                 return task;
-    //             await UniTask.Yield();
-    //         }
-    //         return null;
-    //     }
-    // }
 
     // 시너지 반환
     private Synergy GetSynergy()
