@@ -124,15 +124,18 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         Debug.Log($"[MainProcessStateMachine] : 다음 메인 상태로 전환 - {_curStateData.stateSO.gameDevProcName}");
     }
 
-
     private async UniTask RunTask()
     {
-        await _curStateData.taskRunner.GetComponent<IProcessTaskRunnerEnterExit>().Enter(_curStateData.stateSO);
-        await _curStateData.taskRunner.GetComponent<IProcessTaskRunnerExecute>().Execute();
-        await _curStateData.taskRunner.GetComponent<IProcessTaskRunnerEnterExit>().Exit();
+        var prePostProc = _curStateData.taskRunner.GetComponent<IProcessTaskRunnerEnterExit>();
+        var executeProc = _curStateData.taskRunner.GetComponent<IProcessTaskRunnerExecute>();
+        
+        await prePostProc.Enter(_curStateData.stateSO);
+        await prePostProc.EventPreExecute();
+        await executeProc.Execute();
+        await prePostProc.EventPostExecute();
+        await prePostProc.Exit();
         await GoToNextState();
     }
-
 
     public StateViewData UpdateStateInformation(bool dummy)
     {

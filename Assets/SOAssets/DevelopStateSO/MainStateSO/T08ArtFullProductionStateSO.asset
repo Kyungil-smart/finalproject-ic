@@ -17,3 +17,5 @@ MonoBehaviour:
   stateNameId: 9900031
   prevState: {fileID: 11400000, guid: 28f21367c6093674f84a57cc09a45785, type: 2}
   nextState: {fileID: 11400000, guid: fdcafc9419f27ec4ebbd9fdee999564c, type: 2}
+  eventType: 000000000200000003000000
+  resetEvent: 0

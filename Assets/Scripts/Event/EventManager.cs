@@ -26,7 +26,7 @@ public class EventManager : Manager, IEventManager
     [SerializeField] private EventTaskSO regularTasks;
     [SerializeField] private EventTaskSO rewardTasks;
     
-    private Dictionary<EventType, EventDataStruct> _eventTasks;
+    private Dictionary<EventType, EventDataStruct> _eventTasks = new();
     private CancellationTokenSource _cts;
     private bool _running;
     private EventRandom _eventRandom = new();
@@ -42,6 +42,7 @@ public class EventManager : Manager, IEventManager
 
     protected override void Init()
     {
+        Debug.Log("[EventManager] Initializing...");
         InitEvent();
         DownloadData().Forget();
     }
@@ -65,28 +66,21 @@ public class EventManager : Manager, IEventManager
 
     private void InitEvent()
     {
-        if (_eventTasks != null) return;
-        _eventTasks = new Dictionary<EventType, EventDataStruct>();
-        _eventTasks[EventType.Staff] = new EventDataStruct
+        SetEventTask(EventType.Staff, staffTasks, new StaffEventTaskRunner());
+        SetEventTask(EventType.Linkage, linkageTasks, new LinkageEventTaskRunner());
+        SetEventTask(EventType.Regular, regularTasks, new RegularEventTaskRunner());
+        SetEventTask(EventType.Reward, rewardTasks, new RewardEventTaskRunner());
+        return;
+
+        void SetEventTask(EventType evtType, EventTaskSO so, IEventTaskRunner runner)
         {
-            so = staffTasks,
-            TaskRunner = new StaffEventTaskRunner()
-        };
-        _eventTasks[EventType.Linkage] = new EventDataStruct
-        {
-            so = linkageTasks,
-            TaskRunner = new LinkageEventTaskRunner()
-        };
-        _eventTasks[EventType.Regular] = new EventDataStruct
-        {
-            so = regularTasks,
-            TaskRunner = new RegularEventTaskRunner()
-        };
-        _eventTasks[EventType.Reward] = new EventDataStruct
-        {
-            so = rewardTasks,
-            TaskRunner = new RewardEventTaskRunner()
-        };
+            _eventTasks[evtType] = new EventDataStruct
+            {
+                runIds = new(),
+                so = so,
+                TaskRunner = runner
+            };
+        }
     }
     
     public void ResetRunId()
@@ -108,6 +102,7 @@ public class EventManager : Manager, IEventManager
 
     public async UniTask OccurEvent(EventType evtType)
     {
+        Debug.Log($"[EventManager:OccurEvent] {evtType} 이벤트 동작 신청");
         if (!_eventTasks.TryGetValue(evtType, out var dataStruct)) return;
         // if (_running) CancelCurrentEvent();
         // _cts = new CancellationTokenSource();
@@ -121,6 +116,7 @@ public class EventManager : Manager, IEventManager
             Debug.Log("[EventManager] 실행 가능한 이벤트가 존재하지 않습니다.");
             return;
         }
+        Debug.Log($"[EventManager:OccurEvent] title text id: {data.titleTextId} 이벤트 동작");
         var task = dataStruct.TaskRunner;
         task.SetEventData(data);
         try

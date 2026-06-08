@@ -12,5 +12,7 @@ public interface IProcessTaskRunnerExecute
 public interface IProcessTaskRunnerEnterExit
 {
     public UniTask Enter(ProcessStateSO so);
+    public UniTask EventPreExecute();
+    public UniTask EventPostExecute();
     public UniTask Exit();
 }
