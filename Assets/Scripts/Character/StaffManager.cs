@@ -484,4 +484,9 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         }
     }
     
+    public StaffEntity GetStaffEntity(int staffId)
+    {
+        _spawnedEntities.TryGetValue(staffId, out var entity);
+        return entity;
+    }
 }

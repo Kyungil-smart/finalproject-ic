@@ -197,9 +197,9 @@ public class EventManager : Manager, IEventManager
         foreach (var id in assignedIds)
         {
             // Todo. assignedIds로 DISC값 조회 및 계산
-             
+            var entity = ServiceLocater.Get<StaffManager>().GetStaffEntity(id);
+            if (entity != null) discSum += (int)entity.GetDiscType();
         }
-        
         return discSum switch
         {
             6 or 9 => Synergy.Good,
