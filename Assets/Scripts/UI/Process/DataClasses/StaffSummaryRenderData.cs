@@ -12,6 +12,6 @@ public struct StaffSummaryData
 
 public class StaffSummaryRenderData : UIRenderData
 {
-    public Action[] callbacks;
+    public Func<List<int>, List<int>> callbacks;  // selected Index List 받을 수 있도록..
     public List<StaffSummaryData> staffSummaryData;
 }
