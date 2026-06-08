@@ -112,6 +112,7 @@ public class EventManager : Manager, IEventManager
         // if (_running) CancelCurrentEvent();
         // _cts = new CancellationTokenSource();
         _running = true;
+        // 이벤트 타입이 직원간 이벤트면 직원간 이벤트 랜덤뽑기
         var data = evtType == EventType.Staff
             ? await _eventRandom.GetStaffRandomly(dataStruct.so.tasks, dataStruct.runIds, GetSynergy())
             : await _eventRandom.GetRandomly(dataStruct.so.tasks, dataStruct.runIds);
@@ -189,11 +190,14 @@ public class EventManager : Manager, IEventManager
     //     }
     // }
 
+    // 시너지 반환
     private Synergy GetSynergy()
     {
+        // ProjectManager에 투입된 직원의 id값 가져오기
         var assignedIds = ServiceLocater.Get<IProjectManager>().GetAssignedStaff();
         int discSum = 0;
-
+        
+        // 투입된 직원의 id값으로 해당 직원의 DISC값 가져오기
         foreach (var id in assignedIds)
         {
             // Todo. assignedIds로 DISC값 조회 및 계산
