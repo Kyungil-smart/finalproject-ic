@@ -5,7 +5,7 @@
     ProcessListToggleUI,
     EventUI,
     LastProjectUI,
-    StaffUI,
+    StaffCandidateUI,
     LoadingUI,
     SlideUI,
 }
