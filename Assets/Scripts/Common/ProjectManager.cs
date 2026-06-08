@@ -33,7 +33,7 @@ public struct ProjectData
     public uint income;  // 매출 금액
     public NameTag award;  // 수상 경력
     // 공식에서 스탯값 증폭시키는 역할
-    public float state;  // 프로젝트 상태
+    public float state;  // 프로젝트 상태(사용 안할수도 있음)
 
     public ProjectData(string name)
     {
