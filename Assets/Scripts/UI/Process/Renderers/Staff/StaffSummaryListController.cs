@@ -9,23 +9,41 @@ using UnityEngine.UI;
 public class StaffSummaryListController : MonoBehaviour, IUIRender
 {
     [SerializeField] private List<StaffSummaryPanelRender> staffSummaryPanels;
-    [SerializeField] private TextMeshProUGUI selectedCountText;
     [SerializeField] private GameObject mainPanel;
+
+    [Header("Header Panels")] 
+    [SerializeField] private TextLoader titleTl;
+    [SerializeField] private TextMeshProUGUI selectedCountText;
+    [Header("Tail 1 Panel")]
+    [SerializeField] private GameObject tail1Panel;
     [SerializeField] private Button selectBtn;
+    
+    [Header("Tail 2 Panel")]
+    [SerializeField] private GameObject tail2Panel;
+    [SerializeField] private Button previousBtn;
+    [SerializeField] private Button nextBtn;
+    
+    [Header("Tail 3 Panel")]
+    [SerializeField] private GameObject tail3Panel;
+    [SerializeField] private Button okBtn;
+    
     private List<StaffSummaryData> _renderData = new();
     private List<int> _selectedStaffs = new();
 
-    private void OnEnable()
+    private void Awake()
     {
         ServiceLocater.Get<IUIRouter>().RegisterUIRender(UIType.StaffCandidateUI, this);    
+    }
+
+    private void OnEnable()
+    {
+        ServiceLocater.Get<IUIRouter>().RegisterUIRender(UIType.StaffCandidateUI, this);
     }
 
     private void OnDisable()
     {
         ServiceLocater.Get<IUIRouter>().UnregisterUIRender(UIType.StaffCandidateUI);
     }
-
-
     
     public void Render(UIRenderData data)
     {
@@ -51,10 +69,36 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
                     cnt++;
                 }
             }
-            selectBtn.onClick.RemoveAllListeners();
-            selectBtn.onClick.AddListener(Close);
-            selectBtn.onClick.AddListener(() => renderData.callbacks(_selectedStaffs));
-            selectBtn.onClick.AddListener(() => mainPanel.SetActive(false));
+            
+            switch (renderData.tailType.num)
+            {
+                case 1:
+                    tail1Panel.SetActive(true);
+                    selectBtn.onClick.RemoveAllListeners();
+                    selectBtn.onClick.AddListener(Close);
+                    selectBtn.onClick.AddListener(() => renderData.tailType.confirmCallback(_selectedStaffs));
+                    selectBtn.onClick.AddListener(() => mainPanel.SetActive(false));
+                    break;
+                case 2:
+                    tail2Panel.SetActive(true);
+                    previousBtn.onClick.RemoveAllListeners();
+                    previousBtn.onClick.AddListener(Close);
+                    previousBtn.onClick.AddListener(() => renderData.tailType.previousCallback());
+                    previousBtn.onClick.AddListener(() => mainPanel.SetActive(false));
+                    
+                    previousBtn.onClick.RemoveAllListeners();
+                    previousBtn.onClick.AddListener(Close);
+                    previousBtn.onClick.AddListener(() => renderData.tailType.nextCallback());
+                    previousBtn.onClick.AddListener(() => mainPanel.SetActive(false));
+                    break;
+                case 3:
+                    tail3Panel.SetActive(true);
+                    okBtn.onClick.RemoveAllListeners();
+                    okBtn.onClick.AddListener(Close);
+                    okBtn.onClick.AddListener(() => renderData.tailType.nextCallback());
+                    okBtn.onClick.AddListener(() => mainPanel.SetActive(false));
+                    break;
+            }
             
             selectedCountText.text = $"{cnt} / {_renderData.Count}";
         }
@@ -95,15 +139,17 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
         {
             staffSummaryPanel.gameObject.SetActive(false);
         }
+        tail1Panel.SetActive(false);
+        tail2Panel.SetActive(false);
+        tail3Panel.SetActive(false);
     }
 
     [ContextMenu("RenderTest")]
     private async UniTaskVoid RenderTest()
     {
-        List<int> GetData(List<int> staffs)
+        void GetData(List<int> staffs)
         {
             Debug.Log(String.Join(", ", staffs));
-            return staffs;
         }
         await ServiceLocater.Get<IStaffRecruit>().GenerateRecruitCandidatesAsync(1, 2);
         var ls = ServiceLocater.Get<IStaffRecruit>().GetAvailableStaffList();
@@ -124,9 +170,8 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
         {
             sd.staffSummaryData.Add(new StaffSummaryData { selected = false, hired = false, viewData = d });
         }
-            
-
-        sd.callbacks = GetData;
+        
+        sd.tailType = new StaffSummaryTailData() { confirmCallback = GetData};
         Render(sd);
     }
 }

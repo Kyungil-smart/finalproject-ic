@@ -36,6 +36,7 @@ public class UIRouter : IUIRouter, IDisposable
     public void NavigateTo(UIType uiType, UIRenderData data)
     {
         _canvasController.Enable(uiType);
+        if (_renders.ContainsKey(uiType)) return;
         _renders[uiType].Render(data);
     }
 
