@@ -6,6 +6,7 @@ using UnityEngine;
 public class QualityDataSO : ScriptableObject
 {
     public List<QualityRateData> rates;
+    public List<QualityTargetData> targets;
 }
 
 [Serializable]
@@ -21,5 +22,15 @@ public struct QualityRateData
     public float gtNeither;
     public float gtEither;
     public float gtBoth;
-    
+    public float commSynergy;
+}
+
+[Serializable]
+public struct QualityTargetData
+{
+    public float avgLevel;
+    public float targetTotal;
+    public float targetDesign;
+    public float targetDev;
+    public float targetArt;
 }
