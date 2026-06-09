@@ -16,6 +16,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     private StaffSummaryRenderData _selectedStaffs;  // 선택된 스태프
     private List<int> _selectedStaffIdxs = new();  // UI에 콜백을 보내기 위한 List<int> 타입의 인스턴스 변수
     private bool _endProcess;
+    private bool _conditionGoback;
 
     // 후보 리스트 생성 및 변환 -> 직원 리스트 확인 -> 기존 직원과 리스트 통합 -> 계약할 캐릭터 선택 -> 계약 및 채용 확정 -> 채용 진행 애니메이션 -> 채용 확인
     public async UniTask Execute()
@@ -82,13 +83,13 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         Debug.Log($"[T01] _totalCandidateStaffs = {_totalCandidateStaffs.staffSummaryData.Count}");
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, _totalCandidateStaffs);
         await WaitProcess();
+        await CheckHireStaffs();
     }
 
     private async UniTaskVoid SelectedStaffCallback(List<int> staffs)
     {
         _selectedStaffIdxs = staffs;
         _waiting = false;
-        await CheckHireStaffs();
     }
 
     public async UniTask CheckHireStaffs()
@@ -110,18 +111,21 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         _selectedStaffs.selectable = false;
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, _selectedStaffs);
         await WaitProcess();
+        if (_conditionGoback) await MergeStaffList();
+        else await WaitingAnimation();
     }
 
     private async UniTaskVoid GoCheckHireStaffsToWaitingAnimation()
     {
         _waiting = false;
-        await WaitingAnimation();
+        _conditionGoback = false;
+        
     }
     
     private async UniTaskVoid GoCheckHireStaffsToMergeStaffList()
     {
         _waiting = false;
-        await MergeStaffList();
+        _conditionGoback = true;
     }
 
     private async UniTask WaitingAnimation()
@@ -131,16 +135,17 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         var data = new SimpleUIRenderData(9900020, 9900007, GoProcess);
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
         await WaitProcess();
+        await CheckHiring();
     }
 
     private void GoProcess()
     {
         _waiting = false;
-        CheckHiring().Forget();
     }
 
     private async UniTask CheckHiring()
     {
+        _waiting = true;
         var tail = new StaffSummaryTailData()
         {
             num = 3, 
