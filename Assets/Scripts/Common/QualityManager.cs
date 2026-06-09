@@ -2,7 +2,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class QualityManager : Manager, IQualityManager
+public class QualityManager : Manager
 {
     [SerializeField] private string _gSheetId;
     [SerializeField] private string _gidQuality;
@@ -10,12 +10,15 @@ public class QualityManager : Manager, IQualityManager
     [SerializeField] private bool _wasDownloaded;
     [SerializeField] private QualityDataSO _qData;
 
+    public QualityCalculate Calculator { get; }
+
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
-
-    protected override void Register() => ServiceLocater.Register<IQualityManager>(this);
-    protected override void Unregister() => ServiceLocater.Unregister<IQualityManager>(this);
-
+    
+    protected override void Init()
+    {
+        DownloadData().Forget();
+    }
     private async UniTaskVoid DownloadData()
     {
         if (!Utils.Environment.isDevelopment) return;
@@ -35,4 +38,8 @@ public class QualityManager : Manager, IQualityManager
     {
         DownloadData();
     }
+
+    protected override void Register() => ServiceLocater.Register<QualityManager>(this);
+
+    protected override void Unregister() => ServiceLocater.Unregister<QualityManager>(this);
 }
