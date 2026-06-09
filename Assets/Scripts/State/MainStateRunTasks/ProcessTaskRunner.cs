@@ -62,4 +62,6 @@ public class ProcessTaskRunner : MonoBehaviour, IProcessTaskRunnerEnterExit
     {
         _canGoing = true;
     }
+    
+    protected async UniTask WaitProcess() => await UniTask.WaitUntil(() => !_waiting);
 }

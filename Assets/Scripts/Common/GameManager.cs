@@ -21,7 +21,8 @@ public class GameManager : Manager, IGameManager
     public IReadOnlyList<ProjectData> Projects => _projects;
     public ReadOnlyReactiveProperty<GameDevProcName> ProcName => _procName;
     private int _maxSlotNum = 8;
-    public int SlotNum { get; set; }
+    private int _slotNum = 2;
+    public int SlotNum => _slotNum;
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
@@ -52,9 +53,9 @@ public class GameManager : Manager, IGameManager
 
     public bool UnlockSlotNum()
     {
-        if (SlotNum < _maxSlotNum)
+        if (_slotNum < _maxSlotNum)
         {
-            SlotNum++;
+            _slotNum++;
             return true;
         }
         return false;

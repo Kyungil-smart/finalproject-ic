@@ -11,7 +11,7 @@ public interface IGameManager
     public ReadOnlyReactiveProperty<DateTime> Date { get; }
     public IReadOnlyList<ProjectData> Projects { get; }
     public ReadOnlyReactiveProperty<GameDevProcName> ProcName {get; }
-    public int SlotNum { get; set; }
+    public int SlotNum { get; }
     
     public void SetPlayerName(string playerName);
     public void AddPlayerLevel(int playerLevel);

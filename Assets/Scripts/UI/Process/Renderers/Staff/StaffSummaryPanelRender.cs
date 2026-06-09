@@ -55,7 +55,7 @@ public class StaffSummaryPanelRender : MonoBehaviour
         detailButton.onClick.AddListener(ViewDetail);
     }
 
-    public void Render(StaffViewData data, bool hired, bool selected)
+    public void Render(StaffViewData data, bool hired, bool selected, bool selectable)
     {
         _isRendering = true;
         _data = data;
@@ -67,6 +67,7 @@ public class StaffSummaryPanelRender : MonoBehaviour
         gradeTxt.text = data.Grade;
         tag1Txt.text = null;  // ToDo. Tag 개발 완료시 추가
         tag2Txt.text = null;
+        panelToggle.interactable = selectable;
         panelToggle.isOn = selected;
         imageToggle.color = selected ? trueColor : falseColor;
         _isRendering = false;
