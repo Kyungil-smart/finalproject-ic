@@ -13,7 +13,6 @@ using UnityEngine;
 public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExecute
 {
     private StaffSummaryRenderData _totalCandidateStaffs; // 선택 가능한 모든 스태프
-    private StaffSummaryRenderData _selectedStaffs;  // 선택된 스태프
     private List<int> _selectedStaffIdxs = new();  // UI에 콜백을 보내기 위한 List<int> 타입의 인스턴스 변수
     private bool _endProcess;
     private bool _conditionGoback;
@@ -95,10 +94,12 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     public async UniTask CheckHireStaffs()
     {
         _waiting = true;
-        _selectedStaffs = new StaffSummaryRenderData();
-        _selectedStaffs.staffSummaryData = new List<StaffSummaryData>();
+        StaffSummaryRenderData selSsrd = new () { staffSummaryData = new List<StaffSummaryData>() };
         foreach (var idx in _selectedStaffIdxs)
-            _selectedStaffs.staffSummaryData.Add(_totalCandidateStaffs.staffSummaryData[idx]);
+        {
+            selSsrd.staffSummaryData.Add(_totalCandidateStaffs.staffSummaryData[idx]);
+            _totalCandidateStaffs.staffSummaryData[idx].selected = true;
+        }
         
         var tail = new StaffSummaryTailData()
         {
@@ -106,12 +107,12 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
             nextCallback = GoCheckHireStaffsToWaitingAnimation, 
             previousCallback = GoCheckHireStaffsToMergeStaffList
         };
-        _selectedStaffs.tailType = tail;
-        _selectedStaffs.selectable = false;
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, _selectedStaffs);
+        selSsrd.tailType = tail;
+        selSsrd.selectable = false;
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI,selSsrd);
         await WaitProcess();
         if (_conditionGoback) await MergeStaffList();
-        else await Prcessing();
+        else await RecruitProcessing();
     }
 
     private async UniTaskVoid GoCheckHireStaffsToWaitingAnimation()
@@ -127,7 +128,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         _conditionGoback = true;
     }
 
-    private async UniTask Prcessing()
+    private async UniTask RecruitProcessing()
     {
         _waiting = true;
         // ToDO. Animation 이 들어올 경우 대비 해야함.
@@ -135,10 +136,20 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
         foreach (var staff in _totalCandidateStaffs.staffSummaryData)
         {
+            Debug.Log($"[T01] {staff.viewData.Staff_Name} - h;{staff.hired}|s;{staff.selected}");
+            if (!staff.selected && staff.hired) // 해고
+            {
+                Debug.Log($"[T01] {staff.viewData.Staff_ID} {staff.viewData.Staff_Name} 해고");
+                await ServiceLocater.Get<IStaffHireService>().FireStaff(staff.viewData.Staff_ID);
+            }
+            await UniTask.Yield();
+                
             if (staff.selected && !staff.hired) // 고용 
+            {
+                Debug.Log($"[T01] {staff.viewData.Staff_ID} {staff.viewData.Staff_Name} 고용");
                 await ServiceLocater.Get<IStaffRecruit>().ConfirmHireAsync(staff.viewData.Staff_ID);
-            else if (!staff.selected && staff.hired) // 해고
-                ServiceLocater.Get<IStaffHireService>().FireStaff(staff.viewData.Staff_ID);
+            }
+            await UniTask.Yield();
         }
         await WaitProcess();
         await CheckHiring();

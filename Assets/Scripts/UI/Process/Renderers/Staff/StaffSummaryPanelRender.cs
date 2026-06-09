@@ -38,6 +38,7 @@ public class StaffSummaryPanelRender : MonoBehaviour
     private string Hired(bool hired) => hired ? "" : "New";
 
     private StaffViewData _data;
+    private bool _selectable;
     
     private void Start()
     {
@@ -46,7 +47,7 @@ public class StaffSummaryPanelRender : MonoBehaviour
             .Subscribe(isOn =>
             {
                 if (_isRendering) return;
-                imageToggle.color = isOn ? trueColor : falseColor;
+                if (_selectable) imageToggle.color = isOn ? trueColor : falseColor;
                 onItemSelected.OnNext((isOn, _itemIndex));
             })
             .AddTo(this);
@@ -68,6 +69,7 @@ public class StaffSummaryPanelRender : MonoBehaviour
         tag1Txt.text = null;  // ToDo. Tag 개발 완료시 추가
         tag2Txt.text = null;
         panelToggle.interactable = selectable;
+        _selectable = selectable;
         panelToggle.isOn = selected;
         imageToggle.color = selected ? trueColor : falseColor;
         _isRendering = false;
