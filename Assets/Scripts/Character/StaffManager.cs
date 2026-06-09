@@ -122,16 +122,11 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
             Debug.LogError($"사번 {targetStaffID}번 스태프는 현재 채용 후보 목록에 없습니다.");
             return;
         }
-        
+        Debug.Log($"[StaffManager] {targetData.Staff_Name} - 고용 절차 시작");
         
         // 후보 리스트에서 제거 후 정식 고용 리스트 및 딕셔너리로 이사 
         _recruitCandidates.Remove(targetData); 
         _hiredStaffList.Add(targetData);
-        for (int i = 0; i < _hiredStaffList.Count; i++)
-        {
-            //Debug.Log(_hiredStaffList[i].DISC_Type.ToString());
-        }
-        
         
         // runtimeData 새로만들어 넣어줘서 WithRuntimeData()에 매개변수로 클래스 참조로 대입하게 해서
         // StaffEntity의 대이터와 StaffManager의 데이터 동기화 시킴.
@@ -237,25 +232,25 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     }
     
     // 직원 해고 함수 (UI에서 해고 누를 시 함수 호출)
-    public void FireStaff(int targetStaffID)
+    public async UniTask FireStaff(int targetStaffID)
     {
         // 고용 리스트에서 삭제.
-        _hiredStaffList.RemoveAll(x => x.Staff_ID == targetStaffID);
+        int delNum = _hiredStaffList.RemoveAll(x => x.Staff_ID == targetStaffID);
+        Debug.Log($"[StaffManager] 총 {delNum} 명의 Staff 가 해고 되었습니다.");
         _hiredRuntimeDataDict.Remove(targetStaffID);
-        
+        await UniTask.Yield();
         // 오브젝트 삭제 및 오브젝트 딕셔너리에서 삭제.
         if (_spawnedEntities.TryGetValue(targetStaffID, out StaffEntity targetEntity))
         {
             if (targetEntity != null)
             {
                 Destroy(targetEntity.gameObject);
+                await UniTask.Yield();
             }
-            
             _spawnedEntities.Remove(targetStaffID);
         }
         
-        // 재고용 불가 같은 것은 아직 고려하지 않음.(나중에 기획에 있으면 추가할 예정) 
-        
+        // 재고용 불가 같은 것은 아직 고려하지 않음.(나중에 기획에 있으면 추가할 예정)
         Debug.Log($"사번 ID: {targetStaffID}번 직원의 데이터와 3D 오브젝트가 제거완료.");
     }
     

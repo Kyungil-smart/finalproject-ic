@@ -12,101 +12,43 @@ using UnityEngine;
 /// </summary>
 public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExecute
 {
-    private List<StaffViewData> _candidateStaffList;
-    private List<StaffViewData> _tempHiredList;
-    private StaffSummaryRenderData _staffSummaryRenderData;
-    private List<int> _selectedStaffs;
+    private StaffSummaryRenderData _totalCandidateStaffs; // 선택 가능한 모든 스태프
+    private List<int> _selectedStaffIdxs = new();  // UI에 콜백을 보내기 위한 List<int> 타입의 인스턴스 변수
+    private bool _endProcess;
+    private bool _conditionGoback;
 
     // 후보 리스트 생성 및 변환 -> 직원 리스트 확인 -> 기존 직원과 리스트 통합 -> 계약할 캐릭터 선택 -> 계약 및 채용 확정 -> 채용 진행 애니메이션 -> 채용 확인
     public async UniTask Execute()
     {
-        _selectedStaffs = new List<int>();
-
+        _endProcess = false;
         await MergeStaffList();
-        await UniTask.WaitUntil(() => !_waiting);
-        // List<int> number = new List<int> { 0, 2, 3 };    // !! TODO: 임시용, 테스트 완료 후 삭제 요망
-        //HireStaff(number);
-        
-        WaitingAnimation();
-        CheckHiring();
+        UniTask.WaitUntil(() => _endProcess);
     }
 
     // TODO: 임시로 이곳에 넣음, 추후 Enter로 이동 필요
     private async UniTask<List<StaffViewData>> CreateCandidateList()
     {
-        // TODO : 후보 생성
-        // 필요 Input 데이터
-        //   슬롯 : 고용된 직원 슬롯, 최대 슬롯
-        //   회사 레벨
-
-        // 필요 기능
-        //   카드 수만큼 채용 후보 리스트 생성 (staffManager.GenerateRecruitCandidatesAsync())
-        //   뽑힌 후보 리스트를 StaffViewData 형태로 반환 (staffManager.GetAvailableStaffList())
-
-        // 필요 Output 데이터
-        //   UI용으로 변환된 후보 리스트 (staffManager.GetAvailableStaffList() -> List<StaffViewData>)
-
-
-
-        // 아래는 필요한 데이터 위치 확인 + ServiceLocater / R3 / UniTask 기능 작동하는지 보기 위해서 예시로 넣음
-     
-
-        // 필요한 인터페이스 불러오기
         var gameManager = ServiceLocater.Get<IGameManager>();
         var staffManager = ServiceLocater.Get<IStaffRecruit>();
-
         await staffManager.GenerateRecruitCandidatesAsync(playerLevel: gameManager.PlayerLevel.CurrentValue, cardCount: 8);
-
-        // Debug.Log($"회사 레벨: {gameManager.PlayerLevel.CurrentValue} | 회사 슬롯: {_totalSlotCount - _hiredSlotCount}");
-
         return staffManager.GetAvailableStaffList();
     }
 
     private List<StaffViewData> CheckStaffList()
     {
-        // TODO : 보유 직원 리스트 확인
-        // 필요 Input 데이터
-        //   직원 리스트 ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList() -> List<StaffViewData>
-
-        // 필요 기능
-        //   
-
-        // 필요 Output 데이터
-
         return ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
     }
 
     private async UniTask MergeStaffList()
     {
         _waiting = true;
-        // TODO : 후보 + 보유 직원 리스트 합치기
-        // 필요 Input 데이터
-        //   currentAvailableStaff, CheckStaffList() 의 리스트
-
-        // 필요 기능
-        //   두 리스트 합치기
-        //   보내주기
-
-        // 필요 Output 데이터
-        //   합쳐진 형태의 리스트
-
-        // UI 인덱스 번호랑 같아야
-
-        List<StaffViewData> candidateList = await CreateCandidateList();
-
-        List<StaffViewData> staffList = CheckStaffList();
-
-        _candidateStaffList = new List<StaffViewData>();
-        _candidateStaffList.AddRange(staffList);
-        _candidateStaffList.AddRange(candidateList);
-
-        // var data = new SimpleUIRenderData(so.stateNameId, 9900007, GoProcess);  // TODO: 확인 필요
-
         await UniTask.Yield();
-        if (_staffSummaryRenderData == null)
+        if (_totalCandidateStaffs == null)
         {
-            _staffSummaryRenderData = new StaffSummaryRenderData();
-            _staffSummaryRenderData.staffSummaryData = new List<StaffSummaryData>();
+            List<StaffViewData> candidateList = await CreateCandidateList();
+            List<StaffViewData> staffList = CheckStaffList();
+            _totalCandidateStaffs = new StaffSummaryRenderData();
+            _totalCandidateStaffs.staffSummaryData = new List<StaffSummaryData>();
             foreach (var item in staffList)
             {
                 StaffSummaryData staffSummaryData = new StaffSummaryData();
@@ -114,7 +56,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
                 staffSummaryData.hired = true;
                 staffSummaryData.viewData = item;
 
-                _staffSummaryRenderData.staffSummaryData.Add(staffSummaryData);
+                _totalCandidateStaffs.staffSummaryData.Add(staffSummaryData);
             }
 
             foreach (var item in candidateList)
@@ -124,77 +66,122 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
                 staffSummaryData.hired = false;
                 staffSummaryData.viewData = item;
 
-                _staffSummaryRenderData.staffSummaryData.Add(staffSummaryData);
+                _totalCandidateStaffs.staffSummaryData.Add(staffSummaryData);
             }
+            await UniTask.Yield();
+            var tail = new StaffSummaryTailData() { num = 1, confirmCallback = SelectedStaffCallback };
+            _totalCandidateStaffs.tailType = tail;
+            _totalCandidateStaffs.selectable = true;
+        }
+        else
+        {
+            foreach (int idx in _selectedStaffIdxs)
+                _totalCandidateStaffs.staffSummaryData[idx].selected = true;
         }
         await UniTask.Yield();
-        var tail = new StaffSummaryTailData() { num = 1, confirmCallback = SelectedStaffCallback };
-        _staffSummaryRenderData.tailType = tail;
-        await UniTask.Yield();
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, _staffSummaryRenderData);
+        Debug.Log($"[T01] _totalCandidateStaffs = {_totalCandidateStaffs.staffSummaryData.Count}");
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, _totalCandidateStaffs);
+        await WaitProcess();
+        await CheckHireStaffs();
     }
 
-    private void SelectedStaffCallback(List<int> staffs)
+    private async UniTaskVoid SelectedStaffCallback(List<int> staffs)
     {
-        _selectedStaffs = staffs;
+        _waiting = false;
+        _selectedStaffIdxs = staffs;
+    }
+
+    public async UniTask CheckHireStaffs()
+    {
+        _waiting = true;
+        StaffSummaryRenderData selSsrd = new () { staffSummaryData = new List<StaffSummaryData>() };
+        foreach (var idx in _selectedStaffIdxs)
+        {
+            selSsrd.staffSummaryData.Add(_totalCandidateStaffs.staffSummaryData[idx]);
+            _totalCandidateStaffs.staffSummaryData[idx].selected = true;
+        }
+        
+        var tail = new StaffSummaryTailData()
+        {
+            num = 2, 
+            nextCallback = GoCheckHireStaffsToWaitingAnimation, 
+            previousCallback = GoCheckHireStaffsToMergeStaffList
+        };
+        selSsrd.tailType = tail;
+        selSsrd.selectable = false;
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI,selSsrd);
+        await WaitProcess();
+        if (_conditionGoback) await MergeStaffList();
+        else await RecruitProcessing();
+    }
+
+    private async UniTaskVoid GoCheckHireStaffsToWaitingAnimation()
+    {
+        _waiting = false;
+        _conditionGoback = false;
+        
+    }
+    
+    private async UniTaskVoid GoCheckHireStaffsToMergeStaffList()
+    {
+        _waiting = false;
+        _conditionGoback = true;
+    }
+
+    private async UniTask RecruitProcessing()
+    {
+        _waiting = true;
+        // ToDO. Animation 이 들어올 경우 대비 해야함.
+        var data = new SimpleUIRenderData(9900020, 9900007, GoProcess);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
+        foreach (var staff in _totalCandidateStaffs.staffSummaryData)
+        {
+            Debug.Log($"[T01] {staff.viewData.Staff_Name} - h;{staff.hired}|s;{staff.selected}");
+            if (!staff.selected && staff.hired) // 해고
+            {
+                Debug.Log($"[T01] {staff.viewData.Staff_ID} {staff.viewData.Staff_Name} 해고");
+                await ServiceLocater.Get<IStaffHireService>().FireStaff(staff.viewData.Staff_ID);
+            }
+            await UniTask.Yield();
+                
+            if (staff.selected && !staff.hired) // 고용 
+            {
+                Debug.Log($"[T01] {staff.viewData.Staff_ID} {staff.viewData.Staff_Name} 고용");
+                await ServiceLocater.Get<IStaffRecruit>().ConfirmHireAsync(staff.viewData.Staff_ID);
+            }
+            await UniTask.Yield();
+        }
+        await WaitProcess();
+        await CheckHiring();
+    }
+
+    private void GoProcess()
+    {
         _waiting = false;
     }
 
-    // 가채용
-    public void HireStaff()
+    private async UniTask CheckHiring()
     {
-        // TODO : 직원 관리 4: 계약 및 채용(실제 확정은 아니고 가채용, 문서 명칭대로 함)
-        // 필요 Input 데이터
-        //   UI에서 선택 받은 인덱스 넘버
-
-        // 필요 기능
-        //   UI에서 선택 받은 인덱스 넘버를 통해 합쳐진 리스트에서 추려낸 가 리스트 만들기
-
-        // 필요 Output 데이터
-        //   리스트업 해서 던지기
-        //   UI에도 전달
-
-        _tempHiredList = new List<StaffViewData>();
-
-        // 순회하며 해당 인덱스의 데이터를 _tempHiredList에 추가
-        foreach (int idx in _selectedStaffs)
+        _waiting = true;
+        var tail = new StaffSummaryTailData()
         {
-            if (idx >= 0 && idx < _candidateStaffList.Count)
-            {
-                _tempHiredList.Add(_candidateStaffList[idx]);
-            }
-        }
+            num = 3, 
+            nextCallback = GoToNextProcess,
+        };
+        StaffSummaryRenderData sd = new();
+        sd.staffSummaryData = new();
+        foreach (var staff in ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList())
+            sd.staffSummaryData.Add(new StaffSummaryData() { viewData = staff });   
+        await UniTask.Yield();
+        sd.tailType = tail;
+        sd.selectable = false;
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, sd);
+        await WaitProcess();
     }
 
-    private void WaitingAnimation()
+    private async UniTaskVoid GoToNextProcess()
     {
-        // TODO : 채용 진행 애니메이션
-        // 필요 Input 데이터
-        //   
-
-        // 필요 기능
-        //   채용 진행
-        //   해고 진행
-        //   채용 진행 애니메이션 실행 및 대기 -> 어떻게 하지?? 애니메이션 실제 진행은 에셋 나온 후에 TODO
-
-
-        // 필요 Output 데이터
-
-
-    }
-
-    private void CheckHiring()
-    {
-        // TODO : 채용 확인
-        // 필요 Input 데이터
-
-        // 필요 기능
-        //    GetAllHiredStaffList() 최신화
-
-        // 필요 Output 데이터
-        //   최신화된 GetAllHiredStaffList() 전달하기
-
-
-
+        _waiting = false;
+        _endProcess = true;
     }
 }

@@ -38,6 +38,9 @@ public class ReadyGameData : MonoBehaviour
     
     private async UniTask InitStaff()
     {
+        var curStaffs = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
+        if (curStaffs.Count != 0) return; 
+        
         // 초기 직원 수 2, level 1 ; 고정값
         await ServiceLocater.Get<IStaffRecruit>().GenerateRecruitCandidatesAsync(1, 2);
         // 직원 확인

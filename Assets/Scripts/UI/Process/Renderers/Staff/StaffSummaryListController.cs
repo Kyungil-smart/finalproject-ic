@@ -27,8 +27,8 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
     [SerializeField] private GameObject tail3Panel;
     [SerializeField] private Button okBtn;
     
-    private List<StaffSummaryData> _renderData = new();
     private List<int> _selectedStaffs = new();
+    private List<StaffSummaryData> _staffSummaryDatas = new();
 
     private void Awake()
     {
@@ -51,21 +51,16 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
         {
             mainPanel.SetActive(true);
             _selectedStaffs.Clear();
-            _renderData.Clear();
-            _renderData = renderData.staffSummaryData;
+            _staffSummaryDatas = renderData.staffSummaryData;
             var cnt = 0;
 
             for (int i = 0; i < renderData.staffSummaryData.Count; i++)
             {
-                SetUpPanel(i, renderData.staffSummaryData[i], staffSummaryPanels[i]);
+                SetUpPanel(i, renderData.staffSummaryData[i], staffSummaryPanels[i], renderData.selectable);
                 staffSummaryPanels[i].gameObject.SetActive(true);
                 if (renderData.staffSummaryData[i].selected)
                 {
                     _selectedStaffs.Add(i);
-                    cnt++;
-                }
-                else if (renderData.staffSummaryData[i].hired)
-                {
                     cnt++;
                 }
             }
@@ -86,10 +81,10 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
                     previousBtn.onClick.AddListener(() => renderData.tailType.previousCallback());
                     previousBtn.onClick.AddListener(() => mainPanel.SetActive(false));
                     
-                    previousBtn.onClick.RemoveAllListeners();
-                    previousBtn.onClick.AddListener(Close);
-                    previousBtn.onClick.AddListener(() => renderData.tailType.nextCallback());
-                    previousBtn.onClick.AddListener(() => mainPanel.SetActive(false));
+                    nextBtn.onClick.RemoveAllListeners();
+                    nextBtn.onClick.AddListener(Close);
+                    nextBtn.onClick.AddListener(() => renderData.tailType.nextCallback());
+                    nextBtn.onClick.AddListener(() => mainPanel.SetActive(false));
                     break;
                 case 3:
                     tail3Panel.SetActive(true);
@@ -100,11 +95,11 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
                     break;
             }
             
-            selectedCountText.text = $"{cnt} / {_renderData.Count}";
+            selectedCountText.text = $"{cnt} / {ServiceLocater.Get<IGameManager>().SlotNum}";
         }
     }
 
-    private void SetUpPanel(int index, StaffSummaryData data, StaffSummaryPanelRender panel)
+    private void SetUpPanel(int index, StaffSummaryData data, StaffSummaryPanelRender panel, bool selectable)
     {
         panel.SetUp(index);
         
@@ -112,7 +107,7 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
             .Subscribe(SelectItem)
             .AddTo(panel);
         
-        panel.Render(data.viewData, data.hired, data.selected);
+        panel.Render(data.viewData, data.hired, data.selected, selectable);
         panel.gameObject.SetActive(true);
     }
 
@@ -127,9 +122,7 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
         {
             _selectedStaffs.Remove(data.index);
         }
-
-        // var totalCnt = ServiceLocater.Get<IGameManager>().SlotNum;
-        var totalCnt = 8;
+        var totalCnt = ServiceLocater.Get<IGameManager>().SlotNum;
         selectedCountText.text = $"{_selectedStaffs.Count} / {totalCnt}";
     }
 
@@ -147,7 +140,7 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
     [ContextMenu("RenderTest")]
     private async UniTaskVoid RenderTest()
     {
-        void GetData(List<int> staffs)
+        async UniTaskVoid GetData(List<int> staffs)
         {
             Debug.Log(String.Join(", ", staffs));
         }
