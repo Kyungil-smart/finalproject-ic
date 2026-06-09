@@ -9,9 +9,17 @@ public struct StaffSummaryData
     public StaffViewData viewData;
 }
 
+public class StaffSummaryTailData
+{
+    public int num = 1;
+    public Action previousCallback;
+    public Action nextCallback;  // 일반 확인도 여기에 포함.
+    public Action<List<int>> confirmCallback;  
+}
+
 
 public class StaffSummaryRenderData : UIRenderData
 {
-    public Func<List<int>, List<int>> callbacks;  // selected Index List 받을 수 있도록..
+    public StaffSummaryTailData tailType;
     public List<StaffSummaryData> staffSummaryData;
 }

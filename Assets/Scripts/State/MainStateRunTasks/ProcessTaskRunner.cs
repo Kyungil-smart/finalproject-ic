@@ -6,6 +6,7 @@ public class ProcessTaskRunner : MonoBehaviour, IProcessTaskRunnerEnterExit
 {
     protected ProcessStateSO psSO;
     private bool _canGoing;
+    protected bool _waiting;
 
     public async UniTask Enter(ProcessStateSO so)
     {
