@@ -108,6 +108,7 @@ public class QualityCalculate
     //     qt.UpdateTotalQuality(qt.TotalQuality * (1 + (avgCom / data.commSynergy)));
     // }
     
+    // Total퀄리티 지표계산
     public void CalculateAchieve()
     {
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
