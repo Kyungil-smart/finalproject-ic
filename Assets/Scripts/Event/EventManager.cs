@@ -29,6 +29,7 @@ public class EventManager : Manager, IEventManager
     private Dictionary<EventType, EventDataStruct> _eventTasks = new();
     private CancellationTokenSource _cts;
     private bool _running;
+    private EventRandom _eventRandom = new();
     
     public bool IsRunning => _running;
     
@@ -106,7 +107,10 @@ public class EventManager : Manager, IEventManager
         // if (_running) CancelCurrentEvent();
         // _cts = new CancellationTokenSource();
         _running = true;
-        var data = await GetEventTaskDataRandomly(evtType, dataStruct.so.tasks.Count);
+        // 이벤트 타입이 직원간 이벤트면 직원간 이벤트 랜덤뽑기
+        var data = evtType == EventType.Staff
+            ? await _eventRandom.GetStaffRandomly(dataStruct.so.tasks, dataStruct.runIds, GetSynergy())
+            : await _eventRandom.GetRandomly(dataStruct.so.tasks, dataStruct.runIds);
         if (data == null)
         {
             Debug.Log("[EventManager] 실행 가능한 이벤트가 존재하지 않습니다.");
@@ -136,28 +140,29 @@ public class EventManager : Manager, IEventManager
     {
         _cts?.Cancel();
     }
-    
-    private async UniTask<EventTaskData> GetEventTaskDataRandomly(EventType evtType, int totalEventCount)
-    {
-        Debug.Log($"[EventManager:GetEventTaskDataRandomly] {evtType} {totalEventCount}");
-        while (true)
-        {
-            var index = UnityEngine.Random.Range(0, totalEventCount);
-            if (!_eventTasks.TryGetValue(evtType, out var mdStruct)) return null;
-            var task = mdStruct.so.tasks[index];
-            if (mdStruct.runIds.Count < totalEventCount)
-            {
-                if (!mdStruct.runIds.Contains(task.id))
-                    return task;
-                await UniTask.Yield();
-            }
-            else
-            {
-                return null;    
-            }
-        }
-    }
 
+    // 시너지 반환
+    private Synergy GetSynergy()
+    {
+        // ProjectManager에 투입된 직원의 id값 가져오기
+        var assignedIds = ServiceLocater.Get<IProjectManager>().GetAssignedStaff();
+        int discSum = 0;
+        
+        // 투입된 직원의 id값으로 해당 직원의 DISC값 가져오기
+        foreach (var id in assignedIds)
+        {
+            // Todo. assignedIds로 DISC값 조회 및 계산
+            var entity = ServiceLocater.Get<StaffManager>().GetStaffEntity(id);
+            if (entity != null) discSum += (int)entity.GetDiscType();
+        }
+        return discSum switch
+        {
+            6 or 9 => Synergy.Good,
+            5 or 10 => Synergy.Bad,
+            _ => Synergy.Normal
+        };
+    }
+    
     [ContextMenu("데이터 다운로드")]
     private void DataDownload()
     {
