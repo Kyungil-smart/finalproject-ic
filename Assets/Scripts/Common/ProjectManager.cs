@@ -141,7 +141,7 @@ public class ProjectManager : Manager, IProjectManager
     public void UpdateTotalQuality(float value)
     {
         var data = _projectData.Qualities.Value;
-        data.total += value;
+        data.total = value;
         _projectData.Qualities.Value = data;
     }
 

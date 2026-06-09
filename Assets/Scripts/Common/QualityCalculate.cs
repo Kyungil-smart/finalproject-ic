@@ -56,13 +56,27 @@ public class QualityCalculate
         ServiceLocater.Get<IProjectManager>().ArtQuality = arrange * boost;
     }
     
-    // 합산(초반부 후반부 합산 퀄리티 계산식이 동일해서 +=으로 더하도록 함)
+    // 합산
     public void CalculateTotal()
     {
         var data = _qualityData.rates[0];
         float noise = Random.Range(data.noiseMin, data.noiseMax);
         var qt = ServiceLocater.Get<IProjectManager>();
         float result = (qt.DesignQuality + qt.ArtQuality + qt.DevQuality) * noise;
-        qt.UpdateTotalQuality(result);
+        float begin = qt.TotalQuality;
+        qt.UpdateTotalQuality(begin + result);
+    }
+    
+    // 트랜드 배수 적용
+    public void ApplyGt()
+    {
+        // 트랜드의 장르랑 테마랑 프로젝트의 장르랑 테마랑 일치하는지 여부로 계산
+        var data = _qualityData.rates[0];
+        var pm = ServiceLocater.Get<IProjectManager>();
+        var genreMatch = pm.Genre.name == pm.GetProjectData().trendGenre;
+        var themeMatch = pm.Theme.name == pm.GetProjectData().trendTheme;
+        if (genreMatch && themeMatch) pm.UpdateTotalQuality(pm.TotalQuality * data.gtBoth);
+        else if (genreMatch || themeMatch) pm.UpdateTotalQuality(pm.TotalQuality * data.gtEither);
+        else pm.UpdateTotalQuality(pm.TotalQuality * data.gtNeither);
     }
 }
