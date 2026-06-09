@@ -15,22 +15,18 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     private List<StaffViewData> _candidateStaffList;
     private List<StaffViewData> _tempHiredList;
     private StaffSummaryRenderData _staffSummaryRenderData;
-
     private List<int> _selectedStaffs;
-
-
 
     // 후보 리스트 생성 및 변환 -> 직원 리스트 확인 -> 기존 직원과 리스트 통합 -> 계약할 캐릭터 선택 -> 계약 및 채용 확정 -> 채용 진행 애니메이션 -> 채용 확인
     public async UniTask Execute()
     {
-        _staffSummaryRenderData = new StaffSummaryRenderData();
         _selectedStaffs = new List<int>();
 
-
-        MergeStaffList();
+        await MergeStaffList();
+        await UniTask.WaitUntil(() => !_waiting);
         // List<int> number = new List<int> { 0, 2, 3 };    // !! TODO: 임시용, 테스트 완료 후 삭제 요망
         //HireStaff(number);
-
+        
         WaitingAnimation();
         CheckHiring();
     }
@@ -80,8 +76,9 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         return ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
     }
 
-    private async void MergeStaffList()
+    private async UniTask MergeStaffList()
     {
+        _waiting = true;
         // TODO : 후보 + 보유 직원 리스트 합치기
         // 필요 Input 데이터
         //   currentAvailableStaff, CheckStaffList() 의 리스트
@@ -105,11 +102,11 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
 
         // var data = new SimpleUIRenderData(so.stateNameId, 9900007, GoProcess);  // TODO: 확인 필요
 
-
-        _staffSummaryRenderData.staffSummaryData = new List<StaffSummaryData>();
-
+        await UniTask.Yield();
         if (_staffSummaryRenderData == null)
         {
+            _staffSummaryRenderData = new StaffSummaryRenderData();
+            _staffSummaryRenderData.staffSummaryData = new List<StaffSummaryData>();
             foreach (var item in staffList)
             {
                 StaffSummaryData staffSummaryData = new StaffSummaryData();
@@ -130,23 +127,21 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
                 _staffSummaryRenderData.staffSummaryData.Add(staffSummaryData);
             }
         }
-
-        _staffSummaryRenderData.callbacks = SelectedStaffCallback;
-
-
+        await UniTask.Yield();
+        var tail = new StaffSummaryTailData() { num = 1, confirmCallback = SelectedStaffCallback };
+        _staffSummaryRenderData.tailType = tail;
+        await UniTask.Yield();
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, _staffSummaryRenderData);
-
     }
 
-    private List<int> SelectedStaffCallback(List<int> staffs)
+    private void SelectedStaffCallback(List<int> staffs)
     {
         _selectedStaffs = staffs;
-        return staffs;
+        _waiting = false;
     }
 
-
     // 가채용
-    public void HireStaff(List<int> indexNumber)
+    public void HireStaff()
     {
         // TODO : 직원 관리 4: 계약 및 채용(실제 확정은 아니고 가채용, 문서 명칭대로 함)
         // 필요 Input 데이터
@@ -162,7 +157,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         _tempHiredList = new List<StaffViewData>();
 
         // 순회하며 해당 인덱스의 데이터를 _tempHiredList에 추가
-        foreach (int idx in indexNumber)
+        foreach (int idx in _selectedStaffs)
         {
             if (idx >= 0 && idx < _candidateStaffList.Count)
             {
