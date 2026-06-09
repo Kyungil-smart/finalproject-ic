@@ -27,8 +27,10 @@ public class UIRouter : IUIRouter, IDisposable
         Debug.Log("[UIRouter] DisconnectCanvasController ... Success");
     }
 
-    public void RegisterUIRender(UIType uiType, IUIRender uiRender) 
-        => _renders[uiType] = uiRender;
+    public void RegisterUIRender(UIType uiType, IUIRender uiRender)
+    {
+        _renders.TryAdd(uiType, uiRender);
+    }
     
     public void UnregisterUIRender(UIType uiType) 
         => _renders.Remove(uiType);

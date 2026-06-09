@@ -927,11 +927,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2502122443147517385, guid: 1b6112b381c9ba5428a75f9344174041, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 659
+      value: 675
       objectReference: {fileID: 0}
     - target: {fileID: 2502122443147517385, guid: 1b6112b381c9ba5428a75f9344174041, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 329.5
+      value: 337.5
       objectReference: {fileID: 0}
     - target: {fileID: 2502122443147517385, guid: 1b6112b381c9ba5428a75f9344174041, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -955,11 +955,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3908744771341850205, guid: 1b6112b381c9ba5428a75f9344174041, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 659
+      value: 675
       objectReference: {fileID: 0}
     - target: {fileID: 3908744771341850205, guid: 1b6112b381c9ba5428a75f9344174041, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 329.5
+      value: 337.5
       objectReference: {fileID: 0}
     - target: {fileID: 3908744771341850205, guid: 1b6112b381c9ba5428a75f9344174041, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -981,13 +981,17 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8067625565254144827, guid: 1b6112b381c9ba5428a75f9344174041, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8742034405415484638, guid: 1b6112b381c9ba5428a75f9344174041, type: 3}
       propertyPath: m_Name
       value: StaffSummeryListCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 8742034405415484638, guid: 1b6112b381c9ba5428a75f9344174041, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
