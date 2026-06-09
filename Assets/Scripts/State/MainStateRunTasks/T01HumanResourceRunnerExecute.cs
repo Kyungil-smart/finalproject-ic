@@ -12,11 +12,11 @@ using UnityEngine;
 /// </summary>
 public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExecute
 {
-    private List<StaffViewData> _candidateStaffList;
+    private List<StaffViewData> _candidateStaffList;    // 고용된 스태프 + 후보 8인 리스트
     private List<StaffViewData> _tempHiredList;
-    private StaffSummaryRenderData _staffSummaryRenderData;
+    private StaffSummaryRenderData _staffSummaryRenderData; //
 
-    private List<int> _selectedStaffs;
+    private List<int> _selectedStaffs;  // UI에 콜백을 보내기 위한 List<int> 타입의 인스턴스 변수
 
 
 
@@ -28,11 +28,6 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
 
 
         MergeStaffList();
-        // List<int> number = new List<int> { 0, 2, 3 };    // !! TODO: 임시용, 테스트 완료 후 삭제 요망
-        //HireStaff(number);
-
-        WaitingAnimation();
-        CheckHiring();
     }
 
     // TODO: 임시로 이곳에 넣음, 추후 Enter로 이동 필요
@@ -103,8 +98,6 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         _candidateStaffList.AddRange(staffList);
         _candidateStaffList.AddRange(candidateList);
 
-        // var data = new SimpleUIRenderData(so.stateNameId, 9900007, GoProcess);  // TODO: 확인 필요
-
 
         _staffSummaryRenderData.staffSummaryData = new List<StaffSummaryData>();
 
@@ -146,11 +139,11 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
 
 
     // 가채용
-    public void HireStaff(List<int> indexNumber)
+    public void HireTempStaff(List<int> indexNumber)
     {
         // TODO : 직원 관리 4: 계약 및 채용(실제 확정은 아니고 가채용, 문서 명칭대로 함)
         // 필요 Input 데이터
-        //   UI에서 선택 받은 인덱스 넘버
+        //   UI에서 받은 정보
 
         // 필요 기능
         //   UI에서 선택 받은 인덱스 넘버를 통해 합쳐진 리스트에서 추려낸 가 리스트 만들기
@@ -162,6 +155,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         _tempHiredList = new List<StaffViewData>();
 
         // 순회하며 해당 인덱스의 데이터를 _tempHiredList에 추가
+        // TODO: StaffSummaryListController의 SelectItem 이 다 끝나고 받아오는 걸로 수정 필요
         foreach (int idx in indexNumber)
         {
             if (idx >= 0 && idx < _candidateStaffList.Count)
@@ -169,6 +163,8 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
                 _tempHiredList.Add(_candidateStaffList[idx]);
             }
         }
+
+        
     }
 
     private void WaitingAnimation()
