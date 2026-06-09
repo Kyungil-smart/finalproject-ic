@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class QualityCalculate
@@ -72,11 +73,26 @@ public class QualityCalculate
     {
         // 트랜드의 장르랑 테마랑 프로젝트의 장르랑 테마랑 일치하는지 여부로 계산
         var data = _qualityData.rates[0];
-        var pm = ServiceLocater.Get<IProjectManager>();
-        var genreMatch = pm.Genre.name == pm.GetProjectData().trendGenre;
-        var themeMatch = pm.Theme.name == pm.GetProjectData().trendTheme;
-        if (genreMatch && themeMatch) pm.UpdateTotalQuality(pm.TotalQuality * data.gtBoth);
-        else if (genreMatch || themeMatch) pm.UpdateTotalQuality(pm.TotalQuality * data.gtEither);
-        else pm.UpdateTotalQuality(pm.TotalQuality * data.gtNeither);
+        var qt = ServiceLocater.Get<IProjectManager>();
+        var genreMatch = qt.Genre.name == qt.GetProjectData().trendGenre;
+        var themeMatch = qt.Theme.name == qt.GetProjectData().trendTheme;
+        if (genreMatch && themeMatch) qt.UpdateTotalQuality(qt.TotalQuality * data.gtBoth);
+        else if (genreMatch || themeMatch) qt.UpdateTotalQuality(qt.TotalQuality * data.gtEither);
+        else qt.UpdateTotalQuality(qt.TotalQuality * data.gtNeither);
+    }
+    
+    // 소통 시너지 적용
+    public void ApplySynergy()
+    {
+        var data = _qualityData.rates[0];
+        var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
+        float avgCom = (float)staffList.Average(s => s.Final_Common_Communication);
+        var qt = ServiceLocater.Get<IProjectManager>();
+        qt.UpdateTotalQuality(qt.TotalQuality * (1 + (avgCom / data.commSynergy)));
+    }
+    
+    public void CalculateAchieve()
+    {
+        // Todo. 지표달성을 어떤식으로 할지... 파트별로 함수를 나눠야하나
     }
 }
