@@ -87,22 +87,26 @@ public class QualityCalculate
         // 트랜드의 장르랑 테마랑 프로젝트의 장르랑 테마랑 일치하는지 여부로 계산
         var data = _qualityData.rates[0];
         var qt = ServiceLocater.Get<IProjectManager>();
-        var genreMatch = qt.Genre.name == qt.GetProjectData().trendGenre;
-        var themeMatch = qt.Theme.name == qt.GetProjectData().trendTheme;
+        var genreMatch = qt.Genre.id == qt.GetProjectData().trendGenre.id;
+        var themeMatch = qt.Theme.id == qt.GetProjectData().trendTheme.id;
         if (genreMatch && themeMatch) qt.UpdateTotalQuality(qt.TotalQuality * data.gtBoth);
         else if (genreMatch || themeMatch) qt.UpdateTotalQuality(qt.TotalQuality * data.gtEither);
         else qt.UpdateTotalQuality(qt.TotalQuality * data.gtNeither);
+        // 소통시너지 계산
+        var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
+        float avgCom = (float)staffList.Average(s => s.Final_Common_Communication);
+        qt.UpdateTotalQuality(qt.TotalQuality * (1 + (avgCom / data.commSynergy)));
     }
     
     // 소통 시너지 적용
-    public void ApplySynergy()
-    {
-        var data = _qualityData.rates[0];
-        var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
-        float avgCom = (float)staffList.Average(s => s.Final_Common_Communication);
-        var qt = ServiceLocater.Get<IProjectManager>();
-        qt.UpdateTotalQuality(qt.TotalQuality * (1 + (avgCom / data.commSynergy)));
-    }
+    // public void ApplySynergy()
+    // {
+    //     var data = _qualityData.rates[0];
+    //     var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
+    //     float avgCom = (float)staffList.Average(s => s.Final_Common_Communication);
+    //     var qt = ServiceLocater.Get<IProjectManager>();
+    //     qt.UpdateTotalQuality(qt.TotalQuality * (1 + (avgCom / data.commSynergy)));
+    // }
     
     public void CalculateAchieve()
     {
