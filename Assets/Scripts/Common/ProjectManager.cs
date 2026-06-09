@@ -137,7 +137,14 @@ public class ProjectManager : Manager, IProjectManager
         get => _projectData.income;
         set => _projectData.income = value;
     }
-    
+
+    public void UpdateTotalQuality(float value)
+    {
+        var data = _projectData.Qualities.Value;
+        data.total += value;
+        _projectData.Qualities.Value = data;
+    }
+
     public void NewProject(string projectName)
     {
         _projectData = new ProjectData(projectName);
