@@ -88,8 +88,8 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
 
     private async UniTaskVoid SelectedStaffCallback(List<int> staffs)
     {
-        _selectedStaffIdxs = staffs;
         _waiting = false;
+        _selectedStaffIdxs = staffs;
     }
 
     public async UniTask CheckHireStaffs()
@@ -98,9 +98,8 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         _selectedStaffs = new StaffSummaryRenderData();
         _selectedStaffs.staffSummaryData = new List<StaffSummaryData>();
         foreach (var idx in _selectedStaffIdxs)
-        {
             _selectedStaffs.staffSummaryData.Add(_totalCandidateStaffs.staffSummaryData[idx]);
-        }
+        
         var tail = new StaffSummaryTailData()
         {
             num = 2, 
@@ -112,7 +111,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, _selectedStaffs);
         await WaitProcess();
         if (_conditionGoback) await MergeStaffList();
-        else await WaitingAnimation();
+        else await Prcessing();
     }
 
     private async UniTaskVoid GoCheckHireStaffsToWaitingAnimation()
@@ -128,12 +127,19 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         _conditionGoback = true;
     }
 
-    private async UniTask WaitingAnimation()
+    private async UniTask Prcessing()
     {
         _waiting = true;
         // ToDO. Animation 이 들어올 경우 대비 해야함.
         var data = new SimpleUIRenderData(9900020, 9900007, GoProcess);
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
+        foreach (var staff in _totalCandidateStaffs.staffSummaryData)
+        {
+            if (staff.selected && !staff.hired) // 고용 
+                await ServiceLocater.Get<IStaffRecruit>().ConfirmHireAsync(staff.viewData.Staff_ID);
+            else if (!staff.selected && staff.hired) // 해고
+                ServiceLocater.Get<IStaffHireService>().FireStaff(staff.viewData.Staff_ID);
+        }
         await WaitProcess();
         await CheckHiring();
     }
@@ -151,8 +157,14 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
             num = 3, 
             nextCallback = GoToNextProcess,
         };
-        _selectedStaffs.tailType = tail;
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, _selectedStaffs);
+        StaffSummaryRenderData sd = new();
+        sd.staffSummaryData = new();
+        foreach (var staff in ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList())
+            sd.staffSummaryData.Add(new StaffSummaryData() { viewData = staff });   
+        await UniTask.Yield();
+        sd.tailType = tail;
+        sd.selectable = false;
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, sd);
         await WaitProcess();
     }
 
