@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
@@ -33,6 +34,8 @@ public class ProcessSimpleUIRenderer : MonoBehaviour, IUIRender
         {
             _mainTxtLd.TextId = data.mainTextId;
             _confirmBtTxtLd.TextId = data.btTextId;
+            if (data.btTextId < 0)
+                _confirmBtTxtLd.GetComponent<TextMeshProUGUI>().text = data.text;
             _confirmBt.onClick.RemoveAllListeners();
             _confirmBt.onClick.AddListener(() => data.btCallback());
             _confirmBt.onClick.AddListener(() => _panelObject.SetActive(false));
