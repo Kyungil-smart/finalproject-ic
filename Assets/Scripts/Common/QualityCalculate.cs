@@ -1,4 +1,5 @@
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class QualityCalculate
@@ -9,7 +10,6 @@ public class QualityCalculate
     {
         _qualityData = qualityData;
     }
-    
     
     // 유효스탯 계산
     private float CalCuateArrange(StaffEntity main, StaffEntity sub)
@@ -80,6 +80,8 @@ public class QualityCalculate
         qt.UpdateTotalQuality(begin + result);
     }
     
+    // QA계산식 추가 예정(기획이 나오면)
+    
     // 트랜드, 소통시너지는 호출시기에 따라 한번에 계산할수도 있음.
     // 트랜드 배수 적용
     public void ApplyGt()
@@ -99,6 +101,7 @@ public class QualityCalculate
     }
     
     // 소통 시너지 적용
+    // Todo. 따로 적용될수도 있다고 하셨어서 구현은 해두고 주석처리해둠
     // public void ApplySynergy()
     // {
     //     var data = _qualityData.rates[0];
@@ -115,6 +118,13 @@ public class QualityCalculate
         float avgLevel = (float)staffList.Sum(s => s.Current_Level) /  staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
         var qt = ServiceLocater.Get<IProjectManager>();
-        float achieve = (qt.TotalQuality / target.targetTotal) * 100;
+        float achieve = attainment(qt.TotalQuality, target.targetTotal);
+    }
+    
+    // 달성률 계산 함수
+    public float attainment(float qa, float target)
+    {
+        float achieve = (qa / target) * 100;
+        return achieve;
     }
 }
