@@ -22,7 +22,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     {
         _endProcess = false;
         await MergeStaffList();
-        UniTask.WaitUntil(() => _endProcess);
+        await UniTask.WaitUntil(() => _endProcess);
     }
 
     // TODO: 임시로 이곳에 넣음, 추후 Enter로 이동 필요
