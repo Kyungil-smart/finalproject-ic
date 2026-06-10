@@ -46,6 +46,9 @@ public class QualityDataLoader
                 targetDesign = float.Parse(row["Target_Quality_Design"]),
                 targetDev = float.Parse(row["Target_Quality_Dev"]),
                 targetArt = float.Parse(row["Target_Quality_Art"]),
+                targetDesignPre = float.Parse(row["Target_Quality_Design_Pre"]),
+                targetDevPre = float.Parse(row["Target_Quality_Dev_Pre"]),
+                targetArtPre = float.Parse(row["Target_Quality_Art_Pre"]),
             };
             qualityData.targets.Add(dataTarget);
         }

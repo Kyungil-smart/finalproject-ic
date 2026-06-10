@@ -33,4 +33,7 @@ public struct QualityTargetData
     public float targetDesign;
     public float targetDev;
     public float targetArt;
+    public float targetDesignPre;
+    public float targetDevPre;
+    public float targetArtPre;
 }
