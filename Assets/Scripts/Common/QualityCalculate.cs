@@ -124,6 +124,7 @@ public class QualityCalculate
     }
     
     // 파트별 달성률 계산
+    // Todo. 지표달성 이벤트에서 개별적으로 달성률케이스를 만들수도 있다고 하여 작성함
     public float GetDesignAchieve()
     {
         var qt = ServiceLocater.Get<IProjectManager>();
