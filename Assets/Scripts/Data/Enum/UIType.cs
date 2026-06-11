@@ -5,7 +5,8 @@
     ProcessListToggleUI,  // 프로세스에서 간단한 토글 포함된 리스트 (미구현)
     EventUI,  // 이벤트용 UI
     LastProjectUI,  // 지난 Project 확인 UI (미구현)
-    StaffCandidateUI,  // 직원 고용 UI (고용된 직원 + 신규 채용 보일용)
+    StaffCandidateUI,  // 직원 고용 UI (고용된 직원 + 신규 채용 보일용) - T01
+    MarketGenreThemeUI,  // 시장조사, 장르/테마 선택 UI  - T02, T03
     LoadingUI,  // 로딩 UI 
     SlideUI,  // 다량의 데이터를 Slide 형으로 보기 위한 UI 
 }
