@@ -12,6 +12,8 @@ public class GenreThemeRow
     public int GT_ID;
     public int Type;
     public int GT_Name_ID;
+    public int GT_Cost;
+    public float GT_Cost_Ratio;
 }
 
 [CreateAssetMenu(fileName = "GenreThemeTypeDataSO", menuName = "Data/GenreThemeTypeDataSO")]
