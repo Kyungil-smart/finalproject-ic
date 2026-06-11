@@ -73,7 +73,7 @@ public class T03GenreAndThemeRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
 
         // 끝용 전달
         Debug.Log($"[T03] _t03TrendGenreThemeSelectRenderData = {_t03TrendGenreThemeSelectRenderData.genres.Count} | {_t03TrendGenreThemeSelectRenderData.themes.Count}");
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.SlideUI, _t03TrendGenreThemeSelectRenderData);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.MarketGenreThemeUI, _t03TrendGenreThemeSelectRenderData);
         await WaitProcess();    // _waiting 변수가 false가 될 때까지 코드의 실행을 중단하고 대기
         await CheckGenreTheme();  // 다음 기능 끝날 때까지 대기
     }
@@ -96,7 +96,7 @@ public class T03GenreAndThemeRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         t03TrendGenreThemeResultRenderData.goBackCallback = GoCheckThemeGenreList;
         t03TrendGenreThemeResultRenderData.goNextCallback = GoCheckThemeGenreProcess;
 
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.SlideUI, t03TrendGenreThemeResultRenderData);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.MarketGenreThemeUI, t03TrendGenreThemeResultRenderData);
         await WaitProcess();
         if (_conditionGoback) await ShowGenreThemeList();
         else await GenreThemeProcessing();        
