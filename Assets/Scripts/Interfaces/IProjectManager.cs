@@ -11,6 +11,7 @@ public interface IProjectManager
     public NameTag Theme {get; set;}
     public uint Cost {get; set;}
     public uint Income {get; set;}
+    public void UpdateTotalQuality(float value, float ratio = 1f);
     
     // Method Part
     public void NewProject(string projectName);
