@@ -17,7 +17,7 @@ public class T03GenreAndThemeRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     private bool _conditionGoback;
 
 
-    // Enter에서 이벤트 -> 모든 장르 & 테마 UI로 넘기기 -> 장르 & 테마 선정 상호작용 -> 장르 & 테마 가선택 -> 장르 & 테마 선택 완료 순서로
+    // Enter에서 이벤트 -> 장르 / 테마 클릭 시 출력할 데이터 -> 장르 / 테마 선정 진행하기 버튼 클릭 시(가선택) -> 장르 & 테마 선택 완료 순서로
     public async UniTask Execute()
     {
         _endProcess = false;
@@ -25,7 +25,7 @@ public class T03GenreAndThemeRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         await UniTask.WaitUntil(() => _endProcess);
     }
 
-    // Genre / Theme 리스트 클릭 시 출력할 데이터 만들기
+    // 장르 / 테마 클릭 시 출력할 데이터 만들기 기능
     private async UniTask ShowGenreThemeList()
     {
         // 시작용 전달
@@ -44,7 +44,6 @@ public class T03GenreAndThemeRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
             _t03TrendGenreThemeSelectRenderData.themes = new List<NameTag>();
 
             var postManager = ServiceLocater.Get<IPostManager>();
-
 
             // List<NameTag> genre 넣어주기
             foreach (var item in genreList)
@@ -86,7 +85,7 @@ public class T03GenreAndThemeRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     }
 
 
-    // 장르 / 테마 선정 진행하기 버튼 클릭 시 기능
+    // 장르 / 테마 선정 진행하기 버튼 클릭 시 기능 (가선택)
     public async UniTask CheckGenreTheme()
     {
         _waiting = true;
