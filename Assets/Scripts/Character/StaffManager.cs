@@ -11,6 +11,14 @@ using Random = UnityEngine.Random;
 // 고용된 스태프의 데이터 읽기(GetAllHiredStaffList), 쓰기(ModifyStaffData) 가능. 
 public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IStaffRecruit
 {
+    // Slot Data
+    [Header("슬롯 데이터")]
+    private SlotData _currentSlot;
+    public SlotData CurrentSlot => _currentSlot;
+    [SerializeField] private SlotUnlockDataSO slotUnlockData;
+    [SerializeField] private string slotGSheetId;
+    [SerializeField] private string slotGId;
+    
     [Header("스태프 생성 설정")]
     public Transform staffContainer;      // 직원들 모아둘 부모 폴더 (하이러키 창에서)
     public GameObject tempCbtPrefab;      // 임시 캐릭터 프리팹 ( 나중에 아바타 시트, 어드레서블 적용) 
@@ -374,11 +382,30 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
 
         return viewData;
     }
+    
+    
+    public StaffEntity GetStaffEntity(int staffId)
+    {
+        _spawnedEntities.TryGetValue(staffId, out var entity);
+        return entity;
+    }
+
+    public (bool result, int slotId) UpgradeSlot(int money)
+    {
+        foreach (var slot in slotUnlockData.slots)
+        {
+            if (!slot.unlocked && money >= slot.cost)
+            {
+                slot.unlocked = true;
+                _currentSlot = slot;
+                ServiceLocater.Get<IGameManager>().AddMoney(money * -1); 
+                return (true, slot.id);    
+            }
+        }
+        return (false, 0);
+    }
+
     // ------------------------------------------------------------------------
-    
-    
-    
-    
     
     
     // 컨텍스트 메뉴 테스트 코드
@@ -481,9 +508,19 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         }
     }
     
-    public StaffEntity GetStaffEntity(int staffId)
+    [ContextMenu("Download Slot Data")]
+    private async UniTask DownloadSlotData()
     {
-        _spawnedEntities.TryGetValue(staffId, out var entity);
-        return entity;
+        GSheetManager gSheetManager = new(slotGSheetId, slotGId);
+        var dataList = gSheetManager.GetData();
+        slotUnlockData.slots.Clear();
+        foreach (var data in dataList)
+        {
+            slotUnlockData.slots.Add(new SlotData()
+            {
+                id = int.Parse(data["Slot_ID"]),
+                cost = int.Parse(data["Slot_Cost"]),
+            });
+        }
     }
 }
