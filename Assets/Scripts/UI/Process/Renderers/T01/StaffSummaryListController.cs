@@ -28,7 +28,6 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
     [SerializeField] private Button okBtn;
     
     private List<int> _selectedStaffs = new();
-    private List<StaffSummaryData> _staffSummaryDatas = new();
 
     private void Awake()
     {
@@ -51,7 +50,6 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
         {
             mainPanel.SetActive(true);
             _selectedStaffs.Clear();
-            _staffSummaryDatas = renderData.staffSummaryData;
             var cnt = 0;
 
             for (int i = 0; i < renderData.staffSummaryData.Count; i++)
