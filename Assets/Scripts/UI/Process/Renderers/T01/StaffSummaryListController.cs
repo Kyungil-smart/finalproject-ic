@@ -145,7 +145,7 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
         await ServiceLocater.Get<IStaffRecruit>().GenerateRecruitCandidatesAsync(1, 2);
         var ls = ServiceLocater.Get<IStaffRecruit>().GetAvailableStaffList();
         foreach (var staff in ls)
-            await ServiceLocater.Get<IStaffRecruit>().ConfirmHireAsync(staff.Staff_ID);
+            await ServiceLocater.Get<IStaffRecruit>().ConfirmHireAsync(staff.Staff_ID, false);
         await UniTask.Yield();
         await ServiceLocater.Get<IStaffRecruit>().GenerateRecruitCandidatesAsync(1, 8);
         StaffSummaryRenderData sd = new ();

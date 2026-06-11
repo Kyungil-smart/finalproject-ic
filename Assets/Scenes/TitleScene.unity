@@ -1427,6 +1427,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f053c764f203f343914f6baaa518a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffManager
+  slotUnlockData: {fileID: 11400000, guid: 43d27f90f1b3e6a4ebf0aca91d2a850b, type: 2}
+  slotGSheetId: 1kkqhlNdWRSD3DCiUQlRI0cTI6uT9WmA7jKO4kawTdOo
+  slotGId: 296026410
   staffContainer: {fileID: 1708940382}
   tempCbtPrefab: {fileID: 7873112891841811078, guid: b2fcf728ef76d2d46b3db3e792b1418d, type: 3}
 --- !u!1 &1872334541

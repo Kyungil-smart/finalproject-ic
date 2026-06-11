@@ -49,7 +49,7 @@ public class ReadyGameData : MonoBehaviour
         // 확인한 직원으로 채용 진행
         foreach (var staff in availableStaffs)
         {
-            await ServiceLocater.Get<IStaffRecruit>().ConfirmHireAsync(staff.Staff_ID);
+            await ServiceLocater.Get<IStaffRecruit>().ConfirmHireAsync(staff.Staff_ID, free: true);
             Debug.Log($"[ReadyGameData] Hire staff: {staff.Staff_ID} {staff.Staff_Name}");
         }
         
