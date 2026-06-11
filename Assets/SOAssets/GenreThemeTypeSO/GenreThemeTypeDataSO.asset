@@ -13,83 +13,63 @@ MonoBehaviour:
   m_Name: GenreThemeTypeDataSO
   m_EditorClassIdentifier: Assembly-CSharp::GenreThemeTypeDataSO
   genreThemeList:
-  - GT_Id: 60001
+  - GT_ID: 60001
     Type: 1
-    GT_Name: RPG
     GT_Name_ID: 1510001
-  - GT_Id: 60002
+  - GT_ID: 60002
     Type: 1
-    GT_Name: "\uC561\uC158"
     GT_Name_ID: 1510002
-  - GT_Id: 60003
+  - GT_ID: 60003
     Type: 1
-    GT_Name: "\uD37C\uC990"
     GT_Name_ID: 1510003
-  - GT_Id: 60004
+  - GT_ID: 60004
     Type: 1
-    GT_Name: "\uC2DC\uBBAC\uB808\uC774"
     GT_Name_ID: 1510004
-  - GT_Id: 60005
+  - GT_ID: 60005
     Type: 1
-    GT_Name: "\uB85C\uADF8\uB77C\uC774\uD06C"
     GT_Name_ID: 1510005
-  - GT_Id: 60006
+  - GT_ID: 60006
     Type: 1
-    GT_Name: "\uC5B4\uB4DC\uBCA4\uCC98"
     GT_Name_ID: 1510006
-  - GT_Id: 60007
+  - GT_ID: 60007
     Type: 1
-    GT_Name: "\uC804\uB7B5"
     GT_Name_ID: 1510007
-  - GT_Id: 60008
+  - GT_ID: 60008
     Type: 1
-    GT_Name: "\uC2A4\uD3EC\uCE20"
     GT_Name_ID: 1510008
-  - GT_Id: 60009
+  - GT_ID: 60009
     Type: 1
-    GT_Name: "\uACA9\uD22C"
     GT_Name_ID: 1510009
-  - GT_Id: 60010
+  - GT_ID: 60010
     Type: 1
-    GT_Name: "\uACF5\uD3EC"
     GT_Name_ID: 1510010
-  - GT_Id: 61001
+  - GT_ID: 61001
     Type: 2
-    GT_Name: "\uD310\uD0C0\uC9C0"
     GT_Name_ID: 1520001
-  - GT_Id: 61002
+  - GT_ID: 61002
     Type: 2
-    GT_Name: SF
     GT_Name_ID: 1520002
-  - GT_Id: 61003
+  - GT_ID: 61003
     Type: 2
-    GT_Name: "\uC880\uBE44"
     GT_Name_ID: 1520003
-  - GT_Id: 61004
+  - GT_ID: 61004
     Type: 2
-    GT_Name: "\uC911\uC138"
     GT_Name_ID: 1520004
-  - GT_Id: 61005
+  - GT_ID: 61005
     Type: 2
-    GT_Name: "\uD604\uB300"
     GT_Name_ID: 1520005
-  - GT_Id: 61006
+  - GT_ID: 61006
     Type: 2
-    GT_Name: "\uACF5\uD3EC"
     GT_Name_ID: 1520006
-  - GT_Id: 61007
+  - GT_ID: 61007
     Type: 2
-    GT_Name: "\uC2A4\uD300\uD391\uD06C"
     GT_Name_ID: 1520007
-  - GT_Id: 61008
+  - GT_ID: 61008
     Type: 2
-    GT_Name: "\uC0AC\uC774\uBC84\uD391\uD06C"
     GT_Name_ID: 1520008
-  - GT_Id: 61009
+  - GT_ID: 61009
     Type: 2
-    GT_Name: "\uD559\uC6D0"
     GT_Name_ID: 1520009
-  - GT_Id: 61010
+  - GT_ID: 61010
     Type: 2
-    GT_Name: "\uC6B0\uC8FC"
     GT_Name_ID: 1520010

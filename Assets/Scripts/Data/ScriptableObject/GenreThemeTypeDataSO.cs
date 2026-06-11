@@ -9,7 +9,7 @@ using UnityEngine;
 [Serializable]
 public class GenreThemeRow
 {
-    public int GT_Id;
+    public int GT_ID;
     public int Type;
     public int GT_Name_ID;
 }

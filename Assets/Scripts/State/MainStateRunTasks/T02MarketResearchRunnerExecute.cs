@@ -30,7 +30,8 @@ public class T02MarketResearchRunnerExecute : ProcessTaskRunner, IProcessTaskRun
 
         var projectManager = ServiceLocater.Get<IProjectManager>();
         // TODO: 기획 리뷰 듣고 진행하기
-        
+        // TODO: 트렌드 장르 및 테마 IProjectManager의 해당 함수에 넣어주기
+
 
     }
 

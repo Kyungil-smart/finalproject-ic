@@ -132,7 +132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb1490e8c878b5a498c8dfc4bb131c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffAssignmentSubState
-  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: ebd410a0d791b404ca2538f4323cfb5c, type: 2}
 --- !u!1 &4010402755112815680
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e1bfe6900914a34489968d0c1df7a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ConceptConfirmSubState
-  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: f7cae1b3f3b6b444da148589d05e052a, type: 2}
+  genreThemeTypeDataSO: {fileID: 11400000, guid: da33a372739765f46bf647df15737753, type: 2}
 --- !u!1 &4115531397324102737
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,7 +221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb1490e8c878b5a498c8dfc4bb131c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffAssignmentSubState
-  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: ebd410a0d791b404ca2538f4323cfb5c, type: 2}
 --- !u!1 &5147171091452510927
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +265,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb1490e8c878b5a498c8dfc4bb131c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffAssignmentSubState
-  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: ebd410a0d791b404ca2538f4323cfb5c, type: 2}
 --- !u!1 &5769123837800179164
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,7 +406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa34abbd4a6a17c45aa7552636884487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QAMiniGameSubState
-  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: ca56e54c4a266714a9e0ea4fdbd6e15f, type: 2}
 --- !u!1 &7865469379387129726
 GameObject:
   m_ObjectHideFlags: 0
@@ -454,7 +450,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 916da975e673fb4448983d30448be8c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MarketingSelectionSubState
-  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: b124d844784a9b54c860d468e2757b4c, type: 2}
 --- !u!1 &7921288838250715853
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,7 +494,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb1490e8c878b5a498c8dfc4bb131c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffAssignmentSubState
-  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: ebd410a0d791b404ca2538f4323cfb5c, type: 2}
 --- !u!1 &8052527558272595369
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,7 +538,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb1490e8c878b5a498c8dfc4bb131c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffAssignmentSubState
-  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: ebd410a0d791b404ca2538f4323cfb5c, type: 2}
 --- !u!1 &8098117127860797445
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +582,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb1490e8c878b5a498c8dfc4bb131c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffAssignmentSubState
-  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: ebd410a0d791b404ca2538f4323cfb5c, type: 2}
 --- !u!1 &8263125883212876546
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,7 +626,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e22f57bc484114880b2a1948eed8ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffHireSubState
-  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: 9d9dfa53c88a02c40a0013bd2b47af22, type: 2}
 --- !u!1 &9183761033871417286
 GameObject:
   m_ObjectHideFlags: 0
@@ -679,4 +670,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a2ed931109f934fb1f58f3cfb9017e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ReleaseReviewGamersSubState
-  <CurrentStateDataSO>k__BackingField: {fileID: 11400000, guid: ab3cc07b1032312458732341ab240398, type: 2}
