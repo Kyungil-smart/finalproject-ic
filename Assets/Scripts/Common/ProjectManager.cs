@@ -33,8 +33,8 @@ public struct ProjectData
     public uint income;  // 매출 금액
     public NameTag award;  // 수상 경력
     // Todo. 품질산출 시 데이터 비교를 위해 선언함
-    public string trendGenre;  // 트랜드장르
-    public string trendTheme;  // 트랜드테마
+    public NameTag trendGenre;  // 트랜드장르
+    public NameTag trendTheme;  // 트랜드테마
 
     public ProjectData(string name)
     {
@@ -73,7 +73,6 @@ public class ProjectManager : Manager, IProjectManager
     private ProjectData _projectData;
     // Todo.메인스태프와 서브스태프를 구분할 필요가 있음 ex) 0번이 메인, 1번이 서브로 스탯값 계산.
     private List<int> _assignedStaff = new();
-    private IReadOnlyList<int> _getAssignedStaff;
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
 
@@ -138,7 +137,14 @@ public class ProjectManager : Manager, IProjectManager
         get => _projectData.income;
         set => _projectData.income = value;
     }
-    
+
+    public void UpdateTotalQuality(float value, float ratio = 1f)
+    {
+        var data = _projectData.Qualities.Value;
+        data.total = value * ratio;
+        _projectData.Qualities.Value = data;
+    }
+
     public void NewProject(string projectName)
     {
         _projectData = new ProjectData(projectName);
