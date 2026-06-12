@@ -9,13 +9,6 @@ using System.Collections.Generic;
 ///
 /// 
 /// </summary>
-[Serializable]
-public class StaffData
-{
-    public StaffInitData init;
-    public StaffRuntimeData runtime;
-}
-
 
 [Serializable]
 public class StaffInitData

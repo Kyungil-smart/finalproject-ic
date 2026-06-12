@@ -27,13 +27,10 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     public Transform staffContainer;      // 직원들 모아둘 부모 폴더 (하이러키 창에서)
     public GameObject tempCbtPrefab;      // 임시 캐릭터 프리팹 ( 나중에 아바타 시트, 어드레서블 적용) 
     
-    private List<StaffData> _staffList = new (); 
-    // 빌더로 실제로 완성된 게임 오브젝트들 저장하는 디셔너리. Key 값 = Staff_ID
-    // 나중에 _hiredStaffList의 StaffInitData랑 StaffEntity의 new StaffInitData 중복 선언된거 고치기. 
-    private Dictionary<int, StaffEntity> _spawnedEntities = new ();
+    private List<StaffEntity> _staffList = new ();
     
     // 가챠 버튼 눌렀을 때 생성되어 UI 후보 리스트 창에 띄워질 실제 후보들 런타임 데이터
-    private List<StaffData> _recruitCandidates = new ();
+    private List<StaffEntity> _recruitCandidates = new ();
     private StaffDataFactory _dataFactory = new ();
     private IStaffDataManager _staffManager;
     
@@ -70,10 +67,6 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         return null;
     }
     
-    // 채용 프로세스 ----------------
-    
-    
-    
     // ## 채용 1단계
     // 카드 수만큼 채용 후보 리스트 생성 (가챠 UI 창 열거나 새로고침 시 호출)
     public async UniTask GenerateRecruitCandidatesAsync(int playerLevel, int cardCount) 
@@ -93,11 +86,12 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
             var candidate = await _dataFactory.CreateDataByStaffIDAsync(readOnlyStaffData.Staff_ID, playerLevel);
             if (candidate != null)
             {
-                _recruitCandidates.Add(new StaffData()
+                StaffEntity staff = new ()
                 {
                     init = candidate,
                     runtime = _dataFactory.CreateInitialRuntimeData(candidate)
-                }); // 대기실 리스트업
+                };
+                _recruitCandidates.Add(staff); // 대기실 리스트업
             }
         }
         Debug.Log($"[StaffManager] 채용 후보 데이터 {_recruitCandidates.Count}명 확정 셋팅 완료.");
@@ -127,7 +121,8 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
             return StaffHireResult.NoRecruiter;
         
         var gameManager = ServiceLocater.Get<IGameManager>();
-        var cost = _spawnedEntities[targetData.init.Staff_ID].GetHireCost();
+        var staff = _staffList.Find(x => x.init.Staff_ID == targetData.init.Staff_ID);
+        var cost = staff.GetHireCost();
         if (gameManager.Money.CurrentValue < cost)
             return StaffHireResult.NotEnoughMoney;
         return StaffHireResult.Available;
@@ -152,7 +147,8 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         if (!free)
         {
             var gameManager = ServiceLocater.Get<IGameManager>();
-            var cost = _spawnedEntities[targetData.init.Staff_ID].GetHireCost();
+            var staff = _staffList.Find(x => x.init.Staff_ID == targetData.init.Staff_ID);
+            var cost = staff.GetHireCost();
             if (gameManager.Money.CurrentValue < cost)
                 return StaffHireResult.NotEnoughMoney;
             ServiceLocater.Get<IGameManager>().AddMoney(cost * -1);
@@ -164,19 +160,11 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         
         // 빌더 파이프라인으로 실제 캐릭터 프리팹 생성 및 배치
         IStaffInfo newStaff = await new StaffBuilder()
-            .WithInitData(targetData.init)
-            .WithRuntimeData(targetData.runtime)
+            .WithStaffData(targetData)
             .WithVisualAsset(tempCbtPrefab) 
             .BuildAsync(staffContainer);
         
-        // 생성된 오브젝트 딕셔너리에 담기. 
-        if (newStaff is StaffEntity entity) 
-            _spawnedEntities[targetData.init.Staff_ID] = entity;
-        newStaff.DisplayInfo(); 
-        
-        if (((Component)newStaff).TryGetComponent(out IJobAction job))
-            job.DoWork();
-        
+        newStaff.DisplayInfo();
         Debug.Log($"[{targetData.init.Staff_Name}] 정식 채용 및 오브젝트 생성 완료");
         return StaffHireResult.Success;
     }
@@ -185,21 +173,11 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     public async UniTask FireStaff(int targetStaffID)
     {
         // 고용 리스트에서 삭제.
-        int delNum = _staffList.RemoveAll(x => x.init.Staff_ID == targetStaffID);
-        Debug.Log($"[StaffManager] 총 {delNum} 명의 Staff 가 해고 되었습니다.");
+        var staff = _staffList.Find(x => x.init.Staff_ID == targetStaffID);
+        _staffList.Remove(staff);
         await UniTask.Yield();
-        // 오브젝트 삭제 및 오브젝트 딕셔너리에서 삭제.
-        if (_spawnedEntities.TryGetValue(targetStaffID, out StaffEntity targetEntity))
-        {
-            if (targetEntity != null)
-            {
-                Destroy(targetEntity.gameObject);
-                await UniTask.Yield();
-            }
-            _spawnedEntities.Remove(targetStaffID);
-        }
-        
-        // 재고용 불가 같은 것은 아직 고려하지 않음.(나중에 기획에 있으면 추가할 예정)
+        Destroy(staff.gameObject);
+        await UniTask.Yield();
         Debug.Log($"사번 ID: {targetStaffID}번 직원의 데이터와 3D 오브젝트가 제거완료.");
     }
     
@@ -223,7 +201,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     }
     
     // initData와 Runtime 데이터를 반영한 View용 StaffViewData 생성. 
-    public StaffViewData ConvertToViewData(StaffData data)
+    public StaffViewData ConvertToViewData(StaffEntity data)
     {
         StaffViewData viewData = new StaffViewData
         {
@@ -262,8 +240,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     
     public StaffEntity GetStaffEntity(int staffId)
     {
-        _spawnedEntities.TryGetValue(staffId, out var entity);
-        return entity;
+        return _staffList.Find(x => x.init.Staff_ID == staffId);
     }
 
     // --- Slot 제어
@@ -292,7 +269,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         {   // 전체 공통
             foreach (var staffData in _staffList)
             {
-                staffData.init.
+                
             }
         }
         else

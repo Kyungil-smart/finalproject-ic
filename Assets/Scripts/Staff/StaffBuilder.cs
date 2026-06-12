@@ -6,21 +6,14 @@ using UnityEngine;
 /// </summary>
 public class StaffBuilder
 {
-    private StaffInitData _initData;
+    private StaffEntity _staffData;
     private StaffRuntimeData _runtimeData;
     private GameObject _visualPrefab;
 
     // StaffDataFactory가 만든 초기화 데이터 등록
-    public StaffBuilder WithInitData(StaffInitData data)
+    public StaffBuilder WithStaffData(StaffEntity data)
     {
-        _initData = data;
-        return this;
-    }
-
-    // 런타임 데이터 등록 (로드할 때만 기존의 런타임 데이터를 등록. 그냥 스태프 생성할때는 등록과정 생략)
-    public StaffBuilder WithRuntimeData(StaffRuntimeData data)
-    {
-        _runtimeData = data;
+        _staffData = data;
         return this;
     }
 
@@ -36,18 +29,14 @@ public class StaffBuilder
     
     public async UniTask<IStaffInfo> BuildAsync(Transform parent)
     {
-        if (_initData == null) return null;
+        if (_staffData == null) return null;
 
         // 유니티 씬에 껍데기 오브젝트 생성
-        GameObject staffObj = new GameObject($"Staff_{_initData.Staff_ID}_{_initData.Job}");
+        GameObject staffObj = new GameObject($"Staff_{_staffData.init.Staff_ID}_{_staffData.init.Job}");
         staffObj.transform.SetParent(parent);
 
-        // Monobehaviour를 상속받고 인터페이스 기능들을 구현한 StaffEntity 부착 및 데이터 주입.
-        StaffEntity entity = staffObj.AddComponent<StaffEntity>();
-        entity.Initialize(_initData, _runtimeData ?? new StaffRuntimeData());
-
         // 직군에 따라 IJobAction를 상속받는 직군 컴포넌트 부착
-        switch (_initData.Job)
+        switch (_staffData.init.Job)
         {
             case JobType.Planner:   staffObj.AddComponent<PlannerAction>();   break;
             case JobType.Developer: staffObj.AddComponent<DeveloperAction>(); break;
@@ -63,6 +52,6 @@ public class StaffBuilder
         }
 
         // 외부에는 읽기 전용 인터페이스만 리턴 (캡슐화)
-        return entity;
+        return _staffData;
     }
 }
