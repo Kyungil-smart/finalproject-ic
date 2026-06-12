@@ -1,14 +1,18 @@
 using Cysharp.Threading.Tasks;
+using R3;
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
 public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExecute
 {
     T0409ProductionStaffListRenderData _t0409ProductionStaffListRenderData;
+    T0409ProductionLeaderResultRenderData selectedStaffs;
     private List<int> _selectedStaffIdxs = new();  // UI에 콜백을 보내기 위한 List<int> 타입의 인스턴스 변수
+    // private GameDevProcName _curGameDevProcName;
 
     private bool _endProcess;
     private bool _conditionGoback;
@@ -65,7 +69,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     public async UniTask CheckSelectedLeaders()
     {
         _waiting = true;
-        T0409ProductionLeaderResultRenderData selectedStaffs = new T0409ProductionLeaderResultRenderData() { leaderList = new List<StaffViewData>() };
+        selectedStaffs = new T0409ProductionLeaderResultRenderData() { leaderList = new List<StaffViewData>() };
         foreach (var idx in _selectedStaffIdxs)
         {
             selectedStaffs.leaderList.Add(_t0409ProductionStaffListRenderData.staffList[idx].viewData);
@@ -79,7 +83,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, selectedStaffs);
         await WaitProcess();
         if (_conditionGoback) await CreateStaffList();
-        else await SelectLeaderProcessing();
+        else await LeadersEvent();
     }
 
     private async void GoCheckSelectLeadersToCreateStaffList()
@@ -95,20 +99,38 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
 
     }
 
+    // 직원간 이벤트 발생
+    private async UniTask LeadersEvent()
+    {
+        _waiting = true;
+
+
+        // TODO: 직원간 이벤트 발생
+
+
+
+
+        await WaitProcess();
+        await SelectLeaderProcessing();
+    }
+
+
     private async UniTask SelectLeaderProcessing()
     {
         _waiting = true;
+        ReadOnlyReactiveProperty<GameDevProcName> curGameDevProcName = ServiceLocater.Get<IGameManager>().ProcName;
         // ToDO. Animation 이 들어올 경우 대비 해야함.
         var data = new SimpleUIRenderData(9900020, 9900007, GoProcess);
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
 
-        // 리더 되는 프로세스
-
-
+        // 리더 되는 프로세스는 각 프로덕션 내에서만 저장되면 되기 때문에 매니저에 저장될 필요 없을 듯
 
         await UniTask.Yield();
         await WaitProcess();
-        await EmitResultEvent();
+
+        // T06 이면 EmitResultEvent 로 가고, 아니면 CheckResult 로
+        if (curGameDevProcName.CurrentValue == GameDevProcName.DevelopmentPreProduction) await EmitResultEvent();
+        else await CheckResult();
     }
 
     private void GoProcess()
@@ -116,25 +138,24 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         _waiting = false;
     }
 
-    // 직원간 이벤트 발생
-
 
     // T06 (프리 프로덕션의 마지막 단계) 에서만 발생하는 이벤트
     private async UniTask EmitResultEvent()
     {
-
+        // TODO: 지표 이벤트 발생
     }
-
-
 
 
     private async UniTask CheckResult()
     {
+        _waiting = true;
 
+
+        // T06 이면 추가로 지표 달성 이벤트 결과 UI가 떠야 함
+
+
+        await WaitProcess();
     }
-
-
-
 
     // 마지막에 다음 프로세스 상태로 가기 위한 기능
     private async UniTask GoToNextProcess()
