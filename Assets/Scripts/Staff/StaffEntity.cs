@@ -23,6 +23,7 @@ public class StaffEntity : MonoBehaviour, IStaffInfo, ISavableStaff
     public JobType GetJob() => _initData.Job;
     public StaffGrade GetGrade() => _initData.Grade;
     public int GetSalary() => _initData.Salary;
+    public int GetHireCost() => _initData.Hire_Cost;
     public DiscType GetDiscType() => _initData.DISC_Type;
     public void DisplayInfo() => Debug.Log($"[{_initData.Grade}급 {_initData.Job}] 사번:{_initData.Staff_ID} / 연봉:{_initData.Salary}");
 

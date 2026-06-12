@@ -12,7 +12,6 @@ using Random = UnityEngine.Random;
 // 고용된 스태프의 데이터 읽기(GetAllHiredStaffList), 쓰기(ModifyStaffData) 가능. 
 public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IStaffRecruit
 {
-   
     // Slot Data
     [Header("슬롯 데이터")]
     [SerializeField] private SlotUnlockDataSO slotUnlockData;
@@ -121,23 +120,44 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     }
 
     // 고용 버튼 눌렀을때 ViewList 중 해당 직원 뽑는 것은 UI쪽에서 처리? 
+    public StaffHireResult VerifyHirable(int targetStaffID)
+    {
+        var targetData = _recruitCandidates.Find(c => c.init.Staff_ID == targetStaffID);
+        if (targetData == null)
+            return StaffHireResult.NoRecruiter;
+        
+        var gameManager = ServiceLocater.Get<IGameManager>();
+        var cost = _spawnedEntities[targetData.init.Staff_ID].GetHireCost();
+        if (gameManager.Money.CurrentValue < cost)
+            return StaffHireResult.NotEnoughMoney;
+        return StaffHireResult.Available;
+    }
     
     // ## 채용 3단계
     // 최종 계약 확정 (UI 목록에서 버튼을 눌러 채용할 때 내부 데이터 업데이트 및 스태프 생성)
-    public async UniTask ConfirmHireAsync(int targetStaffID, bool free = true)
+    public async UniTask<StaffHireResult> ConfirmHireAsync(int targetStaffID, bool free = true)
     {
         // 최대 고용 인원 수 확인
-        if (_staffList.Count >= maxHiredStaffCount) return;
+        if (_staffList.Count >= maxHiredStaffCount) return StaffHireResult.Full;
         
         // 채용 후보 리스트에 해당 사번이 실제로 대기 중인지 체크.
         var targetData = _recruitCandidates.Find(c => c.init.Staff_ID == targetStaffID);
         if (targetData == null)
         {
             Debug.LogError($"사번 {targetStaffID}번 스태프는 현재 채용 후보 목록에 없습니다.");
-            return;
+            return StaffHireResult.NoRecruiter;
         }
         Debug.Log($"[StaffManager] {targetData.init.Staff_Name} - 고용 절차 시작");
         
+        if (!free)
+        {
+            var gameManager = ServiceLocater.Get<IGameManager>();
+            var cost = _spawnedEntities[targetData.init.Staff_ID].GetHireCost();
+            if (gameManager.Money.CurrentValue < cost)
+                return StaffHireResult.NotEnoughMoney;
+            ServiceLocater.Get<IGameManager>().AddMoney(cost * -1);
+        }
+
         // 후보 리스트에서 제거 후 정식 고용 리스트 및 딕셔너리로 이사 
         _recruitCandidates.Remove(targetData); 
         _staffList.Add(targetData);
@@ -156,14 +176,9 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         
         if (((Component)newStaff).TryGetComponent(out IJobAction job))
             job.DoWork();
-
-        if (!free)
-        {
-            var cost = _spawnedEntities[targetData.init.Staff_ID].GetSalary();
-            ServiceLocater.Get<IGameManager>().AddMoney(cost * -1);
-        }
         
         Debug.Log($"[{targetData.init.Staff_Name}] 정식 채용 및 오브젝트 생성 완료");
+        return StaffHireResult.Success;
     }
     
     // 직원 해고 함수 (UI에서 해고 누를 시 함수 호출)
@@ -275,7 +290,10 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     {
         if (staffIds.Count == 0)
         {   // 전체 공통
-            
+            foreach (var staffData in _staffList)
+            {
+                staffData.init.
+            }
         }
         else
         {   // 리더만
