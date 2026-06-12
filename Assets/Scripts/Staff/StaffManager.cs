@@ -20,11 +20,13 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     
     // Slot Data
     [Header("슬롯 데이터")]
-    private SlotData _currentSlot;
-    public SlotData CurrentSlot => _currentSlot;
     [SerializeField] private SlotUnlockDataSO slotUnlockData;
     [SerializeField] private string slotGSheetId;
     [SerializeField] private string slotGId;
+    private SlotData _currentSlot;
+    public SlotData CurrentSlot => _currentSlot;
+    private List<SlotData> _slots = new();
+    private int _slotIndex;
     
     [Header("스태프 생성 설정")]
     public Transform staffContainer;      // 직원들 모아둘 부모 폴더 (하이러키 창에서)
@@ -65,7 +67,23 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         ServiceLocater.Unregister<IStaffRegister>(this);
         ServiceLocater.Unregister<IStaffRecruit>(this);
     }
-    
+
+    private void Start() => Init();
+
+    private void Init()
+    {
+        _slots = slotUnlockData.slots;
+        Debug.Log($"[StaffManager:Init] 로딩된 slot 총 개수: {_slots.Count}");
+        var data = LoadingSavedData();
+        // ToDo: Save file loading 후에 slot 상태에 대한 업데이트 필요.
+        if (data == null)
+            _currentSlot = _slots[_slotIndex]; 
+    }
+
+    private object LoadingSavedData()
+    {
+        return null;
+    }
     
     // 채용 프로세스 ----------------
     
@@ -351,19 +369,20 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         return entity;
     }
 
-    public (bool result, int slotId) UpgradeSlot(int money)
+    public (bool result, int nextSlotIndex) UpgradeSlot()
     {
-        foreach (var slot in slotUnlockData.slots)
+        var money = ServiceLocater.Get<IGameManager>().Money.CurrentValue;
+        if (money < _currentSlot.cost || _slotIndex >= _slots.Count - 1)
         {
-            if (!slot.unlocked && money >= slot.cost)
-            {
-                slot.unlocked = true;
-                _currentSlot = slot;
-                ServiceLocater.Get<IGameManager>().AddMoney(money * -1); 
-                return (true, slot.id);    
-            }
+            Debug.Log("[StaffManager] Slot 해금 실패");
+            return (false, 0);
         }
-        return (false, 0);
+        
+        _currentSlot.unlocked = true;
+        ServiceLocater.Get<IGameManager>().AddMoney(_currentSlot.cost * -1);
+        _currentSlot = _slots[++_slotIndex];
+        Debug.Log("[StaffManager] Slot 해금 성공");
+        return (true, _slotIndex);
     }
 
     // ------------------------------------------------------------------------

@@ -7,7 +7,7 @@ public class GameManager : Manager, IGameManager
 {
     private ReactiveProperty<int> _playerLevel = new(1);      // 회사 레벨
     private int _playerMaxLevel = 15;                   // 최대 회사 레벨
-    private ReactiveProperty<int> _money = new (0);     // 재화
+    private ReactiveProperty<int> _money = new (1000000);     // 재화 ; Test 목적으로 일단 많이 넣어둠.
     private ReactiveProperty<int> _heart = new (0);
     private ReactiveProperty<DateTime> _date = new ();
     private List<ProjectData> _projects = new();        // 프로젝트 리스트

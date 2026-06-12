@@ -2,6 +2,7 @@
 using DataDispatcher;
 using R3;
 using TMPro;
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.UI;
 using Channel = DataDispatcher.Channel;
@@ -32,6 +33,9 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     [SerializeField] private Button staffListButton;
     [SerializeField] private TextLoader staffListTl;
 
+    [Header("Staff Slot UI")] 
+    [SerializeField] private Button[] staffSlots;
+
     private bool _isReady = false;
     public bool IsReady { get => _isReady; }    
     
@@ -49,6 +53,9 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         goNextProcessButton.onClick.AddListener(OnClickNextProcess);
         staffListButton.onClick.AddListener(OnClickViewStaffList);
         ServiceLocater.Register<IMainUIReadyable>(this);
+        foreach (var slotBtn in staffSlots)
+            slotBtn.onClick.AddListener(UnlockSlot);
+        
     }
 
     private void Start()
@@ -70,6 +77,8 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         lastProjectsButton.onClick.RemoveListener(OnClickViewLastProject);
         goNextProcessButton.onClick.RemoveListener(OnClickNextProcess);
         staffListButton.onClick.RemoveListener(OnClickViewStaffList);
+        foreach (var slotBtn in staffSlots)
+            slotBtn.onClick.RemoveListener(UnlockSlot);
     }
     
     private void Initialize()
@@ -81,9 +90,18 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         previousStepNum.text = StepString(0);  
         currentStepNum.text = StepString(0);
         nextStepNum.text = StepString(0);
+        LoadingSavedData();
     }
 
     private string StepString(int stepNum) => $"{stepNum:D2}/12";
+
+    /// <summary>
+    /// Save Data 를 Loading 한 후에 UI 에서 초기화 작업 해줘야 할 것들 진행하기
+    /// </summary>
+    private void LoadingSavedData()
+    {
+        
+    }
     
     // ------------ R3 Property Bind 할 것들 -------------
 
@@ -166,5 +184,16 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         await UniTask.WaitForSeconds(1f);
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
         ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
+    }
+
+    private void UnlockSlot()
+    {
+        (bool result, int nextSlotIndex) = ServiceLocater.Get<IStaffRegister>().UpgradeSlot();
+        if (result)
+        {
+            staffSlots[nextSlotIndex - 1].gameObject.SetActive(false);
+            if (nextSlotIndex < staffSlots.Length)
+                staffSlots[nextSlotIndex].interactable = true;
+        }
     }
 }

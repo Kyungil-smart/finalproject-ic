@@ -1005,11 +1005,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7529751863290996877, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 333.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7529751863290996877, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 597
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7529751863290996877, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1026,6 +1026,10 @@ PrefabInstance:
     - target: {fileID: 8035819924460677806, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
       propertyPath: m_Name
       value: LoadingUICanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8035819924460677806, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
