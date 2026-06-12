@@ -35,20 +35,13 @@ public class StaffBuilder
         GameObject staffObj = new GameObject($"Staff_{_staffData.init.Staff_ID}_{_staffData.init.Job}");
         staffObj.transform.SetParent(parent);
 
-        // 직군에 따라 IJobAction를 상속받는 직군 컴포넌트 부착
-        switch (_staffData.init.Job)
-        {
-            case JobType.Planner:   staffObj.AddComponent<PlannerAction>();   break;
-            case JobType.Developer: staffObj.AddComponent<DeveloperAction>(); break;
-            case JobType.Artist:    staffObj.AddComponent<ArtistAction>();    break;
-        }
-
         // 캐릭터 에셋을 엔티티의 자식으로 부착 (향후 어드레서블 적용할 수 있게 변경)
         if (_visualPrefab != null)
         {
             // await Addressables.InstantiateAsync(...)
             await UniTask.Delay(500); // 나중에 고정된 시간이 아닌 위의 어드레서블 적용 코드로 변경
             GameObject.Instantiate(_visualPrefab, staffObj.transform);
+            _visualPrefab.GetComponent<Staff>().SetEntity(_staffData);
         }
 
         // 외부에는 읽기 전용 인터페이스만 리턴 (캡슐화)

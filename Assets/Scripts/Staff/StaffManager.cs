@@ -80,7 +80,9 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
             while (true)
             {
                 readOnlyStaffData = _staffDataManager.StaffList[Random.Range(0, _staffDataManager.StaffList.Count)];
-                if (_staffList.FindAll(x => x.init.Staff_ID == readOnlyStaffData.Staff_ID).Count < 1) break;
+                if (_staffList.FindAll(x => x.init.Staff_ID == readOnlyStaffData.Staff_ID).Count < 1
+                    && _recruitCandidates.FindAll(x => x.init.Staff_ID == readOnlyStaffData.Staff_ID).Count < 1) 
+                    break;
                 await UniTask.WaitForSeconds(0.1f);
             }
             var candidate = await _dataFactory.CreateDataByStaffIDAsync(readOnlyStaffData.Staff_ID, playerLevel);
@@ -91,6 +93,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
                     init = candidate,
                     runtime = _dataFactory.CreateInitialRuntimeData(candidate)
                 };
+                Debug.Log($"[StaffManager] {staff.init.Staff_ID}:{staff.init.Staff_Name} 대기실 배치");
                 _recruitCandidates.Add(staff); // 대기실 리스트업
             }
         }
@@ -136,7 +139,16 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         if (_staffList.Count >= maxHiredStaffCount) return StaffHireResult.Full;
         
         // 채용 후보 리스트에 해당 사번이 실제로 대기 중인지 체크.
-        var targetData = _recruitCandidates.Find(c => c.init.Staff_ID == targetStaffID);
+        foreach (var candidate in _recruitCandidates)
+        {
+            // 1. 유니티 가짜 Null 검증 (해당 객체 자체가 유니티 상에서 null인지 확인)
+            Debug.Log($"[StaffManager] 객체 자체 null 체크: {candidate == null}");
+    
+            // 2. Equals 메서드를 통한 값 비교 검증 (참조 비교 오류 방지)
+            Debug.Log($"[StaffManager] Equals 비교: {candidate.init.Staff_ID.Equals(targetStaffID)}");
+        }
+        
+        var targetData = _recruitCandidates.Find(c => c.init.Staff_ID.Equals(targetStaffID));
         if (targetData == null)
         {
             Debug.LogError($"사번 {targetStaffID}번 스태프는 현재 채용 후보 목록에 없습니다.");
@@ -175,8 +187,8 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         // 고용 리스트에서 삭제.
         var staff = _staffList.Find(x => x.init.Staff_ID == targetStaffID);
         _staffList.Remove(staff);
-        await UniTask.Yield();
-        Destroy(staff.gameObject);
+        await UniTask.Yield(); 
+        Destroy(staff.GetGameObject());
         await UniTask.Yield();
         Debug.Log($"사번 ID: {targetStaffID}번 직원의 데이터와 3D 오브젝트가 제거완료.");
     }

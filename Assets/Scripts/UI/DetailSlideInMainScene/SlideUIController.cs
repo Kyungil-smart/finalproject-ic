@@ -9,6 +9,7 @@ public class SlideUIController : MonoBehaviour, IUIRender
     [Header("Object 관련")]
     [SerializeField] private Transform contentTf;
     [SerializeField] private StaffDatailUIRenderer staffDatailUIRenderer;
+    [SerializeField] private GameObject mainPanel;
     
     [Header("Scroll View 제어")]
     [SerializeField] private Scrollbar scrollbar;
@@ -28,6 +29,7 @@ public class SlideUIController : MonoBehaviour, IUIRender
     public void Render(UIRenderData data)
     {
         var viewPortTf = contentTf.parent.GetComponent<RectTransform>();
+        mainPanel.SetActive(true);
         if (data is StaffDetailRenderData renderData)
         {
             foreach (var staff in renderData.staffDataList)
@@ -36,7 +38,7 @@ public class SlideUIController : MonoBehaviour, IUIRender
                 _scrollPages.Add(sd.gameObject);
                 var sdTf = sd.GetComponent<RectTransform>();
                 sdTf.sizeDelta = new Vector2(viewPortTf.rect.width, sdTf.sizeDelta.y);
-                sd.Render(staff, renderData.btnCallback);
+                sd.Render(staff, () => mainPanel.SetActive(false));
             }
             Init();
         }   // ToDo. Last Project Data

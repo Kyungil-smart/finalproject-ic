@@ -173,7 +173,6 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     {
         StaffDetailRenderData data = new()
         {
-            btnCallback = ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas,
             staffDataList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList()
         };
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.SlideUI, data);
