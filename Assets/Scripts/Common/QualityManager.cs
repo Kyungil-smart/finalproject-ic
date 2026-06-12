@@ -7,8 +7,11 @@ public class QualityManager : Manager
     [SerializeField] private string _gSheetId;
     [SerializeField] private string _gidQuality;
     [SerializeField] private string _gidTarget;
+    [SerializeField] private string _gsheetReward;
+    [SerializeField] private string _gidReward;
     [SerializeField] private bool _wasDownloaded;
     [SerializeField] private QualityDataSO _qData;
+    [SerializeField] private AchieveRewardSO _reward;
 
     public QualityCalculate Calculator { get; }
 
@@ -24,12 +27,16 @@ public class QualityManager : Manager
         if (!Utils.Environment.isDevelopment) return;
         if (_wasDownloaded) return;
         var loader = new QualityDataLoader { qualityData = _qData };
+        var achieveLoader = new AchieveDataLoader { achieveRewardSO = _reward };
         var gsQuality = new GSheetManager(_gSheetId, _gidQuality);
         var gsTarget = new GSheetManager(_gSheetId, _gidTarget);
+        var gsAchieve = new GSheetManager(_gsheetReward, _gidReward);
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsQuality.IsDownload);
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsTarget.IsDownload);
+        await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsAchieve.IsDownload);
         loader.LoadQulityData(gsQuality);
         loader.LoadTargetData(gsTarget);
+        achieveLoader.LoadAchieveData(gsAchieve);
         _wasDownloaded = true;
     }
     
