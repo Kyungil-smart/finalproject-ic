@@ -168,9 +168,7 @@ MonoBehaviour:
   levelStatDataSO: {fileID: 11400000, guid: b38c33bdf8250354090cad38daf37ce7, type: 2}
   gradeDataSO: {fileID: 11400000, guid: 55bb41d1187ee73449fcf2217638c850, type: 2}
   gradeRatioDataSO: {fileID: 11400000, guid: 0be8d7be790763f4b964e8dd674f25e8, type: 2}
-  StaffList: []
-  TagList: []
-  GradeList: []
+  levelExpSo: {fileID: 11400000, guid: 8c252f58eac00d442b6f226b8bc9e0e0, type: 2}
 --- !u!1001 &167306237
 PrefabInstance:
   m_ObjectHideFlags: 0

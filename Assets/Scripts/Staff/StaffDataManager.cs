@@ -27,13 +27,11 @@ public class TagRow
     public int Tag_Type; // Fixed = 1, Added = 2
     public string Tag_Name; 
     public string Tag_Name_ID;     
-    public string Tag_Desc_ID;     
-    public string Tag_Desc;        
-    public string Tag_A_Effect_ID; 
+    // public string Tag_Desc_ID;     
+    // public string Tag_Desc;        
     public string Tag_A_Effect_Name; // 태그의 효과는 A, B 두개 가질 수 있음. 
     public int Tag_A_Effect_Value;
     public float Tag_A_Effect_Ratio;
-    public string Tag_B_Effect_ID; 
     public string Tag_B_Effect_Name;
     public int Tag_B_Effect_Value;
     public float Tag_B_Effect_Ratio;
