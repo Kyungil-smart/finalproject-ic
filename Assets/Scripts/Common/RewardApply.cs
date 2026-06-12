@@ -11,5 +11,6 @@ public class QualityReward : IEventRouter
     {
         var qt = ServiceLocater.Get<IProjectManager>();
         qt.UpdateTotalQuality(qt.TotalQuality, btn.effectRatio);
+        Debug.Log(qt.TotalQuality);
     }
 }
