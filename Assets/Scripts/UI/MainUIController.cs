@@ -182,7 +182,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     {   // ToDo. 임시 코드
         await UniTask.WaitForSeconds(1f);
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
-        ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
+        // ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
     }
 
     private void UnlockSlot()
