@@ -92,8 +92,9 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
                     okBtn.onClick.AddListener(() => mainPanel.SetActive(false));
                     break;
             }
-            
-            selectedCountText.text = $"{cnt} / {ServiceLocater.Get<IGameManager>().SlotNum}";
+
+            var num = ServiceLocater.Get<IStaffRegister>().maxHiredStaffCount;
+            selectedCountText.text = $"{cnt} / {num}";
         }
     }
 
@@ -111,16 +112,16 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
 
     private void SelectItem((bool isOn, int index) data)
     {
+        var totalCnt = ServiceLocater.Get<IStaffRegister>().maxHiredStaffCount;
         if (data.isOn)
         {
-            if (_selectedStaffs.Count >= ServiceLocater.Get<IGameManager>().SlotNum) return;
+            if (_selectedStaffs.Count >= totalCnt) return;
             _selectedStaffs.Add(data.index); 
         }
         else
         {
             _selectedStaffs.Remove(data.index);
         }
-        var totalCnt = ServiceLocater.Get<IGameManager>().SlotNum;
         selectedCountText.text = $"{_selectedStaffs.Count} / {totalCnt}";
     }
 
