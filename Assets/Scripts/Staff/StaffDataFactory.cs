@@ -188,4 +188,12 @@ public class StaffDataFactory
         data.Salary = Mathf.RoundToInt((2000 + (totalBaseStats * gradeCost)) / 100f) * 100;
         data.Hire_Cost = Mathf.RoundToInt(data.Salary * gradeCost);
     }
+    
+    // 신규 스태프의 초기 RuntimeData 생성. 초기 레벨/보너스 공식이 생기면 이 함수 안에만 추가한다.
+    public StaffRuntimeData CreateInitialRuntimeData(StaffInitData init)
+    {
+        var runtime = new StaffRuntimeData();
+        // 현재는 기본값(Added 전부 0, Level 1). 향후 "특정 공식"은 여기서 적용.
+        return runtime;
+    }
 }

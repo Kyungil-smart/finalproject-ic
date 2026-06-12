@@ -92,8 +92,9 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
                     okBtn.onClick.AddListener(() => mainPanel.SetActive(false));
                     break;
             }
-            
-            selectedCountText.text = $"{cnt} / {ServiceLocater.Get<IGameManager>().SlotNum}";
+
+            var num = ServiceLocater.Get<IStaffRegister>().maxHiredStaffCount;
+            selectedCountText.text = $"{cnt} / {num}";
         }
     }
 
@@ -111,16 +112,16 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
 
     private void SelectItem((bool isOn, int index) data)
     {
+        var totalCnt = ServiceLocater.Get<IStaffRegister>().maxHiredStaffCount;
         if (data.isOn)
         {
-            if (_selectedStaffs.Count >= ServiceLocater.Get<IGameManager>().SlotNum) return;
+            if (_selectedStaffs.Count >= totalCnt) return;
             _selectedStaffs.Add(data.index); 
         }
         else
         {
             _selectedStaffs.Remove(data.index);
         }
-        var totalCnt = ServiceLocater.Get<IGameManager>().SlotNum;
         selectedCountText.text = $"{_selectedStaffs.Count} / {totalCnt}";
     }
 
@@ -145,7 +146,7 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
         await ServiceLocater.Get<IStaffRecruit>().GenerateRecruitCandidatesAsync(1, 2);
         var ls = ServiceLocater.Get<IStaffRecruit>().GetAvailableStaffList();
         foreach (var staff in ls)
-            await ServiceLocater.Get<IStaffRecruit>().ConfirmHireAsync(staff.Staff_ID);
+            await ServiceLocater.Get<IStaffRecruit>().ConfirmHireAsync(staff.Staff_ID, false);
         await UniTask.Yield();
         await ServiceLocater.Get<IStaffRecruit>().GenerateRecruitCandidatesAsync(1, 8);
         StaffSummaryRenderData sd = new ();

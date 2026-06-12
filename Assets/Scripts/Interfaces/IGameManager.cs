@@ -11,7 +11,6 @@ public interface IGameManager
     public ReadOnlyReactiveProperty<DateTime> Date { get; }
     public IReadOnlyList<ProjectData> Projects { get; }
     public ReadOnlyReactiveProperty<GameDevProcName> ProcName {get; }
-    public int SlotNum { get; }
     
     public void SetPlayerName(string playerName);
     public void AddPlayerLevel(int playerLevel);
@@ -19,5 +18,4 @@ public interface IGameManager
     public void AddHeart(int heart);
     public void AddProject(ProjectData project);
     public void ChangeState(GameDevProcName newState);
-    public bool UnlockSlotNum();
 }
