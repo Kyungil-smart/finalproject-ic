@@ -7,7 +7,7 @@ public class GameManager : Manager, IGameManager
 {
     private ReactiveProperty<int> _playerLevel = new(1);      // 회사 레벨
     private int _playerMaxLevel = 15;                   // 최대 회사 레벨
-    private ReactiveProperty<int> _money = new (0);     // 재화
+    private ReactiveProperty<int> _money = new (1000000);     // 재화 ; Test 목적으로 일단 많이 넣어둠.
     private ReactiveProperty<int> _heart = new (0);
     private ReactiveProperty<DateTime> _date = new ();
     private List<ProjectData> _projects = new();        // 프로젝트 리스트
@@ -21,8 +21,6 @@ public class GameManager : Manager, IGameManager
     public IReadOnlyList<ProjectData> Projects => _projects;
     public ReadOnlyReactiveProperty<GameDevProcName> ProcName => _procName;
     private int _maxSlotNum = 8;
-    private int _slotNum = 2;
-    public int SlotNum => _slotNum;
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
@@ -49,15 +47,5 @@ public class GameManager : Manager, IGameManager
             _procName.Value = GameDevProcName.HumanResources;
             ServiceLocater.Get<IMainStateMachine>().SetCurrentMainState(GameDevProcName.HumanResources);
         }
-    }
-
-    public bool UnlockSlotNum()
-    {
-        if (_slotNum < _maxSlotNum)
-        {
-            _slotNum++;
-            return true;
-        }
-        return false;
     }
 }

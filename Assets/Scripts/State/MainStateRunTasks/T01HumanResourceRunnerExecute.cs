@@ -147,7 +147,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
             if (staff.selected && !staff.hired) // 고용 
             {
                 Debug.Log($"[T01] {staff.viewData.Staff_ID} {staff.viewData.Staff_Name} 고용");
-                await ServiceLocater.Get<IStaffRecruit>().ConfirmHireAsync(staff.viewData.Staff_ID);
+                await ServiceLocater.Get<IStaffRecruit>().ConfirmHireAsync(staff.viewData.Staff_ID, false);
             }
             await UniTask.Yield();
         }
