@@ -61,7 +61,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
                 _t0409ProductionStaffListRenderData.staffList[idx].selected = true;
         }
         await UniTask.Yield();
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, _t0409ProductionStaffListRenderData);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProductionUI, _t0409ProductionStaffListRenderData);
         await WaitProcess();
         await CheckSelectedLeaders();
     }
@@ -87,7 +87,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         selectedStaffs.onGoNextCallback = GoCheckSelectLeadersToWaitingAnimation;
 
         await UniTask.Yield();
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, selectedStaffs);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProductionUI, selectedStaffs);
         await WaitProcess();
         if (_conditionGoback) await CreateStaffList();
         else await LeadersEvent();
@@ -125,7 +125,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         
         // ToDO. Animation 이 들어올 경우 대비 해야함.
         var data = new SimpleUIRenderData(9900020, 9900007, GoProcess); // TODO : 애니메이션 적용 중 단순 텍스트 출력, ID 는 바꿔야 함
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProductionUI, data);
 
         // 리더 되는 프로세스는 각 프로덕션 내에서만 저장되면 되기 때문에 매니저에 저장될 필요 없을 듯
 
