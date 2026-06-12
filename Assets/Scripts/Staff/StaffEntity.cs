@@ -6,21 +6,18 @@ using Random = UnityEngine.Random;
 /// 빌드할 때 생성.
 /// 스태프가 가지는 인터페이스 기능 구현, MonoBehaviour를 상속받아 유니티에서 오브젝트로 존재할 수 있게 구현.
 /// </summary>
-public class StaffEntity : MonoBehaviour, IStaffInfo, ISavableStaff
+public class StaffEntity : IStaffInfo, ISavableStaff
 {
     // 빌더를 통해서 빌드할 때 StaffManager의 데이터를 참조로 데이터를 받아 StaffManager의 데이터와 동기화 되어있음.
     // 해당 InitData, RuntimeData 수정할 시 StaffManager에도 반영됨.  
     public StaffInitData init;
     public StaffRuntimeData runtime;
     public Action OnLevelUp;
-    private IStaffDataManager _staffDataManager;
-
-    private void Start()
-    {
-        _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
-    }
+    private GameObject _gameObject;
+    private IStaffDataManager _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
 
     // IStaffInfo 구현 (읽기 전용)
+    public GameObject GetGameObject() => _gameObject;
     public int GetStaffID() => init.Staff_ID;
     public string GetFullName() => init.Staff_Name;
     public JobType GetJob() => init.Job;
@@ -40,6 +37,8 @@ public class StaffEntity : MonoBehaviour, IStaffInfo, ISavableStaff
     public int GetArt() => init.Base_Job_Art + runtime.Added_Job_Art;
     
     // Set 인터페이스 추가.
+    public void SetGameObject(GameObject gameObject) => _gameObject = gameObject;
+    
     private void LevelUp()
     {
         init.Level++;
@@ -94,29 +93,4 @@ public class StaffEntity : MonoBehaviour, IStaffInfo, ISavableStaff
             .requiredExp;
         if (requiredExp >= init.Exp) LevelUp();
     }
-}
-
-// 직군별 전략 패턴 컴포넌트 (IJobAction 구현. 나중에 커지면 따로 스크립트 만들예정)
-public class PlannerAction : MonoBehaviour, IJobAction
-{
-    private IStaffInfo _myInfo;
-    void Start() => _myInfo = GetComponent<IStaffInfo>(); // Entity와 연결
-    
-    public void DoWork() => Debug.Log($"{_myInfo?.GetFullName()} 기획자가 기획을 수정");
-}
-
-public class DeveloperAction : MonoBehaviour, IJobAction
-{
-    private IStaffInfo _myInfo;
-    void Start() => _myInfo = GetComponent<IStaffInfo>();
-    
-    public void DoWork() => Debug.Log($"{_myInfo?.GetFullName()} 개발자가 코드를 작성");
-}
-
-public class ArtistAction : MonoBehaviour, IJobAction
-{
-    private IStaffInfo _myInfo;
-    void Start() => _myInfo = GetComponent<IStaffInfo>();
-    
-    public void DoWork() => Debug.Log($"{_myInfo?.GetFullName()} 아티스트가 리소스를 생성");
 }

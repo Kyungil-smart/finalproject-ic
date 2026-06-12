@@ -1,6 +1,10 @@
 // 스태프 기본 정보 출력을 위한 인터페이스
+
+using UnityEngine;
+
 public interface IStaffInfo
 {
+    GameObject GetGameObject();
     int GetStaffID();
     string GetFullName();
     JobType GetJob();
