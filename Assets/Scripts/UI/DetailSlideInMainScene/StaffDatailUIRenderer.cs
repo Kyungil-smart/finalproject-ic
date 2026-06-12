@@ -29,7 +29,7 @@ public class StaffDatailUIRenderer : MonoBehaviour
         
         nameText.text = viewData.Staff_Name;
         genderText.text = viewData.Staff_Gender ? "M" : "F";
-        levelText.text = viewData.Current_Level.ToString();
+        levelText.text = viewData.Level.ToString();
         gradeText.text = viewData.Grade;
         discText.text = viewData.DISC_Type;
         jobText.text = viewData.Job_Name;

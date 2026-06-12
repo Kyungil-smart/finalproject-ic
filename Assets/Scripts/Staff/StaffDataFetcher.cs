@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using DataDispatcher;
@@ -13,6 +14,7 @@ public class StaffDataFetcher
     private const string GRADE_GID = "1616210531";
     private const string GRADE_RATIO_GID = "671267036";
     private const string LEVEL_EXP_GID = "264636132";
+    private const string GET_EXP_GID = "1008469041";
 
     private string GetString(string textId)
     {
@@ -138,7 +140,18 @@ public class StaffDataFetcher
         }
         Debug.Log("[StaffDataFetcher] Staff Data ... Done");
         
-        
+        Debug.Log("[StaffDataFetcher] Get Exp Data ... Done");
+        // 7. Level Exp 파싱
+        GSheetManager getExpSheet = new GSheetManager(SHEET_ID, GET_EXP_GID);
+        await UniTask.WaitUntil(() => getExpSheet.IsDownload);
+        foreach (var row in getExpSheet.GetData())
+        {
+            result.GetExps.Add(new GetExpRow() {
+                expType = Enum.TryParse(row["Exp_Type"], out ExpType expType) ? expType : ExpType.Unknown,
+                expValue = int.Parse(row["Exp_Value"]),
+            });
+        }
+        Debug.Log("[StaffDataFetcher] Get Data ... Done");
 
         return result;
     }

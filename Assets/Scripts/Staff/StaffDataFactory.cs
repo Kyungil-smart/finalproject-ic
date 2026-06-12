@@ -75,9 +75,12 @@ public class StaffDataFactory
         data.DISC_Type = (DiscType)Random.Range(0, 4); 
         data.Base_Career = 0; 
 
+        data.Level = playerLevel + Random.Range(-1, 2);
+        if (data.Level <= 0) data.Level = 1;
+        
         // 레벨별 스탯 구간 지정
-        LevelStatRow levelData = dataManager.LevelStatsDict.ContainsKey(playerLevel) 
-            ? dataManager.LevelStatsDict[playerLevel] 
+        LevelStatRow levelData = dataManager.LevelStatsDict.ContainsKey(data.Level) 
+            ? dataManager.LevelStatsDict[data.Level] 
             : dataManager.LevelStatsDict[1];
 
         data.Base_Common_Concentration = Random.Range(levelData.Common_Min, levelData.Common_Max + 1);

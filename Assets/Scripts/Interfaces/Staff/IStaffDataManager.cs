@@ -8,4 +8,5 @@ public interface IStaffDataManager
     public List<GradeRow> GradeList { get; }
     public Dictionary<int, List<GradeRatioRow>> GradeRatiosDict { get; }
     public List<LevelExpRow> LevelExpList { get; }
+    public List<GetExpRow> GetExpList { get; }
 }

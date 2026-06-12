@@ -18,6 +18,8 @@ public class StaffInitData
     public string Staff_Name; // 시트에서 읽음
     public bool Staff_Gender; // 시트에서 읽음
     public JobType Job; // 시트에서 읽음
+    public int Level = 1;
+    public float Exp = 0;
     
     // 아바타 (아바타 ID값)
     public int Avatar_ID; // 성별, 직군에 따라 직업 범위내의 ID 랜덤 결정
@@ -45,9 +47,8 @@ public class StaffInitData
 [Serializable]
 public class StaffRuntimeData
 {
-    public StaffState Current_State = StaffState.Idle; // 프로젝트에 투입되었는지. 
-    public int Current_Level = 1;
-    public int Current_Exp = 0;
+    public StaffState Current_State = StaffState.Idle; // 프로젝트에 투입되었는지.
+    
     
     // 인게임 플레이로 추가 획득한 스탯 및 경력
     public int Added_Career = 0;

@@ -19,8 +19,8 @@ public class StaffViewData
 
     // 상태 및 성장 정보 (RuntimeData 기반)
     public string Current_State;
-    public int Current_Level;
-    public int Current_Exp;
+    public int Level;
+    public float Exp;
     
     // 돈
     public int Salary;

@@ -32,7 +32,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     // 가챠 버튼 눌렀을 때 생성되어 UI 후보 리스트 창에 띄워질 실제 후보들 런타임 데이터
     private List<StaffEntity> _recruitCandidates = new ();
     private StaffDataFactory _dataFactory = new ();
-    private IStaffDataManager _staffManager;
+    private IStaffDataManager _staffDataManager;
     
     private void Awake()
     {
@@ -53,7 +53,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
 
     private void Init()
     {
-        _staffManager = ServiceLocater.Get<IStaffDataManager>();
+        _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
         _slots = slotUnlockData.slots;
         Debug.Log($"[StaffManager:Init] 로딩된 slot 총 개수: {_slots.Count}");
         var data = LoadingSavedData();
@@ -79,7 +79,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
             StaffRow readOnlyStaffData;
             while (true)
             {
-                readOnlyStaffData = _staffManager.StaffList[Random.Range(0, _staffManager.StaffList.Count)];
+                readOnlyStaffData = _staffDataManager.StaffList[Random.Range(0, _staffDataManager.StaffList.Count)];
                 if (_staffList.FindAll(x => x.init.Staff_ID == readOnlyStaffData.Staff_ID).Count < 1) break;
                 await UniTask.WaitForSeconds(0.1f);
             }
@@ -214,8 +214,8 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
             Grade = data.init.Grade.ToString(),
             DISC_Type = data.init.DISC_Type.ToString(),
             Current_State = data.runtime.Current_State.ToString(),
-            Current_Level = data.runtime.Current_Level,
-            Current_Exp = data.runtime.Current_Exp,
+            Level = data.init.Level,
+            Exp = data.init.Exp,
             Salary = data.init.Salary,
             Hire_Cost = data.init.Hire_Cost,
             Final_Career = data.init.Base_Career + data.runtime.Added_Career,
@@ -262,19 +262,52 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     }
     
     // --- Leveling 관련
-    
-    public void GetStaffExperience(int exp, List<string> staffIds)
+    public void GetStaffExperience(GameDevProcName procName, List<int> staffIds)
     {
+        float exp = 0;
+        List<GameDevProcName> pres = new()
+        {
+            GameDevProcName.ArtPreProduction, 
+            GameDevProcName.ConceptPreProduction,
+            GameDevProcName.DevelopmentPreProduction
+        };
+        
+        List<GameDevProcName> fulls = new()
+        {
+            GameDevProcName.ArtFullProduction, 
+            GameDevProcName.ConceptFullProduction,
+            GameDevProcName.DevelopmentFullProduction
+        };
+        
+        if (pres.Contains(procName))
+            exp += _staffDataManager.GetExpList.Find(x => x.expType == ExpType.PreEXP).expValue;
+        else if (fulls.Contains(procName))
+            exp += _staffDataManager.GetExpList.Find(x => x.expType == ExpType.FullEXP).expValue;
+        else if (GameDevProcName.Release == procName)
+            exp += _staffDataManager.GetExpList.Find(x => x.expType == ExpType.LaunchEXP).expValue;
+        
         if (staffIds.Count == 0)
         {   // 전체 공통
             foreach (var staffData in _staffList)
             {
-                
+                var ratio = _staffDataManager.GradeList
+                    .Find(x => x.Grade == staffData.init.Grade.ToString())
+                    .Grade_XP;
+                staffData.ApplyExp(exp * ratio);
             }
+            // Player 경험치 증가
+            ServiceLocater.Get<IGameManager>().AddExp(exp);
         }
         else
         {   // 리더만
-            
+            foreach (var staffId in staffIds)
+            {
+                var staffData = _staffList.Find(x => x.init.Staff_ID == staffId);
+                var ratio = _staffDataManager.GradeList
+                    .Find(x => x.Grade == staffData.init.Grade.ToString())
+                    .Grade_XP;
+                staffData.ApplyExp(exp * ratio);
+            }
         }
     }
 

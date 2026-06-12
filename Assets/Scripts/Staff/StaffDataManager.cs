@@ -80,6 +80,13 @@ public class LevelExpRow
     public bool isTag;
 }
 
+[Serializable]
+public class GetExpRow
+{
+    public ExpType expType;
+    public int expValue;
+}
+
 /// <summary>
 /// 스태프 원본 정보같은 시트의 내용을 꺼내볼 수 있게 들고 있는 역할
 /// 시작 시에는 SO의 데이터를 참조해서 시트의 전체 내용을 가져오고. (InitData)
@@ -94,6 +101,7 @@ public class StaffDataManager : MonoBehaviour, IStaffDataManager, IStaffCodex
     [SerializeField] private GradeDataSO gradeDataSO;
     [SerializeField] private GradeRatioDataSO gradeRatioDataSO;
     [SerializeField] private LevelExpSO levelExpSo;
+    [SerializeField] private GetExpSO getExpSo;
     
     // 데이터들 파싱해서 저장. 이 리스트, 딕셔너리 들에 시트의 내용들 전체 저장. 
     private List<StaffRow> _staffList = new ();
@@ -102,6 +110,7 @@ public class StaffDataManager : MonoBehaviour, IStaffDataManager, IStaffCodex
     private List<GradeRow> _gradeList = new ();
     private Dictionary<int, List<GradeRatioRow>> _gradeRatioDict = new ();
     private List<LevelExpRow> _levelExpList = new ();
+    private List<GetExpRow> _getExpList = new ();
     
     public List<StaffRow> StaffList => _staffList;
     public List<TagRow> TagList => _tagList;
@@ -109,6 +118,7 @@ public class StaffDataManager : MonoBehaviour, IStaffDataManager, IStaffCodex
     public List<GradeRow> GradeList => _gradeList;
     public Dictionary<int, List<GradeRatioRow>> GradeRatiosDict => _gradeRatioDict;
     public List<LevelExpRow> LevelExpList => _levelExpList;
+    public List<GetExpRow> GetExpList => _getExpList;
 
 
     private void Awake()
@@ -151,6 +161,8 @@ public class StaffDataManager : MonoBehaviour, IStaffDataManager, IStaffCodex
         levelStatDataSO.levelStatList = fetchedData.LevelStats;
         levelExpSo.levelExpList.Clear();
         levelExpSo.levelExpList = fetchedData.LevelExps;
+        getExpSo.getExpList.Clear();
+        getExpSo.getExpList = fetchedData.GetExps;
         Debug.Log("런타임 실시간 데이터 동기화 시작... 완료");
         
         _gradeRatioDict.Clear();
@@ -220,8 +232,8 @@ public class StaffDataManager : MonoBehaviour, IStaffDataManager, IStaffCodex
             viewData.DISC_Type = "???";
             
             viewData.Current_State = "None";
-            viewData.Current_Level = 0;
-            viewData.Current_Exp = 0;
+            viewData.Level = 0;
+            viewData.Exp = 0;
             
             viewData.Salary = 0;
             viewData.Hire_Cost = 0;

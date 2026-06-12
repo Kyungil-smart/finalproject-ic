@@ -169,6 +169,7 @@ MonoBehaviour:
   gradeDataSO: {fileID: 11400000, guid: 55bb41d1187ee73449fcf2217638c850, type: 2}
   gradeRatioDataSO: {fileID: 11400000, guid: 0be8d7be790763f4b964e8dd674f25e8, type: 2}
   levelExpSo: {fileID: 11400000, guid: 8c252f58eac00d442b6f226b8bc9e0e0, type: 2}
+  getExpSo: {fileID: 11400000, guid: 9479ec958731f8f438df8b85e45933a0, type: 2}
 --- !u!1001 &167306237
 PrefabInstance:
   m_ObjectHideFlags: 0
