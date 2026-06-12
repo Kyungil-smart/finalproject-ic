@@ -27,6 +27,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     public SlotData CurrentSlot => _currentSlot;
     private List<SlotData> _slots = new();
     private int _slotIndex;
+    private int _maxHiredStaffCount => _slotIndex + 2;
     
     [Header("스태프 생성 설정")]
     public Transform staffContainer;      // 직원들 모아둘 부모 폴더 (하이러키 창에서)
@@ -149,6 +150,9 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     // 최종 계약 확정 (UI 목록에서 버튼을 눌러 채용할 때 내부 데이터 업데이트 및 스태프 생성)
     public async UniTask ConfirmHireAsync(int targetStaffID, bool free = true)
     {
+        // 최대 고용 인원 수 확인
+        if (_hiredStaffList.Count >= _maxHiredStaffCount) return;
+        
         // 채용 후보 리스트에 해당 사번이 실제로 대기 중인지 체크.
         var targetData = _recruitCandidates.Find(c => c.init.Staff_ID == targetStaffID);
         if (targetData == null)
@@ -381,7 +385,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         _currentSlot.unlocked = true;
         ServiceLocater.Get<IGameManager>().AddMoney(_currentSlot.cost * -1);
         _currentSlot = _slots[++_slotIndex];
-        Debug.Log("[StaffManager] Slot 해금 성공");
+        Debug.Log($"[StaffManager] Slot 해금 성공 : 최대 고용 가능 인원수: {_maxHiredStaffCount}");
         return (true, _slotIndex);
     }
 
