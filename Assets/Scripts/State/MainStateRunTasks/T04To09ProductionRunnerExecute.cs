@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExecute
 {
-    T0409ProductionStaffListRenderData _t0409ProductionStaffListRenderData = new T0409ProductionStaffListRenderData();
+    T0409ProductionStaffListRenderData _t0409ProductionStaffListRenderData;
     private List<int> _selectedStaffIdxs = new();  // UI에 콜백을 보내기 위한 List<int> 타입의 인스턴스 변수
 
     private bool _endProcess;
@@ -28,6 +28,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         await UniTask.Yield();
         if (_t0409ProductionStaffListRenderData == null)
         {
+            _t0409ProductionStaffListRenderData = new T0409ProductionStaffListRenderData();
             List<StaffViewData> curStaffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList(); // 매니저에 저장된 직원 리스트        
             _t0409ProductionStaffListRenderData.staffList = new List<StaffSummaryData>(); // 랜더용 직원 리스트
 
@@ -51,7 +52,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         await UniTask.Yield();
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, _t0409ProductionStaffListRenderData);
         await WaitProcess();
-        await CheckSelectedStaff();
+        await CheckSelectedLeaders();
     }
 
     private async void SelectedStaffCallback(List<int> staffs)
@@ -61,40 +62,76 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     }
 
 
-    public async UniTask CheckSelectedStaff()
+    public async UniTask CheckSelectedLeaders()
     {
         _waiting = true;
         T0409ProductionLeaderResultRenderData selectedStaffs = new T0409ProductionLeaderResultRenderData() { leaderList = new List<StaffViewData>() };
         foreach (var idx in _selectedStaffIdxs)
         {
-            selectedStaffs.leaderList.Add(_t0409ProductionStaffListRenderData.staffList[idx]);
+            selectedStaffs.leaderList.Add(_t0409ProductionStaffListRenderData.staffList[idx].viewData);
             _t0409ProductionStaffListRenderData.staffList[idx].selected = true;
         }
+
+        selectedStaffs.onGoBackCallback = GoCheckSelectLeadersToCreateStaffList;
+        selectedStaffs.onGoNextCallback = GoCheckSelectLeadersToWaitingAnimation;
+
+        await UniTask.Yield();
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, selectedStaffs);
+        await WaitProcess();
+        if (_conditionGoback) await CreateStaffList();
+        else await SelectLeaderProcessing();
     }
 
-    private void OccurStaffEvent()
-    {      
-        Debug.Log($"[StaffAssignmentSubState] : 직원 간 상호작용 이벤트 발생");
-        //TODO : 직원 간 상호작용 이벤트 발생
-    }
-
-    public void WorkOnDevelopment()
+    private async void GoCheckSelectLeadersToCreateStaffList()
     {
-        //TODO : 작업 진행
+        _waiting = false;
+        _conditionGoback = true;
     }
 
-    public void OccurRewardEvent()
-    {       
-        Debug.Log($"[StaffAssignmentSubState] : 지표 달성 이벤트 시작");
-        //TODO : 지표값 산출
-    }
-
-    public void ViewResult()
+    private async void GoCheckSelectLeadersToWaitingAnimation()
     {
-        Debug.Log($"[StaffAssignmentSubState] : 지표 달성 이벤트 시작");
-        //TODO : 결과 확인
+        _waiting = false;
+        _conditionGoback = false;
+
     }
 
+    private async UniTask SelectLeaderProcessing()
+    {
+        _waiting = true;
+        // ToDO. Animation 이 들어올 경우 대비 해야함.
+        var data = new SimpleUIRenderData(9900020, 9900007, GoProcess);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
+
+        // 리더 되는 프로세스
+
+
+
+        await UniTask.Yield();
+        await WaitProcess();
+        await EmitResultEvent();
+    }
+
+    private void GoProcess()
+    {
+        _waiting = false;
+    }
+
+    // 직원간 이벤트 발생
+
+
+    // T06 (프리 프로덕션의 마지막 단계) 에서만 발생하는 이벤트
+    private async UniTask EmitResultEvent()
+    {
+
+    }
+
+
+
+
+    private async UniTask CheckResult()
+    {
+
+    }
 
 
 
