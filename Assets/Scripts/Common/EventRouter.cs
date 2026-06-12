@@ -6,7 +6,8 @@ public class EventRouter : IEventRouter
     private Dictionary<string, IEventRouter> _router = new()
     {
         {"Total_Quality", new QualityReward()},
-        {"Money", new GoldReward()}
+        {"Money", new GoldReward()},
+        {"Heart", new HeartReward()},
     };
     public void Apply(EventButtonData btn)
     {

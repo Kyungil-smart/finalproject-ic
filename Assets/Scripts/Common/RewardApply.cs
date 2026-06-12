@@ -23,3 +23,12 @@ public class GoldReward : IEventRouter
         Debug.Log(ServiceLocater.Get<IGameManager>().Money);
     }
 }
+
+public class HeartReward : IEventRouter
+{
+    public void Apply(EventButtonData btn)
+    {
+        ServiceLocater.Get<IGameManager>().AddHeart(btn.effectValue);
+        Debug.Log(ServiceLocater.Get<IGameManager>().Heart);
+    }
+}
