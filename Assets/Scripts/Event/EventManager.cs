@@ -36,9 +36,17 @@ public class EventManager : Manager, IEventManager
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
 
-    protected override void Register() => ServiceLocater.Register<IEventManager>(this);
+    protected override void Register()
+    {
+        ServiceLocater.Register<IEventManager>(this);
+        ServiceLocater.Register<IEventRouter>(new EventRouter());
+    }
 
-    protected override void Unregister() => ServiceLocater.Unregister<IEventManager>(this);
+    protected override void Unregister()
+    {
+        ServiceLocater.Unregister<IEventManager>(this);
+        ServiceLocater.Unregister<IEventRouter>(new EventRouter());
+    }
 
     protected override void Init()
     {
