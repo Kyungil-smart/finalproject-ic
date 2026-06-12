@@ -262,7 +262,21 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     }
     
     // --- Leveling 관련
-    public void GetStaffExperience(GameDevProcName procName, List<int> staffIds)
+    public void GetExpAllStaffs()
+    {
+        float exp = _staffDataManager.GetExpList.Find(x => x.expType == ExpType.LaunchEXP).expValue;
+        foreach (var staffData in _staffList)
+        {
+            var ratio = _staffDataManager.GradeList
+                .Find(x => x.Grade == staffData.init.Grade.ToString())
+                .Grade_XP;
+            staffData.ApplyExp(exp * ratio);
+        }
+        // Player 경험치 증가
+        ServiceLocater.Get<IGameManager>().AddExp(exp);
+    }
+    
+    public void GetExpInProduction(GameDevProcName procName, List<int> staffIds)
     {
         float exp = 0;
         List<GameDevProcName> pres = new()
@@ -283,31 +297,14 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
             exp += _staffDataManager.GetExpList.Find(x => x.expType == ExpType.PreEXP).expValue;
         else if (fulls.Contains(procName))
             exp += _staffDataManager.GetExpList.Find(x => x.expType == ExpType.FullEXP).expValue;
-        else if (GameDevProcName.Release == procName)
-            exp += _staffDataManager.GetExpList.Find(x => x.expType == ExpType.LaunchEXP).expValue;
         
-        if (staffIds.Count == 0)
-        {   // 전체 공통
-            foreach (var staffData in _staffList)
-            {
-                var ratio = _staffDataManager.GradeList
-                    .Find(x => x.Grade == staffData.init.Grade.ToString())
-                    .Grade_XP;
-                staffData.ApplyExp(exp * ratio);
-            }
-            // Player 경험치 증가
-            ServiceLocater.Get<IGameManager>().AddExp(exp);
-        }
-        else
-        {   // 리더만
-            foreach (var staffId in staffIds)
-            {
-                var staffData = _staffList.Find(x => x.init.Staff_ID == staffId);
-                var ratio = _staffDataManager.GradeList
-                    .Find(x => x.Grade == staffData.init.Grade.ToString())
-                    .Grade_XP;
-                staffData.ApplyExp(exp * ratio);
-            }
+        foreach (var staffId in staffIds)
+        {
+            var staffData = _staffList.Find(x => x.init.Staff_ID == staffId);
+            var ratio = _staffDataManager.GradeList
+                .Find(x => x.Grade == staffData.init.Grade.ToString())
+                .Grade_XP;
+            staffData.ApplyExp(exp * ratio);
         }
     }
 
