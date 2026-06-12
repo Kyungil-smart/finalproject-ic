@@ -9,10 +9,13 @@ using System.Collections.Generic;
 ///
 /// 
 /// </summary>
-public enum JobType { Planner, Developer, Artist }
-public enum StaffGrade { D, C, B, A, S }
-public enum DiscType { D = 1, I = 2, S = 4, C = 8 }
-public enum StaffState { Idle, Working, Rest } //Rest는 제거. 이것으로 고용된 인원중 프로젝트에 투입할 수 있는 인원 확인. 
+[Serializable]
+public class StaffData
+{
+    public StaffInitData init;
+    public StaffRuntimeData runtime;
+}
+
 
 [Serializable]
 public class StaffInitData
@@ -29,7 +32,7 @@ public class StaffInitData
     // 핵심 성향
     public StaffGrade Grade; // 시트에서 읽은 확률 표에 따라 랜덤 결정.
     public DiscType DISC_Type; // 랜덤 결정.
-    public int Fixed_Tag; // 등급에 따라 개수 만큼 랜덤 결정하게 리스트로 나중에 변경
+    public List<TagRow> Fixed_Tags; // 등급에 따라 개수 만큼 랜덤 결정하게 리스트로 나중에 변경
 
     // 능력치: 레벨에 의해 기본 결정 -> 태그, 등급에 적힌 능력치 배율or(+값) 적용하여 초기 능력치 결정  
     // 가챠로 뽑혔을 때의 베이스 스탯 및 경력 (StaffInitData의 Base와 StaffRuntimeData의 Added를 더하여 현재 스탯값계산)
@@ -44,8 +47,6 @@ public class StaffInitData
     // 비용 (초기 스탯 기반으로 계산)
     public int Salary;
     public int Hire_Cost;
-    
-    
 }
 
 [Serializable]
@@ -66,5 +67,5 @@ public class StaffRuntimeData
 
     // 인게임에서 획득하는 추가 태그들 (나중에 구체적인 기획 나오면 수정)
     // 나중에 Fixed_Tag 1개 int, Added_Tags 여러 개 List<int>로 나누도록 변경.
-    public List<int> Added_Tags = new List<int>(); 
+    public List<TagRow> Added_Tags; 
 }

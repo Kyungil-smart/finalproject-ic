@@ -6,4 +6,5 @@ public interface IStaffRegister
     public SlotData CurrentSlot { get; }
     public (bool result, int nextSlotIndex) UpgradeSlot();
     public int maxHiredStaffCount { get; }
+    public void GetStaffExperience(int exp, List<string> staffIds);
 }

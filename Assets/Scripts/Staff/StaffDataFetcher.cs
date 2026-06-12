@@ -11,6 +11,7 @@ public class StaffDataFetcher
     private const string LEVEL_STAT_GID = "563784454";
     private const string GRADE_GID = "123973711";
     private const string GRADE_RATIO_GID = "1946541515";
+    private const string LEVEL_EXP_GID = "264636132";
     
     public async UniTask<FetchedStaffData> FetchAllDataAsync()
     {
@@ -85,16 +86,20 @@ public class StaffDataFetcher
         }
 
         // 5. 등급 비율 파싱
-        GSheetManager ratioSheet = new GSheetManager(SHEET_ID, GRADE_RATIO_GID);
-        while (!ratioSheet.IsDownload) await UniTask.Yield();
-        foreach (var row in ratioSheet.GetData())
+        GSheetManager levelExpSheet = new GSheetManager(SHEET_ID, LEVEL_EXP_GID);
+        await UniTask.WaitUntil(() => levelExpSheet.IsDownload);
+        foreach (var row in levelExpSheet.GetData())
         {
-            result.GradeRatios.Add(new GradeRatioRow {
-                Level = int.Parse(row["Level"]),
-                Grade = row["Grade"],
-                Ratio = float.Parse(row["Ratio"])
+            result.LevelExps.Add(new LevelExpRow() {
+                level = int.Parse(row["Level"]),
+                requiredExp = int.Parse(row["Required_XP"]),
+                cumulativeExp = int.Parse(row["Cumulative_XP"]),
+                isTag = row["IsTag"] == "True"
             });
         }
+        
+        // 6. Level Exp 파싱
+        GSheetManager ratioSheet = new GSheetManager(SHEET_ID, GRADE_RATIO_GID);
 
         return result;
     }

@@ -17,7 +17,7 @@ public class StaffDataFactory
     {
         await UniTask.Yield(); 
         
-        var dataManager = ServiceLocater.Get<StaffDataManager>();
+        var dataManager = ServiceLocater.Get<IStaffDataManager>();
         if (dataManager == null) return null;
         
         // 미고용 인원 추출 .
@@ -45,7 +45,7 @@ public class StaffDataFactory
         // 비동기 구조 유지를 위해 1프레임 대기
         await UniTask.Yield();
 
-        var dataManager = ServiceLocater.Get<StaffDataManager>();
+        var dataManager = ServiceLocater.Get<IStaffDataManager>();
         if (dataManager == null)
         {
             Debug.LogError("ServiceLocater에서 StaffDataManager를 찾을 수 없습니다");
@@ -76,9 +76,9 @@ public class StaffDataFactory
         data.Base_Career = 0; 
 
         // 레벨별 스탯 구간 지정
-        LevelStatRow levelData = dataManager.LevelStatDict.ContainsKey(playerLevel) 
-            ? dataManager.LevelStatDict[playerLevel] 
-            : dataManager.LevelStatDict[1];
+        LevelStatRow levelData = dataManager.LevelStatsDict.ContainsKey(playerLevel) 
+            ? dataManager.LevelStatsDict[playerLevel] 
+            : dataManager.LevelStatsDict[1];
 
         data.Base_Common_Concentration = Random.Range(levelData.Common_Min, levelData.Common_Max + 1);
         data.Base_Common_Creativity = Random.Range(levelData.Common_Min, levelData.Common_Max + 1);
@@ -87,48 +87,29 @@ public class StaffDataFactory
         data.Base_Job_Development = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
         data.Base_Job_Art = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
 
-        // 등급 스탯 보너스 배율 적용
-        float gradeMultiplier = gradeData.Grade_XP;
-        data.Base_Common_Concentration = Mathf.RoundToInt(data.Base_Common_Concentration * gradeMultiplier);
-        data.Base_Common_Creativity = Mathf.RoundToInt(data.Base_Common_Creativity * gradeMultiplier);
-        data.Base_Common_Communication = Mathf.RoundToInt(data.Base_Common_Communication * gradeMultiplier);
-        data.Base_Job_Planning = Mathf.RoundToInt(data.Base_Job_Planning * gradeMultiplier);
-        data.Base_Job_Development = Mathf.RoundToInt(data.Base_Job_Development * gradeMultiplier);
-        data.Base_Job_Art = Mathf.RoundToInt(data.Base_Job_Art * gradeMultiplier);
-
-        // 태그 뽑기 및 효과 적용
-        int tagCountToDraw = Random.Range(gradeData.Tag_Min, gradeData.Tag_Max + 1);
-        List<TagRow> pickedTags = dataManager.TagList.OrderBy(t => Random.value).Take(tagCountToDraw).ToList();
-
-        // 고정 태그 유형 할당
-        var type2Tags = dataManager.TagList.Where(t => t.Tag_Type == 2).ToList();
-        if (type2Tags.Count > 0)
-        {
-            data.Fixed_Tag = type2Tags[Random.Range(0, type2Tags.Count)].Tag_Id; 
-        }
-
-        foreach (var tag in pickedTags)
-        {
-            ApplyTagEffect(data, tag.Tag_A_Effect_Name, tag.Tag_A_Effect_Value, tag.Tag_A_Effect_Ratio);
-            ApplyTagEffect(data, tag.Tag_B_Effect_Name, tag.Tag_B_Effect_Value, tag.Tag_B_Effect_Ratio);
-        }
-
+        // // 고정 태그 유형 할당  -> 일단 나중에
+        // var type2Tags = dataManager.TagList.Where(t => t.Tag_Type == 2).ToList();
+        // if (type2Tags.Count > 0)
+        // {
+        //     data.Fixed_Tag = type2Tags[Random.Range(0, type2Tags.Count)].Tag_Id; 
+        // }
+        
         // 비용 계산
         CalculateCosts(data);
-
+        
         return data;
     }
     
     // -- 계산 관련 함수 -----------------
     
     // 확률에 따른 등급 결정 (시트 데이터 기준)
-    private GradeRow RollGradeFromTable(StaffDataManager dataManager)
+    private GradeRow RollGradeFromTable(IStaffDataManager dataManager)
     {
         int currentLevel = 1; 
         float roll = Random.value; 
         float cumulative = 0f;
 
-        if (dataManager.GradeRatioDict.TryGetValue(currentLevel, out List<GradeRatioRow> ratioList))
+        if (dataManager.GradeRatiosDict.TryGetValue(currentLevel, out List<GradeRatioRow> ratioList))
         {
             foreach (var ratioData in ratioList)
             {
@@ -193,6 +174,29 @@ public class StaffDataFactory
     public StaffRuntimeData CreateInitialRuntimeData(StaffInitData init)
     {
         var runtime = new StaffRuntimeData();
+        var dataManager = ServiceLocater.Get<IStaffDataManager>();
+        
+        GradeRow gradeData = RollGradeFromTable(dataManager);
+        // 등급 스탯 보너스 배율 적용
+        float gradeMultiplier = gradeData.Grade_XP;
+        if (gradeMultiplier > 1) gradeMultiplier -= 1f;
+        runtime.Added_Common_Concentration = Mathf.RoundToInt(init.Base_Common_Concentration * gradeMultiplier);
+        runtime.Added_Common_Creativity = Mathf.RoundToInt(init.Base_Common_Creativity * gradeMultiplier);
+        runtime.Added_Common_Communication = Mathf.RoundToInt(init.Base_Common_Communication * gradeMultiplier);
+        runtime.Added_Job_Planning = Mathf.RoundToInt(init.Base_Job_Planning * gradeMultiplier);
+        runtime.Added_Job_Development = Mathf.RoundToInt(init.Base_Job_Development * gradeMultiplier);
+        runtime.Added_Job_Art = Mathf.RoundToInt(init.Base_Job_Art * gradeMultiplier);
+
+        // // 태그 뽑기 및 효과 적용 -> 테그는 나중에
+        // int tagCountToDraw = Random.Range(gradeData.Tag_Min, gradeData.Tag_Max + 1);
+        // List<TagRow> pickedTags = dataManager.TagList.OrderBy(t => Random.value).Take(tagCountToDraw).ToList();
+        //
+        // foreach (var tag in pickedTags)
+        // {
+        //     ApplyTagEffect(data, tag.Tag_A_Effect_Name, tag.Tag_A_Effect_Value, tag.Tag_A_Effect_Ratio);
+        //     ApplyTagEffect(data, tag.Tag_B_Effect_Name, tag.Tag_B_Effect_Value, tag.Tag_B_Effect_Ratio);
+        // }
+        
         // 현재는 기본값(Added 전부 0, Level 1). 향후 "특정 공식"은 여기서 적용.
         return runtime;
     }
