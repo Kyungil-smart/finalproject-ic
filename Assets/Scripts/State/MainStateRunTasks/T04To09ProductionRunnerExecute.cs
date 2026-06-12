@@ -7,12 +7,16 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
+
+/// <summary>
+/// 프로덕션(T04 ~ T09)
+/// </summary>
 public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExecute
 {
     T0409ProductionStaffListRenderData _t0409ProductionStaffListRenderData;
     T0409ProductionLeaderResultRenderData selectedStaffs;
-    private List<int> _selectedStaffIdxs = new();  // UI에 콜백을 보내기 위한 List<int> 타입의 인스턴스 변수
-    // private GameDevProcName _curGameDevProcName;
+    private List<int> _selectedStaffIdxs = new();   // UI에 콜백을 보내기 위한 List<int> 타입의 인스턴스 변수
+    GameDevProcName curGameDevProcName; // 현재 상태 T04 ~ T09 를 확인하기 위한 enum 변수
 
     private bool _endProcess;
     private bool _conditionGoback;
@@ -22,6 +26,8 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     public async UniTask Execute()
     {
         _endProcess = false;
+        curGameDevProcName = ServiceLocater.Get<IGameManager>().ProcName.CurrentValue;
+
         await CreateStaffList();
         await UniTask.WaitUntil(() => _endProcess);
     }
@@ -36,6 +42,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
             List<StaffViewData> curStaffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList(); // 매니저에 저장된 직원 리스트        
             _t0409ProductionStaffListRenderData.staffList = new List<StaffSummaryData>(); // 랜더용 직원 리스트
 
+            // 매니저에 저장된 직원을 랜더용으로 변환
             foreach (var item in curStaffList)
             {
                 StaffSummaryData staffSummaryData = new StaffSummaryData();
@@ -65,7 +72,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         _selectedStaffIdxs = staffs;
     }
 
-
+    // 선택된 리더들 체크 기능(뒤로가기 / 확정)
     public async UniTask CheckSelectedLeaders()
     {
         _waiting = true;
@@ -104,23 +111,20 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     {
         _waiting = true;
 
+        await ServiceLocater.Get<IEventManager>().OccurEvent(EventType.Staff);  // 직원간 이벤트 발생
 
-        // TODO: 직원간 이벤트 발생
-
-
-
-
+        await UniTask.Yield();
         await WaitProcess();
         await SelectLeaderProcessing();
     }
 
-
+    // 프로덕션 애니메이션과 T06 여부 확인
     private async UniTask SelectLeaderProcessing()
     {
         _waiting = true;
-        ReadOnlyReactiveProperty<GameDevProcName> curGameDevProcName = ServiceLocater.Get<IGameManager>().ProcName;
+        
         // ToDO. Animation 이 들어올 경우 대비 해야함.
-        var data = new SimpleUIRenderData(9900020, 9900007, GoProcess);
+        var data = new SimpleUIRenderData(9900020, 9900007, GoProcess); // TODO : 애니메이션 적용 중 단순 텍스트 출력, ID 는 바꿔야 함
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
 
         // 리더 되는 프로세스는 각 프로덕션 내에서만 저장되면 되기 때문에 매니저에 저장될 필요 없을 듯
@@ -129,7 +133,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         await WaitProcess();
 
         // T06 이면 EmitResultEvent 로 가고, 아니면 CheckResult 로
-        if (curGameDevProcName.CurrentValue == GameDevProcName.DevelopmentPreProduction) await EmitResultEvent();
+        if (curGameDevProcName == GameDevProcName.DevelopmentPreProduction) await EmitResultEvent();
         else await CheckResult();
     }
 
@@ -142,18 +146,32 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     // T06 (프리 프로덕션의 마지막 단계) 에서만 발생하는 이벤트
     private async UniTask EmitResultEvent()
     {
-        // TODO: 지표 이벤트 발생
+        _waiting = true;
+
+        await ServiceLocater.Get<IEventManager>().OccurEvent(EventType.Reward); // 지표 이벤트 발생
+        
+        await UniTask.Yield();
+        await WaitProcess();
+        await CheckResult();
     }
 
 
     private async UniTask CheckResult()
     {
         _waiting = true;
+        GameDevProcName curGameDevProcName = ServiceLocater.Get<IGameManager>().ProcName.CurrentValue;
 
+        if (curGameDevProcName == GameDevProcName.DevelopmentPreProduction)
+        {
+            //TODO : T06 이면 추가로 지표 달성 이벤트 결과 UI가 떠야 함
+        }
+        else
+        {
+            //TODO : T06 아니면 프로덕션 완료하기 버튼만 생성
+        }
 
-        // T06 이면 추가로 지표 달성 이벤트 결과 UI가 떠야 함
-
-
+        await UniTask.Yield();
+        await GoToNextProcess();
         await WaitProcess();
     }
 
