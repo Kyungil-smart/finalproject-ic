@@ -21,7 +21,7 @@ public interface IProjectManager
     public ProjectData GetProjectData();
     
     // Staff Part
-    public void AssignStaff(int staffId);
+    public void AssignStaff(GameDevProcName procName, int staffId);
     public void ClearStaffs();
-    public IReadOnlyList<int> GetAssignedStaff();
+    public IReadOnlyList<int> GetAssignedStaff(GameDevProcName procName);
 }

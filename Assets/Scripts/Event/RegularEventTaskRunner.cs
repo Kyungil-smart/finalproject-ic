@@ -40,20 +40,20 @@ public class RegularEventTaskRunner : IEventTaskRunner
     private void Apply(EventButtonData btn)
     {
         // ToDo. Staff 나 ProjectManager 상 데이터 형태에 따라 적용이 달라짐. 적용 관련 모듈 개발 필요
-        var _manage = ServiceLocater.Get<ManagementData>();
-        switch (btn.target)
-        {
-            case "Money":
-                _manage.AddMoney(btn.effectValue);
-                Debug.Log($"돈 지급, {_manage.Money}");
-                break;
-            case "Heart":
-                _manage.AddHeart(btn.effectValue);
-                Debug.Log("하트 지급");
-                break;
-            case "Total_Quality":
-                Debug.Log("퀄리티 증가");
-                break;
-        }
+        // var _manage = ServiceLocater.Get<ManagementData>();
+        // switch (btn.target)
+        // {
+        //     case "Money":
+        //         _manage.AddMoney(btn.effectValue);
+        //         Debug.Log($"돈 지급, {_manage.Money}");
+        //         break;
+        //     case "Heart":
+        //         _manage.AddHeart(btn.effectValue);
+        //         Debug.Log("하트 지급");
+        //         break;
+        //     case "Total_Quality":
+        //         Debug.Log("퀄리티 증가");
+        //         break;
+        // }
     }
 }
