@@ -79,7 +79,6 @@ public class InGameBootstrap : MonoBehaviour, IBootStrap
         ServiceLocater.Register<IUIRouter>(new UIRouter());
         Debug.Log("[InGameBootstrap] Start Init ... Register IUIRouter");
         // ToDo. 메모리 누수 발생 위험 있음. 추후 변경 필요.
-        ServiceLocater.Register(new ManagementData());
         return UniTask.CompletedTask;
     }
 

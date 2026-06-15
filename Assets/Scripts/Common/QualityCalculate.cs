@@ -12,7 +12,7 @@ public class QualityCalculate
     }
     
     // 유효스탯 계산
-    private float CalCuateArrange(StaffEntity main, StaffEntity sub)
+    private float CalculateArrange(StaffEntity main, StaffEntity sub)
     {
         var data = _qualityData.rates[0];
         float mainStat = main.GetJob() switch
@@ -37,11 +37,12 @@ public class QualityCalculate
     public void CalculateDesign()
     {
         var data = _qualityData.rates[0];
-        var ids = ServiceLocater.Get<IProjectManager>().GetAssignedStaff();
-        var main = ServiceLocater.Get<StaffManager>().GetStaffEntity(ids[0]);
-        var sub = ServiceLocater.Get<StaffManager>().GetStaffEntity(ids[1]);
+        var ids = ServiceLocater.Get<IProjectManager>()
+            .GetAssignedStaff(ServiceLocater.Get<IGameManager>().ProcName.CurrentValue);
+        var main = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[0]);
+        var sub = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[1]);
         float noise = Random.Range(data.noiseMin, data.noiseMax);
-        float arrange = CalCuateArrange(main, sub);
+        float arrange = CalculateArrange(main, sub);
         float boost = 1 + ((main.GetCommunication() * data.boostCase1) 
                            + (main.GetCreativity() * data.boostCase2) 
                            + (main.GetConcentration() * data.boostCase3)) / 100;
@@ -50,11 +51,12 @@ public class QualityCalculate
     public void CalculateDev()
     {
         var data = _qualityData.rates[0];
-        var ids = ServiceLocater.Get<IProjectManager>().GetAssignedStaff();
-        var main = ServiceLocater.Get<StaffManager>().GetStaffEntity(ids[0]);
-        var sub = ServiceLocater.Get<StaffManager>().GetStaffEntity(ids[1]);
+        var ids = ServiceLocater.Get<IProjectManager>()
+            .GetAssignedStaff(ServiceLocater.Get<IGameManager>().ProcName.CurrentValue);
+        var main = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[0]);
+        var sub = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[1]);
         float noise = Random.Range(data.noiseMin, data.noiseMax);
-        float arrange = CalCuateArrange(main, sub);
+        float arrange = CalculateArrange(main, sub);
         float boost = 1 + ((main.GetCreativity() * data.boostCase1) 
                            + (main.GetConcentration() * data.boostCase2)) / 100;
         ServiceLocater.Get<IProjectManager>().DevQuality = arrange * boost * noise;
@@ -62,11 +64,12 @@ public class QualityCalculate
     public void CalculateArt()
     {
         var data = _qualityData.rates[0];
-        var ids = ServiceLocater.Get<IProjectManager>().GetAssignedStaff();
-        var main = ServiceLocater.Get<StaffManager>().GetStaffEntity(ids[0]);
-        var sub = ServiceLocater.Get<StaffManager>().GetStaffEntity(ids[1]);
+        var ids = ServiceLocater.Get<IProjectManager>()
+            .GetAssignedStaff(ServiceLocater.Get<IGameManager>().ProcName.CurrentValue);
+        var main = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[0]);
+        var sub = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[1]);
         float noise = Random.Range(data.noiseMin, data.noiseMax);
-        float arrange = CalCuateArrange(main, sub);
+        float arrange = CalculateArrange(main, sub);
         float boost = 1 + ((main.GetConcentration() * data.boostCase1) 
                            + (main.GetCreativity() * data.boostCase2)) / 100;
         ServiceLocater.Get<IProjectManager>().ArtQuality = arrange * boost * noise;
@@ -86,7 +89,7 @@ public class QualityCalculate
     
     // 트랜드, 소통시너지는 호출시기에 따라 한번에 계산할수도 있음.
     // 트랜드 배수 적용
-    public void ApplyGt()
+    public void ApplyGenreAndTheme()
     {
         // 트랜드의 장르랑 테마랑 프로젝트의 장르랑 테마랑 일치하는지 여부로 계산
         var data = _qualityData.rates[0];
@@ -120,7 +123,7 @@ public class QualityCalculate
         float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
         var qt = ServiceLocater.Get<IProjectManager>();
-        float achieve = attainment(qt.TotalQuality, target.targetTotal);
+        float achieve = Attainment(qt.TotalQuality, target.targetTotal);
     }
     
     // 파트별 달성률 계산
@@ -131,7 +134,7 @@ public class QualityCalculate
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
         float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
-        float achieve = attainment(qt.DesignQuality, target.targetDesignPre);
+        float achieve = Attainment(qt.DesignQuality, target.targetDesignPre);
         return achieve;
     }
     public float GetDevAchieve()
@@ -140,7 +143,7 @@ public class QualityCalculate
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
         float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
-        float achieve = attainment(qt.DevQuality, target.targetDevPre);
+        float achieve = Attainment(qt.DevQuality, target.targetDevPre);
         return achieve;
     }
     public float GetArtAchieve()
@@ -149,12 +152,12 @@ public class QualityCalculate
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
         float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
-        float achieve = attainment(qt.ArtQuality, target.targetArtPre);
+        float achieve = Attainment(qt.ArtQuality, target.targetArtPre);
         return achieve;
     }
     
     // 달성률 계산 함수
-    public float attainment(float qa, float target)
+    public float Attainment(float qa, float target)
     {
         float achieve = (qa / target) * 100;
         return achieve;

@@ -7,6 +7,7 @@ public interface IStaffRegister
     public SlotData CurrentSlot { get; }
     public (bool result, int nextSlotIndex) UpgradeSlot();
     public int maxHiredStaffCount { get; }
+    public StaffEntity GetStaffEntity(int staffId);
     public void GetExpInProduction(GameDevProcName name, List<int> staffIds);
     public void GetExpAllStaffs();
     public UniTask LevelUpStaffs();
