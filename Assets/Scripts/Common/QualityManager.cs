@@ -39,6 +39,21 @@ public class QualityManager : Manager
         achieveLoader.LoadAchieveData(gsAchieve);
         _wasDownloaded = true;
     }
+
+    public async UniTask ShowAchieveResult()
+    {
+        int _projectYear = ServiceLocater.Get<IGameManager>().GetProjectYear();
+        float _achieve = Calculator.CalculateAchieve();
+        
+        var yearTask = _reward.tasks.FindAll(t => t.projectYear == _projectYear);
+        var taskData = yearTask.FindLast(t => _achieve >= t.threshold);
+
+        if (taskData == null)
+        {
+            Debug.LogWarning("taskData 없음");
+            return;
+        }
+    }
     
     [ContextMenu("데이터 다운로드")]
     private void DataDownload()

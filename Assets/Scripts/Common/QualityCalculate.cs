@@ -5,7 +5,6 @@ using UnityEngine;
 public class QualityCalculate
 {
     private QualityDataSO _qualityData;
-
     public QualityCalculate(QualityDataSO qualityData)
     {
         _qualityData = qualityData;
@@ -75,7 +74,6 @@ public class QualityCalculate
     // 합산
     public void CalculateTotal()
     {
-        var data = _qualityData.rates[0];
         var qt = ServiceLocater.Get<IProjectManager>();
         float result = (qt.DesignQuality + qt.ArtQuality + qt.DevQuality);
         qt.UpdateTotalQuality(qt.TotalQuality + result);
@@ -113,13 +111,13 @@ public class QualityCalculate
     // }
     
     // Total퀄리티 달성률 계산
-    public void CalculateAchieve()
+    public float CalculateAchieve()
     {
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
         float avgLevel = (float)staffList.Sum(s => s.Current_Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
         var qt = ServiceLocater.Get<IProjectManager>();
-        float achieve = attainment(qt.TotalQuality, target.targetTotal);
+        return attainment(qt.TotalQuality, target.targetTotalPre);
     }
     
     // 파트별 달성률 계산
