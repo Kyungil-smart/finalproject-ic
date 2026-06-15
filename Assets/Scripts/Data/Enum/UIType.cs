@@ -9,4 +9,5 @@
     MarketGenreThemeUI,  // 시장조사, 장르/테마 선택 UI  - T02, T03
     LoadingUI,  // 로딩 UI 
     SlideUI,  // 다량의 데이터를 Slide 형으로 보기 위한 UI 
+    TagSelectUI,  // Main UI 에서 Staff Level Up 씬 발생시
 }

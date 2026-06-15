@@ -27,7 +27,6 @@ public class StaffInitData
     // 핵심 성향
     public StaffGrade Grade; // 시트에서 읽은 확률 표에 따라 랜덤 결정.
     public DiscType DISC_Type; // 랜덤 결정.
-    public List<TagRow> Fixed_Tags; // 등급에 따라 개수 만큼 랜덤 결정하게 리스트로 나중에 변경
 
     // 능력치: 레벨에 의해 기본 결정 -> 태그, 등급에 적힌 능력치 배율or(+값) 적용하여 초기 능력치 결정  
     // 가챠로 뽑혔을 때의 베이스 스탯 및 경력 (StaffInitData의 Base와 StaffRuntimeData의 Added를 더하여 현재 스탯값계산)
@@ -49,17 +48,16 @@ public class StaffRuntimeData
 {
     public StaffState Current_State = StaffState.Idle; // 프로젝트에 투입되었는지.
     
-    
     // 인게임 플레이로 추가 획득한 스탯 및 경력
     public int Added_Career = 0;
     public int Added_Common_Concentration = 0;
     public int Added_Common_Creativity = 0;
     public int Added_Common_Communication = 0;
-    public int Added_Job_Planning = 0;
+    public int Added_Job_Design = 0;
     public int Added_Job_Development = 0;
     public int Added_Job_Art = 0;
 
     // 인게임에서 획득하는 추가 태그들 (나중에 구체적인 기획 나오면 수정)
     // 나중에 Fixed_Tag 1개 int, Added_Tags 여러 개 List<int>로 나누도록 변경.
-    public List<TagRow> Added_Tags; 
+    public List<TagRow> Added_Tags = new(); 
 }

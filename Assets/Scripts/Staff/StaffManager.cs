@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 // 채용 관리 역할
 // 고용된 스태프의 StaffInitData, StaffRunTimeData, StaffEntity 저장. 
 // 고용된 스태프의 데이터 읽기(GetAllHiredStaffList), 쓰기(ModifyStaffData) 가능. 
-public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IStaffRecruit
+public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRecruit
 {
     // Slot Data
     [Header("슬롯 데이터")]
@@ -33,26 +33,18 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     private List<StaffEntity> _recruitCandidates = new ();
     private StaffDataFactory _dataFactory = new ();
     private IStaffDataManager _staffDataManager;
-    
-    private void Awake()
-    {
-        // 연관 인터페이스로도 등록
-        ServiceLocater.Register<IStaffHireService>(this);
-        ServiceLocater.Register<IStaffRegister>(this);
-        ServiceLocater.Register<IStaffRecruit>(this);
-    }
 
-    private void OnDestroy()
-    {
-        ServiceLocater.Unregister<IStaffHireService>(this);
-        ServiceLocater.Unregister<IStaffRegister>(this);
-        ServiceLocater.Unregister<IStaffRecruit>(this);
-    }
+    private void Awake() => Register();
 
-    private void Start() => Init();
+    private void OnDestroy() => Unregister();
 
-    private void Init()
+    private void Start() => InitData();
+
+    private void InitData()
     {
+        if (Utils.Environment.isDevelopment)
+            DownloadSlotData().Forget();
+        
         _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
         _slots = slotUnlockData.slots;
         Debug.Log($"[StaffManager:Init] 로딩된 slot 총 개수: {_slots.Count}");
@@ -60,6 +52,21 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         // ToDo: Save file loading 후에 slot 상태에 대한 업데이트 필요.
         if (data == null)
             _currentSlot = _slots[_slotIndex]; 
+    }
+
+    protected override void Register()
+    {
+        // 연관 인터페이스로도 등록
+        ServiceLocater.Register<IStaffHireService>(this);
+        ServiceLocater.Register<IStaffRegister>(this);
+        ServiceLocater.Register<IStaffRecruit>(this);
+    }
+
+    protected override void Unregister()
+    {
+        ServiceLocater.Unregister<IStaffHireService>(this);
+        ServiceLocater.Unregister<IStaffRegister>(this);
+        ServiceLocater.Unregister<IStaffRecruit>(this);
     }
 
     private object LoadingSavedData()
@@ -73,12 +80,11 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     {
         Debug.Log($"[StaffManager] 신규 채용 후보 {cardCount}명 생성 시작...");
         _recruitCandidates.Clear(); // 이전 후보 데이터 초기화
-
+        Debug.Log($"[StaffManager] Staff 데이터 확인: {_staffDataManager.StaffList.Count}");
         for (int i = 0; i < cardCount; i++)
         {
             StaffRow readOnlyStaffData;
-            while (true)
-            {
+            while (true) {
                 readOnlyStaffData = _staffDataManager.StaffList[Random.Range(0, _staffDataManager.StaffList.Count)];
                 if (_staffList.FindAll(x => x.init.Staff_ID == readOnlyStaffData.Staff_ID).Count < 1
                     && _recruitCandidates.FindAll(x => x.init.Staff_ID == readOnlyStaffData.Staff_ID).Count < 1) 
@@ -234,18 +240,14 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
             Final_Common_Concentration = data.init.Base_Common_Concentration + data.runtime.Added_Common_Concentration,
             Final_Common_Creativity = data.init.Base_Common_Creativity + data.runtime.Added_Common_Creativity,
             Final_Common_Communication = data.init.Base_Common_Communication + data.runtime.Added_Common_Communication,
-            Final_Job_Planning = data.init.Base_Job_Planning + data.runtime.Added_Job_Planning,
+            Final_Job_Planning = data.init.Base_Job_Planning + data.runtime.Added_Job_Design,
             Final_Job_Development = data.init.Base_Job_Development + data.runtime.Added_Job_Development,
             Final_Job_Art = data.init.Base_Job_Art + data.runtime.Added_Job_Art
         };
 
-        // viewData.All_Tags.Add(data.init.Fixed_Tag);
-        //
-        // if (data.runtime.Added_Tags != null && data.runtime.Added_Tags.Count > 0)
-        // {
-        //     viewData.All_Tags.AddRange(data.runtime.Added_Tags);
-        // }
-
+        foreach (var tag in data.runtime.Added_Tags)
+            viewData.All_Tags.Add(tag.Tag_Name);    
+        
         return viewData;
     }
     
@@ -320,6 +322,19 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         }
     }
 
+    public async UniTask LevelUpStaffs()
+    {   // Main 씬으로 넘어간 후에 현재 Staff 들의 경험치를 토대로 렙업을 일괄/순차적으로 진행해야함.
+        foreach (var staffData in _staffList)
+        {
+            var levelExpData = _staffDataManager
+                .LevelExpList
+                .Find(x => x.level == staffData.init.Level + 1);
+            
+            if (levelExpData.requiredExp >= staffData.init.Exp) 
+                await staffData.LevelUp(levelExpData.isTag);
+        }
+    }
+
     // ------------------------------------------------------------------------
     
     [ContextMenu("Download Slot Data")]
@@ -328,6 +343,7 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         GSheetManager gSheetManager = new(slotGSheetId, slotGId);
         await UniTask.WaitUntil(() => gSheetManager.IsDownload);
         var dataList = gSheetManager.GetData();
+        if (slotUnlockData.slots.Count > 0) return;
         slotUnlockData.slots.Clear();
         foreach (var data in dataList)
         {
@@ -336,6 +352,15 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
                 id = int.Parse(data["Slot_ID"]),
                 cost = int.Parse(data["Slot_Cost"]),
             });
+        }
+    }
+
+    [ContextMenu("Level Up Staff")]
+    private void LevelUpStaff()
+    {
+        foreach (var staff in _staffList)
+        {
+            staff.LevelUp(true);
         }
     }
 }

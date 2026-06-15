@@ -4,40 +4,10 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 
 /// <summary>
-/// 스태프 생성 시 초기 랜덤값(가챠)을 결정해서 반환하는 팩토리.
-/// 
-/// DataManager에서 파싱한 시트 데이터(CSV)를 기반으로 동작함.
-/// (이전의 단순 랜덤 생성에서 데이터 연동 방식으로 변경 완료)
+/// 스태프 스탯에 대한 생성 및 계산 담당.
 /// </summary>
 public class StaffDataFactory
 {
-    // 기존 무작위 가챠 생성 파이프라인. HashSet hiredIDs를 받아서 중복되지 않는 직원 중 랜덤 한명 선택 후 값 넣기
-    // 현재 사용 안하는 중.
-    public async UniTask<StaffInitData> CreateRandomDataAsync(int playerLevel, HashSet<int> hiredIDs)
-    {
-        await UniTask.Yield(); 
-        
-        var dataManager = ServiceLocater.Get<IStaffDataManager>();
-        if (dataManager == null) return null;
-        
-        // 미고용 인원 추출 .
-        var availableStaff = dataManager.StaffList
-            .Where(s => hiredIDs == null || !hiredIDs.Contains(s.Staff_ID))
-            .ToList();
-        
-        if (availableStaff.Count == 0)
-        {
-            Debug.LogWarning("더 이상 고용할 직원이 없음 (남은 미고용자 0명)");
-            return null; 
-        }
-
-        // 미고용자 중 랜덤 1명 선택
-        var picked = availableStaff[Random.Range(0, availableStaff.Count)];
-
-        // 가챠로직은 아래 함수로
-        return await CreateDataByStaffIDAsync(picked.Staff_ID, playerLevel);
-    }
-
     // 특정 StaffID를 지정해서 능력치 및 등급을 랜덤 결정하는 핵심 함수
     // 지정된 한명의 능력치 및 등급을 랜덤 결정
     public async UniTask<StaffInitData> CreateDataByStaffIDAsync(int staffID, int playerLevel)
@@ -89,13 +59,6 @@ public class StaffDataFactory
         data.Base_Job_Planning = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
         data.Base_Job_Development = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
         data.Base_Job_Art = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
-
-        // // 고정 태그 유형 할당  -> 일단 나중에
-        // var type2Tags = dataManager.TagList.Where(t => t.Tag_Type == 2).ToList();
-        // if (type2Tags.Count > 0)
-        // {
-        //     data.Fixed_Tag = type2Tags[Random.Range(0, type2Tags.Count)].Tag_Id; 
-        // }
         
         // 비용 계산
         CalculateCosts(data);
@@ -127,29 +90,35 @@ public class StaffDataFactory
     }
 
     // 문자열로 된 태그 효과를 실제 스탯에 계산.
-    private void ApplyTagEffect(StaffInitData data, string effectName, int addValue, float ratioValue)
+    public void ApplyTagEffect(StaffInitData init, StaffRuntimeData runtime, string effectName, int addValue, float ratioValue)
     {
         if (string.IsNullOrEmpty(effectName) || effectName == "Staff_Effect_None") return;
-
+        ratioValue -= 1;
         switch (effectName)
         {
             case "Staff_Concentration":
-                data.Base_Common_Concentration = Mathf.RoundToInt((data.Base_Common_Concentration + addValue) * ratioValue);
+                runtime.Added_Common_Concentration += addValue;
+                runtime.Added_Common_Concentration += Mathf.RoundToInt(init.Base_Common_Concentration * ratioValue);
                 break;
             case "Staff_Creativity":
-                data.Base_Common_Creativity = Mathf.RoundToInt((data.Base_Common_Creativity + addValue) * ratioValue);
+                runtime.Added_Common_Creativity += addValue;
+                runtime.Added_Common_Creativity += Mathf.RoundToInt(init.Base_Common_Creativity * ratioValue);
                 break;
             case "Staff_Communication":
-                data.Base_Common_Communication = Mathf.RoundToInt((data.Base_Common_Communication + addValue) * ratioValue);
+                runtime.Added_Common_Communication += addValue;
+                runtime.Added_Common_Communication += Mathf.RoundToInt(init.Base_Common_Communication * ratioValue);
                 break;
-            case "Staff_Design": 
-                data.Base_Job_Planning = Mathf.RoundToInt((data.Base_Job_Planning + addValue) * ratioValue);
+            case "Staff_Design":
+                runtime.Added_Job_Design += addValue;
+                runtime.Added_Job_Design += Mathf.RoundToInt(init.Base_Job_Planning * ratioValue);
                 break;
-            case "Staff_Dev": 
-                data.Base_Job_Development = Mathf.RoundToInt((data.Base_Job_Development + addValue) * ratioValue);
+            case "Staff_Dev":
+                runtime.Added_Job_Development += addValue;
+                runtime.Added_Job_Development += Mathf.RoundToInt(init.Base_Job_Development * ratioValue);
                 break;
-            case "Staff_Art": 
-                data.Base_Job_Art = Mathf.RoundToInt((data.Base_Job_Art + addValue) * ratioValue);
+            case "Staff_Art":
+                runtime.Added_Job_Art += addValue;
+                runtime.Added_Job_Art += Mathf.RoundToInt(init.Base_Job_Art * ratioValue);
                 break;
         }
     }
@@ -163,9 +132,10 @@ public class StaffDataFactory
     }
 
     // 비용 계산식에 따른 Salary(연봉), Hire_Cost(초기 계약금) 계산.
-    private void CalculateCosts(StaffInitData data)
+    public void CalculateCosts(StaffInitData data)
     {
-        float gradeCost = data.Grade switch { StaffGrade.D => 0.5f, StaffGrade.C => 0.75f, StaffGrade.B => 1.0f, StaffGrade.A => 1.5f, StaffGrade.S => 2.0f, _ => 1.0f };
+        var dataManager = ServiceLocater.Get<IStaffDataManager>();
+        float gradeCost = dataManager.GradeList.Find(x => x.Grade == data.Grade.ToString()).Grade_Cost;
         int totalBaseStats = data.Base_Common_Concentration + data.Base_Common_Creativity + data.Base_Job_Planning; // 약식 합산
         // totalBaseStats 식은 나중에 직업군 별 스탯 배율?을 적용 (자신의 직업과 연관되지 않은 스탯 * 0.X)
         
@@ -186,21 +156,35 @@ public class StaffDataFactory
         runtime.Added_Common_Concentration = Mathf.RoundToInt(init.Base_Common_Concentration * gradeMultiplier);
         runtime.Added_Common_Creativity = Mathf.RoundToInt(init.Base_Common_Creativity * gradeMultiplier);
         runtime.Added_Common_Communication = Mathf.RoundToInt(init.Base_Common_Communication * gradeMultiplier);
-        runtime.Added_Job_Planning = Mathf.RoundToInt(init.Base_Job_Planning * gradeMultiplier);
+        runtime.Added_Job_Design = Mathf.RoundToInt(init.Base_Job_Planning * gradeMultiplier);
         runtime.Added_Job_Development = Mathf.RoundToInt(init.Base_Job_Development * gradeMultiplier);
         runtime.Added_Job_Art = Mathf.RoundToInt(init.Base_Job_Art * gradeMultiplier);
 
-        // // 태그 뽑기 및 효과 적용 -> 테그는 나중에
-        // int tagCountToDraw = Random.Range(gradeData.Tag_Min, gradeData.Tag_Max + 1);
-        // List<TagRow> pickedTags = dataManager.TagList.OrderBy(t => Random.value).Take(tagCountToDraw).ToList();
-        //
-        // foreach (var tag in pickedTags)
-        // {
-        //     ApplyTagEffect(data, tag.Tag_A_Effect_Name, tag.Tag_A_Effect_Value, tag.Tag_A_Effect_Ratio);
-        //     ApplyTagEffect(data, tag.Tag_B_Effect_Name, tag.Tag_B_Effect_Value, tag.Tag_B_Effect_Ratio);
-        // }
+        // 기본 1개 태그 뽑기
+        var fixTags = dataManager.TagList.FindAll(x => x.Tag_Type == 2);
+        int[] fixIndex = Utils.NumberExtractor.GetUniqueRandomNumbers(0, fixTags.Count - 1, 1);
+        runtime.Added_Tags.Add(fixTags[fixIndex[0]]);
         
-        // 현재는 기본값(Added 전부 0, Level 1). 향후 "특정 공식"은 여기서 적용.
+        // 등급별 태그 뽑기
+        var grade = dataManager.GradeList.Find(x => x.GradeEnum == init.Grade);
+        int[] tagCnt = Utils.NumberExtractor.GetUniqueRandomNumbers(grade.Tag_Min, grade.Tag_Max, 1);
+        if (tagCnt[0] > 0)
+        {
+            var addedTags = dataManager.TagList.FindAll(x => x.Tag_Type == 1);
+            int[] tagIndex = Utils.NumberExtractor.GetUniqueRandomNumbers(0, addedTags.Count - 1, tagCnt[0]);
+            foreach (var index in tagIndex)
+                runtime.Added_Tags.Add(addedTags[index]);
+        }
+        
+        // 가져온 Tag 기반으로 Runtime 데이터 추가하기.
+        if (runtime.Added_Tags.Count > 0)
+        {
+            foreach (var tag in runtime.Added_Tags)
+            {
+                ApplyTagEffect(init, runtime, tag.Tag_A_Effect_Name, tag.Tag_A_Effect_Value, tag.Tag_A_Effect_Ratio);
+                ApplyTagEffect(init, runtime, tag.Tag_B_Effect_Name, tag.Tag_B_Effect_Value, tag.Tag_B_Effect_Ratio);
+            }
+        }
         return runtime;
     }
 }

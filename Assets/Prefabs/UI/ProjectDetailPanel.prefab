@@ -508,6 +508,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 220044845844430770}
+  - component: {fileID: 7030664266034723912}
   - component: {fileID: -6729261681447274593}
   m_Layer: 5
   m_Name: ProjectDetailPanel
@@ -538,6 +539,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7030664266034723912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2538653900800267671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 476bc877c4cb4eeaa7aa1732d3d25a84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectDetailUIRenderer
+  title: {fileID: 0}
+  genre: {fileID: 0}
+  theme: {fileID: 0}
+  grade: {fileID: 0}
+  cost: {fileID: 0}
+  income: {fileID: 0}
+  rewards: {fileID: 0}
+  closeBt: {fileID: 0}
 --- !u!114 &-6729261681447274593
 MonoBehaviour:
   m_ObjectHideFlags: 0

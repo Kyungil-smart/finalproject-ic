@@ -76,11 +76,8 @@ public class ProjectManager : Manager, IProjectManager
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
 
-    public float TotalQuality
-    {
-        get => _projectData.Qualities.Value.total;
-    }
-    
+    public float TotalQuality => _projectData.Qualities.Value.total;
+
     public float DevQuality
     {
         get => _projectData.Qualities.Value.development;
@@ -137,6 +134,8 @@ public class ProjectManager : Manager, IProjectManager
         get => _projectData.income;
         set => _projectData.income = value;
     }
+    
+    public uint Earnings => _projectData.income - _projectData.cost; // 수익
 
     public void UpdateTotalQuality(float value, float ratio = 1f)
     {
