@@ -13,13 +13,14 @@ public class QualityManager : Manager
     [SerializeField] private QualityDataSO _qData;
     [SerializeField] private AchieveRewardSO _reward;
 
-    public QualityCalculate Calculator { get; }
+    public QualityCalculate Calculator { get; private set; }
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
     
     protected override void Init()
     {
+        Calculator = new QualityCalculate(_qData);
         DownloadData().Forget();
     }
     private async UniTaskVoid DownloadData()
@@ -53,6 +54,8 @@ public class QualityManager : Manager
             Debug.LogWarning("taskData 없음");
             return;
         }
+        var runner = new AchieveEventRunner(taskData);
+        await runner.Execute();
     }
     
     [ContextMenu("데이터 다운로드")]

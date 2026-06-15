@@ -110,7 +110,7 @@ public class QualityCalculate
     //     qt.UpdateTotalQuality(qt.TotalQuality * (1 + (avgCom / data.commSynergy)));
     // }
     
-    // Total퀄리티 달성률 계산
+    // PreTotal퀄리티 달성률 계산
     public float CalculateAchieve()
     {
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
@@ -120,15 +120,25 @@ public class QualityCalculate
         return attainment(qt.TotalQuality, target.targetTotalPre);
     }
     
+    // FullTotal퀄리티 달성률 계산
+    public float CalculateFullAchieve()
+    {
+        var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
+        float avgLevel = (float)staffList.Sum(s => s.Current_Level) / staffList.Count;
+        var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
+        var qt = ServiceLocater.Get<IProjectManager>();
+        return attainment(qt.TotalQuality, target.targetTotalPre);
+    }
+    
     // 파트별 달성률 계산
-    // Todo. 지표달성 이벤트에서 개별적으로 달성률케이스를 만들수도 있다고 하여 작성함
+    // Todo. 어워즈용으로 남겨둠
     public float GetDesignAchieve()
     {
         var qt = ServiceLocater.Get<IProjectManager>();
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
         float avgLevel = (float)staffList.Sum(s => s.Current_Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
-        float achieve = attainment(qt.DesignQuality, target.targetDesignPre);
+        float achieve = attainment(qt.DesignQuality, target.targetDesign);
         return achieve;
     }
     
@@ -138,7 +148,7 @@ public class QualityCalculate
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
         float avgLevel = (float)staffList.Sum(s => s.Current_Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
-        float achieve = attainment(qt.DevQuality, target.targetDevPre);
+        float achieve = attainment(qt.DevQuality, target.targetDev);
         return achieve;
     }
     
@@ -148,7 +158,7 @@ public class QualityCalculate
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
         float avgLevel = (float)staffList.Sum(s => s.Current_Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
-        float achieve = attainment(qt.ArtQuality, target.targetArtPre);
+        float achieve = attainment(qt.ArtQuality, target.targetArt);
         return achieve;
     }
     

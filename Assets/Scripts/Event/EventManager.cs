@@ -91,7 +91,7 @@ public class EventManager : Manager, IEventManager
     public void ResetRunId()
     {
         if (_eventTasks == null) return;
-        EventType[] eventTypes = { EventType.Staff, EventType.Linkage, EventType.Regular, EventType.Reward };
+        EventType[] eventTypes = { EventType.Staff, EventType.Linkage, EventType.Regular};
         foreach (var evtType in eventTypes)
             _eventTasks[evtType].runIds.Clear();
     }
