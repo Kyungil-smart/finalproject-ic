@@ -8,16 +8,9 @@ public class AchieveTaskData
     public int id;
     public int projectYear;
     public float threshold;
-    public List<AchieveButtonData> buttons;
-}
-
-[Serializable]
-public class AchieveButtonData
-{
-    public int textId;
-    public string target;
-    public int effectValue;
-    public float effectRatio;
+    public int titleTextId;
+    public int descTextId;
+    public List<EventButtonData> buttons;
 }
 
 [CreateAssetMenu(fileName = "AchieveRewardSO", menuName = "Scriptable Objects/AchieveRewardSO")]
