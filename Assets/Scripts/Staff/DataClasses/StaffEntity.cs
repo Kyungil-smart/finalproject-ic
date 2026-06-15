@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,7 +14,7 @@ public class StaffEntity : IStaffInfo, ISavableStaff
     // 해당 InitData, RuntimeData 수정할 시 StaffManager에도 반영됨.  
     public StaffInitData init;
     public StaffRuntimeData runtime;
-    public Action<bool> OnLevelUp;
+    public Action<bool, StaffEntity> OnLevelUp;
     private GameObject _gameObject;
     private IStaffDataManager _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
     private StaffDataFactory _staffDataFactory = new ();
@@ -76,7 +77,7 @@ public class StaffEntity : IStaffInfo, ISavableStaff
     // Set 인터페이스 추가.
     public void SetGameObject(GameObject gameObject) => _gameObject = gameObject;
     
-    private void LevelUp(bool isAttachTag)
+    public UniTask LevelUp(bool isAttachTag)
     {
         init.Level++;
         
@@ -90,18 +91,13 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         init.Base_Job_Development = ApplyState(init.Base_Job_Development, isCommon: false);
         init.Base_Job_Planning = ApplyState(init.Base_Job_Planning, isCommon: false);
         
-        OnLevelUp?.Invoke(isAttachTag);
-
-        if (isAttachTag)
-        {
-            // Tag 가져오고
-            // Tag 에 의한 runtime 값 적용하고
-        }
+        OnLevelUp?.Invoke(isAttachTag, this);
         _staffDataFactory.CalculateCosts(init);
         
         // 만렙 고정치
         if (init.Level >= 15)
             init.Exp = _staffDataManager.LevelExpList.Find(x => x.level == init.Level).cumulativeExp;
+        return UniTask.CompletedTask;
     }
 
     private int ApplyState(int baseValue, bool isCommon)
@@ -132,10 +128,13 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         if (init.Level >= 15) return;
         
         init.Exp += exp;
-        var levelExpData = _staffDataManager
-            .LevelExpList
-            .Find(x => x.level == init.Level + 1);
-        
-        if (levelExpData.requiredExp >= init.Exp) LevelUp(levelExpData.isTag);
+    }
+
+    public void AddSelectedTag(int tagId)
+    {
+        var tag = _staffDataManager.TagList.Find(x => x.Tag_Id == tagId);
+        runtime.Added_Tags.Add(tag);
+        _staffDataFactory.ApplyTagEffect(init, runtime, tag.Tag_A_Effect_Name, tag.Tag_A_Effect_Value, tag.Tag_A_Effect_Ratio);
+        _staffDataFactory.ApplyTagEffect(init, runtime, tag.Tag_B_Effect_Name, tag.Tag_B_Effect_Value, tag.Tag_B_Effect_Ratio);
     }
 }

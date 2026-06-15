@@ -244,7 +244,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
             viewData.Final_Job_Development = 0;
             viewData.Final_Job_Art = 0;
             
-            viewData.All_Tags = new List<int>();
+            viewData.All_Tags = new ();
 
             viewList.Add(viewData);
         }

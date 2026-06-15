@@ -160,7 +160,7 @@ public class StaffDataFactory
         runtime.Added_Job_Art = Mathf.RoundToInt(init.Base_Job_Art * gradeMultiplier);
 
         // // 태그 뽑기 및 효과 적용 -> 테그는 나중에
-        // Tag 가져오고
+        // ToDo. Tag 가져오고
         
         // 가져온 Tag 기반으로 Runtime 데이터 추가하기.
         foreach (var tag in runtime.Added_Tags)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 public interface IStaffRegister
 {
@@ -8,4 +9,5 @@ public interface IStaffRegister
     public int maxHiredStaffCount { get; }
     public void GetExpInProduction(GameDevProcName name, List<int> staffIds);
     public void GetExpAllStaffs();
+    public UniTask LevelUpStaffs();
 }

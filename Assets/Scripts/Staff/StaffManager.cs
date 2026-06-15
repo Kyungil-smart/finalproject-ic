@@ -320,6 +320,19 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         }
     }
 
+    public async UniTask LevelUpStaffs()
+    {   // Main 씬으로 넘어간 후에 현재 Staff 들의 경험치를 토대로 렙업을 일괄/순차적으로 진행해야함.
+        foreach (var staffData in _staffList)
+        {
+            var levelExpData = _staffDataManager
+                .LevelExpList
+                .Find(x => x.level == staffData.init.Level + 1);
+            
+            if (levelExpData.requiredExp >= staffData.init.Exp) 
+                await staffData.LevelUp(levelExpData.isTag);
+        }
+    }
+
     // ------------------------------------------------------------------------
     
     [ContextMenu("Download Slot Data")]
