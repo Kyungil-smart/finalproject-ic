@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 // 채용 관리 역할
 // 고용된 스태프의 StaffInitData, StaffRunTimeData, StaffEntity 저장. 
 // 고용된 스태프의 데이터 읽기(GetAllHiredStaffList), 쓰기(ModifyStaffData) 가능. 
-public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IStaffRecruit
+public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRecruit
 {
     // Slot Data
     [Header("슬롯 데이터")]
@@ -33,21 +33,10 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
     private List<StaffEntity> _recruitCandidates = new ();
     private StaffDataFactory _dataFactory = new ();
     private IStaffDataManager _staffDataManager;
-    
-    private void Awake()
-    {
-        // 연관 인터페이스로도 등록
-        ServiceLocater.Register<IStaffHireService>(this);
-        ServiceLocater.Register<IStaffRegister>(this);
-        ServiceLocater.Register<IStaffRecruit>(this);
-    }
 
-    private void OnDestroy()
-    {
-        ServiceLocater.Unregister<IStaffHireService>(this);
-        ServiceLocater.Unregister<IStaffRegister>(this);
-        ServiceLocater.Unregister<IStaffRecruit>(this);
-    }
+    private void Awake() => Register();
+
+    private void OnDestroy() => Unregister();
 
     private void Start() => Init();
 
@@ -60,6 +49,21 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
         // ToDo: Save file loading 후에 slot 상태에 대한 업데이트 필요.
         if (data == null)
             _currentSlot = _slots[_slotIndex]; 
+    }
+
+    protected override void Register()
+    {
+        // 연관 인터페이스로도 등록
+        ServiceLocater.Register<IStaffHireService>(this);
+        ServiceLocater.Register<IStaffRegister>(this);
+        ServiceLocater.Register<IStaffRecruit>(this);
+    }
+
+    protected override void Unregister()
+    {
+        ServiceLocater.Unregister<IStaffHireService>(this);
+        ServiceLocater.Unregister<IStaffRegister>(this);
+        ServiceLocater.Unregister<IStaffRecruit>(this);
     }
 
     private object LoadingSavedData()
@@ -234,18 +238,14 @@ public class StaffManager : MonoBehaviour, IStaffHireService, IStaffRegister, IS
             Final_Common_Concentration = data.init.Base_Common_Concentration + data.runtime.Added_Common_Concentration,
             Final_Common_Creativity = data.init.Base_Common_Creativity + data.runtime.Added_Common_Creativity,
             Final_Common_Communication = data.init.Base_Common_Communication + data.runtime.Added_Common_Communication,
-            Final_Job_Planning = data.init.Base_Job_Planning + data.runtime.Added_Job_Planning,
+            Final_Job_Planning = data.init.Base_Job_Planning + data.runtime.Added_Job_Design,
             Final_Job_Development = data.init.Base_Job_Development + data.runtime.Added_Job_Development,
             Final_Job_Art = data.init.Base_Job_Art + data.runtime.Added_Job_Art
         };
 
-        // viewData.All_Tags.Add(data.init.Fixed_Tag);
-        //
-        // if (data.runtime.Added_Tags != null && data.runtime.Added_Tags.Count > 0)
-        // {
-        //     viewData.All_Tags.AddRange(data.runtime.Added_Tags);
-        // }
-
+        foreach (var tag in data.runtime.Added_Tags)
+            viewData.All_Tags.Add(tag.Tag_Name);    
+        
         return viewData;
     }
     

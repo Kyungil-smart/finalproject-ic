@@ -42,9 +42,9 @@ public class QualityCalculate
         var sub = ServiceLocater.Get<StaffManager>().GetStaffEntity(ids[1]);
         float noise = Random.Range(data.noiseMin, data.noiseMax);
         float arrange = CalCuateArrange(main, sub);
-        float boost = 1 + ((main.GetTotalCommunication() * data.boostCase1) 
-                           + (main.GetTotalCreativity() * data.boostCase2) 
-                           + (main.GetTotalConcentration() * data.boostCase3)) / 100;
+        float boost = 1 + ((main.GetCommunication() * data.boostCase1) 
+                           + (main.GetCreativity() * data.boostCase2) 
+                           + (main.GetConcentration() * data.boostCase3)) / 100;
         ServiceLocater.Get<IProjectManager>().DesignQuality = arrange * boost * noise;
     }
     public void CalculateDev()
@@ -55,8 +55,8 @@ public class QualityCalculate
         var sub = ServiceLocater.Get<StaffManager>().GetStaffEntity(ids[1]);
         float noise = Random.Range(data.noiseMin, data.noiseMax);
         float arrange = CalCuateArrange(main, sub);
-        float boost = 1 + ((main.GetTotalCreativity() * data.boostCase1) 
-                           + (main.GetTotalConcentration() * data.boostCase2)) / 100;
+        float boost = 1 + ((main.GetCreativity() * data.boostCase1) 
+                           + (main.GetConcentration() * data.boostCase2)) / 100;
         ServiceLocater.Get<IProjectManager>().DevQuality = arrange * boost * noise;
     }
     public void CalculateArt()
@@ -67,8 +67,8 @@ public class QualityCalculate
         var sub = ServiceLocater.Get<StaffManager>().GetStaffEntity(ids[1]);
         float noise = Random.Range(data.noiseMin, data.noiseMax);
         float arrange = CalCuateArrange(main, sub);
-        float boost = 1 + ((main.GetTotalConcentration() * data.boostCase1) 
-                           + (main.GetTotalCreativity() * data.boostCase2)) / 100;
+        float boost = 1 + ((main.GetConcentration() * data.boostCase1) 
+                           + (main.GetCreativity() * data.boostCase2)) / 100;
         ServiceLocater.Get<IProjectManager>().ArtQuality = arrange * boost * noise;
     }
     

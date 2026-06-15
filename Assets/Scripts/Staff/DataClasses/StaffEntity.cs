@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,9 +13,10 @@ public class StaffEntity : IStaffInfo, ISavableStaff
     // 해당 InitData, RuntimeData 수정할 시 StaffManager에도 반영됨.  
     public StaffInitData init;
     public StaffRuntimeData runtime;
-    public Action OnLevelUp;
+    public Action<bool> OnLevelUp;
     private GameObject _gameObject;
     private IStaffDataManager _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
+    private StaffDataFactory _staffDataFactory = new ();
 
     // IStaffInfo 구현 (읽기 전용)
     public GameObject GetGameObject() => _gameObject;
@@ -29,17 +31,52 @@ public class StaffEntity : IStaffInfo, ISavableStaff
 
     public int GetTotalCareer() => init.Base_Career + runtime.Added_Career;
     
-    public int GetTotalConcentration() => init.Base_Common_Concentration + runtime.Added_Common_Concentration;
-    public int GetTotalCreativity() => init.Base_Common_Creativity + runtime.Added_Common_Creativity;
-    public int GetTotalCommunication() => init.Base_Common_Communication + runtime.Added_Common_Communication; 
-    public int GetPlanning() => init.Base_Job_Planning + runtime.Added_Job_Planning;
-    public int GetDevelopment() => init.Base_Job_Development + runtime.Added_Job_Development;
-    public int GetArt() => init.Base_Job_Art + runtime.Added_Job_Art;
-    
+    public int GetConcentration()
+    {
+        int state = init.Base_Common_Concentration;
+        state += runtime.Added_Common_Concentration;
+        return state;
+    }
+
+    public int GetCreativity()
+    {
+        int state = init.Base_Common_Creativity;
+        state += runtime.Added_Common_Creativity;
+        return state;
+    }
+
+    public int GetCommunication()
+    {
+        int state = init.Base_Job_Art;
+        state += runtime.Added_Job_Art;
+        return state;
+    }
+
+    public int GetPlanning()
+    {
+        int state = init.Base_Job_Planning;
+        state += runtime.Added_Job_Design;
+        return state;
+    }
+
+    public int GetDevelopment()
+    {
+        int state = init.Base_Job_Development;
+        state += runtime.Added_Job_Development;
+        return state;
+    }
+
+    public int GetArt()
+    {
+        int state = init.Base_Job_Art;
+        state += runtime.Added_Job_Art;
+        return state;
+    }
+
     // Set 인터페이스 추가.
     public void SetGameObject(GameObject gameObject) => _gameObject = gameObject;
     
-    private void LevelUp()
+    private void LevelUp(bool isAttachTag)
     {
         init.Level++;
         
@@ -53,7 +90,15 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         init.Base_Job_Development = ApplyState(init.Base_Job_Development, isCommon: false);
         init.Base_Job_Planning = ApplyState(init.Base_Job_Planning, isCommon: false);
         
-        OnLevelUp?.Invoke();
+        OnLevelUp?.Invoke(isAttachTag);
+
+        if (isAttachTag)
+        {
+            // Tag 가져오고
+            // Tag 에 의한 runtime 값 적용하고
+        }
+        _staffDataFactory.CalculateCosts(init);
+        
         // 만렙 고정치
         if (init.Level >= 15)
             init.Exp = _staffDataManager.LevelExpList.Find(x => x.level == init.Level).cumulativeExp;
@@ -65,13 +110,13 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         int max = 0;
         if (isCommon)
         {
-            min = _staffDataManager.LevelStatsDict[init.Level].Common_Min;
-            max = _staffDataManager.LevelStatsDict[init.Level].Common_Max;
+            min += _staffDataManager.LevelStatsDict[init.Level].Common_Min;
+            max += _staffDataManager.LevelStatsDict[init.Level].Common_Max;
         }
         else
         {
-            min = _staffDataManager.LevelStatsDict[init.Level].Job_Min;
-            max = _staffDataManager.LevelStatsDict[init.Level].Job_Max;
+            min += _staffDataManager.LevelStatsDict[init.Level].Job_Min;
+            max += _staffDataManager.LevelStatsDict[init.Level].Job_Max;
         }
         if (baseValue < min) baseValue = min;
         return Random.Range(++baseValue, max);
@@ -87,10 +132,10 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         if (init.Level >= 15) return;
         
         init.Exp += exp;
-        var requiredExp = _staffDataManager
+        var levelExpData = _staffDataManager
             .LevelExpList
-            .Find(x => x.level == init.Level + 1)
-            .requiredExp;
-        if (requiredExp >= init.Exp) LevelUp();
+            .Find(x => x.level == init.Level + 1);
+        
+        if (levelExpData.requiredExp >= init.Exp) LevelUp(levelExpData.isTag);
     }
 }

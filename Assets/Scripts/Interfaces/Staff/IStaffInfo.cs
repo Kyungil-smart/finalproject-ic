@@ -15,10 +15,10 @@ public interface IStaffInfo
     // 외부에서는 최종 스탯만 가져가게 설계 (나머지는 나중에 추가)
     int GetTotalCareer();
     
-    int GetTotalConcentration();
-    int GetTotalCreativity();
+    int GetConcentration();
+    int GetCreativity();
 
-    int GetTotalCommunication(); 
+    int GetCommunication(); 
     int GetPlanning();
     int GetDevelopment();
     int GetArt();

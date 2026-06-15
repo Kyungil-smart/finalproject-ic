@@ -92,7 +92,7 @@ public class GetExpRow
 /// 시작 시에는 SO의 데이터를 참조해서 시트의 전체 내용을 가져오고. (InitData)
 /// 나중에 런타임 중에는 구글 시트에서 바로 가져옴. (아직 런타임 중 SO에 저장은 구현 X, SyncDataFromSheetAsync)
 /// </summary>
-public class StaffDataManager : MonoBehaviour, IStaffDataManager, IStaffCodex
+public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
 {
     [Header("구워진 SO들 (베이크 툴로 자동 연결)")]
     [SerializeField] private StaffDataSO staffDataSO;
@@ -121,21 +121,19 @@ public class StaffDataManager : MonoBehaviour, IStaffDataManager, IStaffCodex
     public List<GetExpRow> GetExpList => _getExpList;
 
 
-    private void Awake()
+    private void Awake() => Register();
+    private void Start() => InitData();
+    private void OnDestroy() => Unregister();
+    
+    protected override void Register()
     {
         ServiceLocater.Register<IStaffDataManager>(this);
     }
-    
-    private void Start()
-    {
-        InitData();
-    }
-    
-    private void OnDestroy()
+
+    protected override void Unregister()
     {
         ServiceLocater.Unregister<IStaffDataManager>(this);
     }
-
 
     // 초기 데이터는 SO에서 가져오고 실시간 데이터는 시트에서 StaffDataFetcher를 통해서 가져옴.
     // SO에 저장은 아직 안하는 중. 변경하려면 #if UnityEditor 전처리 기문을 사용해야 해서 아직은 고민중.  
