@@ -33,10 +33,8 @@ public class StaffEventTaskRunner : IEventTaskRunner
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.EventUI, renderData);
         
         var selectedIndex = await tcs.Task;
-        // Apply(_taskData.buttons[selectedIndex]);
+        ServiceLocater.Get<IEventRouter>().Apply(_taskData.buttons[selectedIndex]);
     }
-    
-    // Todo. 결과 반영은 아직 모름
 }
 
 public enum Synergy {Good, Normal, Bad}
