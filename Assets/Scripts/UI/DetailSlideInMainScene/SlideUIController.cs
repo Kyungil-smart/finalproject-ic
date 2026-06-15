@@ -28,7 +28,7 @@ public class SlideUIController : MonoBehaviour, IUIRender
     private float _startTouchX;
     private float _endTouchX;
     private bool _isSwapeMode = false;
-    private int projectCnt = 0;
+    private int _projectCnt = 0;
     
     public void Render(UIRenderData data)
     {
@@ -49,17 +49,45 @@ public class SlideUIController : MonoBehaviour, IUIRender
         else
         {
             projectMainPanel.SetActive(true);
-            // ToDo.
             // 1. Project List 가져오기
-            // 2. Project 개수 확인 
-            // 2-1. Project 개수 변화 없으면 리턴
-            // 2-2. Project 개수 변화 있으면 AddProject 함수 실행
-            // 2-2-1. 추가된 Project 에 대해서만 진행.
-            // Project Panel 자체는 영구 보존
-            UniTask.Void(async () =>
+            var projectList = ServiceLocater.Get<IGameManager>().Projects;    
+            if (projectList.Count <= 0) return;
+            // 2. Project 개수 확인
+            if (_projectCnt == 0)
             {
-                await AddProject(new ProjectDetailRenderData());    
-            });
+                _projectCnt = projectList.Count;
+                UniTask.Void(async () =>
+                {
+                    foreach (var project in projectList)
+                        await AddProject(new ProjectDetailRenderData()
+                        {
+                            cost = project.cost,
+                            income = project.income,
+                            title = project.name,
+                            genre = project.genre.name,
+                            theme = project.theme.name,
+                            grade = project.grade.ToString(),
+                            rewards = project.award.name
+                        });    
+                });
+            }
+            else if (projectList.Count != _projectCnt)
+            {
+                var project = projectList[_projectCnt - 1];  // 마지막 1개만 가져오기
+                UniTask.Void(async () =>
+                {
+                    await AddProject(new ProjectDetailRenderData()
+                    {
+                        cost = project.cost,
+                        income = project.income,
+                        title = project.name,
+                        genre = project.genre.name,
+                        theme = project.theme.name,
+                        grade = project.grade.ToString(),
+                        rewards = project.award.name
+                    });    
+                });
+            }
             // 여기는 뭐 실행되는거 없어야함. (안그럼 꼬입니다)
         }
     }
@@ -76,6 +104,7 @@ public class SlideUIController : MonoBehaviour, IUIRender
         // Project 상세 Panel 은 게임 시작 및 Project 진행 완료시 하나씩 생성.
         // Project 상세 Panel 은 게임이 종료되기 전까지 삭제되지 않음.
         var go = Instantiate(projectDetailUI, projectContentRt);
+        go.transform.SetAsFirstSibling();   // ← 새 프로젝트를 맨 앞으로
         var rt = go.GetComponent<RectTransform>();
         rt.sizeDelta = new Vector2(viewPort.rect.width, rt.sizeDelta.y);
         go.Render(data, () => projectMainPanel.SetActive(false));
