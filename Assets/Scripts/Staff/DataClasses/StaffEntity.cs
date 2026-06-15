@@ -91,8 +91,19 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         init.Base_Job_Development = ApplyState(init.Base_Job_Development, isCommon: false);
         init.Base_Job_Planning = ApplyState(init.Base_Job_Planning, isCommon: false);
         
-        OnLevelUp?.Invoke(isAttachTag, this);
         _staffDataFactory.CalculateCosts(init);
+        // LevelUP UI 발생
+        
+        // Tag UI 발생
+        if (isAttachTag)
+        {
+            var entity = new TagUIRenderData()
+            {
+                OnConfirmCallback = AddSelectedTag,
+                StaffEntity = this
+            };
+            ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.TagSelectUI, entity);
+        }
         
         // 만렙 고정치
         if (init.Level >= 15)

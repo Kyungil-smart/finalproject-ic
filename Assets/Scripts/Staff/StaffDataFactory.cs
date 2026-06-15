@@ -134,7 +134,8 @@ public class StaffDataFactory
     // 비용 계산식에 따른 Salary(연봉), Hire_Cost(초기 계약금) 계산.
     public void CalculateCosts(StaffInitData data)
     {
-        float gradeCost = data.Grade switch { StaffGrade.D => 0.5f, StaffGrade.C => 0.75f, StaffGrade.B => 1.0f, StaffGrade.A => 1.5f, StaffGrade.S => 2.0f, _ => 1.0f };
+        var dataManager = ServiceLocater.Get<IStaffDataManager>();
+        float gradeCost = dataManager.GradeList.Find(x => x.Grade == data.Grade.ToString()).Grade_Cost;
         int totalBaseStats = data.Base_Common_Concentration + data.Base_Common_Creativity + data.Base_Job_Planning; // 약식 합산
         // totalBaseStats 식은 나중에 직업군 별 스탯 배율?을 적용 (자신의 직업과 연관되지 않은 스탯 * 0.X)
         
@@ -159,8 +160,10 @@ public class StaffDataFactory
         runtime.Added_Job_Development = Mathf.RoundToInt(init.Base_Job_Development * gradeMultiplier);
         runtime.Added_Job_Art = Mathf.RoundToInt(init.Base_Job_Art * gradeMultiplier);
 
-        // // 태그 뽑기 및 효과 적용 -> 테그는 나중에
-        // ToDo. Tag 가져오고
+        // 기본 1개 태그 뽑기
+        
+        
+        // 등급별 태그 뽑기
         
         // 가져온 Tag 기반으로 Runtime 데이터 추가하기.
         foreach (var tag in runtime.Added_Tags)

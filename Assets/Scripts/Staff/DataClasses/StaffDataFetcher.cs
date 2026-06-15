@@ -105,7 +105,8 @@ public class StaffDataFetcher
                 Grade = row["Grade"],
                 Tag_Min = int.Parse(row["Tag_Min"]),
                 Tag_Max = int.Parse(row["Tag_Max"]),
-                Grade_XP = float.Parse(row["Grade_XP"])
+                Grade_XP = float.Parse(row["Grade_XP"]),
+                Grade_Cost = float.Parse(row["Grade_Cost"])
             });
         }
         Debug.Log("[StaffDataFetcher] Grade Data ... Done");

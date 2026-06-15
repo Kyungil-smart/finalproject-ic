@@ -27,8 +27,8 @@ public class TagRow
     public int Tag_Type; // Fixed = 1, Added = 2
     public string Tag_Name; 
     public string Tag_Name_ID;     
-    // public string Tag_Desc_ID;     
-    // public string Tag_Desc;        
+    public string Tag_Desc_ID;     
+    public string Tag_Desc;        
     public string Tag_A_Effect_Name; // 태그의 효과는 A, B 두개 가질 수 있음. 
     public int Tag_A_Effect_Value;
     public float Tag_A_Effect_Ratio;
@@ -55,7 +55,8 @@ public class GradeRow
     public string Grade;       // "D", "C", "B", "A", "S"
     public int Tag_Min;        // 태그 최소 개수
     public int Tag_Max;        // 태그 최대 
-    public float Grade_XP;     
+    public float Grade_XP;
+    public float Grade_Cost;  
     
     public StaffGrade GradeEnum => (StaffGrade)System.Enum.Parse(typeof(StaffGrade), Grade);
 }
