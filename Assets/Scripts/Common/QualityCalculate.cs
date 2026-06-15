@@ -78,8 +78,7 @@ public class QualityCalculate
         var data = _qualityData.rates[0];
         var qt = ServiceLocater.Get<IProjectManager>();
         float result = (qt.DesignQuality + qt.ArtQuality + qt.DevQuality);
-        float begin = qt.TotalQuality;
-        qt.UpdateTotalQuality(begin + result);
+        qt.UpdateTotalQuality(qt.TotalQuality + result);
     }
     
     // QA계산식 추가 예정(기획이 나오면)
@@ -134,6 +133,7 @@ public class QualityCalculate
         float achieve = attainment(qt.DesignQuality, target.targetDesignPre);
         return achieve;
     }
+    
     public float GetDevAchieve()
     {
         var qt = ServiceLocater.Get<IProjectManager>();
@@ -143,6 +143,7 @@ public class QualityCalculate
         float achieve = attainment(qt.DevQuality, target.targetDevPre);
         return achieve;
     }
+    
     public float GetArtAchieve()
     {
         var qt = ServiceLocater.Get<IProjectManager>();
