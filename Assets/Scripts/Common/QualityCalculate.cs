@@ -19,14 +19,14 @@ public class QualityCalculate
         {
             JobType.Artist => main.GetArt(),
             JobType.Developer => main.GetDevelopment(),
-            JobType.Planner => main.GetPlanning(),
+            JobType.Planner => main.GetDesign(),
             _ => default
         };
         float subStat = sub.GetJob() switch
         {
             JobType.Artist => sub.GetArt(),
             JobType.Developer => sub.GetDevelopment(),
-            JobType.Planner => sub.GetPlanning(),
+            JobType.Planner => sub.GetDesign(),
             _ => default
         };
         return (mainStat * data.arrageCase1) + (subStat * data.arrageCase2);

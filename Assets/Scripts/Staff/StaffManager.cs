@@ -38,9 +38,9 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
 
     private void OnDestroy() => Unregister();
 
-    private void Start() => Init();
+    private void Start() => InitData();
 
-    private void Init()
+    private void InitData()
     {
         if (Utils.Environment.isDevelopment)
             DownloadSlotData().Forget();
@@ -80,12 +80,11 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
     {
         Debug.Log($"[StaffManager] 신규 채용 후보 {cardCount}명 생성 시작...");
         _recruitCandidates.Clear(); // 이전 후보 데이터 초기화
-
+        Debug.Log($"[StaffManager] Staff 데이터 확인: {_staffDataManager.StaffList.Count}");
         for (int i = 0; i < cardCount; i++)
         {
             StaffRow readOnlyStaffData;
-            while (true)
-            {
+            while (true) {
                 readOnlyStaffData = _staffDataManager.StaffList[Random.Range(0, _staffDataManager.StaffList.Count)];
                 if (_staffList.FindAll(x => x.init.Staff_ID == readOnlyStaffData.Staff_ID).Count < 1
                     && _recruitCandidates.FindAll(x => x.init.Staff_ID == readOnlyStaffData.Staff_ID).Count < 1) 
@@ -344,6 +343,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         GSheetManager gSheetManager = new(slotGSheetId, slotGId);
         await UniTask.WaitUntil(() => gSheetManager.IsDownload);
         var dataList = gSheetManager.GetData();
+        if (slotUnlockData.slots.Count > 0) return;
         slotUnlockData.slots.Clear();
         foreach (var data in dataList)
         {
@@ -352,6 +352,15 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
                 id = int.Parse(data["Slot_ID"]),
                 cost = int.Parse(data["Slot_Cost"]),
             });
+        }
+    }
+
+    [ContextMenu("Level Up Staff")]
+    private void LevelUpStaff()
+    {
+        foreach (var staff in _staffList)
+        {
+            staff.LevelUp(true);
         }
     }
 }

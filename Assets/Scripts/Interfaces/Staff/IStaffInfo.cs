@@ -19,7 +19,7 @@ public interface IStaffInfo
     int GetCreativity();
 
     int GetCommunication(); 
-    int GetPlanning();
+    int GetDesign();
     int GetDevelopment();
     int GetArt();
     

@@ -39,13 +39,10 @@ public class StaffDataFetcher
         {
             result.Staffs.Add(new StaffRow {
                 Staff_ID = int.Parse(row["Staff_ID"]),
-                
                 Staff_Name_ID = row["Staff_Name_ID"],
                 Staff_Name = GetString(row["Staff_Name_ID"]),
-                
                 Staff_Job_ID = row["Staff_Job_ID"],
                 Staff_Job = GetString(row["Staff_Job_ID"]),
-                
                 Staff_Gender_ID = row["Staff_Gender_ID"],
                 Staff_Gender = GetString(row["Staff_Gender_ID"])
             });
@@ -61,17 +58,13 @@ public class StaffDataFetcher
             result.Tags.Add(new TagRow {
                 Tag_Id = int.Parse(row["Tag_ID"]),
                 Tag_Type = int.Parse(row["Tag_Type"]),
-                
                 Tag_Name_ID = row["Tag_Name_ID"],
                 Tag_Name = GetString(row["Tag_Name_ID"]),
-                
                 // Tag_Desc_ID = row["Tag_Desc_ID"],
                 // Tag_Desc = GetString(row["Tag_Desc_ID"]),
-                
                 Tag_A_Effect_Name = row["Tag_A_Effect_Name"],
                 Tag_A_Effect_Value = int.Parse(row["Tag_A_Effect_Value"]),
                 Tag_A_Effect_Ratio = float.Parse(row["Tag_A_Effect_Ratio"]),
-                
                 Tag_B_Effect_Name = row["Tag_B_Effect_Name"],
                 Tag_B_Effect_Value = int.Parse(row["Tag_B_Effect_Value"]),
                 Tag_B_Effect_Ratio = float.Parse(row["Tag_B_Effect_Ratio"])

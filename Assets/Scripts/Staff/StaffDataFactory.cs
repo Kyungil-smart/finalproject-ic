@@ -161,17 +161,30 @@ public class StaffDataFactory
         runtime.Added_Job_Art = Mathf.RoundToInt(init.Base_Job_Art * gradeMultiplier);
 
         // 기본 1개 태그 뽑기
-        
+        var fixTags = dataManager.TagList.FindAll(x => x.Tag_Type == 2);
+        int[] fixIndex = Utils.NumberExtractor.GetUniqueRandomNumbers(0, fixTags.Count - 1, 1);
+        runtime.Added_Tags.Add(fixTags[fixIndex[0]]);
         
         // 등급별 태그 뽑기
+        var grade = dataManager.GradeList.Find(x => x.GradeEnum == init.Grade);
+        int[] tagCnt = Utils.NumberExtractor.GetUniqueRandomNumbers(grade.Tag_Min, grade.Tag_Max, 1);
+        if (tagCnt[0] > 0)
+        {
+            var addedTags = dataManager.TagList.FindAll(x => x.Tag_Type == 1);
+            int[] tagIndex = Utils.NumberExtractor.GetUniqueRandomNumbers(0, addedTags.Count - 1, tagCnt[0]);
+            foreach (var index in tagIndex)
+                runtime.Added_Tags.Add(addedTags[index]);
+        }
         
         // 가져온 Tag 기반으로 Runtime 데이터 추가하기.
         if (runtime.Added_Tags.Count > 0)
+        {
             foreach (var tag in runtime.Added_Tags)
             {
                 ApplyTagEffect(init, runtime, tag.Tag_A_Effect_Name, tag.Tag_A_Effect_Value, tag.Tag_A_Effect_Ratio);
                 ApplyTagEffect(init, runtime, tag.Tag_B_Effect_Name, tag.Tag_B_Effect_Value, tag.Tag_B_Effect_Ratio);
             }
+        }
         return runtime;
     }
 }

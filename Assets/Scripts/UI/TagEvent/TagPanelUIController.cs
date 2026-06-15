@@ -28,7 +28,11 @@ public class TagPanelUIController : MonoBehaviour
         _mainController = mainController;
     }
 
-    private void OnSelect() => _mainController.selectedTag.Value = _tagRow;
+    private void OnSelect()
+    {
+        Debug.Log("[TagPanelUIController] Select !!");
+        _mainController.selectedTag.Value = _tagRow;
+    }
 
     private void RenderTagEffect(TextMeshProUGUI target, string name)
     {   // ToDo. 임시로 한글로 변환한 내용. 추후 어떻게 할지 논의 필요.

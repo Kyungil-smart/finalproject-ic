@@ -127,6 +127,7 @@ public class SlideUIController : MonoBehaviour, IUIRender
 
     private void UpdateInput()
     {
+        if (!staffMainPanel.activeSelf) return;
         if (_isSwapeMode) return;
         #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))

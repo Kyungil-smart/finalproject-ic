@@ -126,8 +126,9 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
     private void Start()
     {
         if (Utils.Environment.isDevelopment)
-            SyncDataFromSheetAsync().Forget();
-        InitData();
+            SyncDataFromSheetAsync();
+        else
+            InitData();
     }
 
     private void OnDestroy() => Unregister();
@@ -144,10 +145,14 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
     
     // 초기 데이터는 SO에서 가져오고 실시간 데이터는 시트에서 StaffDataFetcher를 통해서 가져옴.
     // SO에 저장은 아직 안하는 중. 변경하려면 #if UnityEditor 전처리 기문을 사용해야 해서 아직은 고민중.  
-    private async UniTaskVoid SyncDataFromSheetAsync()
+    private async UniTask SyncDataFromSheetAsync()
     {
         Debug.Log("런타임 실시간 데이터 동기화 시작...");
-        
+        await Utils.TaskAsync.WaitUntilOrThrowAsync(() =>
+        {
+            var textMgr = ServiceLocater.Get<IUITextManager>();
+            return textMgr != null && textMgr.IsDataUpdated;
+        }); // Post 기다리는 시간 
         StaffDataFetcher fetcher = new StaffDataFetcher();
         var fetchedData = await fetcher.FetchAllDataAsync(); //fetchedData에 시트에서 가져온 파싱값들 저장. 
 
@@ -177,14 +182,15 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
                 _gradeRatioDict[row.Level] = new List<GradeRatioRow>();
             _gradeRatioDict[row.Level].Add(row);
         }
+        InitData();
     }
     
 
     private void InitData()
     {
-        if (staffDataSO != null) _staffList = staffDataSO.staffList;
-        if (tagDataSO != null) _tagList = tagDataSO.tagList;
-        if (gradeDataSO != null) _gradeList = gradeDataSO.gradeList;
+        if (staffDataSO != null) _staffList = new (staffDataSO.staffList);
+        if (tagDataSO != null) _tagList = new(tagDataSO.tagList);
+        if (gradeDataSO != null) _gradeList = new(gradeDataSO.gradeList);
         
         if (gradeRatioDataSO != null) 
         {
@@ -211,9 +217,13 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
         if (levelExpSo != null)
         {
             _levelExpList.Clear();
-            _levelExpList = levelExpSo.levelExpList;
+            _levelExpList = new(levelExpSo.levelExpList);
         }
-        Debug.Log($"모든 데이터 메모리 로드 완료 (스태프:{_staffList.Count}개, 태그:{_tagList.Count}개, 레벨스탯:{_levelStatDict.Count}개, 등급:{_gradeList.Count}개)");
+        Debug.Log($"[StaffDataManager] " +
+                  $"모든 데이터 메모리 로드 완료 (스태프:{_staffList.Count}개, " +
+                  $"태그:{_tagList.Count}개, " +
+                  $"레벨스탯:{_levelStatDict.Count}개, " +
+                  $"등급:{_gradeList.Count}개)");
     }
     
     // 시트에서 받은 전체 스태프들 목록. 데이터 반환형식은 다른 UI 인터페이스와의 호환 을 생각해서 StaffViewData형식으로 작성.

@@ -29,10 +29,12 @@ public class TagSelectUIController : MonoBehaviour, IUIRender
 
     private void OnEnable()
     {
+        ServiceLocater.Get<IUIRouter>().RegisterUIRender(UIType.TagSelectUI, this);
         tagRerollBtn.onClick.AddListener(Reroll);
     }
     private void OnDisable()
     {
+        ServiceLocater.Get<IUIRouter>().UnregisterUIRender(UIType.TagSelectUI);
         tagRerollBtn.onClick.RemoveListener(Reroll);
     }
 
@@ -44,13 +46,13 @@ public class TagSelectUIController : MonoBehaviour, IUIRender
             if (tag == null) tagConfirmBtn.gameObject.SetActive(false);
             else tagConfirmBtn.gameObject.SetActive(true);
         }).AddTo(this);
-        GetRandomThreeTags();
     }
     
     public void Render(UIRenderData data)
     {
         if (data is TagUIRenderData renderData)
         {
+            GetRandomThreeTags();
             mainPanel.SetActive(true);
             RenderStaffData(renderData.StaffEntity);
             tagConfirmBtn.onClick.RemoveAllListeners();
@@ -63,7 +65,7 @@ public class TagSelectUIController : MonoBehaviour, IUIRender
     {
         var staffDataManger = ServiceLocater.Get<IStaffDataManager>();
         int allTagCount = staffDataManger.TagList.Count;
-        var indexes = NumberExtractor.GetUniqueRandomNumbers(0, allTagCount, 3);
+        var indexes = NumberExtractor.GetUniqueRandomNumbers(0, allTagCount - 1, 3);
         for (int i = 0; i < indexes.Length; i++)
             tagPanels[i].Render(staffDataManger.TagList[indexes[i]], this);
     }

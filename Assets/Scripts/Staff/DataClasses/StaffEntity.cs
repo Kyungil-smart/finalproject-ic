@@ -18,6 +18,7 @@ public class StaffEntity : IStaffInfo, ISavableStaff
     private GameObject _gameObject;
     private IStaffDataManager _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
     private StaffDataFactory _staffDataFactory = new ();
+    private bool isSelectingTag;
 
     // IStaffInfo 구현 (읽기 전용)
     public GameObject GetGameObject() => _gameObject;
@@ -53,7 +54,7 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         return state;
     }
 
-    public int GetPlanning()
+    public int GetDesign()
     {
         int state = init.Base_Job_Planning;
         state += runtime.Added_Job_Design;
@@ -102,8 +103,10 @@ public class StaffEntity : IStaffInfo, ISavableStaff
                 OnConfirmCallback = AddSelectedTag,
                 StaffEntity = this
             };
+            isSelectingTag = true;
             ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.TagSelectUI, entity);
         }
+        UniTask.WaitUntil(() => !isSelectingTag);
         
         // 만렙 고정치
         if (init.Level >= 15)
@@ -147,5 +150,6 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         runtime.Added_Tags.Add(tag);
         _staffDataFactory.ApplyTagEffect(init, runtime, tag.Tag_A_Effect_Name, tag.Tag_A_Effect_Value, tag.Tag_A_Effect_Ratio);
         _staffDataFactory.ApplyTagEffect(init, runtime, tag.Tag_B_Effect_Name, tag.Tag_B_Effect_Value, tag.Tag_B_Effect_Ratio);
+        isSelectingTag = false;
     }
 }
