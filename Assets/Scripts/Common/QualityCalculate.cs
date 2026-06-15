@@ -117,7 +117,7 @@ public class QualityCalculate
     public void CalculateAchieve()
     {
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
-        float avgLevel = (float)staffList.Sum(s => s.Current_Level) / staffList.Count;
+        float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
         var qt = ServiceLocater.Get<IProjectManager>();
         float achieve = attainment(qt.TotalQuality, target.targetTotal);
@@ -129,7 +129,7 @@ public class QualityCalculate
     {
         var qt = ServiceLocater.Get<IProjectManager>();
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
-        float avgLevel = (float)staffList.Sum(s => s.Current_Level) / staffList.Count;
+        float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
         float achieve = attainment(qt.DesignQuality, target.targetDesignPre);
         return achieve;
@@ -138,7 +138,7 @@ public class QualityCalculate
     {
         var qt = ServiceLocater.Get<IProjectManager>();
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
-        float avgLevel = (float)staffList.Sum(s => s.Current_Level) / staffList.Count;
+        float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
         float achieve = attainment(qt.DevQuality, target.targetDevPre);
         return achieve;
@@ -147,7 +147,7 @@ public class QualityCalculate
     {
         var qt = ServiceLocater.Get<IProjectManager>();
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
-        float avgLevel = (float)staffList.Sum(s => s.Current_Level) / staffList.Count;
+        float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
         float achieve = attainment(qt.ArtQuality, target.targetArtPre);
         return achieve;
