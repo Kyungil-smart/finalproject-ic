@@ -59,5 +59,5 @@ public class StaffRuntimeData
 
     // 인게임에서 획득하는 추가 태그들 (나중에 구체적인 기획 나오면 수정)
     // 나중에 Fixed_Tag 1개 int, Added_Tags 여러 개 List<int>로 나누도록 변경.
-    public List<TagRow> Added_Tags; 
+    public List<TagRow> Added_Tags = new(); 
 }

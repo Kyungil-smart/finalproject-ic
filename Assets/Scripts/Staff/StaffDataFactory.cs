@@ -166,11 +166,12 @@ public class StaffDataFactory
         // 등급별 태그 뽑기
         
         // 가져온 Tag 기반으로 Runtime 데이터 추가하기.
-        foreach (var tag in runtime.Added_Tags)
-        {
-            ApplyTagEffect(init, runtime, tag.Tag_A_Effect_Name, tag.Tag_A_Effect_Value, tag.Tag_A_Effect_Ratio);
-            ApplyTagEffect(init, runtime, tag.Tag_B_Effect_Name, tag.Tag_B_Effect_Value, tag.Tag_B_Effect_Ratio);
-        }
+        if (runtime.Added_Tags.Count > 0)
+            foreach (var tag in runtime.Added_Tags)
+            {
+                ApplyTagEffect(init, runtime, tag.Tag_A_Effect_Name, tag.Tag_A_Effect_Value, tag.Tag_A_Effect_Ratio);
+                ApplyTagEffect(init, runtime, tag.Tag_B_Effect_Name, tag.Tag_B_Effect_Value, tag.Tag_B_Effect_Ratio);
+            }
         return runtime;
     }
 }
