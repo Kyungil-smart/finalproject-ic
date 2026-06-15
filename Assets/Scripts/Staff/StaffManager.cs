@@ -42,6 +42,9 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
 
     private void Init()
     {
+        if (Utils.Environment.isDevelopment)
+            DownloadSlotData().Forget();
+        
         _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
         _slots = slotUnlockData.slots;
         Debug.Log($"[StaffManager:Init] 로딩된 slot 총 개수: {_slots.Count}");

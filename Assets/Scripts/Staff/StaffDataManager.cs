@@ -123,7 +123,13 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
 
 
     private void Awake() => Register();
-    private void Start() => InitData();
+    private void Start()
+    {
+        if (Utils.Environment.isDevelopment)
+            SyncDataFromSheetAsync().Forget();
+        InitData();
+    }
+
     private void OnDestroy() => Unregister();
     
     protected override void Register()
@@ -135,7 +141,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
     {
         ServiceLocater.Unregister<IStaffDataManager>(this);
     }
-
+    
     // 초기 데이터는 SO에서 가져오고 실시간 데이터는 시트에서 StaffDataFetcher를 통해서 가져옴.
     // SO에 저장은 아직 안하는 중. 변경하려면 #if UnityEditor 전처리 기문을 사용해야 해서 아직은 고민중.  
     private async UniTaskVoid SyncDataFromSheetAsync()
