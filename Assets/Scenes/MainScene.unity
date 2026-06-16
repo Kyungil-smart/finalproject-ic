@@ -1412,8 +1412,8 @@ MonoBehaviour:
   inputProjectPanel: {fileID: 1971764427}
   projectNameInputField: {fileID: 2068224979}
   inputProjectConfirmBtn: {fileID: 925399374}
-  warningMessagePanel: {fileID: 0}
-  warningMessageText: {fileID: 0}
+  warningMessagePanel: {fileID: 1049457006}
+  warningMessageText: {fileID: 124899856}
 --- !u!1 &231052547
 GameObject:
   m_ObjectHideFlags: 0
@@ -5223,7 +5223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1049457007
 RectTransform:
   m_ObjectHideFlags: 0

@@ -44,9 +44,11 @@ public class T0203UIController : MonoBehaviour, IUIRender
     
     public void Render(UIRenderData data)
     {
+        Debug.Log("[T0203UIController] Render");
         mainPanel.SetActive(true);
         if (data is T02TrendGenreThemeRenderData renderT2Data)
         {
+            Debug.Log("[T0203UIController] Render - T02");
             title.Text = "트랜드 조사 결과"; // ToDo. 추후 Text ID 로 변경 예정
             
             confirmBtn.onClick.RemoveAllListeners();
@@ -56,6 +58,7 @@ public class T0203UIController : MonoBehaviour, IUIRender
         } 
         else if (data is T03TrendGenreThemeSelectRenderData renderT31Data)
         {
+            Debug.Log("[T0203UIController] Render - T03");
             title.Text = "게임 장르 & 테마 선정"; // ToDO. 추후 Text ID 로 변경 예정
             middleSession02.SetActive(true);
             tailSession02.SetActive(true);

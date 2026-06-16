@@ -44,6 +44,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     [SerializeField] private Button inputProjectConfirmBtn;
     [SerializeField] private GameObject warningMessagePanel;
     [SerializeField] private TextMeshProUGUI warningMessageText;
+    [SerializeField][Range(1f, 3f)] private float popUpInterval; 
 
     private bool _isReady = false;
     public bool IsReady { get => _isReady; }
@@ -220,8 +221,14 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         string pattern = @"^[a-zA-Z0-9가-힣]([a-zA-Z0-9가-힣_-])*$";
         
         var name = projectNameInputField.text;
-        if (name.Length > 20) await OpenWarningMessagePanel(lengthWarning);
-        else if (Regex.IsMatch(name, pattern)) await OpenWarningMessagePanel(specificWordWarning);
+        if (name.Length > 20)
+        {
+            await OpenWarningMessagePanel(lengthWarning);
+        }
+        else if (!Regex.IsMatch(name, pattern))
+        {
+            await OpenWarningMessagePanel(specificWordWarning);
+        }
         else
         {
             ServiceLocater.Get<IProjectManager>().SetProjectName(name);
@@ -234,7 +241,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     {
         warningMessageText.text = warningMessage;
         warningMessagePanel.SetActive(true);
-        await UniTask.WaitForSeconds(3f);
+        await UniTask.WaitForSeconds(popUpInterval);
         warningMessagePanel.SetActive(false);
     }
 }
