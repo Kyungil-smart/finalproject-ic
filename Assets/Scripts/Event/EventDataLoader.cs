@@ -6,14 +6,12 @@ public class EventDataLoader
     public EventTaskSO staffTaskSO;
     public EventTaskSO regularTaskSO;
     public EventTaskSO linkageTaskSO;
-    public EventTaskSO rewardTaskSO;
 
     private void ClearData()
     {
         staffTaskSO.tasks.Clear();
         regularTaskSO.tasks.Clear();
         linkageTaskSO.tasks.Clear();
-        rewardTaskSO.tasks.Clear();
     }
     
     public void LoadEvent(GSheetManager gsheet)
@@ -63,14 +61,12 @@ public class EventDataLoader
             if (taskData.id >= 31000 && taskData.id < 32000) staffTaskSO.tasks.Add(taskData);
             else if (taskData.id >= 32000 && taskData.id < 33000) linkageTaskSO.tasks.Add(taskData);
             else if (taskData.id >= 33000 && taskData.id < 34000) regularTaskSO.tasks.Add(taskData);
-            else if (taskData.id >= 34000 && taskData.id < 35000) rewardTaskSO.tasks.Add(taskData);
         }
         
         ServiceLocater.Register(this);
         Debug.Log($"[EventDataLoader] Load - StaffTask: {staffTaskSO.tasks.Count}");
         Debug.Log($"[EventDataLoader] Load - LinkageTask: {linkageTaskSO.tasks.Count}");
         Debug.Log($"[EventDataLoader] Load - RegularTask: {regularTaskSO.tasks.Count}");
-        Debug.Log($"[EventDataLoader] Load - RewardTask: {rewardTaskSO.tasks.Count}");
         Debug.Log($"[EventDataLoader] Complete load and save the event to ScriptableObject.");
     }
 }

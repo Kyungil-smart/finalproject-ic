@@ -19,6 +19,7 @@ public interface IGameManager
     public void AddHeart(int heart);
     public void AddProject(ProjectData project);
     public void ChangeState(GameDevProcName newState);
+    public int GetProjectYear();
     public void AddExp(float exp);
     public void UpdateInputProjectNameActive(bool active);
 }
