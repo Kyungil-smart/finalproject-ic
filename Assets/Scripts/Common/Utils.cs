@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Random = UnityEngine.Random;
 
 namespace Utils
 {
@@ -65,4 +66,35 @@ namespace Utils
             }
         }
     }
+
+    public static class NumberExtractor
+    {
+        public static int[] GetUniqueRandomNumbers(int min, int max, int count)
+        {
+            // 1. 1부터 100까지의 숫자가 담긴 배열 생성
+            int range = max - min + 1;
+            int[] numbers = new int[range];
+            for (int i = 0; i < range; i++)
+            {
+                numbers[i] = min + i;
+            }
+
+            // 2. 필요한 개수(count)만큼만 셔플 진행
+            int[] result = new int[count];
+            for (int i = 0; i < count; i++)
+            {
+                int randomIndex = Random.Range(i, range);
+            
+                // 스왑(Swap) 진행
+                int temp = numbers[i];
+                numbers[i] = numbers[randomIndex];
+                numbers[randomIndex] = temp;
+
+                result[i] = numbers[i];
+            }
+            return result;
+        }
+    }
+    
+    
 }

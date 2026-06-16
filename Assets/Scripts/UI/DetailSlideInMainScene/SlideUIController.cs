@@ -6,16 +6,21 @@ using UnityEngine.UI;
 
 public class SlideUIController : MonoBehaviour, IUIRender
 {
-    [Header("Object 관련")]
-    [SerializeField] private Transform contentTf;
-    [SerializeField] private StaffDatailUIRenderer staffDatailUIRenderer;
+    [Header("Staff 관련")]
+    [SerializeField] private GameObject staffMainPanel;
+    [SerializeField] private List<StaffDatailUIRenderer> staffDatailUIRenderers;
+    
+    [Header("Project 관련")]
+    [SerializeField] private GameObject projectMainPanel;
+    [SerializeField] private ProjectDetailUIRenderer projectDetailUI;
+    [SerializeField] private RectTransform projectContentRt;
     
     [Header("Scroll View 제어")]
+    [SerializeField] private RectTransform viewPort;
     [SerializeField] private Scrollbar scrollbar;
     [SerializeField] private float swipeTime = 0.2f;
     [SerializeField] private float swipeDistance = 50.0f;
     
-    private List<GameObject> _scrollPages = new();
     private float[] _scrollPageValues;
     private float _valueDistance = 0;
     private int _currentPage = 0;
@@ -23,34 +28,94 @@ public class SlideUIController : MonoBehaviour, IUIRender
     private float _startTouchX;
     private float _endTouchX;
     private bool _isSwapeMode = false;
-    
+    private int _projectCnt = 0;
     
     public void Render(UIRenderData data)
     {
-        var viewPortTf = contentTf.parent.GetComponent<RectTransform>();
+        staffMainPanel.SetActive(true);
         if (data is StaffDetailRenderData renderData)
         {
-            foreach (var staff in renderData.staffDataList)
+            for (int i = 0; i < renderData.staffDataList.Count; i++)
             {   
-                var sd = Instantiate(staffDatailUIRenderer, contentTf);
-                _scrollPages.Add(sd.gameObject);
-                var sdTf = sd.GetComponent<RectTransform>();
-                sdTf.sizeDelta = new Vector2(viewPortTf.rect.width, sdTf.sizeDelta.y);
-                sd.Render(staff, renderData.btnCallback);
+                var staffData = renderData.staffDataList[i];
+                var staffUI = staffDatailUIRenderers[i];
+                staffUI.gameObject.SetActive(true);
+                var rt = staffUI.GetComponent<RectTransform>();
+                rt.sizeDelta = new Vector2(viewPort.rect.width, rt.sizeDelta.y);
+                staffUI.Render(staffData, Close);
             }
             Init();
-        }   // ToDo. Last Project Data
+        }   
+        else
+        {
+            projectMainPanel.SetActive(true);
+            // 1. Project List 가져오기
+            var projectList = ServiceLocater.Get<IGameManager>().Projects;    
+            if (projectList.Count <= 0) return;
+            // 2. Project 개수 확인
+            if (_projectCnt == 0)
+            {
+                _projectCnt = projectList.Count;
+                UniTask.Void(async () =>
+                {
+                    foreach (var project in projectList)
+                        await AddProject(new ProjectDetailRenderData()
+                        {
+                            cost = project.cost,
+                            income = project.income,
+                            title = project.name,
+                            genre = project.genre.name,
+                            theme = project.theme.name,
+                            grade = project.grade.ToString(),
+                            rewards = project.award.name
+                        });    
+                });
+            }
+            else if (projectList.Count != _projectCnt)
+            {
+                var project = projectList[_projectCnt - 1];  // 마지막 1개만 가져오기
+                UniTask.Void(async () =>
+                {
+                    await AddProject(new ProjectDetailRenderData()
+                    {
+                        cost = project.cost,
+                        income = project.income,
+                        title = project.name,
+                        genre = project.genre.name,
+                        theme = project.theme.name,
+                        grade = project.grade.ToString(),
+                        rewards = project.award.name
+                    });    
+                });
+            }
+            // 여기는 뭐 실행되는거 없어야함. (안그럼 꼬입니다)
+        }
+    }
+
+    private void Close()
+    {
+        staffMainPanel.SetActive(false);
+        foreach (var staffUI in staffDatailUIRenderers)
+            staffUI.gameObject.SetActive(false);
     }
     
-    private void AddDataList()  // ToDo. Last Project Data
+    private UniTask AddProject(ProjectDetailRenderData data)  
     {  
-        
+        // Project 상세 Panel 은 게임 시작 및 Project 진행 완료시 하나씩 생성.
+        // Project 상세 Panel 은 게임이 종료되기 전까지 삭제되지 않음.
+        var go = Instantiate(projectDetailUI, projectContentRt);
+        go.transform.SetAsFirstSibling();   // ← 새 프로젝트를 맨 앞으로
+        var rt = go.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(viewPort.rect.width, rt.sizeDelta.y);
+        go.Render(data, () => projectMainPanel.SetActive(false));
+        return UniTask.CompletedTask;
     }
 
     private void Init()
     {
-        _scrollPageValues = new float[contentTf.childCount];
-        _maxPage = contentTf.childCount;
+        int enabledPanelCount = staffDatailUIRenderers.FindAll(x => x.gameObject.activeSelf).Count; 
+        _scrollPageValues = new float[enabledPanelCount];
+        _maxPage = enabledPanelCount;
         
         if (_maxPage <= 1)
         {
@@ -72,14 +137,6 @@ public class SlideUIController : MonoBehaviour, IUIRender
     {
         ServiceLocater.Get<IUIRouter>().RegisterUIRender(UIType.SlideUI, this);
     }
-
-    private void OnDisable()
-    {
-        foreach (var go in _scrollPages)
-        {
-            Destroy(go);  // ToDo. gc 해결해야 할텐데 어떻게 하면 좋을지 잘 모르겠음
-        }
-    }
     
     private void OnDestroy()
     {
@@ -99,6 +156,7 @@ public class SlideUIController : MonoBehaviour, IUIRender
 
     private void UpdateInput()
     {
+        if (!staffMainPanel.activeSelf) return;
         if (_isSwapeMode) return;
         #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
@@ -139,7 +197,7 @@ public class SlideUIController : MonoBehaviour, IUIRender
 
         if (_startTouchX < _endTouchX)
         {
-            if (_currentPage > 0) return;
+            if (_currentPage <= 0) return;
             _currentPage--;
         }
         else

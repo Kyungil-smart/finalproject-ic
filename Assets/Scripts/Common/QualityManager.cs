@@ -2,7 +2,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class QualityManager : Manager
+public class QualityManager : Manager, IQualityManager
 {
     [SerializeField] private string _gSheetId;
     [SerializeField] private string _gidQuality;
@@ -64,7 +64,7 @@ public class QualityManager : Manager
         DownloadData();
     }
 
-    protected override void Register() => ServiceLocater.Register<QualityManager>(this);
+    protected override void Register() => ServiceLocater.Register<IQualityManager>(this);
 
-    protected override void Unregister() => ServiceLocater.Unregister<QualityManager>(this);
+    protected override void Unregister() => ServiceLocater.Unregister<IQualityManager>(this);
 }

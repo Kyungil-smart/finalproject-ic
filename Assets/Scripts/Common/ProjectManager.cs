@@ -52,35 +52,16 @@ public struct ProjectData
     }
 }
 
-public struct ProjectDataForUI
-{
-    public float totalQuality;
-    public float devQuality;
-    public float artQuality;
-    public float designQuality;
-    public bool isCompleted;
-    public string name;
-    public int genreTextId;
-    public int themeTextId;
-    public string gradeText;
-    public uint cost;
-    public uint income;
-    public int awardTextId;
-}
-
 public class ProjectManager : Manager, IProjectManager
 {
     private ProjectData _projectData;
-    // Todo.메인스태프와 서브스태프를 구분할 필요가 있음 ex) 0번이 메인, 1번이 서브로 스탯값 계산.
-    private List<int> _assignedStaff = new();
+    
+    private Dictionary<GameDevProcName, List<int>> _assignedStaff = new();
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
 
-    public float TotalQuality
-    {
-        get => _projectData.Qualities.Value.total;
-    }
-    
+    public float TotalQuality => _projectData.Qualities.Value.total;
+
     public float DevQuality
     {
         get => _projectData.Qualities.Value.development;
@@ -137,6 +118,8 @@ public class ProjectManager : Manager, IProjectManager
         get => _projectData.income;
         set => _projectData.income = value;
     }
+    
+    public uint Earnings => _projectData.income - _projectData.cost; // 수익
 
     public void UpdateTotalQuality(float value, float ratio = 1f)
     {
@@ -148,6 +131,7 @@ public class ProjectManager : Manager, IProjectManager
     public void NewProject(string projectName)
     {
         _projectData = new ProjectData(projectName);
+        _assignedStaff.Clear();
     }
 
     public void LoadProject(string jsonData)
@@ -178,13 +162,20 @@ public class ProjectManager : Manager, IProjectManager
     }
 
     public ProjectData GetProjectData() => _projectData;
-    public void AssignStaff(int staffId) => _assignedStaff.Add(staffId);
+    public void AssignStaff(GameDevProcName procName, int staffId)
+    {
+        if (!_assignedStaff.ContainsKey(procName))
+            _assignedStaff.Add(procName, new());
+        if (_assignedStaff[procName].Count >= 2)
+        {
+            Debug.LogWarning("[ProjectManager] 각 프로세스 당 2명씩만 배치 가능합니다.");
+            return;
+        }
+        _assignedStaff[procName].Add(staffId);
+    }
 
     public void ClearStaffs() => _assignedStaff.Clear();
-
-    public IReadOnlyList<int> GetAssignedStaff() => _assignedStaff;
-
-
+    public IReadOnlyList<int> GetAssignedStaff(GameDevProcName procName) => _assignedStaff[procName];
     protected override void Register() => ServiceLocater.Register<IProjectManager>(this);
     protected override void Unregister()=> ServiceLocater.Unregister<IProjectManager>(this);
 }

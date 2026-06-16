@@ -19,4 +19,5 @@ public interface IGameManager
     public void AddProject(ProjectData project);
     public void ChangeState(GameDevProcName newState);
     public int GetProjectYear();
+    public void AddExp(float exp);
 }
