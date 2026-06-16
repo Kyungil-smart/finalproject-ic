@@ -4,7 +4,7 @@
     public string genre;
     public string theme;
     public string grade;
-    public int cost;
-    public int income;
+    public uint cost;
+    public uint income;
     public string rewards;
 }

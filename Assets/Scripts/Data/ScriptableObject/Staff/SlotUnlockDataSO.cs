@@ -11,7 +11,7 @@ public class SlotData
     public bool unlocked;
 }
 
-[CreateAssetMenu(fileName = "LevelStatDataSO", menuName = "Scriptable Objects/Staff/SlotUnlockSO")]
+[CreateAssetMenu(fileName = "SlotUnlockDataSO", menuName = "Scriptable Objects/Staff/SlotUnlockDataSO")]
 public class SlotUnlockDataSO : ScriptableObject
 {
     public List<SlotData> slots;

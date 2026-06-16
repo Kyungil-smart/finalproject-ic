@@ -35,6 +35,5 @@ public class StaffViewData
     public int Final_Job_Development;
     public int Final_Job_Art;
 
-    // 보유 태그 목록 (Fixed_Tag + Added_Tags 통합) -> 나중에 Fixed_Tag 1개 int, Added_Tags 여러 개 List<int>로 나누도록 변경.
-    public List<int> All_Tags = new List<int>();
+    public List<string> All_Tags = new ();
 }
