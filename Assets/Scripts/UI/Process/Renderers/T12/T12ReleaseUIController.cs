@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,17 @@ public class T12ReleaseUIController : MonoBehaviour, IUIRender
     [SerializeField] private T12IncomeUIRender incomeUIRender;
     [SerializeField] private T12AwardsUIRender awardsUIRender;
     [SerializeField] private T12ProjectDetailUIRender projectDetailUIRender;
-    
+
+    private void OnEnable()
+    {
+        ServiceLocater.Get<IUIRouter>()?.RegisterUIRender(UIType.ReleaseUI, this);
+    }
+
+    private void OnDisable()
+    {
+        ServiceLocater.Get<IUIRouter>()?.UnregisterUIRender(UIType.ReleaseUI);
+    }
+
     public void Render(UIRenderData data)
     {
         if (data is T12AwardsUIRenderData aRenderData)
