@@ -1,0 +1,36 @@
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+
+public class AchieveEventRunner
+{
+    private AchieveTaskData _taskData;
+    
+    public AchieveEventRunner(AchieveTaskData taskData)
+    {
+        _taskData = taskData;
+    }
+
+    public async UniTask Execute()
+    {
+        var tcs = new UniTaskCompletionSource<int>();
+
+        var renderData = new RewardEventUIRenderData(
+            eventType: EventType.Reward,
+            mainTextId: _taskData.titleTextId,
+            callback: (selectedId) => tcs.TrySetResult(selectedId),
+            gradeImage: null
+        );
+
+        for (int i = 0; i < _taskData.buttons.Count; i++)
+        {
+            var btn = _taskData.buttons[i];
+            if (btn.textId != 0) renderData.options.Add((i, null, btn.textId));
+        }
+        
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.EventUI, renderData);
+        
+        var selectedIndex = await tcs.Task;
+        ServiceLocater.Get<IEventRouter>().Apply(_taskData.buttons[selectedIndex]);
+    }
+}

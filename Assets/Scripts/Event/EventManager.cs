@@ -24,7 +24,6 @@ public class EventManager : Manager, IEventManager
     [SerializeField] private EventTaskSO staffTasks;
     [SerializeField] private EventTaskSO linkageTasks;
     [SerializeField] private EventTaskSO regularTasks;
-    [SerializeField] private EventTaskSO rewardTasks;
     
     private Dictionary<EventType, EventDataStruct> _eventTasks = new();
     private CancellationTokenSource _cts;
@@ -64,7 +63,6 @@ public class EventManager : Manager, IEventManager
             staffTaskSO = staffTasks,
             regularTaskSO = regularTasks,
             linkageTaskSO = linkageTasks,
-            rewardTaskSO = rewardTasks
         };
         var gsManager = new GSheetManager(gSheetId, gid);
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsManager.IsDownload);
@@ -77,7 +75,6 @@ public class EventManager : Manager, IEventManager
         SetEventTask(EventType.Staff, staffTasks, new StaffEventTaskRunner());
         SetEventTask(EventType.Linkage, linkageTasks, new LinkageEventTaskRunner());
         SetEventTask(EventType.Regular, regularTasks, new RegularEventTaskRunner());
-        SetEventTask(EventType.Reward, rewardTasks, new RewardEventTaskRunner());
         return;
 
         void SetEventTask(EventType evtType, EventTaskSO so, IEventTaskRunner runner)
@@ -94,7 +91,7 @@ public class EventManager : Manager, IEventManager
     public void ResetRunId()
     {
         if (_eventTasks == null) return;
-        EventType[] eventTypes = { EventType.Staff, EventType.Linkage, EventType.Regular, EventType.Reward };
+        EventType[] eventTypes = { EventType.Staff, EventType.Linkage, EventType.Regular};
         foreach (var evtType in eventTypes)
             _eventTasks[evtType].runIds.Clear();
     }
