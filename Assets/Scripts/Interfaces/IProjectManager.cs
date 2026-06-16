@@ -9,8 +9,11 @@ public interface IProjectManager
     public float DesignQuality {get; set;}
     public NameTag Genre {get; set;}
     public NameTag Theme {get; set;}
+    public AwardsData Awards { get; }
     public uint Cost {get; set;}
     public uint Income {get; set;}
+    public uint StaffsCost {get; }
+    public uint Earnings { get; }
     public void UpdateTotalQuality(float value, float ratio = 1f);
     
     // Method Part
@@ -22,7 +25,8 @@ public interface IProjectManager
     public ProjectData GetProjectData();
     
     // Staff Part
+    public void SetStaffsCost();  // 직원 고용 마지막에 한번 실행해놓기.
     public void AssignStaff(GameDevProcName procName, int staffId);
     public void ClearStaffs();
-    public IReadOnlyList<int> GetAssignedStaff(GameDevProcName procName);
+    public IReadOnlyList<int> GetAssignedStaffIds(GameDevProcName procName);
 }

@@ -1,44 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using R3;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
-[Serializable]
-public struct NameTag
-{
-    public int id;
-    public string name;
-    public int textId;
-}
-
-[Serializable]
-public class Quality
-{
-    public float total;
-    public float design;
-    public float development;
-    public float art;
-}
-
-[Serializable]
-public class ProjectData
-{
-    public ReactiveProperty<Quality> Qualities = new();  // 프로젝트 퀄리티
-    public ReactiveProperty<bool> IsCompleted = new();  // 프로젝트 완료 여부
-    public string name;  // 프로젝트 이름
-    public NameTag genre;  // 장르
-    public NameTag theme;  // 테마
-    public ProjectGrade grade;  // 등급 F ~ SSSS
-    public uint cost;  // 투자된 금액
-    public uint income;  // 매출 금액
-    public NameTag award;  // 수상 경력
-    public NameTag trendGenre;  // 트랜드장르
-    public NameTag trendTheme;  // 트랜드테마
-}
 
 public class ProjectManager : Manager, IProjectManager
 {
     private ProjectData _projectData;
+    private ProjectDataManager _projectDataManager;
     
     private Dictionary<GameDevProcName, List<int>> _assignedStaff = new();
     private void OnEnable() => Register();
@@ -103,8 +69,12 @@ public class ProjectManager : Manager, IProjectManager
         set => _projectData.income = value;
     }
     
+    public AwardsData Awards => _projectData.award;
+    
+    public uint StaffsCost => _projectData.staffCost;
+    
     public uint Earnings => _projectData.income - _projectData.cost; // 수익
-
+    
     public void UpdateTotalQuality(float value, float ratio = 1f)
     {
         var data = _projectData.Qualities.Value;
@@ -142,9 +112,9 @@ public class ProjectManager : Manager, IProjectManager
         // ToDo. 등급 받는 계산 식 넣기
     }
 
-    public void JudgingAward()
+    public void SetAwards(int awardId)
     {
-        // ToDo. 수상 받는 계산 식 넣기 (애매하네 이건... 외부에서 주입하는게 좋을까?)
+        
     }
 
     public ProjectData GetProjectData() => _projectData;
@@ -160,8 +130,17 @@ public class ProjectManager : Manager, IProjectManager
         _assignedStaff[procName].Add(staffId);
     }
 
+    public void SetStaffsCost()
+    {
+        var staffManager = ServiceLocater.Get<IStaffRegister>();
+        uint staffCost = 0;
+        foreach (var staff in staffManager.GetAllHiredStaffList())
+            staffCost += (uint)staff.Salary;
+        _projectData.staffCost = staffCost;
+    }
+    
     public void ClearStaffs() => _assignedStaff.Clear();
-    public IReadOnlyList<int> GetAssignedStaff(GameDevProcName procName) => _assignedStaff[procName];
+    public IReadOnlyList<int> GetAssignedStaffIds(GameDevProcName procName) => _assignedStaff[procName];
     protected override void Register() => ServiceLocater.Register<IProjectManager>(this);
     protected override void Unregister()=> ServiceLocater.Unregister<IProjectManager>(this);
 }
