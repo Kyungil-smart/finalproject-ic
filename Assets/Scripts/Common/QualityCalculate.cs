@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class QualityCalculate
 {
@@ -31,6 +33,26 @@ public class QualityCalculate
         return (mainStat * data.arrageCase1) + (subStat * data.arrageCase2);
     }
     
+    // Todo. 편하게 부를수 있게 만든 함수 프로세스 네임으로 부를수 있음.
+    public void CalculateQuality(GameDevProcName procName)
+    {
+        switch (procName)
+        {
+            case GameDevProcName.ConceptPreProduction:
+            case GameDevProcName.ConceptFullProduction:
+                CalculateDesign();
+                break;
+            case GameDevProcName.DevelopmentPreProduction:
+            case GameDevProcName.DevelopmentFullProduction:
+                CalculateDev();
+                break;
+            case GameDevProcName.ArtPreProduction:
+            case GameDevProcName.ArtFullProduction:
+                CalculateArt();
+                break;
+        }
+    }
+    
     // 파트별 퀄리티
     // 세부 프로세스 구분이 가능하면 합치는 걸로 변경가능성 있음
     public void CalculateDesign()
@@ -46,6 +68,8 @@ public class QualityCalculate
                            + (main.GetCreativity() * data.boostCase2) 
                            + (main.GetConcentration() * data.boostCase3)) / 100;
         ServiceLocater.Get<IProjectManager>().DesignQuality = arrange * boost * noise;
+        Debug.Log($"{ServiceLocater.Get<IProjectManager>().DesignQuality}");
+        Debug.Log("품질계산 완료");
     }
     public void CalculateDev()
     {
@@ -59,6 +83,8 @@ public class QualityCalculate
         float boost = 1 + ((main.GetCreativity() * data.boostCase1) 
                            + (main.GetConcentration() * data.boostCase2)) / 100;
         ServiceLocater.Get<IProjectManager>().DevQuality = arrange * boost * noise;
+        Debug.Log($"{ServiceLocater.Get<IProjectManager>().DevQuality}");
+        Debug.Log("품질계산 완료");
     }
     public void CalculateArt()
     {
@@ -72,6 +98,8 @@ public class QualityCalculate
         float boost = 1 + ((main.GetConcentration() * data.boostCase1) 
                            + (main.GetCreativity() * data.boostCase2)) / 100;
         ServiceLocater.Get<IProjectManager>().ArtQuality = arrange * boost * noise;
+        Debug.Log($"{ServiceLocater.Get<IProjectManager>().ArtQuality}");
+        Debug.Log("품질계산 완료");
     }
     
     // 합산
@@ -127,7 +155,7 @@ public class QualityCalculate
     public float CalculateFullAchieve()
     {
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
-        float avgLevel = (float)staffList.Sum(s => s.Current_Level) / staffList.Count;
+        float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
         var qt = ServiceLocater.Get<IProjectManager>();
         return Attainment(qt.TotalQuality, target.targetTotal);
