@@ -69,7 +69,7 @@ public class QualityCalculate
                            + (main.GetConcentration() * data.boostCase3)) / 100;
         ServiceLocater.Get<IProjectManager>().DesignQuality = arrange * boost * noise;
         Debug.Log($"{ServiceLocater.Get<IProjectManager>().DesignQuality}");
-        Debug.Log("품질계산 완료");
+        Debug.Log("[DesignQuality]품질계산 완료");
     }
     public void CalculateDev()
     {
@@ -84,7 +84,7 @@ public class QualityCalculate
                            + (main.GetConcentration() * data.boostCase2)) / 100;
         ServiceLocater.Get<IProjectManager>().DevQuality = arrange * boost * noise;
         Debug.Log($"{ServiceLocater.Get<IProjectManager>().DevQuality}");
-        Debug.Log("품질계산 완료");
+        Debug.Log("[DevQuality]품질계산 완료");
     }
     public void CalculateArt()
     {
@@ -99,7 +99,7 @@ public class QualityCalculate
                            + (main.GetCreativity() * data.boostCase2)) / 100;
         ServiceLocater.Get<IProjectManager>().ArtQuality = arrange * boost * noise;
         Debug.Log($"{ServiceLocater.Get<IProjectManager>().ArtQuality}");
-        Debug.Log("품질계산 완료");
+        Debug.Log("[ArtQuality]품질계산 완료");
     }
     
     // 합산
