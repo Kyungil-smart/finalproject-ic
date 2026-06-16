@@ -161,7 +161,7 @@ public class EventManager : Manager, IEventManager
         foreach (var id in assignedIds)
         {
             // Todo. assignedIds로 DISC값 조회 및 계산
-            var entity = ServiceLocater.Get<StaffManager>().GetStaffEntity(id);
+            var entity = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(id);
             if (entity != null) discSum += (int)entity.GetDiscType();
         }
         return discSum switch

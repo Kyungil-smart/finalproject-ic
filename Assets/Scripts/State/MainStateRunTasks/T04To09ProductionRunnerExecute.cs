@@ -28,11 +28,11 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         _endProcess = false;
         curGameDevProcName = ServiceLocater.Get<IGameManager>().ProcName.CurrentValue;
 
-        await CreateStaffList();
+        await GetStaffList();
         await UniTask.WaitUntil(() => _endProcess);
     }
 
-    private async UniTask CreateStaffList()
+    private async UniTask GetStaffList()
     {
         _waiting = true;
         await UniTask.Yield();
@@ -89,7 +89,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         await UniTask.Yield();
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProductionUI, selectedStaffs);
         await WaitProcess();
-        if (_conditionGoback) await CreateStaffList();
+        if (_conditionGoback) await GetStaffList();
         else await LeadersEvent();
     }
 
@@ -101,9 +101,14 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
 
     private async void GoCheckSelectLeadersToWaitingAnimation()
     {
+        // 투입한 직원 ID 보내기
+        ServiceLocater.Get<IProjectManager>().AssignStaff(curGameDevProcName, selectedStaffs.leaderList[0].Staff_ID);
+        ServiceLocater.Get<IProjectManager>().AssignStaff(curGameDevProcName, selectedStaffs.leaderList[1].Staff_ID);
+        Debug.Log($"직원 투입 : {selectedStaffs.leaderList[0].Staff_ID} : {selectedStaffs.leaderList[0].Staff_Name}, " +
+            $"{selectedStaffs.leaderList[1].Staff_ID} : {selectedStaffs.leaderList[1].Staff_Name} ");
+
         _waiting = false;
         _conditionGoback = false;
-
     }
 
     // 직원간 이벤트 발생
@@ -111,17 +116,10 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     {
         _waiting = true;
 
-        // 투입한 직원 ID 보내기 (AssignStaff 으로)
-        ServiceLocater.Get<IProjectManager>().ClearStaffs();    // 이전에 투입한 직원 있다면 초기화
-        ServiceLocater.Get<IProjectManager>().AssignStaff(curGameDevProcName, selectedStaffs.leaderList[0].Staff_ID);
-        ServiceLocater.Get<IProjectManager>().AssignStaff(curGameDevProcName, selectedStaffs.leaderList[1].Staff_ID);
-
-        // TODO : 스태프 투입 함수 나오면 추가하기
-
         await ServiceLocater.Get<IEventManager>().OccurEvent(EventType.Staff);  // 직원간 이벤트 발생
 
         await UniTask.Yield();
-        await WaitProcess();
+        // await WaitProcess();
         await SelectLeaderProcessing();
     }
 
@@ -129,7 +127,9 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     private async UniTask SelectLeaderProcessing()
     {
         _waiting = true;
-        
+
+        Debug.Log("SelectLeaderProcessing() 시작");
+
         // ToDO. Animation 이 들어올 경우 대비 해야함.
         var data = new SimpleUIRenderData(9900020, 9900007, GoProcess); // TODO : 애니메이션 적용 중 단순 텍스트 출력, ID 는 바꿔야 함
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProductionUI, data);
@@ -137,6 +137,9 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         // 리더 되는 프로세스는 각 프로덕션 내에서만 저장되면 되기 때문에 매니저에 저장될 필요 없을 듯
 
         // 점수 계산 진행
+        
+        Debug.Log($"{curGameDevProcName} | {selectedStaffs.leaderList[0].Staff_Name} | {selectedStaffs.leaderList[1].Staff_Name}"); // 테스트용 임시 로그
+
         switch (curGameDevProcName)
         {
             case GameDevProcName.ConceptPreProduction or GameDevProcName.ConceptFullProduction:
@@ -178,6 +181,8 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     {
         _waiting = true;
 
+        Debug.Log("EmitResultEvent() 시작");
+
         await ServiceLocater.Get<IEventManager>().OccurEvent(EventType.Reward); // 지표 이벤트 발생
         
         await UniTask.Yield();
@@ -189,6 +194,9 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     private async UniTask CheckResult()
     {
         _waiting = true;
+
+        Debug.Log("CheckResult() 시작");
+
         GameDevProcName curGameDevProcName = ServiceLocater.Get<IGameManager>().ProcName.CurrentValue;
 
         if (curGameDevProcName == GameDevProcName.DevelopmentPreProduction)
