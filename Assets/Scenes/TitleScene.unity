@@ -721,6 +721,7 @@ Transform:
   - {fileID: 1708940382}
   - {fileID: 30760900}
   - {fileID: 1910999242}
+  - {fileID: 1552348623}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &742315640
@@ -1387,6 +1388,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0adc9b657b8a41e68c4cbcf38c1496ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectManager
+--- !u!1 &1552348622
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1552348623}
+  - component: {fileID: 1552348624}
+  m_Layer: 0
+  m_Name: QualityManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1552348623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552348622}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0184, y: 0, z: 4.1579}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 620550707}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1552348624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552348622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e365d715e7ac0a428dc19d279cff56a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QualityManager
+  _gSheetId: 1rTZsJojzJyntquzmgbNz5kIY1tn6NwA4rQNjOP4F2TI
+  _gidQuality: 1938520765
+  _gidTarget: 425017093
+  _gsheetReward: 18pW0HvqUVgkDqUf6f7a9AZl7ZWxIZpGgOkGL5sexvbw
+  _gidReward: 1907163659
+  _wasDownloaded: 0
+  _qData: {fileID: 11400000, guid: bb0d76f7627a8cf46ac365da43aaeb41, type: 2}
+  _reward: {fileID: 11400000, guid: 93e4f599490d3854db7f46bb98e872da, type: 2}
 --- !u!1 &1708940381
 GameObject:
   m_ObjectHideFlags: 0
@@ -1670,7 +1723,6 @@ MonoBehaviour:
   staffTasks: {fileID: 11400000, guid: 59e119e77daf00f468aecb3e3c7ceaf1, type: 2}
   linkageTasks: {fileID: 11400000, guid: 03bbb4e8eff886e498821fa9d44c35de, type: 2}
   regularTasks: {fileID: 11400000, guid: 263cc2d747857f74689c12afc8307554, type: 2}
-  rewardTasks: {fileID: 11400000, guid: e360c1bebaec0e3489ae7d8f14dca257, type: 2}
 --- !u!1 &386209778731861251 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5147171091452510927, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
