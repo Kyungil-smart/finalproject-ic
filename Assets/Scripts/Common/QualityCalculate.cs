@@ -38,7 +38,7 @@ public class QualityCalculate
     {
         var data = _qualityData.rates[0];
         var ids = ServiceLocater.Get<IProjectManager>()
-            .GetAssignedStaff(ServiceLocater.Get<IGameManager>().ProcName.CurrentValue);
+            .GetAssignedStaffIds(ServiceLocater.Get<IGameManager>().ProcName.CurrentValue);
         var main = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[0]);
         var sub = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[1]);
         float noise = Random.Range(data.noiseMin, data.noiseMax);
@@ -52,7 +52,7 @@ public class QualityCalculate
     {
         var data = _qualityData.rates[0];
         var ids = ServiceLocater.Get<IProjectManager>()
-            .GetAssignedStaff(ServiceLocater.Get<IGameManager>().ProcName.CurrentValue);
+            .GetAssignedStaffIds(ServiceLocater.Get<IGameManager>().ProcName.CurrentValue);
         var main = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[0]);
         var sub = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[1]);
         float noise = Random.Range(data.noiseMin, data.noiseMax);
@@ -65,7 +65,7 @@ public class QualityCalculate
     {
         var data = _qualityData.rates[0];
         var ids = ServiceLocater.Get<IProjectManager>()
-            .GetAssignedStaff(ServiceLocater.Get<IGameManager>().ProcName.CurrentValue);
+            .GetAssignedStaffIds(ServiceLocater.Get<IGameManager>().ProcName.CurrentValue);
         var main = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[0]);
         var sub = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[1]);
         float noise = Random.Range(data.noiseMin, data.noiseMax);

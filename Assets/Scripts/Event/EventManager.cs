@@ -154,7 +154,7 @@ public class EventManager : Manager, IEventManager
     {
         // ProjectManager에 투입된 직원의 id값 가져오기
         var assignedIds = ServiceLocater.Get<IProjectManager>()
-            .GetAssignedStaff(ServiceLocater.Get<IGameManager>().ProcName.CurrentValue);
+            .GetAssignedStaffIds(ServiceLocater.Get<IGameManager>().ProcName.CurrentValue);
         int discSum = 0;
         
         // 투입된 직원의 id값으로 해당 직원의 DISC값 가져오기
