@@ -127,7 +127,7 @@ public class QualityCalculate
         float avgLevel = (float)staffList.Sum(s => s.Current_Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
         var qt = ServiceLocater.Get<IProjectManager>();
-        return attainment(qt.TotalQuality, target.targetTotalPre);
+        return attainment(qt.TotalQuality, target.targetTotal);
     }
     
     // 파트별 달성률 계산
