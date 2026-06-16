@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public struct StaffTagUIRenderData
 {
@@ -22,6 +23,8 @@ public class T12ProjectDetailUIRender : MonoBehaviour
     
     [SerializeField] private T12StaffRenderer[] staffTags;
 
+    [SerializeField] private Button confirmBtn; 
+    
     public void Render(T12ProjectDetailUIRenderData data)
     {
         var projectManager = ServiceLocater.Get<IProjectManager>();
@@ -47,6 +50,10 @@ public class T12ProjectDetailUIRender : MonoBehaviour
 
         for (int i = 0; i < 12; i++)  // 총 12개.
             staffTags[i].Render(staffList[i].procName, staffList[i].staffName, staffList[i].staffLevel);
+        
+        confirmBtn.onClick.RemoveAllListeners();
+        confirmBtn.onClick.AddListener(() => data.btCallback?.Invoke() );
+        confirmBtn.onClick.AddListener(() => gameObject.SetActive(false));
     }
 
     private void MakeStaffTagList(GameDevProcName procName, List<StaffTagUIRenderData> staffList)

@@ -10723,6 +10723,7 @@ MonoBehaviour:
   - {fileID: 6542949775340444889}
   - {fileID: 1853400728782911657}
   - {fileID: 6507914123633227711}
+  confirmBtn: {fileID: 8371866466713000707}
 --- !u!1 &8125861942702804804
 GameObject:
   m_ObjectHideFlags: 0

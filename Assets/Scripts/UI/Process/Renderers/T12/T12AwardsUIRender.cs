@@ -15,6 +15,10 @@ public class T12AwardsUIRender : MonoBehaviour
         congratulationsMsg.TextId = projectManager.Awards.resultId;
         awardsValue.TextId = projectManager.Awards.name.textId;
         // ToDo. Image 변경 코드 추가
+        
+        awardsConfirmBtn.onClick.RemoveAllListeners();
+        awardsConfirmBtn.onClick.AddListener(() => data.btCallback?.Invoke());
+        awardsConfirmBtn.onClick.AddListener(() => gameObject.SetActive(false));
     }
     
     
