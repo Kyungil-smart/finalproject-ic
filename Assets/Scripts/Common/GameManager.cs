@@ -39,6 +39,9 @@ public class GameManager : Manager, IGameManager
     public void AddHeart(int heart) => _heart.Value += heart;
     public void AddProject(ProjectData project) => _projects.Add(project);
     public void ChangeState(GameDevProcName state) => _procName.Value = state;
+    public int GetProjectYear() => _projects.Count;
+    
+
     public void AddExp(float exp)
     {
         _exp += exp;
