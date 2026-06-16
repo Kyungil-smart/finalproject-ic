@@ -12,6 +12,7 @@ public class GameManager : Manager, IGameManager
     private ReactiveProperty<DateTime> _date = new ();
     private List<ProjectData> _projects = new();        // 프로젝트 리스트
     private ReactiveProperty<GameDevProcName> _procName = new();
+    private bool _inputProjectNameActive;
     
     public string PlayerName { get; private set; }      // 회사 이름
     public ReadOnlyReactiveProperty<int> PlayerLevel => _playerLevel;
@@ -21,6 +22,7 @@ public class GameManager : Manager, IGameManager
     public ReadOnlyReactiveProperty<DateTime> Date => _date;
     public IReadOnlyList<ProjectData> Projects => _projects;
     public ReadOnlyReactiveProperty<GameDevProcName> ProcName => _procName;
+    public bool InputProjectNameActive => _inputProjectNameActive;
     private int _maxSlotNum = 8;
 
     private void OnEnable() => Register();
@@ -47,6 +49,7 @@ public class GameManager : Manager, IGameManager
         if (_exp >= lvData.requiredExp)
             _playerLevel.Value++;
     }
+    public void UpdateInputProjectNameActive(bool active) => _inputProjectNameActive = active;
 
     private void Start()
     {

@@ -11,6 +11,7 @@ public interface IGameManager
     public ReadOnlyReactiveProperty<DateTime> Date { get; }
     public IReadOnlyList<ProjectData> Projects { get; }
     public ReadOnlyReactiveProperty<GameDevProcName> ProcName {get; }
+    public bool InputProjectNameActive { get; }
     
     public void SetPlayerName(string playerName);
     public void AddPlayerLevel(int playerLevel);
@@ -19,4 +20,5 @@ public interface IGameManager
     public void AddProject(ProjectData project);
     public void ChangeState(GameDevProcName newState);
     public void AddExp(float exp);
+    public void UpdateInputProjectNameActive(bool active);
 }

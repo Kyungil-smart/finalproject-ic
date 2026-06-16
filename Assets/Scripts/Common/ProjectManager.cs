@@ -12,7 +12,7 @@ public struct NameTag
 }
 
 [Serializable]
-public struct Quality
+public class Quality
 {
     public float total;
     public float design;
@@ -21,10 +21,10 @@ public struct Quality
 }
 
 [Serializable]
-public struct ProjectData
+public class ProjectData
 {
-    public ReactiveProperty<Quality> Qualities;  // 프로젝트 퀄리티
-    public ReactiveProperty<bool> IsCompleted { get; }  // 프로젝트 완료 여부
+    public ReactiveProperty<Quality> Qualities = new();  // 프로젝트 퀄리티
+    public ReactiveProperty<bool> IsCompleted = new();  // 프로젝트 완료 여부
     public string name;  // 프로젝트 이름
     public NameTag genre;  // 장르
     public NameTag theme;  // 테마
@@ -32,24 +32,8 @@ public struct ProjectData
     public uint cost;  // 투자된 금액
     public uint income;  // 매출 금액
     public NameTag award;  // 수상 경력
-    // Todo. 품질산출 시 데이터 비교를 위해 선언함
     public NameTag trendGenre;  // 트랜드장르
     public NameTag trendTheme;  // 트랜드테마
-
-    public ProjectData(string name)
-    {
-        this.name = name;
-        genre = default;
-        theme = default;
-        grade = ProjectGrade.F;
-        cost = 0;
-        income = 0;
-        award = default;
-        Qualities = new();
-        IsCompleted = new();
-        trendGenre = default;
-        trendTheme = default;
-    }
 }
 
 public class ProjectManager : Manager, IProjectManager
@@ -128,9 +112,11 @@ public class ProjectManager : Manager, IProjectManager
         _projectData.Qualities.Value = data;
     }
 
-    public void NewProject(string projectName)
+    public void SetProjectName(string projectName) => _projectData.name = projectName;
+
+    public void NewProject()
     {
-        _projectData = new ProjectData(projectName);
+        _projectData = new ProjectData();
         _assignedStaff.Clear();
     }
 

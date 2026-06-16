@@ -1,4 +1,6 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using System.Text.RegularExpressions;
+using Cysharp.Threading.Tasks;
 using DataDispatcher;
 using R3;
 using TMPro;
@@ -35,9 +37,17 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
 
     [Header("Staff Slot UI")] 
     [SerializeField] private Button[] staffSlots;
+    
+    [Header("Input Project Name UI")]
+    [SerializeField] private GameObject inputProjectPanel;
+    [SerializeField] private TMP_InputField projectNameInputField;
+    [SerializeField] private Button inputProjectConfirmBtn;
+    [SerializeField] private GameObject warningMessagePanel;
+    [SerializeField] private TextMeshProUGUI warningMessageText;
+    [SerializeField][Range(1f, 3f)] private float popUpInterval; 
 
     private bool _isReady = false;
-    public bool IsReady { get => _isReady; }    
+    public bool IsReady { get => _isReady; }
     
     // R3 구독 해제를 관리하기 위한 디스포저 컨테이너
     private readonly CompositeDisposable _disposables = new();
@@ -52,10 +62,10 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         lastProjectsButton.onClick.AddListener(OnClickViewLastProject);
         goNextProcessButton.onClick.AddListener(OnClickNextProcess);
         staffListButton.onClick.AddListener(OnClickViewStaffList);
+        inputProjectConfirmBtn.onClick.AddListener(() => ConfirmProjectName());
         ServiceLocater.Register<IMainUIReadyable>(this);
         foreach (var slotBtn in staffSlots)
             slotBtn.onClick.AddListener(UnlockSlot);
-        
     }
 
     private void Start()
@@ -67,6 +77,8 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         UpdateProcessData(data);
         UpdateGoldUI();
         UpdateDateUI();
+        if (ServiceLocater.Get<IGameManager>().InputProjectNameActive) 
+            OpenInputProjectNamePanel();
         _isReady = true;
         CloseLoadingScreen().Forget();
     }
@@ -77,6 +89,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         lastProjectsButton.onClick.RemoveListener(OnClickViewLastProject);
         goNextProcessButton.onClick.RemoveListener(OnClickNextProcess);
         staffListButton.onClick.RemoveListener(OnClickViewStaffList);
+        inputProjectConfirmBtn.onClick.RemoveAllListeners();
         foreach (var slotBtn in staffSlots)
             slotBtn.onClick.RemoveListener(UnlockSlot);
     }
@@ -92,7 +105,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         nextStepNum.text = StepString(0);
         LoadingSavedData();
     }
-
+    
     private string StepString(int stepNum) => $"{stepNum:D2}/12";
 
     /// <summary>
@@ -194,5 +207,41 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
             if (nextSlotIndex < staffSlots.Length)
                 staffSlots[nextSlotIndex].interactable = true;
         }
+    }
+
+    private void OpenInputProjectNamePanel()
+    {
+        inputProjectPanel.SetActive(true);
+    }
+
+    private async UniTask ConfirmProjectName()
+    {   // ToDO. Text 데이터 외부에서 받도록 준비하기.
+        var lengthWarning = "20자 이내로 입력해 주시기 바랍니다.";
+        var specificWordWarning = "띄어쓰기는 불가하며, 특수문자는 `-_` 만 사용 가능합니다. \n특수문자로 시작할 수는 없습니다.";
+        string pattern = @"^[a-zA-Z0-9가-힣]([a-zA-Z0-9가-힣_-])*$";
+        
+        var name = projectNameInputField.text;
+        if (name.Length > 20)
+        {
+            await OpenWarningMessagePanel(lengthWarning);
+        }
+        else if (!Regex.IsMatch(name, pattern))
+        {
+            await OpenWarningMessagePanel(specificWordWarning);
+        }
+        else
+        {
+            ServiceLocater.Get<IProjectManager>().SetProjectName(name);
+            ServiceLocater.Get<IGameManager>().UpdateInputProjectNameActive(false);
+            inputProjectPanel.SetActive(false);    
+        }
+    }
+    
+    private async UniTask OpenWarningMessagePanel(string warningMessage)
+    {
+        warningMessageText.text = warningMessage;
+        warningMessagePanel.SetActive(true);
+        await UniTask.WaitForSeconds(popUpInterval);
+        warningMessagePanel.SetActive(false);
     }
 }

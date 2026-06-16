@@ -36,6 +36,7 @@ public class ProcessTaskRunner : MonoBehaviour, IProcessTaskRunnerEnterExit
             {
                 Debug.Log($"[ProcessTaskRunner:EventPreExecute] {EventType.Regular} 진행");
                 await ServiceLocater.Get<IEventManager>().OccurEvent(EventType.Regular);
+                Debug.Log($"[ProcessTaskRunner:EventPreExecute] {EventType.Regular} 완료");
             }
         }
     }

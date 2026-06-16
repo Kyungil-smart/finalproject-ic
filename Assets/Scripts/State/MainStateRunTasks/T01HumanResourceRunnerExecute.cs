@@ -28,6 +28,9 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     // TODO: 임시로 이곳에 넣음, 추후 Enter로 이동 필요
     private async UniTask<List<StaffViewData>> CreateCandidateList()
     {
+        // 프로젝트 생성부터 시작.
+        ServiceLocater.Get<IProjectManager>().NewProject();
+        
         var gameManager = ServiceLocater.Get<IGameManager>();
         var staffManager = ServiceLocater.Get<IStaffRecruit>();
         await staffManager.GenerateRecruitCandidatesAsync(playerLevel: gameManager.PlayerLevel.CurrentValue, cardCount: 8);

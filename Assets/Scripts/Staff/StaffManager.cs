@@ -40,10 +40,10 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
 
     private void Start() => InitData();
 
-    private void InitData()
+    private async UniTask InitData()
     {
         if (Utils.Environment.isDevelopment)
-            DownloadSlotData().Forget();
+            await DownloadSlotData();
         
         _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
         _slots = slotUnlockData.slots;
@@ -81,16 +81,27 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         Debug.Log($"[StaffManager] 신규 채용 후보 {cardCount}명 생성 시작...");
         _recruitCandidates.Clear(); // 이전 후보 데이터 초기화
         Debug.Log($"[StaffManager] Staff 데이터 확인: {_staffDataManager.StaffList.Count}");
+        
+        // 이미 고용된 직원 ID는 후보에서 제외 (O(1) 조회용 HashSet)
+        var hiredIds = new HashSet<int>(_staffList.Select(x => x.init.Staff_ID));
+
+        // 후보로 뽑을 수 있는 원본 풀 (고용된 직원 제외)
+        var pool = _staffDataManager.StaffList
+            .Where(row => !hiredIds.Contains(row.Staff_ID))
+            .ToList();
+
+        // 풀이 부족하면 가능한 만큼만 (무한 루프 대신 안전하게 축소)
+        int targetCount = Mathf.Min(cardCount, pool.Count);
+        if (targetCount < cardCount)
+            Debug.LogWarning($"[StaffManager] 뽑을 수 있는 후보가 부족: 요청 {cardCount} / 가능 {targetCount}");
+        
         for (int i = 0; i < cardCount; i++)
         {
-            StaffRow readOnlyStaffData;
-            while (true) {
-                readOnlyStaffData = _staffDataManager.StaffList[Random.Range(0, _staffDataManager.StaffList.Count)];
-                if (_staffList.FindAll(x => x.init.Staff_ID == readOnlyStaffData.Staff_ID).Count < 1
-                    && _recruitCandidates.FindAll(x => x.init.Staff_ID == readOnlyStaffData.Staff_ID).Count < 1) 
-                    break;
-                await UniTask.WaitForSeconds(0.1f);
-            }
+            // 비복원 추출: 뽑은 건 풀에서 제거 → 다음 루프에서 자동으로 중복 제외
+            int idx = Random.Range(0, pool.Count);
+            StaffRow readOnlyStaffData = pool[idx];
+            pool.RemoveAt(idx);
+            
             var candidate = await _dataFactory.CreateDataByStaffIDAsync(readOnlyStaffData.Staff_ID, playerLevel);
             if (candidate != null)
             {
@@ -165,8 +176,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         if (!free)
         {
             var gameManager = ServiceLocater.Get<IGameManager>();
-            var staff = _staffList.Find(x => x.init.Staff_ID == targetData.init.Staff_ID);
-            var cost = staff.GetHireCost();
+            var cost = targetData.GetHireCost();
             if (gameManager.Money.CurrentValue < cost)
                 return StaffHireResult.NotEnoughMoney;
             ServiceLocater.Get<IGameManager>().AddMoney(cost * -1);
