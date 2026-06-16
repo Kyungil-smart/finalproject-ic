@@ -24,12 +24,12 @@ public class T0409UIController : MonoBehaviour, IUIRender
     
     private void OnEnable()
     {
-        ServiceLocater.Get<IUIRouter>().RegisterUIRender(UIType.MarketGenreThemeUI, this);
+        ServiceLocater.Get<IUIRouter>().RegisterUIRender(UIType.ProductionUI, this);
     }
 
     private void OnDisable()
     {
-        ServiceLocater.Get<IUIRouter>().UnregisterUIRender(UIType.MarketGenreThemeUI);
+        ServiceLocater.Get<IUIRouter>().UnregisterUIRender(UIType.ProductionUI);
     }
     
     public void Render(UIRenderData data)
