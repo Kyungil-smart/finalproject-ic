@@ -15,7 +15,7 @@ public struct NameTag
 }
 
 [Serializable]
-public class Quality
+public struct Quality
 {
     public float total;
     public float design;

@@ -216,12 +216,17 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
 
     private async UniTask ConfirmProjectName()
     {   // ToDO. Text 데이터 외부에서 받도록 준비하기.
+        var emptyWarning = "최소 1글자 이상의 이름을 입력해주세요.";
         var lengthWarning = "20자 이내로 입력해 주시기 바랍니다.";
         var specificWordWarning = "띄어쓰기는 불가하며, 특수문자는 `-_` 만 사용 가능합니다. \n특수문자로 시작할 수는 없습니다.";
         string pattern = @"^[a-zA-Z0-9가-힣]([a-zA-Z0-9가-힣_-])*$";
         
         var name = projectNameInputField.text;
-        if (name.Length > 20)
+        if (name.Length <= 0)
+        {
+            await OpenWarningMessagePanel(emptyWarning);
+        }
+        else if (name.Length > 20)
         {
             await OpenWarningMessagePanel(lengthWarning);
         }

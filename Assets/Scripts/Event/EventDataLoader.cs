@@ -58,9 +58,9 @@ public class EventDataLoader
                 }
             };
 
-            if (taskData.id >= 31000 && taskData.id < 32000) staffTaskSO.tasks.Add(taskData);
-            else if (taskData.id >= 32000 && taskData.id < 33000) linkageTaskSO.tasks.Add(taskData);
-            else if (taskData.id >= 33000 && taskData.id < 34000) regularTaskSO.tasks.Add(taskData);
+            if (taskData.id >= 310000 && taskData.id < 320000) staffTaskSO.tasks.Add(taskData);
+            else if (taskData.id >= 320000 && taskData.id < 330000) linkageTaskSO.tasks.Add(taskData);
+            else if (taskData.id >= 330000 && taskData.id < 340000) regularTaskSO.tasks.Add(taskData);
         }
         
         ServiceLocater.Register(this);
