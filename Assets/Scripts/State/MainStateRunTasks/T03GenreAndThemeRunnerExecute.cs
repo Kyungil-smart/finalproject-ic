@@ -135,6 +135,7 @@ public class T03GenreAndThemeRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     // 마지막에 다음 프로세스 상태로 가기 위한 기능
     private async UniTask GoToNextProcess()
     {
+        ServiceLocater.Get<IGameManager>().UpdateInputProjectNameActive(true);
         _waiting = false;
         _endProcess = true;
     }

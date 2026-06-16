@@ -14,7 +14,8 @@ public interface IProjectManager
     public void UpdateTotalQuality(float value, float ratio = 1f);
     
     // Method Part
-    public void NewProject(string projectName);
+    public void SetProjectName(string projectName);
+    public void NewProject();
     public ProjectData FinishProject();
     public void LoadProject(string jsonData);
     public string ToJsonData();
