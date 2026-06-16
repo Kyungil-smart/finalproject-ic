@@ -20,9 +20,11 @@ public class StaffDatailUIRenderer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI developText;
     [SerializeField] private TextMeshProUGUI artText;
     [SerializeField] private Button closeBtn; 
+    [SerializeField] private GameObject[] tags;
     
     public void Render(StaffViewData viewData, Action onCloseCallback = null)
     {
+        foreach (var tag in tags) tag.SetActive(false);
         closeBtn.onClick.RemoveAllListeners();
         if (onCloseCallback != null) closeBtn.onClick.AddListener(() => onCloseCallback());
         closeBtn.onClick.AddListener(() => gameObject.SetActive(false));
@@ -41,6 +43,14 @@ public class StaffDatailUIRenderer : MonoBehaviour
         developText.text = viewData.Final_Job_Development.ToString();
         artText.text = viewData.Final_Job_Art.ToString();
         salaryText.text = viewData.Salary.ToString();
+        
+        for (int i = 0; i < viewData.All_Tags.Count; i++)
+        {
+            var tmp = tags[i].GetComponentInChildren<TextMeshProUGUI>();
+            tmp.text = viewData.All_Tags[i];
+            tags[i].SetActive(true);
+        }
+        
         gameObject.SetActive(true);
     }
 }
