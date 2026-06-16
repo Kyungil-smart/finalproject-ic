@@ -21,11 +21,17 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     public async UniTask Execute()
     {
         _endProcess = false;
-        await MergeStaffList();
+        await CreateNewProject();
         await UniTask.WaitUntil(() => _endProcess);
     }
 
-    // TODO: 임시로 이곳에 넣음, 추후 Enter로 이동 필요
+    private async UniTask CreateNewProject()
+    {
+        var projectManager = ServiceLocater.Get<IProjectManager>();
+        projectManager.NewProject();
+        await MergeStaffList();
+    }
+
     private async UniTask<List<StaffViewData>> CreateCandidateList()
     {
         // 프로젝트 생성부터 시작.

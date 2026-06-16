@@ -1,3 +1,4 @@
+using System;
 using R3;
 using System.Collections.Generic;
 using TMPro;
@@ -67,10 +68,20 @@ public class T0409UIController : MonoBehaviour, IUIRender
             goBackBtn.onClick.AddListener(() => mainPanel.SetActive(false));
             
             goNextBtn.onClick.RemoveAllListeners();
-            goNextBtn.onClick.AddListener(() => renderLeaderData.onGoNextCallback?.Invoke());
-            goNextBtn.onClick.AddListener(() => leaderResultPanel.SetActive(false));
-            goNextBtn.onClick.AddListener(() => mainPanel.SetActive(false));
+            goNextBtn.onClick.AddListener(() => GoNext(renderLeaderData.onGoNextCallback));
         }
+    }
+
+    private void GoNext(Action onGoNextCallback)
+    {
+        if (_selectedStaffs.Count != LeaderCount)
+        {
+            // ToDO. 경고 메시지 필요.
+            return;
+        }
+        if (onGoNextCallback != null) onGoNextCallback.Invoke();
+        leaderResultPanel.SetActive(false);
+        mainPanel.SetActive(false);
     }
     
     private void SetUpPanel(int index, StaffSummaryData data, StaffSummaryPanelRender panel)
