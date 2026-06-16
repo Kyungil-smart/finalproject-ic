@@ -48,8 +48,12 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
     
     public void OnEnable()
     {
-        ServiceLocater.Get<IUIRouter>()
-            .RegisterUIRender(UIType.EventUI, this);
+        ServiceLocater.Get<IUIRouter>().RegisterUIRender(UIType.EventUI, this);
+    }
+    
+    public void OnDisable()
+    {
+        ServiceLocater.Get<IUIRouter>().UnregisterUIRender(UIType.EventUI);
     }
     
     public void Render(UIRenderData renderData)

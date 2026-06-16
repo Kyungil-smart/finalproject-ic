@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 
-public class EventManager : Manager, IEventManager
+public class EventManager : Manager, IEventManager, IReadyStatus
 {
     [Serializable]
     public class EventDataStruct
@@ -30,6 +30,9 @@ public class EventManager : Manager, IEventManager
     private bool _running;
     private EventRandom _eventRandom = new();
     
+    private Dictionary<string, bool> _readyStatus = new();
+    public Dictionary<string, bool> ReadyStatues { get; }
+    
     public bool IsRunning => _running;
     
     private void OnEnable() => Register();
@@ -51,13 +54,14 @@ public class EventManager : Manager, IEventManager
     {
         Debug.Log("[EventManager] Initializing...");
         InitEvent();
-        DownloadData().Forget();
+        DownloadData();
     }
 
     private async UniTaskVoid DownloadData()
     {
         if (!Utils.Environment.isDevelopment) return;
         if (_wasDownloaded) return;
+        _readyStatus.Add("EventData", false);
         var loader = new EventDataLoader
         {
             staffTaskSO = staffTasks,
@@ -68,6 +72,7 @@ public class EventManager : Manager, IEventManager
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsManager.IsDownload);
         loader.LoadEvent(gsManager);
         _wasDownloaded = true;
+        _readyStatus["EventData"] = true;
     }
 
     private void InitEvent()

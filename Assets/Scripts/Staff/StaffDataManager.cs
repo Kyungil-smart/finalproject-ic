@@ -214,6 +214,12 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
             }
         }
 
+        if (getExpSo != null)
+        {
+            _getExpList.Clear();
+            _getExpList.AddRange(getExpSo.getExpList);
+        }
+        
         if (levelExpSo != null)
         {
             _levelExpList.Clear();

@@ -1414,7 +1414,7 @@ MonoBehaviour:
   inputProjectConfirmBtn: {fileID: 925399374}
   warningMessagePanel: {fileID: 1049457006}
   warningMessageText: {fileID: 124899856}
-  popUpInterval: 0
+  popUpInterval: 2
 --- !u!1 &231052547
 GameObject:
   m_ObjectHideFlags: 0

@@ -66,7 +66,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         await CheckSelectedLeaders();
     }
 
-    private async void SelectedStaffCallback(List<int> staffs)
+    private void SelectedStaffCallback(List<int> staffs)
     {
         _waiting = false;
         _selectedStaffIdxs = staffs;
@@ -93,13 +93,13 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         else await LeadersEvent();
     }
 
-    private async void GoCheckSelectLeadersToCreateStaffList()
+    private void GoCheckSelectLeadersToCreateStaffList()
     {
         _waiting = false;
         _conditionGoback = true;
     }
 
-    private async void GoCheckSelectLeadersToWaitingAnimation()
+    private void GoCheckSelectLeadersToWaitingAnimation()
     {
         // 투입한 직원 ID 보내기
         ServiceLocater.Get<IProjectManager>().AssignStaff(curGameDevProcName, selectedStaffs.leaderList[0].Staff_ID);
@@ -132,14 +132,14 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
 
         // ToDO. Animation 이 들어올 경우 대비 해야함.
         var data = new SimpleUIRenderData(9900020, 9900007, GoProcess); // TODO : 애니메이션 적용 중 단순 텍스트 출력, ID 는 바꿔야 함
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProductionUI, data);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
 
         // 리더 되는 프로세스는 각 프로덕션 내에서만 저장되면 되기 때문에 매니저에 저장될 필요 없을 듯
 
         // 점수 계산 진행
         
         Debug.Log($"{curGameDevProcName} | {selectedStaffs.leaderList[0].Staff_Name} | {selectedStaffs.leaderList[1].Staff_Name}"); // 테스트용 임시 로그
-
+        await UniTask.Yield();
         switch (curGameDevProcName)
         {
             case GameDevProcName.ConceptPreProduction or GameDevProcName.ConceptFullProduction:
@@ -152,7 +152,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
                 ServiceLocater.Get<IQualityManager>().Calculator.CalculateDev();
                 break;
         }
-
+        await UniTask.Yield();
         // 배치된 스태프 경험치 주기 기능 추가 필요 (누적 되어야 함)
         // ServiceLocater.Get<IStaffDataManager>().GetExpList();    // TODO : Staff 경험치 주는 함수 수정되었는지 확인 필요
         List<int> staffList = new List<int>
@@ -186,8 +186,15 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         await ServiceLocater.Get<IEventManager>().OccurEvent(EventType.Reward); // 지표 이벤트 발생
         
         await UniTask.Yield();
-        await WaitProcess();
+        // await WaitProcess();
+        await GoProcessForT06();
         await CheckResult();
+    }
+
+    private UniTask GoProcessForT06()
+    {
+        _waiting = false;
+        return UniTask.CompletedTask;
     }
 
 
@@ -202,10 +209,6 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         if (curGameDevProcName == GameDevProcName.DevelopmentPreProduction)
         {
             // TODO : T06 이면 추가로 지표 달성 이벤트 결과 UI가 떠야 함 -> 기다렸다 만들어지면 하기
-        }
-        else
-        {
-            // TODO : T06 아니면 프로덕션 완료하기 버튼만 생성
         }
 
         await UniTask.Yield();
