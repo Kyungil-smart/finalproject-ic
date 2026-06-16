@@ -140,13 +140,13 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         switch (curGameDevProcName)
         {
             case GameDevProcName.ConceptPreProduction or GameDevProcName.ConceptFullProduction:
-                ServiceLocater.Get<QualityManager>().Calculator.CalculateDesign();
+                ServiceLocater.Get<IQualityManager>().Calculator.CalculateDesign();
                 break;
             case GameDevProcName.ArtPreProduction or GameDevProcName.ArtFullProduction:
-                ServiceLocater.Get<QualityManager>().Calculator.CalculateArt();
+                ServiceLocater.Get<IQualityManager>().Calculator.CalculateArt();
                 break;
             case GameDevProcName.DevelopmentPreProduction or GameDevProcName.DevelopmentFullProduction:
-                ServiceLocater.Get<QualityManager>().Calculator.CalculateDev();
+                ServiceLocater.Get<IQualityManager>().Calculator.CalculateDev();
                 break;
         }
 
