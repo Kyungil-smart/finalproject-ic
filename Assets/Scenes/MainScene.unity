@@ -7180,10 +7180,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1539891203708442611, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -687
-      objectReference: {fileID: 0}
     - target: {fileID: 2289732081559087567, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -7264,65 +7260,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4302332362219671314, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4302332362219671314, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4302332362219671314, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4903216547551236510, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: m_SortingOrder
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 5763051829686597998, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
       propertyPath: m_Name
       value: DataSlideCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 5763051829686597998, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5935476987353236163, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: staffMainPanel
-      value: 
-      objectReference: {fileID: 1635914634}
-    - target: {fileID: 5935476987353236163, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: projectDetailUI
-      value: 
-      objectReference: {fileID: 7030664266034723912, guid: 3ca86c02ee180ac498ed30e072666066, type: 3}
-    - target: {fileID: 5935476987353236163, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: projectContentRt
-      value: 
-      objectReference: {fileID: 1635914632}
-    - target: {fileID: 5935476987353236163, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: projectMainPanel
-      value: 
-      objectReference: {fileID: 1635914633}
-    - target: {fileID: 6997441838749588385, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7194681616002774685, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7194681616002774685, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8192038386268699664, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 356
-      objectReference: {fileID: 0}
-    - target: {fileID: 8192038386268699664, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 570
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7332,21 +7272,6 @@ PrefabInstance:
 --- !u!223 &1635914631 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 4903216547551236510, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-  m_PrefabInstance: {fileID: 1635914630}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &1635914632 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1934596257284863625, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-  m_PrefabInstance: {fileID: 1635914630}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1635914633 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 473846584319989359, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
-  m_PrefabInstance: {fileID: 1635914630}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1635914634 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6997441838749588385, guid: 33242a1dc328b924fb16272aaa73a2d2, type: 3}
   m_PrefabInstance: {fileID: 1635914630}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1660527952

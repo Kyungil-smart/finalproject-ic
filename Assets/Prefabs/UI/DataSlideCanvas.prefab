@@ -140,7 +140,7 @@ Transform:
   m_GameObject: {fileID: 1689231807463119031}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 356, y: 570, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d6e30485e4ff834fa2a73b97c745297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwipeUIController
-  mainPanel: {fileID: 6997441838749588385}
+  staffMainPanel: {fileID: 6997441838749588385}
   staffDatailUIRenderers:
   - {fileID: 9135469678294153650}
   - {fileID: 3917278008988873723}
@@ -168,6 +168,9 @@ MonoBehaviour:
   - {fileID: 7466191815018241977}
   - {fileID: 8369161660806490329}
   - {fileID: 2882668919793114951}
+  projectMainPanel: {fileID: 473846584319989359}
+  projectDetailUI: {fileID: 7030664266034723912, guid: 3ca86c02ee180ac498ed30e072666066, type: 3}
+  projectContentRt: {fileID: 1934596257284863625}
   viewPort: {fileID: 1728546074296084983}
   scrollbar: {fileID: 6181138088336544099}
   swipeTime: 0.2
@@ -372,7 +375,7 @@ RectTransform:
   m_Father: {fileID: 1728546074296084983}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 3}
   m_Pivot: {x: 0, y: 1}
@@ -1142,7 +1145,7 @@ RectTransform:
   m_Father: {fileID: 1690850361406108725}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
