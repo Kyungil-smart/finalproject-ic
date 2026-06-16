@@ -111,6 +111,13 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     {
         _waiting = true;
 
+        // 투입한 직원 ID 보내기 (AssignStaff 으로)
+        ServiceLocater.Get<IProjectManager>().ClearStaffs();    // 이전에 투입한 직원 있다면 초기화
+        ServiceLocater.Get<IProjectManager>().AssignStaff(curGameDevProcName, selectedStaffs.leaderList[0].Staff_ID);
+        ServiceLocater.Get<IProjectManager>().AssignStaff(curGameDevProcName, selectedStaffs.leaderList[1].Staff_ID);
+
+        // TODO : 스태프 투입 함수 나오면 추가하기
+
         await ServiceLocater.Get<IEventManager>().OccurEvent(EventType.Staff);  // 직원간 이벤트 발생
 
         await UniTask.Yield();
@@ -128,6 +135,29 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProductionUI, data);
 
         // 리더 되는 프로세스는 각 프로덕션 내에서만 저장되면 되기 때문에 매니저에 저장될 필요 없을 듯
+
+        // 점수 계산 진행
+        switch (curGameDevProcName)
+        {
+            case GameDevProcName.ConceptPreProduction or GameDevProcName.ConceptFullProduction:
+                ServiceLocater.Get<QualityManager>().Calculator.CalculateDesign();
+                break;
+            case GameDevProcName.ArtPreProduction or GameDevProcName.ArtFullProduction:
+                ServiceLocater.Get<QualityManager>().Calculator.CalculateArt();
+                break;
+            case GameDevProcName.DevelopmentPreProduction or GameDevProcName.DevelopmentFullProduction:
+                ServiceLocater.Get<QualityManager>().Calculator.CalculateDev();
+                break;
+        }
+
+        // 배치된 스태프 경험치 주기 기능 추가 필요 (누적 되어야 함)
+        // ServiceLocater.Get<IStaffDataManager>().GetExpList();    // TODO : Staff 경험치 주는 함수 수정되었는지 확인 필요
+        List<int> staffList = new List<int>
+        {
+            selectedStaffs.leaderList[0].Staff_ID,
+            selectedStaffs.leaderList[1].Staff_ID
+        };
+        ServiceLocater.Get<IStaffRegister>().GetExpInProduction(curGameDevProcName, staffList);  // 배치된 스텝 경험치 주기, 뒤에껀 배치된 스태프 ID를 리스트 int로 보내기
 
         await UniTask.Yield();
         await WaitProcess();
@@ -163,11 +193,11 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
 
         if (curGameDevProcName == GameDevProcName.DevelopmentPreProduction)
         {
-            //TODO : T06 이면 추가로 지표 달성 이벤트 결과 UI가 떠야 함
+            // TODO : T06 이면 추가로 지표 달성 이벤트 결과 UI가 떠야 함 -> 기다렸다 만들어지면 하기
         }
         else
         {
-            //TODO : T06 아니면 프로덕션 완료하기 버튼만 생성
+            // TODO : T06 아니면 프로덕션 완료하기 버튼만 생성
         }
 
         await UniTask.Yield();
