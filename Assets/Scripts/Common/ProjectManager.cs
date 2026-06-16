@@ -35,21 +35,6 @@ public struct ProjectData
     // Todo. 품질산출 시 데이터 비교를 위해 선언함
     public NameTag trendGenre;  // 트랜드장르
     public NameTag trendTheme;  // 트랜드테마
-
-    public ProjectData(string name)
-    {
-        this.name = name;
-        genre = default;
-        theme = default;
-        grade = ProjectGrade.F;
-        cost = 0;
-        income = 0;
-        award = default;
-        Qualities = new();
-        IsCompleted = new();
-        trendGenre = default;
-        trendTheme = default;
-    }
 }
 
 public class ProjectManager : Manager, IProjectManager
@@ -128,9 +113,11 @@ public class ProjectManager : Manager, IProjectManager
         _projectData.Qualities.Value = data;
     }
 
-    public void NewProject(string projectName)
+    public void SetProjectName(string projectName) => _projectData.name = projectName;
+
+    public void NewProject()
     {
-        _projectData = new ProjectData(projectName);
+        _projectData = new ProjectData();
         _assignedStaff.Clear();
     }
 
