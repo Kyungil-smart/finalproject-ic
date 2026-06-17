@@ -53,7 +53,16 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
     public AwardsDataSO AwardsDataSO => _awardsDataSO;
     private Dictionary<string, bool> _readyStatus = new();
     public Dictionary<string, bool> ReadyStatus => _readyStatus;
-    
+    private void OnEnable()
+    {
+        Register();
+    }
+
+    private void OnDisable()
+    {
+        Unregister();
+    }
+
     protected override void Register() => ServiceLocater.Register<IProjectDataManager>(this);
     protected override void Unregister() => ServiceLocater.Unregister<IProjectDataManager>(this);
 

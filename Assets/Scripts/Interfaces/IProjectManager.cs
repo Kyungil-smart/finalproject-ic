@@ -23,7 +23,8 @@ public interface IProjectManager
     public void LoadProject(string jsonData);
     public string ToJsonData();
     public ProjectData GetProjectData();
-    
+    public void SetAwards(AwardsData awardsData);
+
     // Staff Part
     public void SetStaffsCost();  // 직원 고용 마지막에 한번 실행해놓기.
     public void AssignStaff(GameDevProcName procName, int staffId);

@@ -112,9 +112,9 @@ public class ProjectManager : Manager, IProjectManager
         // ToDo. 등급 받는 계산 식 넣기
     }
 
-    public void SetAwards(int awardId)
+    public void SetAwards(AwardsData awardsData)
     {
-        
+        _projectData.award = awardsData;
     }
 
     public ProjectData GetProjectData() => _projectData;
