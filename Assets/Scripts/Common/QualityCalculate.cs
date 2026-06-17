@@ -200,7 +200,7 @@ public class QualityCalculate
     // 달성률 계산 함수
     public float Attainment(float qa, float target)
     {
-        float achieve = (qa / target) * 100;
+        float achieve = (float)Math.Round((qa / target) * 100, 1);
         return achieve;
     }
 }
