@@ -1,23 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
-
-
-// Awards 계산용 구조체
-public struct CurAwardsDataReq
-{
-    public int reqDesign; // 현재 디자인 달성률
-    public int reqArt;    // 현재 아트 달성률
-    public int reqDev;    // 현재 개발 달성률
-
-    public CurAwardsDataReq(int design, int art, int dev)
-    {
-        this.reqDesign = design;
-        this.reqArt = art;
-        this.reqDev = dev;
-    }
-}
-
 
 
 /// <summary>
@@ -74,20 +58,29 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
     {
         _waiting = true;
 
+        Debug.Log($"[디버그] ServiceLocater 체크: {ServiceLocater.Get<IQualityManager>() != null}");
+        Debug.Log($"[디버그] Calculator 체크: {ServiceLocater.Get<IQualityManager>()?.Calculator != null}");
+
+
         // 어워즈 판단해서 프로젝트 매니저에 넣기
         curAwardsData.reqDesign = (int)ServiceLocater.Get<IQualityManager>().Calculator.GetDesignAchieve();
         curAwardsData.reqArt = (int)ServiceLocater.Get<IQualityManager>().Calculator.GetArtAchieve();
         curAwardsData.reqDev = (int)ServiceLocater.Get<IQualityManager>().Calculator.GetDevAchieve();
 
+
+        Debug.Log($"[디버그] AwardsDataSO 체크: {ServiceLocater.Get<IProjectDataManager>()?.AwardsDataSO != null}");
+        Debug.Log($"[디버그] AwardsDataSO 리스트 체크: {ServiceLocater.Get<IProjectDataManager>()?.AwardsDataSO.awardsDataList != null}");
+        Debug.Log($"[디버그] AwardsDataSO 리스트 숫자 체크: {ServiceLocater.Get<IProjectDataManager>()?.AwardsDataSO.awardsDataList.Count}");
+
+
         // 기준이 되는 어워즈 SO(리스트) 불러오기
-        AwardsDataSO awardsSO = new AwardsDataSO();
-        awardsSO = ServiceLocater.Get<IProjectDataManager>().AwardsDataSO;
+        List <AwardsData> awardsList  = ServiceLocater.Get<IProjectDataManager>().AwardsDataSO.awardsDataList;
 
-        int index = awardsSO.awardsDataList.Count - 1;  // 수상 판단용 인덱스, 디폴트는 어워즈 SO(리스트) 마지막 값
+        int index = awardsList.Count - 1;  // 수상 판단용 인덱스, 디폴트는 어워즈 SO(리스트) 마지막 값
 
-        for (int i = 0; i < awardsSO.awardsDataList.Count; i++)
+        for (int i = 0; i < awardsList.Count; i++)
         {
-            AwardsData curElement = awardsSO.awardsDataList[i];
+            AwardsData curElement = awardsList[i];
 
             if (curAwardsData.reqDesign >= curElement.reqDesign &&
             curAwardsData.reqArt >= curElement.reqArt &&
@@ -99,15 +92,15 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         }
 
         // 프로젝트 매니저에 수상 넣어주기
-        ServiceLocater.Get<IProjectManager>().SetAwards(awardsSO.awardsDataList[index]);
-        Debug.Log($"어워즈 번호 : {awardsSO.awardsDataList[index]}");
+        ServiceLocater.Get<IProjectManager>().SetAwards(awardsList[index]);
+        Debug.Log($"어워즈 번호 : {awardsList[index]}");
 
 
         // 수상에 따른 금액 추가하기
-        if(awardsSO.awardsDataList[index].target == "Money")
+        if(awardsList[index].target == "Money")
         {
-            ServiceLocater.Get<IGameManager>().AddMoney(awardsSO.awardsDataList[index].value);
-            Debug.Log($"어워즈 보상 : {awardsSO.awardsDataList[index].target} | {awardsSO.awardsDataList[index].value}");
+            ServiceLocater.Get<IGameManager>().AddMoney(awardsList[index].value);
+            Debug.Log($"어워즈 보상 : {awardsList[index].target} | {awardsList[index].value}");
         }
 
         // ToDO. Animation 이 들어올 경우 대비 해야함.
