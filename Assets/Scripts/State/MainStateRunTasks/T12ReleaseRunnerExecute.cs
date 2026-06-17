@@ -113,6 +113,9 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         // 전체 스텝에게 경험치 주기
         ServiceLocater.Get<IStaffRegister>().GetExpAllStaffs();
 
+        // 프로젝트에 추가하기
+        ServiceLocater.Get<IGameManager>().AddProject(ServiceLocater.Get<IProjectManager>().GetProjectData());
+
         await UniTask.Yield();
         await GoToNextProcess();
         await WaitProcess();
