@@ -41,7 +41,7 @@ public class ProjectData
 }
 
 
-public class ProjectDataManager : Manager, IProjectDataManager
+public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
 {
     [Header("Gsheet Info")]
     [SerializeField] private string gsheetId;
@@ -50,27 +50,16 @@ public class ProjectDataManager : Manager, IProjectDataManager
     [Header("ScriptableObject Info")]
     [SerializeField] private AwardsDataSO _awardsDataSO;
     
-    private Dictionary<string, bool> _readyStatues = new();
-    
     public AwardsDataSO AwardsDataSO => _awardsDataSO;
-    public Dictionary<string, bool> ReadyStatues => _readyStatues;
-
-    private void OnEnable()
-    {
-        Register();
-    }
-
-    private void OnDisable()
-    {
-        Unregister();
-    }
-
+    private Dictionary<string, bool> _readyStatus = new();
+    public Dictionary<string, bool> ReadyStatus => _readyStatus;
+    
     protected override void Register() => ServiceLocater.Register<IProjectDataManager>(this);
     protected override void Unregister() => ServiceLocater.Unregister<IProjectDataManager>(this);
 
     private void Start()
     {
-        _readyStatues.Clear();
+        _readyStatus.Clear();
         if (Utils.Environment.isDevelopment)
             DownloadAwardData();
     }
@@ -88,7 +77,7 @@ public class ProjectDataManager : Manager, IProjectDataManager
 
     private async UniTask DownloadAwardData()
     {
-        _readyStatues.Add("AwardsData", false);
+        _readyStatus.Add("AwardsData", false);
         if (_awardsDataSO.awardsDataList == null) _awardsDataSO.awardsDataList = new();
         _awardsDataSO.awardsDataList.Clear();
         GSheetManager gSheetManager = new(gsheetId, awardsGId);
@@ -113,6 +102,6 @@ public class ProjectDataManager : Manager, IProjectDataManager
                 resultId = int.Parse(data["Award_Result_ID"]),
             });
         }
-        _readyStatues["AwardsData"] = true;
+        _readyStatus["AwardsData"] = true;
     }
 }

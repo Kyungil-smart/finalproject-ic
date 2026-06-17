@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 // 채용 관리 역할
 // 고용된 스태프의 StaffInitData, StaffRunTimeData, StaffEntity 저장. 
 // 고용된 스태프의 데이터 읽기(GetAllHiredStaffList), 쓰기(ModifyStaffData) 가능. 
-public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRecruit
+public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRecruit, IReadyStatus
 {
     // Slot Data
     [Header("슬롯 데이터")]
@@ -34,6 +34,9 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
     private StaffDataFactory _dataFactory = new ();
     private IStaffDataManager _staffDataManager;
 
+    private Dictionary<string, bool> _readyStatus = new();
+    public Dictionary<string, bool> ReadyStatus => _readyStatus;
+    
     private void Awake() => Register();
 
     private void OnDestroy() => Unregister();
@@ -350,10 +353,15 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
     [ContextMenu("Download Slot Data")]
     private async UniTask DownloadSlotData()
     {
+        _readyStatus["StaffSlot"] = false;
         GSheetManager gSheetManager = new(slotGSheetId, slotGId);
         await UniTask.WaitUntil(() => gSheetManager.IsDownload);
         var dataList = gSheetManager.GetData();
-        if (slotUnlockData.slots.Count > 0) return;
+        if (slotUnlockData.slots.Count > 0)
+        {
+            _readyStatus["StaffSlot"] = true;
+            return;
+        }
         slotUnlockData.slots.Clear();
         foreach (var data in dataList)
         {
@@ -363,6 +371,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
                 cost = int.Parse(data["Slot_Cost"]),
             });
         }
+        _readyStatus["StaffSlot"] = true;
     }
 
     [ContextMenu("Level Up Staff")]
