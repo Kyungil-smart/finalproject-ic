@@ -170,7 +170,9 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     private async UniTask EmitResultEvent()
     {
         _waiting = true;
+        // Todo. 어디서 넣어야할지 몰라서 일단 Total을 여기서 넣어서 확인했습니다.
         ServiceLocater.Get<IQualityManager>().Calculator.CalculateTotal();
+        Debug.Log($"[PreProduction] 계산 완료 달성률 : {ServiceLocater.Get<IQualityManager>().Calculator.CalculateAchieve()}");
         Debug.Log("EmitResultEvent() 시작");
 
         await ServiceLocater.Get<IEventManager>().OccurEvent(EventType.Reward); // 지표 이벤트 발생
