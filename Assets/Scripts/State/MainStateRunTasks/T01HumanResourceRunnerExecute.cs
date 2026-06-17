@@ -16,6 +16,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     private List<int> _selectedStaffIdxs = new();  // UI에 콜백을 보내기 위한 List<int> 타입의 인스턴스 변수
     private bool _endProcess;
     private bool _conditionGoback;
+    private List<StaffViewData> _candidateList;
 
     // 후보 리스트 생성 및 변환 -> 직원 리스트 확인 -> 기존 직원과 리스트 통합 -> 계약할 캐릭터 선택 -> 계약 및 채용 확정 -> 채용 진행 애니메이션 -> 채용 확인
     public async UniTask Execute()
@@ -29,6 +30,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     {
         var projectManager = ServiceLocater.Get<IProjectManager>();
         projectManager.NewProject();
+        _candidateList = await CreateCandidateList();
         await MergeStaffList();
     }
 
@@ -52,41 +54,31 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     {
         _waiting = true;
         await UniTask.Yield();
-        if (_totalCandidateStaffs == null)
+        List<StaffViewData> staffList = CheckStaffList();
+        _totalCandidateStaffs = new StaffSummaryRenderData();
+        _totalCandidateStaffs.staffSummaryData = new List<StaffSummaryData>();
+        foreach (var item in staffList)
         {
-            List<StaffViewData> candidateList = await CreateCandidateList();
-            List<StaffViewData> staffList = CheckStaffList();
-            _totalCandidateStaffs = new StaffSummaryRenderData();
-            _totalCandidateStaffs.staffSummaryData = new List<StaffSummaryData>();
-            foreach (var item in staffList)
-            {
-                StaffSummaryData staffSummaryData = new StaffSummaryData();
-                staffSummaryData.selected = false;
-                staffSummaryData.hired = true;
-                staffSummaryData.viewData = item;
-
-                _totalCandidateStaffs.staffSummaryData.Add(staffSummaryData);
-            }
-
-            foreach (var item in candidateList)
-            {
-                StaffSummaryData staffSummaryData = new StaffSummaryData();
-                staffSummaryData.selected = false;
-                staffSummaryData.hired = false;
-                staffSummaryData.viewData = item;
-
-                _totalCandidateStaffs.staffSummaryData.Add(staffSummaryData);
-            }
-            await UniTask.Yield();
-            var tail = new StaffSummaryTailData() { num = 1, confirmCallback = SelectedStaffCallback };
-            _totalCandidateStaffs.tailType = tail;
-            _totalCandidateStaffs.selectable = true;
+            StaffSummaryData staffSummaryData = new StaffSummaryData();
+            staffSummaryData.selected = false;
+            staffSummaryData.hired = true;
+            staffSummaryData.viewData = item;
+            _totalCandidateStaffs.staffSummaryData.Add(staffSummaryData);
         }
-        else
+
+        foreach (var item in _candidateList)
         {
-            foreach (int idx in _selectedStaffIdxs)
-                _totalCandidateStaffs.staffSummaryData[idx].selected = true;
+            StaffSummaryData staffSummaryData = new StaffSummaryData();
+            staffSummaryData.selected = false;
+            staffSummaryData.hired = false;
+            staffSummaryData.viewData = item;
+            _totalCandidateStaffs.staffSummaryData.Add(staffSummaryData);
         }
+        await UniTask.Yield();
+        var tail = new StaffSummaryTailData() { num = 1, confirmCallback = SelectedStaffCallback };
+        _totalCandidateStaffs.tailType = tail;
+        _totalCandidateStaffs.selectable = true;
+       
         await UniTask.Yield();
         Debug.Log($"[T01] _totalCandidateStaffs = {_totalCandidateStaffs.staffSummaryData.Count}");
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, _totalCandidateStaffs);

@@ -74,6 +74,14 @@ public class StaffSummaryPanelRender : MonoBehaviour
         imageToggle.color = selected ? trueColor : falseColor;
         _isRendering = false;
     }
+    
+    public void RevertSelection()
+    {
+        _isRendering = true;
+        panelToggle.isOn = false;
+        imageToggle.color = falseColor;
+        _isRendering = false;
+    }
 
     private void OnDestroy()
     {

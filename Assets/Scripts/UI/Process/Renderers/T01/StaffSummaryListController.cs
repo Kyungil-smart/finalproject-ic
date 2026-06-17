@@ -31,7 +31,9 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
 
     private void Awake()
     {
-        ServiceLocater.Get<IUIRouter>().RegisterUIRender(UIType.StaffCandidateUI, this);    
+        ServiceLocater.Get<IUIRouter>().RegisterUIRender(UIType.StaffCandidateUI, this);  
+        foreach (var panel in staffSummaryPanels)
+            panel.OnItemSelecte.Subscribe(SelectItem).AddTo(panel);
     }
 
     private void OnEnable()
@@ -56,7 +58,9 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
             {
                 SetUpPanel(i, renderData.staffSummaryData[i], staffSummaryPanels[i], renderData.selectable);
                 staffSummaryPanels[i].gameObject.SetActive(true);
-                if (renderData.staffSummaryData[i].selected)
+                if (renderData.staffSummaryData[i].selected
+                    && _selectedStaffs.Count > ServiceLocater.Get<IStaffRegister>().maxHiredStaffCount
+                    && !_selectedStaffs.Contains(i))
                 {
                     _selectedStaffs.Add(i);
                     cnt++;
@@ -101,11 +105,6 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
     private void SetUpPanel(int index, StaffSummaryData data, StaffSummaryPanelRender panel, bool selectable)
     {
         panel.SetUp(index);
-        
-        panel.OnItemSelecte
-            .Subscribe(SelectItem)
-            .AddTo(panel);
-        
         panel.Render(data.viewData, data.hired, data.selected, selectable);
         panel.gameObject.SetActive(true);
     }
@@ -115,8 +114,13 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
         var totalCnt = ServiceLocater.Get<IStaffRegister>().maxHiredStaffCount;
         if (data.isOn)
         {
-            if (_selectedStaffs.Count >= totalCnt) return;
-            _selectedStaffs.Add(data.index); 
+            if (_selectedStaffs.Contains(data.index)) return;
+            if (_selectedStaffs.Count >= totalCnt)
+            {
+                staffSummaryPanels[data.index].RevertSelection();
+                return;
+            } 
+            _selectedStaffs.Add(data.index);
         }
         else
         {
@@ -124,7 +128,7 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
         }
         selectedCountText.text = $"{_selectedStaffs.Count} / {totalCnt}";
     }
-
+    
     private void Close()
     {
         foreach (var staffSummaryPanel in staffSummaryPanels)
