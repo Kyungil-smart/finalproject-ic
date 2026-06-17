@@ -1,8 +1,9 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
-using UnityEngine;
 using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
 
 public class QualityCalculate
 {
@@ -67,7 +68,7 @@ public class QualityCalculate
         float boost = 1 + ((main.GetCommunication() * data.boostCase1) 
                            + (main.GetCreativity() * data.boostCase2) 
                            + (main.GetConcentration() * data.boostCase3)) / 100;
-        ServiceLocater.Get<IProjectManager>().DesignQuality = (arrange * boost * noise);
+        ServiceLocater.Get<IProjectManager>().DesignQuality = (float)Math.Round(arrange * boost * noise, 1);
         Debug.Log($"{ServiceLocater.Get<IProjectManager>().DesignQuality}");
         Debug.Log("[DesignQuality]품질계산 완료");
     }
@@ -82,7 +83,7 @@ public class QualityCalculate
         float arrange = CalculateArrange(main, sub);
         float boost = 1 + ((main.GetCreativity() * data.boostCase1) 
                            + (main.GetConcentration() * data.boostCase2)) / 100;
-        ServiceLocater.Get<IProjectManager>().DevQuality = arrange * boost * noise;
+        ServiceLocater.Get<IProjectManager>().DevQuality = (float)Math.Round(arrange * boost * noise, 1);
         Debug.Log($"{ServiceLocater.Get<IProjectManager>().DevQuality}");
         Debug.Log("[DevQuality]품질계산 완료");
     }
@@ -97,7 +98,7 @@ public class QualityCalculate
         float arrange = CalculateArrange(main, sub);
         float boost = 1 + ((main.GetConcentration() * data.boostCase1) 
                            + (main.GetCreativity() * data.boostCase2)) / 100;
-        ServiceLocater.Get<IProjectManager>().ArtQuality = arrange * boost * noise;
+        ServiceLocater.Get<IProjectManager>().ArtQuality = (float)Math.Round(arrange * boost * noise, 1);
         Debug.Log($"{ServiceLocater.Get<IProjectManager>().ArtQuality}");
         Debug.Log("[ArtQuality]품질계산 완료");
     }
