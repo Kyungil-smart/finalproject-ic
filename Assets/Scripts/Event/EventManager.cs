@@ -31,7 +31,7 @@ public class EventManager : Manager, IEventManager, IReadyStatus
     private EventRandom _eventRandom = new();
     
     private Dictionary<string, bool> _readyStatus = new();
-    public Dictionary<string, bool> ReadyStatues { get; }
+    public Dictionary<string, bool> ReadyStatus => _readyStatus;
     
     public bool IsRunning => _running;
     
