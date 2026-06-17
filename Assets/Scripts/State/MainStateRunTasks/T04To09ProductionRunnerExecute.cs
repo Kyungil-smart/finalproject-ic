@@ -140,18 +140,8 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         
         Debug.Log($"{curGameDevProcName} | {selectedStaffs.leaderList[0].Staff_Name} | {selectedStaffs.leaderList[1].Staff_Name}"); // 테스트용 임시 로그
         await UniTask.Yield();
-        switch (curGameDevProcName)
-        {
-            case GameDevProcName.ConceptPreProduction or GameDevProcName.ConceptFullProduction:
-                ServiceLocater.Get<IQualityManager>().Calculator.CalculateDesign();
-                break;
-            case GameDevProcName.ArtPreProduction or GameDevProcName.ArtFullProduction:
-                ServiceLocater.Get<IQualityManager>().Calculator.CalculateArt();
-                break;
-            case GameDevProcName.DevelopmentPreProduction or GameDevProcName.DevelopmentFullProduction:
-                ServiceLocater.Get<IQualityManager>().Calculator.CalculateDev();
-                break;
-        }
+        // Todo. 한번에 불러오는 시스템 만들어서 원래 있던거 지움.
+        ServiceLocater.Get<IQualityManager>().Calculator.CalculateQuality(curGameDevProcName);
         await UniTask.Yield();
         // 배치된 스태프 경험치 주기 기능 추가 필요 (누적 되어야 함)
         // ServiceLocater.Get<IStaffDataManager>().GetExpList();    // TODO : Staff 경험치 주는 함수 수정되었는지 확인 필요
@@ -180,7 +170,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     private async UniTask EmitResultEvent()
     {
         _waiting = true;
-
+        ServiceLocater.Get<IQualityManager>().Calculator.CalculateTotal();
         Debug.Log("EmitResultEvent() 시작");
 
         await ServiceLocater.Get<IEventManager>().OccurEvent(EventType.Reward); // 지표 이벤트 발생
