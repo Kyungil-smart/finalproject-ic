@@ -8,7 +8,7 @@ using Channel = DataDispatcher.Channel;
 
 public class TextLoader : MonoBehaviour
 {
-    [SerializeField] private int textId;
+    [SerializeField] private int textId = -1;
     private TextMeshProUGUI _textGui;
     private IPostManager _postManager;
     // text ID 가 없는 경우를 대비한 임시 string 입력

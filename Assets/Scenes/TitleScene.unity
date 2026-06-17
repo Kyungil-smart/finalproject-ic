@@ -1595,7 +1595,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EventManager
   gSheetId: 18pW0HvqUVgkDqUf6f7a9AZl7ZWxIZpGgOkGL5sexvbw
   gid: 0
-  _wasDownloaded: 1
+  _wasDownloaded: 0
   staffTasks: {fileID: 11400000, guid: 59e119e77daf00f468aecb3e3c7ceaf1, type: 2}
   linkageTasks: {fileID: 11400000, guid: 03bbb4e8eff886e498821fa9d44c35de, type: 2}
   regularTasks: {fileID: 11400000, guid: 263cc2d747857f74689c12afc8307554, type: 2}

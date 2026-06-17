@@ -49,6 +49,7 @@ public class EventDataLoader
             {
                 id = int.Parse(row["Event_ID"]),
                 titleTextId = int.Parse(row["Event_Title_ID"]),
+                categoryId =  int.Parse(row["Event_Cat"]),
                 descTextId = int.Parse(row["Event_Desc_ID"]),
                 buttons = new List<EventButtonData>
                 {
