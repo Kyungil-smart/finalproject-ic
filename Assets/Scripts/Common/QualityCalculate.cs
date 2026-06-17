@@ -14,21 +14,21 @@ public class QualityCalculate
     }
     
     // 유효스탯 계산
-    private float CalculateArrange(StaffEntity main, StaffEntity sub)
+    private float CalculateArrange(StaffEntity main, StaffEntity sub, GameDevProcName procName)
     {
         var data = _qualityData.rates[0];
-        float mainStat = main.GetJob() switch
+        float mainStat = procName switch
         {
-            JobType.Artist => main.GetArt(),
-            JobType.Developer => main.GetDevelopment(),
-            JobType.Planner => main.GetDesign(),
+            GameDevProcName.ConceptPreProduction or GameDevProcName.ConceptFullProduction => main.GetDesign(),
+            GameDevProcName.DevelopmentPreProduction or GameDevProcName.DevelopmentFullProduction => main.GetDevelopment(),
+            GameDevProcName.ArtPreProduction or GameDevProcName.ArtFullProduction => main.GetArt(),
             _ => default
         };
-        float subStat = sub.GetJob() switch
+        float subStat = procName switch
         {
-            JobType.Artist => sub.GetArt(),
-            JobType.Developer => sub.GetDevelopment(),
-            JobType.Planner => sub.GetDesign(),
+            GameDevProcName.ConceptPreProduction or GameDevProcName.ConceptFullProduction => sub.GetDesign(),
+            GameDevProcName.DevelopmentPreProduction or GameDevProcName.DevelopmentFullProduction => sub.GetDevelopment(),
+            GameDevProcName.ArtPreProduction or GameDevProcName.ArtFullProduction => sub.GetArt(),
             _ => default
         };
         return (mainStat * data.arrageCase1) + (subStat * data.arrageCase2);
@@ -41,22 +41,22 @@ public class QualityCalculate
         {
             case GameDevProcName.ConceptPreProduction:
             case GameDevProcName.ConceptFullProduction:
-                CalculateDesign();
+                CalculateDesign(procName);
                 break;
             case GameDevProcName.DevelopmentPreProduction:
             case GameDevProcName.DevelopmentFullProduction:
-                CalculateDev();
+                CalculateDev(procName);
                 break;
             case GameDevProcName.ArtPreProduction:
             case GameDevProcName.ArtFullProduction:
-                CalculateArt();
+                CalculateArt(procName);
                 break;
         }
     }
     
     // 파트별 퀄리티
     // 세부 프로세스 구분이 가능하면 합치는 걸로 변경가능성 있음
-    public void CalculateDesign()
+    public void CalculateDesign(GameDevProcName procName)
     {
         var data = _qualityData.rates[0];
         var ids = ServiceLocater.Get<IProjectManager>()
@@ -64,7 +64,7 @@ public class QualityCalculate
         var main = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[0]);
         var sub = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[1]);
         float noise = Random.Range(data.noiseMin, data.noiseMax);
-        float arrange = CalculateArrange(main, sub);
+        float arrange = CalculateArrange(main, sub, procName);
         float boost = 1 + ((main.GetCommunication() * data.boostCase1) 
                            + (main.GetCreativity() * data.boostCase2) 
                            + (main.GetConcentration() * data.boostCase3)) / 100;
@@ -72,7 +72,7 @@ public class QualityCalculate
         Debug.Log($"{ServiceLocater.Get<IProjectManager>().DesignQuality}");
         Debug.Log("[DesignQuality]품질계산 완료");
     }
-    public void CalculateDev()
+    public void CalculateDev(GameDevProcName procName)
     {
         var data = _qualityData.rates[0];
         var ids = ServiceLocater.Get<IProjectManager>()
@@ -80,14 +80,14 @@ public class QualityCalculate
         var main = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[0]);
         var sub = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[1]);
         float noise = Random.Range(data.noiseMin, data.noiseMax);
-        float arrange = CalculateArrange(main, sub);
+        float arrange = CalculateArrange(main, sub, procName);
         float boost = 1 + ((main.GetCreativity() * data.boostCase1) 
                            + (main.GetConcentration() * data.boostCase2)) / 100;
         ServiceLocater.Get<IProjectManager>().DevQuality = (float)Math.Round(arrange * boost * noise, 1);
         Debug.Log($"{ServiceLocater.Get<IProjectManager>().DevQuality}");
         Debug.Log("[DevQuality]품질계산 완료");
     }
-    public void CalculateArt()
+    public void CalculateArt(GameDevProcName procName)
     {
         var data = _qualityData.rates[0];
         var ids = ServiceLocater.Get<IProjectManager>()
@@ -95,7 +95,7 @@ public class QualityCalculate
         var main = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[0]);
         var sub = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(ids[1]);
         float noise = Random.Range(data.noiseMin, data.noiseMax);
-        float arrange = CalculateArrange(main, sub);
+        float arrange = CalculateArrange(main, sub, procName);
         float boost = 1 + ((main.GetConcentration() * data.boostCase1) 
                            + (main.GetCreativity() * data.boostCase2)) / 100;
         ServiceLocater.Get<IProjectManager>().ArtQuality = (float)Math.Round(arrange * boost * noise, 1);
@@ -173,7 +173,7 @@ public class QualityCalculate
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
         float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
-        float achieve = Attainment(qt.DesignQuality, target.targetDesignPre);
+        float achieve = Attainment(qt.DesignQuality, target.targetDesign);
         return achieve;
     }
     
@@ -183,7 +183,7 @@ public class QualityCalculate
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
         float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
-        float achieve = Attainment(qt.DevQuality, target.targetDevPre);
+        float achieve = Attainment(qt.DevQuality, target.targetDev);
         return achieve;
     }
     
@@ -193,7 +193,7 @@ public class QualityCalculate
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
         float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
-        float achieve = Attainment(qt.ArtQuality, target.targetArtPre);
+        float achieve = Attainment(qt.ArtQuality, target.targetArt);
         return achieve;
     }
     
