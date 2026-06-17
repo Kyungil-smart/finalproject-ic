@@ -67,7 +67,7 @@ public class QualityCalculate
         float boost = 1 + ((main.GetCommunication() * data.boostCase1) 
                            + (main.GetCreativity() * data.boostCase2) 
                            + (main.GetConcentration() * data.boostCase3)) / 100;
-        ServiceLocater.Get<IProjectManager>().DesignQuality = arrange * boost * noise;
+        ServiceLocater.Get<IProjectManager>().DesignQuality = (arrange * boost * noise);
         Debug.Log($"{ServiceLocater.Get<IProjectManager>().DesignQuality}");
         Debug.Log("[DesignQuality]품질계산 완료");
     }
@@ -108,6 +108,8 @@ public class QualityCalculate
         var qt = ServiceLocater.Get<IProjectManager>();
         float result = (qt.DesignQuality + qt.ArtQuality + qt.DevQuality);
         qt.UpdateTotalQuality(qt.TotalQuality + result);
+        Debug.Log("[CalculateTotal] 퀄리티 합산 완료");
+        Debug.Log($"{ServiceLocater.Get<IProjectManager>().TotalQuality}");
     }
     
     // QA계산식 추가 예정(기획이 나오면)
