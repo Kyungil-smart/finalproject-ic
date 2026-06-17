@@ -41,7 +41,7 @@ public class ProjectData
 }
 
 
-public class ProjectDataManager : Manager, IProjectDataManager
+public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
 {
     [Header("Gsheet Info")]
     [SerializeField] private string gsheetId;
@@ -53,7 +53,8 @@ public class ProjectDataManager : Manager, IProjectDataManager
     private Dictionary<string, bool> _readyStatues = new();
     
     public AwardsDataSO AwardsDataSO => _awardsDataSO;
-    public Dictionary<string, bool> ReadyStatues => _readyStatues;
+    private Dictionary<string, bool> _readyStatus = new();
+    public Dictionary<string, bool> ReadyStatus => _readyStatus;
     
     protected override void Register() => ServiceLocater.Register<IProjectDataManager>(this);
     protected override void Unregister() => ServiceLocater.Unregister<IProjectDataManager>(this);

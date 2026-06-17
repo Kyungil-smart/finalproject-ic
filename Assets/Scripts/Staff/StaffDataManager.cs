@@ -93,7 +93,7 @@ public class GetExpRow
 /// 시작 시에는 SO의 데이터를 참조해서 시트의 전체 내용을 가져오고. (InitData)
 /// 나중에 런타임 중에는 구글 시트에서 바로 가져옴. (아직 런타임 중 SO에 저장은 구현 X, SyncDataFromSheetAsync)
 /// </summary>
-public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
+public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyStatus
 {
     [Header("구워진 SO들 (베이크 툴로 자동 연결)")]
     [SerializeField] private StaffDataSO staffDataSO;
@@ -103,6 +103,10 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
     [SerializeField] private GradeRatioDataSO gradeRatioDataSO;
     [SerializeField] private LevelExpSO levelExpSo;
     [SerializeField] private GetExpSO getExpSo;
+    
+    // Data Loading 체크용
+    private Dictionary<string, bool> _readyStates = new();
+    public Dictionary<string, bool> ReadyStatus => _readyStates;
     
     // 데이터들 파싱해서 저장. 이 리스트, 딕셔너리 들에 시트의 내용들 전체 저장. 
     private List<StaffRow> _staffList = new ();
@@ -120,6 +124,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
     public Dictionary<int, List<GradeRatioRow>> GradeRatiosDict => _gradeRatioDict;
     public List<LevelExpRow> LevelExpList => _levelExpList;
     public List<GetExpRow> GetExpList => _getExpList;
+    
 
 
     private void Awake() => Register();
@@ -147,6 +152,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
     // SO에 저장은 아직 안하는 중. 변경하려면 #if UnityEditor 전처리 기문을 사용해야 해서 아직은 고민중.  
     private async UniTask SyncDataFromSheetAsync()
     {
+        _readyStates.Add("StaffDowloadData", false);
         Debug.Log("런타임 실시간 데이터 동기화 시작...");
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() =>
         {
@@ -157,7 +163,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
         var fetchedData = await fetcher.FetchAllDataAsync(); //fetchedData에 시트에서 가져온 파싱값들 저장. 
 
         if (fetchedData == null) return;
-
+        
         // 적용
         staffDataSO.staffList.Clear();
         staffDataSO.staffList = fetchedData.Staffs;
@@ -182,12 +188,14 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
                 _gradeRatioDict[row.Level] = new List<GradeRatioRow>();
             _gradeRatioDict[row.Level].Add(row);
         }
+        _readyStates["StaffDowloadData"] = true;
         InitData();
     }
     
 
     private void InitData()
     {
+        _readyStates["StaffInitData"] = false;
         if (staffDataSO != null) _staffList = new (staffDataSO.staffList);
         if (tagDataSO != null) _tagList = new(tagDataSO.tagList);
         if (gradeDataSO != null) _gradeList = new(gradeDataSO.gradeList);
@@ -230,6 +238,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex
                   $"태그:{_tagList.Count}개, " +
                   $"레벨스탯:{_levelStatDict.Count}개, " +
                   $"등급:{_gradeList.Count}개)");
+        _readyStates["StaffInitData"] = true;
     }
     
     // 시트에서 받은 전체 스태프들 목록. 데이터 반환형식은 다른 UI 인터페이스와의 호환 을 생각해서 StaffViewData형식으로 작성.

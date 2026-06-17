@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class QualityManager : Manager, IQualityManager
+public class QualityManager : Manager, IQualityManager, IReadyStatus
 {
     [SerializeField] private string _gSheetId;
     [SerializeField] private string _gidQuality;
@@ -14,6 +15,8 @@ public class QualityManager : Manager, IQualityManager
     [SerializeField] private AchieveRewardSO _reward;
 
     public QualityCalculate Calculator { get; private set; }
+    public Dictionary<string, bool> ReadyStatus => _readyStatus;
+    private Dictionary<string, bool> _readyStatus = new ();
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
@@ -27,6 +30,7 @@ public class QualityManager : Manager, IQualityManager
     {
         if (!Utils.Environment.isDevelopment) return;
         if (_wasDownloaded) return;
+        _readyStatus["QualityManager"] = false;
         var loader = new QualityDataLoader { qualityData = _qData };
         var achieveLoader = new AchieveDataLoader { achieveRewardSO = _reward };
         var gsQuality = new GSheetManager(_gSheetId, _gidQuality);
@@ -38,6 +42,7 @@ public class QualityManager : Manager, IQualityManager
         loader.LoadQulityData(gsQuality);
         loader.LoadTargetData(gsTarget);
         achieveLoader.LoadAchieveData(gsAchieve);
+        _readyStatus["QualityManager"] = true;
         _wasDownloaded = true;
     }
 
