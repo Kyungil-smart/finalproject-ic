@@ -162,7 +162,11 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
         StaffDataFetcher fetcher = new StaffDataFetcher();
         var fetchedData = await fetcher.FetchAllDataAsync(); //fetchedData에 시트에서 가져온 파싱값들 저장. 
 
-        if (fetchedData == null) return;
+        if (fetchedData == null)
+        {
+            _readyStates["StaffDowloadData"] = true;
+            return;
+        }
         
         // 적용
         staffDataSO.staffList.Clear();

@@ -50,8 +50,6 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
     [Header("ScriptableObject Info")]
     [SerializeField] private AwardsDataSO _awardsDataSO;
     
-    private Dictionary<string, bool> _readyStatues = new();
-    
     public AwardsDataSO AwardsDataSO => _awardsDataSO;
     private Dictionary<string, bool> _readyStatus = new();
     public Dictionary<string, bool> ReadyStatus => _readyStatus;
@@ -61,7 +59,7 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
 
     private void Start()
     {
-        _readyStatues.Clear();
+        _readyStatus.Clear();
         if (Utils.Environment.isDevelopment)
             DownloadAwardData();
     }
@@ -79,7 +77,7 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
 
     private async UniTask DownloadAwardData()
     {
-        _readyStatues.Add("AwardsData", false);
+        _readyStatus.Add("AwardsData", false);
         if (_awardsDataSO.awardsDataList == null) _awardsDataSO.awardsDataList = new();
         _awardsDataSO.awardsDataList.Clear();
         GSheetManager gSheetManager = new(gsheetId, awardsGId);
@@ -104,6 +102,6 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
                 resultId = int.Parse(data["Award_Result_ID"]),
             });
         }
-        _readyStatues["AwardsData"] = true;
+        _readyStatus["AwardsData"] = true;
     }
 }
