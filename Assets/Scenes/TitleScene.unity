@@ -403,7 +403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d76c86319d34adfa9751273e249ae71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoadingTitleUIController
-  loadingPage: {fileID: 520506479}
+  loadingPage: {fileID: 6041478882654060143}
   managers:
   - {fileID: 2141924246}
   - {fileID: 1708940381}
