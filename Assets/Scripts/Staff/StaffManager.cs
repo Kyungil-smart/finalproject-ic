@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using UnityEngine.AddressableAssets;
 using Random = UnityEngine.Random;
 
 
@@ -36,6 +37,11 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
 
     private Dictionary<string, bool> _readyStatus = new();
     public Dictionary<string, bool> ReadyStatus => _readyStatus;
+    
+    private const string ThumbnailLabel  = "Staff_Thumnail"; // 라벨 규칙
+    private const string ThumbnailPrefix = "sfth_";          // 어드레서블 이름 규칙: sfth_XXXX
+    // 어드레서블 ID → 키 문자열 ("sfth_0012")
+    private static string ToThumbnailKey(int staffId) => $"{ThumbnailPrefix}{staffId:D4}";
     
     private void Awake() => Register();
 
@@ -82,15 +88,21 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
     public async UniTask GenerateRecruitCandidatesAsync(int playerLevel, int cardCount) 
     {
         Debug.Log($"[StaffManager] 신규 채용 후보 {cardCount}명 생성 시작...");
+        foreach (var c in _recruitCandidates) c.ReleaseThumbnail();
         _recruitCandidates.Clear(); // 이전 후보 데이터 초기화
         Debug.Log($"[StaffManager] Staff 데이터 확인: {_staffDataManager.StaffList.Count}");
         
-        // 이미 고용된 직원 ID는 후보에서 제외 (O(1) 조회용 HashSet)
-        var hiredIds = new HashSet<int>(_staffList.Select(x => x.init.Staff_ID));
+        // (A) Full = 고용 + 현재 후보. 의도를 코드에 명시해 어떤 호출 흐름에서도 중복 차단
+        var excludedIds = new HashSet<int>(_staffList.Select(x => x.init.Staff_ID));
+        excludedIds.UnionWith(_recruitCandidates.Select(x => x.init.Staff_ID)); // Clear 직후라 비어있지만 안전망
 
-        // 후보로 뽑을 수 있는 원본 풀 (고용된 직원 제외)
+        // (B) 어드레서블 라벨로 "썸네일이 실제 존재하는 ID"만 추출
+        var thumbnailIds = await LoadAvailableThumbnailIdsAsync();
+
+        // (C) 풀 = 썸네일 있음 ∩ Full 아님
         var pool = _staffDataManager.StaffList
-            .Where(row => !hiredIds.Contains(row.Staff_ID))
+            .Where(row => thumbnailIds.Contains(row.Staff_ID))   // 썸네일 없는 직원은 후보 제외
+            .Where(row => !excludedIds.Contains(row.Staff_ID))   // Full 중복 제외
             .ToList();
 
         // 풀이 부족하면 가능한 만큼만 (무한 루프 대신 안전하게 축소)
@@ -98,7 +110,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         if (targetCount < cardCount)
             Debug.LogWarning($"[StaffManager] 뽑을 수 있는 후보가 부족: 요청 {cardCount} / 가능 {targetCount}");
         
-        for (int i = 0; i < cardCount; i++)
+        for (int i = 0; i < targetCount; i++)
         {
             // 비복원 추출: 뽑은 건 풀에서 제거 → 다음 루프에서 자동으로 중복 제외
             int idx = Random.Range(0, pool.Count);
@@ -106,16 +118,27 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
             pool.RemoveAt(idx);
             
             var candidate = await _dataFactory.CreateDataByStaffIDAsync(readOnlyStaffData.Staff_ID, playerLevel);
-            if (candidate != null)
+            if (candidate == null) continue;
+            
+            // (D) 확정된 후보의 썸네일만 실제 로드
+            candidate.assetId = ToThumbnailKey(candidate.Staff_ID); // 키 보관 ("sfth_XXXX")
+            var spriteHandle = Addressables.LoadAssetAsync<Sprite>(candidate.assetId);
+            Sprite thumbnail = await spriteHandle.ToUniTask();
+        
+            StaffEntity staff = new ()
             {
-                StaffEntity staff = new ()
-                {
-                    init = candidate,
-                    runtime = _dataFactory.CreateInitialRuntimeData(candidate)
-                };
-                Debug.Log($"[StaffManager] {staff.init.Staff_ID}:{staff.init.Staff_Name} 대기실 배치");
-                _recruitCandidates.Add(staff); // 대기실 리스트업
-            }
+                init = candidate,
+                runtime = _dataFactory.CreateInitialRuntimeData(candidate)
+            };
+            
+            staff.SetThumbnail(thumbnail, spriteHandle); // ↓ 3) 참고
+
+            // 다음 루프부터 이 후보도 Full로 취급 (안전망)
+            excludedIds.Add(candidate.Staff_ID);
+            
+            Debug.Log($"[StaffManager] {staff.init.Staff_ID}:{staff.init.Staff_Name} 대기실 배치");
+            _recruitCandidates.Add(staff); // 대기실 리스트업
+            
         }
         Debug.Log($"[StaffManager] 채용 후보 데이터 {_recruitCandidates.Count}명 확정 셋팅 완료.");
     }
@@ -208,6 +231,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         var staff = _staffList.Find(x => x.init.Staff_ID == targetStaffID);
         if (staff == null) return;
         _staffList.Remove(staff);
+        staff.ReleaseThumbnail(); 
         await UniTask.Yield(); 
         Destroy(staff.GetGameObject());
         await UniTask.Yield();
@@ -243,7 +267,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
             Staff_Name = data.init.Staff_Name,
             Staff_Gender = data.init.Staff_Gender,
             Job_Name = data.init.Job.ToString(),
-            Avatar_ID = data.init.Avatar_ID, // 아직 에셋이 안나와서 팩토리 임시 랜덤값 바인딩
+            Thumbnail = data.Thumbnail,
             Grade = data.init.Grade.ToString(),
             DISC_Type = data.init.DISC_Type.ToString(),
             Current_State = data.runtime.Current_State.ToString(),
@@ -348,6 +372,28 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
             if (levelExpData.requiredExp >= staffData.init.Exp) 
                 await staffData.LevelUp(levelExpData.isTag);
         }
+    }
+    
+    // 라벨에 묶인 썸네일들의 "존재하는 Staff_ID 집합"을 가져온다 (실제 이미지는 아직 로드 안 함)
+    private async UniTask<HashSet<int>> LoadAvailableThumbnailIdsAsync()
+    {
+        var ids = new HashSet<int>();
+
+        var locHandle = Addressables.LoadResourceLocationsAsync(ThumbnailLabel, typeof(Sprite));
+        var locations = await locHandle.ToUniTask();
+
+        foreach (var loc in locations)
+        {
+            // PrimaryKey 예: "sfth_0012"
+            string key = loc.PrimaryKey;
+            if (!key.StartsWith(ThumbnailPrefix)) continue;
+            if (int.TryParse(key.Substring(ThumbnailPrefix.Length), out int id))
+                ids.Add(id);
+        }
+
+        Addressables.Release(locHandle); // 위치 핸들은 바로 해제
+        Debug.Log($"[StaffManager] 사용 가능한 썸네일 ID {ids.Count}개 확인");
+        return ids;
     }
 
     // ------------------------------------------------------------------------

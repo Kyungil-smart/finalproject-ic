@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// View 표시를 위한 데이터. InitData + RuntimeData를 View하기 좋게 바꾼 데이터 . 
@@ -9,8 +10,8 @@ public class StaffViewData
     public int Staff_ID;
     public string Staff_Name;
     public bool Staff_Gender;       
-    public string Job_Name;         
-    public int Avatar_ID;
+    public string Job_Name;
+    public Sprite Thumbnail;
 
     // 핵심 성향
     public string Grade;            

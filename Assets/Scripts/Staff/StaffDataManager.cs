@@ -261,7 +261,6 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
             viewData.Staff_Gender = (row.Staff_Gender == "남" || row.Staff_Gender == "Male");
 
             // 가챠 전이므로 알 수 없는 데이터들은 도감같은 것들 용도로 기본값(??? 또는 0) 처리
-            viewData.Avatar_ID = 0; 
             viewData.Grade = "???";
             viewData.DISC_Type = "???";
             

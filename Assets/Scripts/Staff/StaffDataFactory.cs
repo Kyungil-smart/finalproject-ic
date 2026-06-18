@@ -37,8 +37,7 @@ public class StaffDataFactory
         data.Staff_Name = pickedStaff.Staff_Name;
         data.Job = ParseJobType(pickedStaff.Staff_Job);
         data.Staff_Gender = (pickedStaff.Staff_Gender == "남"); // String -> Bool
-        data.Avatar_ID = Random.Range(1, 1000); // 3D 모델 연결용 임시값
-
+        
         // 등급 결정 (여기부턴 시트 결정 방식에 따른 랜덤 결정)
         GradeRow gradeData = RollGradeFromTable(dataManager);
         data.Grade = gradeData.GradeEnum; 

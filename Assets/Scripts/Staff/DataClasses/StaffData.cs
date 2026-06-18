@@ -20,10 +20,8 @@ public class StaffInitData
     public JobType Job; // 시트에서 읽음
     public int Level = 1;
     public float Exp = 0;
+    public string assetId;
     
-    // 아바타 (아바타 ID값)
-    public int Avatar_ID; // 성별, 직군에 따라 직업 범위내의 ID 랜덤 결정
-
     // 핵심 성향
     public StaffGrade Grade; // 시트에서 읽은 확률 표에 따라 랜덤 결정.
     public DiscType DISC_Type; // 랜덤 결정.

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Random = UnityEngine.Random;
 
 /// <summary>
@@ -20,6 +22,10 @@ public class StaffEntity : IStaffInfo, ISavableStaff
     private StaffDataFactory _staffDataFactory = new ();
     private bool isSelectingTag;
 
+    public Sprite Thumbnail { get; private set; }
+    private AsyncOperationHandle<Sprite> _thumbnailHandle;
+    private bool _hasThumbnailHandle;
+    
     // IStaffInfo 구현 (읽기 전용)
     public GameObject GetGameObject() => _gameObject;
     public int GetStaffID() => init.Staff_ID;
@@ -151,5 +157,21 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         _staffDataFactory.ApplyTagEffect(init, runtime, tag.Tag_A_Effect_Name, tag.Tag_A_Effect_Value, tag.Tag_A_Effect_Ratio);
         _staffDataFactory.ApplyTagEffect(init, runtime, tag.Tag_B_Effect_Name, tag.Tag_B_Effect_Value, tag.Tag_B_Effect_Ratio);
         isSelectingTag = false;
+    }
+    
+    public void SetThumbnail(Sprite sprite, AsyncOperationHandle<Sprite> handle)
+    {
+        ReleaseThumbnail();
+        Thumbnail = sprite;
+        _thumbnailHandle = handle;
+        _hasThumbnailHandle = true;
+    }
+
+    public void ReleaseThumbnail()
+    {
+        if (!_hasThumbnailHandle) return;
+        Addressables.Release(_thumbnailHandle);
+        _hasThumbnailHandle = false;
+        Thumbnail = null;
     }
 }
