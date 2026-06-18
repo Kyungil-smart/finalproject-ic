@@ -12,4 +12,5 @@
     SlideUI,  // 다량의 데이터를 Slide 형으로 보기 위한 UI 
     TagSelectUI,  // Main UI 에서 Staff Level Up 씬 발생시
     ReleaseUI,  // 출시(릴리즈) 용 UI - T12
+    ProcAnimationUI,   // T01-12 내 애니메이션이 필요한 내용
 }
