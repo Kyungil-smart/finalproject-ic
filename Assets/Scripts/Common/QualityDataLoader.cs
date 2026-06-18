@@ -10,7 +10,7 @@ public class QualityDataLoader
         qualityData.targets.Clear();
     }
 
-    public void LoadQulityData(GSheetManager gsheet)
+    public void LoadQualityData(GSheetManager gsheet)
     {
         ClearData();
         var data = gsheet.GetData();

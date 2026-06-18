@@ -39,7 +39,7 @@ public class QualityManager : Manager, IQualityManager, IReadyStatus
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsQuality.IsDownload);
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsTarget.IsDownload);
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsAchieve.IsDownload);
-        loader.LoadQulityData(gsQuality);
+        loader.LoadQualityData(gsQuality);
         loader.LoadTargetData(gsTarget);
         achieveLoader.LoadAchieveData(gsAchieve);
         _readyStatus["QualityManager"] = true;
