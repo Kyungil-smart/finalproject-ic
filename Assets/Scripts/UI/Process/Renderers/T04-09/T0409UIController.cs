@@ -22,6 +22,12 @@ public class T0409UIController : MonoBehaviour, IUIRender
 
     private List<int> _selectedStaffs = new();
     private const int LeaderCount = 2;
+
+    private void Awake()
+    {
+        foreach (var panel in ssPanels)
+            panel.OnItemSelecte.Subscribe(SelectItem).AddTo(panel);
+    }
     
     private void OnEnable()
     {
@@ -50,8 +56,12 @@ public class T0409UIController : MonoBehaviour, IUIRender
                 }
             }
             confirmBtn.onClick.RemoveAllListeners();
-            confirmBtn.onClick.AddListener(() => renderStaffData.onSelectCallback?.Invoke(_selectedStaffs));
-            confirmBtn.onClick.AddListener(StaffListClose);
+            confirmBtn.onClick.AddListener(() =>
+            {
+                if (_selectedStaffs.Count != LeaderCount) return;
+                renderStaffData.onSelectCallback?.Invoke(_selectedStaffs);
+                StaffListClose();
+            });
         } 
         else if (data is T0409ProductionLeaderResultRenderData renderLeaderData)
         {
@@ -87,11 +97,6 @@ public class T0409UIController : MonoBehaviour, IUIRender
     private void SetUpPanel(int index, StaffSummaryData data, StaffSummaryPanelRender panel)
     {
         panel.SetUp(index);
-        
-        panel.OnItemSelecte
-            .Subscribe(SelectItem)
-            .AddTo(panel);
-        
         panel.Render(data.viewData, true, data.selected, true);
         panel.gameObject.SetActive(true);
     }
@@ -100,7 +105,11 @@ public class T0409UIController : MonoBehaviour, IUIRender
     {
         if (data.isOn)
         {
-            if (_selectedStaffs.Count >= LeaderCount) return;
+            if (_selectedStaffs.Count >= LeaderCount)
+            {
+                ssPanels[data.index].RevertSelection(); 
+                return;
+            }
             _selectedStaffs.Add(data.index); 
         }
         else

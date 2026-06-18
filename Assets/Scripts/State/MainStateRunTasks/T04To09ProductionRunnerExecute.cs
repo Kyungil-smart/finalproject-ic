@@ -1,11 +1,6 @@
 using Cysharp.Threading.Tasks;
-using R3;
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
 
 
 /// <summary>
@@ -57,8 +52,9 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         }
         else
         {
-            foreach (int idx in _selectedStaffIdxs)
-                _t0409ProductionStaffListRenderData.staffList[idx].selected = true;
+            foreach (var s in _t0409ProductionStaffListRenderData.staffList)
+                s.selected = false;
+            _selectedStaffIdxs.Clear();
         }
         await UniTask.Yield();
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProductionUI, _t0409ProductionStaffListRenderData);
@@ -69,7 +65,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     private void SelectedStaffCallback(List<int> staffs)
     {
         _waiting = false;
-        _selectedStaffIdxs = staffs;
+        _selectedStaffIdxs = new List<int> (staffs);
     }
 
     // 선택된 리더들 체크 기능(뒤로가기 / 확정)
@@ -101,6 +97,13 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
 
     private void GoCheckSelectLeadersToWaitingAnimation()
     {
+        if (selectedStaffs.leaderList.Count != 2)  // 2명 아니면
+        {
+            _waiting = false;
+            _conditionGoback = true;   // 선택 화면으로 되돌림
+            return;
+        }
+        
         // 투입한 직원 ID 보내기
         ServiceLocater.Get<IProjectManager>().AssignStaff(curGameDevProcName, selectedStaffs.leaderList[0].Staff_ID);
         ServiceLocater.Get<IProjectManager>().AssignStaff(curGameDevProcName, selectedStaffs.leaderList[1].Staff_ID);
