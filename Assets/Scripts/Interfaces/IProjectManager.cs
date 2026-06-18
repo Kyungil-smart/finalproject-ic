@@ -15,6 +15,9 @@ public interface IProjectManager
     public uint StaffsCost {get; }
     public uint Earnings { get; }
     public void UpdateTotalQuality(float value, float ratio = 1f);
+    public void UpdateDesignQuality(float value, float ratio = 1f);
+    public void UpdateArtQuality(float value, float ratio = 1f);
+    public void UpdateDevQuality(float value, float ratio = 1f);
     
     // Method Part
     public void SetProjectName(string projectName);

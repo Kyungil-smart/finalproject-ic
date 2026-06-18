@@ -37,25 +37,17 @@ public class EventDataLoader
                 effectRatio = float.Parse(row["Btn_B_Effect_Ratio"])
             };
 
-            EventButtonData eventCButton = new()
-            {
-                textId = int.Parse(row["Btn_C_Txt_ID"]),
-                target = row["Btn_C_Target"],
-                effectValue = int.Parse(row["Btn_C_Effect_Value"]),
-                effectRatio = float.Parse(row["Btn_C_Effect_Ratio"])
-            };
-
             EventTaskData taskData = new()
             {
                 id = int.Parse(row["Event_ID"]),
                 titleTextId = int.Parse(row["Event_Title_ID"]),
                 categoryId =  int.Parse(row["Event_Cat"]),
                 descTextId = int.Parse(row["Event_Desc_ID"]),
+                resultId = int.Parse(row["Event_Result_ID"]),
                 buttons = new List<EventButtonData>
                 {
                     eventAButton,
                     eventBButton,
-                    eventCButton
                 }
             };
 

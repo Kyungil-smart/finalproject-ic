@@ -81,6 +81,27 @@ public class ProjectManager : Manager, IProjectManager
         data.total = value * ratio;
         _projectData.Qualities.Value = data;
     }
+    
+    public void UpdateArtQuality(float value, float ratio = 1f)
+    {
+        var data = _projectData.Qualities.Value;
+        data.art = value * ratio;
+        _projectData.Qualities.Value = data;
+    }
+    
+    public void UpdateDesignQuality(float value, float ratio = 1f)
+    {
+        var data = _projectData.Qualities.Value;
+        data.design = value * ratio;
+        _projectData.Qualities.Value = data;
+    }
+    
+    public void UpdateDevQuality(float value, float ratio = 1f)
+    {
+        var data = _projectData.Qualities.Value;
+        data.development = value * ratio;
+        _projectData.Qualities.Value = data;
+    }
 
     public void SetProjectName(string projectName) => _projectData.name = projectName;
 

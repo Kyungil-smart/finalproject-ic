@@ -18,6 +18,7 @@ public class EventTaskData
     public int titleTextId;
     public int categoryId;
     public int descTextId;
+    public int resultId;
     public List<EventButtonData> buttons;
 }
 

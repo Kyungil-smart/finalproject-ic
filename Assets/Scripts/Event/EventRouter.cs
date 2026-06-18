@@ -6,6 +6,9 @@ public class EventRouter : IEventRouter
     private Dictionary<string, IEventRouter> _router = new()
     {
         {"Total_Quality", new QualityReward()},
+        {"Art_Quality", new ArtQualityReward()},
+        {"Dev_Quality", new DevQualityReward()},
+        {"Design_Quality", new DesignQualityReward()},
         {"Money", new GoldReward()},
         {"Heart", new HeartReward()},
     };
