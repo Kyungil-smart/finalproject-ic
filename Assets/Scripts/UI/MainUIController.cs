@@ -176,10 +176,8 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
 
     private void OnClickViewLastProject()
     {
-        // ToDo. Project 는 Game Manager 에서 관리 할 것. 따라서 해당 매니저에게 데이터 요청 진행.
-        var dataList = _gameManager.Projects;
         LastProjectRenderData data = new();
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LastProjectUI, data);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.SlideUI, data);
     }
     
     private void OnClickViewStaffList()

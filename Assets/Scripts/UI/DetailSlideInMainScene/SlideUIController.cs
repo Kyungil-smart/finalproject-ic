@@ -32,9 +32,10 @@ public class SlideUIController : MonoBehaviour, IUIRender
     
     public void Render(UIRenderData data)
     {
-        staffMainPanel.SetActive(true);
         if (data is StaffDetailRenderData renderData)
         {
+            staffMainPanel.SetActive(true);
+            projectMainPanel.SetActive(false);
             for (int i = 0; i < renderData.staffDataList.Count; i++)
             {   
                 var staffData = renderData.staffDataList[i];
@@ -48,10 +49,11 @@ public class SlideUIController : MonoBehaviour, IUIRender
         }   
         else
         {
-            projectMainPanel.SetActive(true);
             // 1. Project List 가져오기
             var projectList = ServiceLocater.Get<IGameManager>().Projects;    
             if (projectList.Count <= 0) return;
+            staffMainPanel.SetActive(false);
+            projectMainPanel.SetActive(true);
             // 2. Project 개수 확인
             if (_projectCnt == 0)
             {
