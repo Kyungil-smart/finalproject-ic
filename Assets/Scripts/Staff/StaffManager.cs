@@ -190,12 +190,13 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         _staffList.Add(targetData);
         
         // 빌더 파이프라인으로 실제 캐릭터 프리팹 생성 및 배치
-        IStaffInfo newStaff = await new StaffBuilder()
+        (IStaffInfo newStaff, GameObject go) = await new StaffBuilder()
             .WithStaffData(targetData)
             .WithVisualAsset(tempCbtPrefab) 
             .BuildAsync(staffContainer);
         
         newStaff.DisplayInfo();
+        targetData.SetGameObject(go);
         Debug.Log($"[{targetData.init.Staff_Name}] 정식 채용 및 오브젝트 생성 완료");
         return StaffHireResult.Success;
     }
@@ -205,6 +206,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
     {
         // 고용 리스트에서 삭제.
         var staff = _staffList.Find(x => x.init.Staff_ID == targetStaffID);
+        if (staff == null) return;
         _staffList.Remove(staff);
         await UniTask.Yield(); 
         Destroy(staff.GetGameObject());

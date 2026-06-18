@@ -27,24 +27,24 @@ public class StaffBuilder
     // 빌더에 등록된 데이터를 바탕으로 스태프 오브젝트를 생성.
     // 매개변수 parent는 하이래키창에 스태프를 담는 빈 상위 오브젝트(폴더). 폴더 안에 스태프 오브젝트를 생성.
     
-    public async UniTask<IStaffInfo> BuildAsync(Transform parent)
+    public async UniTask<(IStaffInfo staffInfo, GameObject go)> BuildAsync(Transform parent)
     {
-        if (_staffData == null) return null;
+        if (_staffData == null) return (null, null);
 
         // 유니티 씬에 껍데기 오브젝트 생성
         GameObject staffObj = new GameObject($"Staff_{_staffData.init.Staff_ID}_{_staffData.init.Job}");
         staffObj.transform.SetParent(parent);
-
+        GameObject go = null;
         // 캐릭터 에셋을 엔티티의 자식으로 부착 (향후 어드레서블 적용할 수 있게 변경)
         if (_visualPrefab != null)
         {
             // await Addressables.InstantiateAsync(...)
             await UniTask.Delay(500); // 나중에 고정된 시간이 아닌 위의 어드레서블 적용 코드로 변경
-            GameObject.Instantiate(_visualPrefab, staffObj.transform);
-            _visualPrefab.GetComponent<Staff>().SetEntity(_staffData);
+            go = GameObject.Instantiate(_visualPrefab, staffObj.transform);
+            go.GetComponent<Staff>().SetEntity(_staffData);
         }
 
         // 외부에는 읽기 전용 인터페이스만 리턴 (캡슐화)
-        return _staffData;
+        return (_staffData, staffObj);
     }
 }
