@@ -4,15 +4,14 @@ using UnityEngine;
 
 
 [Serializable]
-public class SlotData
+public class SlotDef
 {
     public int id;
     public int cost;
-    public bool unlocked;
 }
 
 [CreateAssetMenu(fileName = "SlotUnlockDataSO", menuName = "Scriptable Objects/Staff/SlotUnlockDataSO")]
 public class SlotUnlockDataSO : ScriptableObject
 {
-    public List<SlotData> slots;
+    public List<SlotDef> slots;
 }

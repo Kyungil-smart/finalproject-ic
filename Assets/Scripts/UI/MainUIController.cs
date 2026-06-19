@@ -77,6 +77,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         UpdateProcessData(data);
         UpdateGoldUI();
         UpdateDateUI();
+        // ServiceLocater.Get<IStaffRegister>().SetSlotPos(staffSlots);
         if (ServiceLocater.Get<IGameManager>().InputProjectNameActive) 
             OpenInputProjectNamePanel();
         _isReady = true;

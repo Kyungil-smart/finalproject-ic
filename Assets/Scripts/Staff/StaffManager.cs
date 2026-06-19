@@ -19,11 +19,11 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
     [SerializeField] private SlotUnlockDataSO slotUnlockData;
     [SerializeField] private string slotGSheetId;
     [SerializeField] private string slotGId;
-    private SlotData _currentSlot;
-    public SlotData CurrentSlot => _currentSlot;
-    private List<SlotData> _slots = new();
-    private int _slotIndex;
-    public int maxHiredStaffCount => _slotIndex + 2;
+    private SlotState _currentSlot;
+    public SlotState CurrentSlot => _currentSlot;
+    private List<SlotState> _slots = new();
+    private int _slotIndex = 2;
+    public int maxHiredStaffCount => GetMaxHiredStaffCount();
     
     [Header("스태프 생성 설정")]
     public Transform staffContainer;      // 직원들 모아둘 부모 폴더 (하이러키 창에서)
@@ -58,8 +58,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
             await DownloadSlotData();
         
         _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
-        _slots = slotUnlockData.slots;
-        Debug.Log($"[StaffManager:Init] 로딩된 slot 총 개수: {_slots.Count}");
+        await InitSlot();
         var data = LoadingSavedData();
         // ToDo: Save file loading 후에 slot 상태에 대한 업데이트 필요.
         if (data == null)
@@ -331,6 +330,28 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         Debug.Log($"[StaffManager] Slot 해금 성공 : 최대 고용 가능 인원수: {maxHiredStaffCount}");
         return (true, _slotIndex);
     }
+
+    private int GetMaxHiredStaffCount()
+    {
+        int cnt = 0;
+        foreach (var slot in _slots)
+            if (slot.unlocked && slot.id % 10 != 0) cnt++;
+        return cnt;
+    }
+    
+    private async UniTask InitSlot()
+    {
+        Debug.Log($"[StaffManager:Init] 로딩된 slot 총 개수: {slotUnlockData.slots.Count}");
+        _slots = slotUnlockData.slots.Select(def => new SlotState(def)).ToList();
+        for (int i = 0; i < _slotIndex; i++)
+            _slots[i].unlocked = true;
+    }
+
+    public void SetSlotPos(Transform[] transforms)
+    {
+        for (int i = 0; i < transforms.Length; i++)
+            _slots[i].pos = transforms[i];
+    }
     
     // --- Leveling 관련
     public void GetExpAllStaffs()
@@ -431,7 +452,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         slotUnlockData.slots.Clear();
         foreach (var data in dataList)
         {
-            slotUnlockData.slots.Add(new SlotData()
+            slotUnlockData.slots.Add(new SlotDef()
             {
                 id = int.Parse(data["Slot_ID"]),
                 cost = int.Parse(data["Slot_Cost"]),
