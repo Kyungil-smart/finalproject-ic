@@ -46,9 +46,11 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
     [Header("Gsheet Info")]
     [SerializeField] private string gsheetId;
     [SerializeField] private string awardsGId;
+    [SerializeField] private string genreThemeGId; 
     
     [Header("ScriptableObject Info")]
     [SerializeField] private AwardsDataSO _awardsDataSO;
+    [SerializeField] private GenreThemeTypeDataSO _genreThemeDataSO;
     
     public AwardsDataSO AwardsDataSO => _awardsDataSO;
     private Dictionary<string, bool> _readyStatus = new();
@@ -70,7 +72,10 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
     {
         _readyStatus.Clear();
         if (Utils.Environment.isDevelopment)
+        {
             DownloadAwardData();
+            DownloadGenreThemeData();
+        }
     }
     
     private string GetString(string textId)
@@ -112,5 +117,27 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
             });
         }
         _readyStatus["AwardsData"] = true;
+    }
+    
+    private async UniTask DownloadGenreThemeData()
+    {
+        _readyStatus.Add("GenreThemeData", false);
+        if (_genreThemeDataSO.genreThemeList == null) _genreThemeDataSO.genreThemeList = new();
+        _genreThemeDataSO.genreThemeList.Clear();
+        GSheetManager gSheetManager = new(gsheetId, genreThemeGId);
+        await UniTask.WaitUntil(() => gSheetManager.IsDownload);
+        var dataList = gSheetManager.GetData();
+        foreach (var data in dataList)
+        {
+            _genreThemeDataSO.genreThemeList.Add(new GenreThemeRow()
+            {
+                GT_ID = int.Parse(data["GT_Id"]),
+                Type = int.Parse(data["Type"]),
+                GT_Name_ID = int.Parse(data["GT_Name_ID"]),
+                GT_Cost =  int.Parse(data["GT_Cost"]),
+                GT_Cost_Ratio = float.Parse(data["GT_CostRatio"]),
+            });
+        }
+        _readyStatus["GenreThemeData"] = true;
     }
 }

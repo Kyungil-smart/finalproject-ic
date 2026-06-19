@@ -29,6 +29,7 @@ public struct QualityRateData
 public struct QualityTargetData
 {
     public float avgLevel;
+    public float levelMultiplier;
     public float targetTotal;
     public float targetDesign;
     public float targetDev;

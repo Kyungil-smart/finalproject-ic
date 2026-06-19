@@ -21,6 +21,15 @@ public class StaffDatailUIRenderer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI artText;
     [SerializeField] private Button closeBtn; 
     [SerializeField] private GameObject[] tags;
+        
+    [Header("직업 별 값 표기")]
+    [SerializeField] private GameObject artPanel;
+    [SerializeField] private TextMeshProUGUI artValue;
+    [SerializeField] private GameObject designPanel;
+    [SerializeField] private TextMeshProUGUI designValue;
+    [SerializeField] private GameObject devPanel;
+    [SerializeField] private TextMeshProUGUI devValue;
+
     
     public void Render(StaffViewData viewData, Action onCloseCallback = null)
     {

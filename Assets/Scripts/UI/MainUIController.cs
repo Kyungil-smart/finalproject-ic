@@ -15,17 +15,13 @@ using Channel = DataDispatcher.Channel;
 public class MainUIController : MonoBehaviour, IMainUIReadyable
 {
     [Header("Top UI")]
-    [SerializeField] private TextLoader goldTl;
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private TextMeshProUGUI dateText;
     
     [Header("Process UI")]
     [SerializeField] private TextLoader previousStepTl;
-    [SerializeField] private TextMeshProUGUI previousStepNum;
     [SerializeField] private TextLoader currentStepTl;
-    [SerializeField] private TextMeshProUGUI currentStepNum;
     [SerializeField] private TextLoader nextStepTl;
-    [SerializeField] private TextMeshProUGUI nextStepNum;
     
     [Header("Bottom UI")]
     [SerializeField] private Button lastProjectsButton;
@@ -101,9 +97,6 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         lastProjectsTl.TextId = -1;
         goNextProcessTl.TextId = -1;
         staffListTl.TextId = -1;
-        previousStepNum.text = StepString(0);  
-        currentStepNum.text = StepString(0);
-        nextStepNum.text = StepString(0);
         LoadingSavedData();
     }
     
@@ -124,7 +117,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         _gameManager.Money
             .Subscribe(gold =>
             {
-                goldText.text = $"{gold}";
+                goldText.text = gold.ToString("N0");;
             }).AddTo(_disposables);
     }
 
@@ -134,37 +127,18 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
             .DistinctUntilChanged()
             .Subscribe(date =>
             {
-                dateText.text = date.ToString("yyyy-MM-dd");            
+                dateText.text = date.ToString("yyyy") + "년";            
             }).AddTo(_disposables);
     }
 
     private void UpdateProcessData(StateViewData stateView)
     {
         Debug.Log("[MainUIController:UpdateProcessData] Get Data");
-        if (stateView.prev.id <= 0)
-        {
-            previousStepTl.TextId = 0;
-            previousStepNum.text = "";
-        }
-        else
-        {
-            previousStepTl.TextId = stateView.prev.textId;  // ToDo. TextID 화 시키기
-            previousStepNum.text = StepString(stateView.prev.id);
-        }
-
-        currentStepTl.TextId = stateView.current.textId;  // ToDo. TextID 화 시키기
-        currentStepNum.text = StepString(stateView.current.id);
-        
-        if (stateView.next.id <= 0)
-        {
-            nextStepTl.TextId = 0;
-            nextStepNum.text = "";
-        }
-        else
-        {
-            nextStepTl.TextId = stateView.next.textId;  // ToDo. TextID 화 시키기
-            nextStepNum.text = StepString(stateView.next.id);
-        } 
+        if (stateView.prev.id <= 0) previousStepTl.TextId = 0;
+        else previousStepTl.TextId = stateView.prev.textId;
+        currentStepTl.TextId = stateView.current.textId; 
+        if (stateView.next.id <= 0) nextStepTl.TextId = 0;
+        else nextStepTl.TextId = stateView.next.textId;  
     }
     
     // ------------ 버튼 핸들러들 -------------

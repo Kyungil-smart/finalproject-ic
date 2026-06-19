@@ -56,16 +56,16 @@ public class StaffDataFetcher
         foreach (var row in tagSheet.GetData())
         {
             result.Tags.Add(new TagRow {
-                Tag_Id = int.Parse(row["Tag_ID"]),
+                Tag_Id = int.Parse(row["Tag_Id"]),
                 Tag_Type = int.Parse(row["Tag_Type"]),
                 Tag_Name_ID = row["Tag_Name_ID"],
                 Tag_Name = GetString(row["Tag_Name_ID"]),
-                // Tag_Desc_ID = row["Tag_Desc_ID"],
-                // Tag_Desc = GetString(row["Tag_Desc_ID"]),
-                Tag_A_Effect_Name = row["Tag_A_Effect_Name"],
+                Tag_Desc_ID = row["Tag_Desc_ID"],
+                Tag_Desc = GetString(row["Tag_Desc_ID"]),
+                Tag_A_Effect_Name = GetString(row["Tag_A_Effect_ID"]),
                 Tag_A_Effect_Value = int.Parse(row["Tag_A_Effect_Value"]),
                 Tag_A_Effect_Ratio = float.Parse(row["Tag_A_Effect_Ratio"]),
-                Tag_B_Effect_Name = row["Tag_B_Effect_Name"],
+                Tag_B_Effect_Name = GetString(row["Tag_B_Effect_ID"]),
                 Tag_B_Effect_Value = int.Parse(row["Tag_B_Effect_Value"]),
                 Tag_B_Effect_Ratio = float.Parse(row["Tag_B_Effect_Ratio"])
             });

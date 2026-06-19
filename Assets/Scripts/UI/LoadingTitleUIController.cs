@@ -23,7 +23,7 @@ public class LoadingTitleUIController : MonoBehaviour
     {
         try
         {
-            await Utils.TaskAsync.WaitUntilOrThrowAsync(GetReadyStatus, 10f);
+            await Utils.TaskAsync.WaitUntilOrThrowAsync(GetReadyStatus, 20f);
         }
         finally
         {

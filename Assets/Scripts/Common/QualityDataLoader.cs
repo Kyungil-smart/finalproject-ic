@@ -42,6 +42,7 @@ public class QualityDataLoader
             QualityTargetData dataTarget = new()
             {
                 avgLevel = float.Parse(row["Avg_Level"]),
+                levelMultiplier = float.Parse(row["Level_Multiple"]),
                 targetTotal = float.Parse(row["Target_Quality_Total"]),
                 targetDesign = float.Parse(row["Target_Quality_Design"]),
                 targetDev = float.Parse(row["Target_Quality_Dev"]),
