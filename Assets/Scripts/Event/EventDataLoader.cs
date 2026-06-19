@@ -5,13 +5,11 @@ public class EventDataLoader
 {
     public EventTaskSO staffTaskSO;
     public EventTaskSO regularTaskSO;
-    public EventTaskSO linkageTaskSO;
 
     private void ClearData()
     {
         staffTaskSO.tasks.Clear();
         regularTaskSO.tasks.Clear();
-        linkageTaskSO.tasks.Clear();
     }
     
     public void LoadEvent(GSheetManager gsheet)
@@ -59,7 +57,6 @@ public class EventDataLoader
         
         ServiceLocater.Register(this);
         Debug.Log($"[EventDataLoader] Load - StaffTask: {staffTaskSO.tasks.Count}");
-        Debug.Log($"[EventDataLoader] Load - LinkageTask: {linkageTaskSO.tasks.Count}");
         Debug.Log($"[EventDataLoader] Load - RegularTask: {regularTaskSO.tasks.Count}");
         Debug.Log($"[EventDataLoader] Complete load and save the event to ScriptableObject.");
     }

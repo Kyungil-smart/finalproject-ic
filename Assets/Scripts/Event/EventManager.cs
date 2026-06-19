@@ -22,7 +22,6 @@ public class EventManager : Manager, IEventManager, IReadyStatus
     private GSheetManager _gsheet;
     
     [SerializeField] private EventTaskSO staffTasks;
-    [SerializeField] private EventTaskSO linkageTasks;
     [SerializeField] private EventTaskSO regularTasks;
     
     private Dictionary<EventType, EventDataStruct> _eventTasks = new();
@@ -66,7 +65,6 @@ public class EventManager : Manager, IEventManager, IReadyStatus
         {
             staffTaskSO = staffTasks,
             regularTaskSO = regularTasks,
-            linkageTaskSO = linkageTasks,
         };
         var gsManager = new GSheetManager(gSheetId, gid);
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsManager.IsDownload);
@@ -78,7 +76,6 @@ public class EventManager : Manager, IEventManager, IReadyStatus
     private void InitEvent()
     {
         SetEventTask(EventType.Staff, staffTasks, new StaffEventTaskRunner());
-        SetEventTask(EventType.Linkage, linkageTasks, new LinkageEventTaskRunner());
         SetEventTask(EventType.Regular, regularTasks, new RegularEventTaskRunner());
         return;
 
@@ -96,7 +93,7 @@ public class EventManager : Manager, IEventManager, IReadyStatus
     public void ResetRunId()
     {
         if (_eventTasks == null) return;
-        EventType[] eventTypes = { EventType.Staff, EventType.Linkage, EventType.Regular};
+        EventType[] eventTypes = { EventType.Staff, EventType.Regular};
         foreach (var evtType in eventTypes)
             _eventTasks[evtType].runIds.Clear();
     }
