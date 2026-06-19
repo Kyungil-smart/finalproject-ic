@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Random = UnityEngine.Random;
 
 
@@ -98,10 +99,10 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
 
         // (B) 어드레서블 라벨로 "썸네일이 실제 존재하는 ID"만 추출
         var thumbnailIds = await LoadAvailableThumbnailIdsAsync();
-
+        bool hasThumbnails = thumbnailIds.Count > 0;
         // (C) 풀 = 썸네일 있음 ∩ Full 아님
         var pool = _staffDataManager.StaffList
-            .Where(row => thumbnailIds.Contains(row.Staff_ID))   // 썸네일 없는 직원은 후보 제외
+            .Where(row => !hasThumbnails || thumbnailIds.Contains(row.Staff_ID))   // 썸네일 0개면 필터 패스, 썸네일 없는 직원은 후보 제외
             .Where(row => !excludedIds.Contains(row.Staff_ID))   // Full 중복 제외
             .ToList();
 
@@ -122,8 +123,13 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
             
             // (D) 확정된 후보의 썸네일만 실제 로드
             candidate.assetId = ToThumbnailKey(candidate.Staff_ID); // 키 보관 ("sfth_XXXX")
-            var spriteHandle = Addressables.LoadAssetAsync<Sprite>(candidate.assetId);
-            Sprite thumbnail = await spriteHandle.ToUniTask();
+            Sprite thumbnail = null;
+            AsyncOperationHandle<Sprite> spriteHandle = default;
+            if (thumbnailIds.Contains(candidate.Staff_ID))
+            {
+                spriteHandle = Addressables.LoadAssetAsync<Sprite>(candidate.assetId);
+                thumbnail = await spriteHandle.ToUniTask();
+            }
         
             StaffEntity staff = new ()
             {
@@ -131,7 +137,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
                 runtime = _dataFactory.CreateInitialRuntimeData(candidate)
             };
             
-            staff.SetThumbnail(thumbnail, spriteHandle); // ↓ 3) 참고
+            staff.SetThumbnail(thumbnail, spriteHandle); // 핸들 없으면 default 전달
 
             // 다음 루프부터 이 후보도 Full로 취급 (안전망)
             excludedIds.Add(candidate.Staff_ID);

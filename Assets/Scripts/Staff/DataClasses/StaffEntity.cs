@@ -164,7 +164,7 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         ReleaseThumbnail();
         Thumbnail = sprite;
         _thumbnailHandle = handle;
-        _hasThumbnailHandle = true;
+        _hasThumbnailHandle = handle.IsValid();
     }
 
     public void ReleaseThumbnail()
