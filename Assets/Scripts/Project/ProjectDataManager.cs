@@ -43,10 +43,16 @@ public class ProjectData
 
 public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
 {
+    [Serializable]
+    class GsheedInfo
+    {
+        public string gsheedId;
+        public string gid;
+    } 
+        
     [Header("Gsheet Info")]
-    [SerializeField] private string gsheetId;
-    [SerializeField] private string awardsGId;
-    [SerializeField] private string genreThemeGId; 
+    [SerializeField] private GsheedInfo awardsGsheetInfo;
+    [SerializeField] private GsheedInfo genreThemeGsheetInfo; 
     
     [Header("ScriptableObject Info")]
     [SerializeField] private AwardsDataSO _awardsDataSO;
@@ -73,8 +79,12 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
         _readyStatus.Clear();
         if (Utils.Environment.isDevelopment)
         {
-            DownloadAwardData();
-            DownloadGenreThemeData();
+            UniTask.Void(async() =>
+            {
+                await UniTask.WaitUntil(() => ServiceLocater.Get<IUITextManager>().IsDataUpdated);
+                DownloadAwardData();
+                DownloadGenreThemeData();    
+            });
         }
     }
     
@@ -94,7 +104,7 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
         _readyStatus.Add("AwardsData", false);
         if (_awardsDataSO.awardsDataList == null) _awardsDataSO.awardsDataList = new();
         _awardsDataSO.awardsDataList.Clear();
-        GSheetManager gSheetManager = new(gsheetId, awardsGId);
+        GSheetManager gSheetManager = new(awardsGsheetInfo.gsheedId, awardsGsheetInfo.gid);
         await UniTask.WaitUntil(() => gSheetManager.IsDownload);
         var dataList = gSheetManager.GetData();
         foreach (var data in dataList)
@@ -124,7 +134,7 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
         _readyStatus.Add("GenreThemeData", false);
         if (_genreThemeDataSO.genreThemeList == null) _genreThemeDataSO.genreThemeList = new();
         _genreThemeDataSO.genreThemeList.Clear();
-        GSheetManager gSheetManager = new(gsheetId, genreThemeGId);
+        GSheetManager gSheetManager = new(genreThemeGsheetInfo.gsheedId, genreThemeGsheetInfo.gid);
         await UniTask.WaitUntil(() => gSheetManager.IsDownload);
         var dataList = gSheetManager.GetData();
         foreach (var data in dataList)
@@ -135,7 +145,7 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
                 Type = int.Parse(data["Type"]),
                 GT_Name_ID = int.Parse(data["GT_Name_ID"]),
                 GT_Cost =  int.Parse(data["GT_Cost"]),
-                GT_Cost_Ratio = float.Parse(data["GT_CostRatio"]),
+                GT_Cost_Ratio = float.Parse(data["GT_Cost_Ratio"]),
             });
         }
         _readyStatus["GenreThemeData"] = true;

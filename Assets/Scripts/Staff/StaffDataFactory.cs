@@ -125,7 +125,7 @@ public class StaffDataFactory
     // 한글 직무명을 JobType Enum으로 변환. 
     private JobType ParseJobType(string jobString)
     {
-        if (jobString == "기획") return JobType.Planner;
+        if (jobString == "기획") return JobType.Designer;
         if (jobString == "개발") return JobType.Developer;
         return JobType.Artist;
     }

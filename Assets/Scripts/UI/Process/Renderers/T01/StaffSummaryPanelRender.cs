@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class StaffSummaryPanelRender : MonoBehaviour
 {
     [Header("Render Data")]
-    [SerializeField] private Image faseImage;
+    [SerializeField] private Image faceImage;
     [SerializeField] private TextMeshProUGUI staffIdText;
     [SerializeField] private TextMeshProUGUI nameTxt;
     [SerializeField] private TextMeshProUGUI hiredText;
@@ -60,7 +60,7 @@ public class StaffSummaryPanelRender : MonoBehaviour
     {
         _isRendering = true;
         _data = data;
-        faseImage.sprite = null;  // ToDo. 추후 addressable 로 불러오는 것 확인하기
+        faceImage.sprite = data.Thumbnail;
         staffIdText.text = StaffId(data.Staff_ID);
         nameTxt.text = data.Staff_Name;
         hiredText.text = Hired(hired);

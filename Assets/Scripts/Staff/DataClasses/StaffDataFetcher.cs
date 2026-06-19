@@ -30,7 +30,20 @@ public class StaffDataFetcher
     {
         var result = new FetchedStaffData();
         Debug.Log("[StaffDataFetcher] 구글 시트 데이터 다운로드 및 파싱 시작...");
+        await UniTask.WhenAll(
+            GetStaffData(result),
+            GetTagData(result),
+            GetLevelStatData(result),
+            GetGradeData(result),
+            GetGradeRatioData(result),
+            GetLevelExpData(result),
+            GetExpData(result)
+        );
+        return result;
+    }
 
+    private async UniTask GetStaffData(FetchedStaffData result)
+    {
         Debug.Log("[StaffDataFetcher] Staff Data ... ");
         // 1. 스태프 데이터 파싱
         GSheetManager staffSheet = new GSheetManager(SHEET_ID, STAFF_GID);
@@ -48,7 +61,10 @@ public class StaffDataFetcher
             });
         }
         Debug.Log("[StaffDataFetcher] Staff Data ... Done");
+    }
 
+    private async UniTask GetTagData(FetchedStaffData result)
+    {
         Debug.Log("[StaffDataFetcher] Tag Data ... ");
         // 2. 태그 데이터 파싱
         GSheetManager tagSheet = new GSheetManager(SHEET_ID, TAG_GID);
@@ -71,7 +87,10 @@ public class StaffDataFetcher
             });
         }
         Debug.Log("[StaffDataFetcher] Tag Data ... Done");
+    }
 
+    private async UniTask GetLevelStatData(FetchedStaffData result)
+    {
         Debug.Log("[StaffDataFetcher] Level Stat Data ... ");
         // 3. 레벨 스탯 파싱
         GSheetManager levelSheet = new GSheetManager(SHEET_ID, LEVEL_STAT_GID);
@@ -87,7 +106,10 @@ public class StaffDataFetcher
             });
         }
         Debug.Log("[StaffDataFetcher] Level State Data ... Done");
+    }
 
+    private async UniTask GetGradeData(FetchedStaffData result)
+    {
         Debug.Log("[StaffDataFetcher] Grade Data ... ");
         // 4. 등급 파싱
         GSheetManager gradeSheet = new GSheetManager(SHEET_ID, GRADE_GID);
@@ -103,7 +125,10 @@ public class StaffDataFetcher
             });
         }
         Debug.Log("[StaffDataFetcher] Grade Data ... Done");
+    }
 
+    private async UniTask GetGradeRatioData(FetchedStaffData result)
+    {
         Debug.Log("[StaffDataFetcher] Grade Ratio Data ... ");
         // 5. 등급 비율 파싱
         GSheetManager ratioSheet = new GSheetManager(SHEET_ID, GRADE_RATIO_GID);
@@ -118,7 +143,10 @@ public class StaffDataFetcher
             });
         }
         Debug.Log("[StaffDataFetcher] Grade Ratio Data ... Done");
-        
+    }
+
+    private async UniTask GetLevelExpData(FetchedStaffData result)
+    {
         Debug.Log("[StaffDataFetcher] Level Exp Data ... Done");
         // 6. Level Exp 파싱
         GSheetManager levelExpSheet = new GSheetManager(SHEET_ID, LEVEL_EXP_GID);
@@ -133,6 +161,10 @@ public class StaffDataFetcher
             });
         }
         Debug.Log("[StaffDataFetcher] Staff Data ... Done");
+    }
+
+    private async UniTask GetExpData(FetchedStaffData result)
+    {
         
         Debug.Log("[StaffDataFetcher] Get Exp Data ... Done");
         // 7. Level Exp 파싱
@@ -146,7 +178,5 @@ public class StaffDataFetcher
             });
         }
         Debug.Log("[StaffDataFetcher] Get Data ... Done");
-
-        return result;
     }
 }

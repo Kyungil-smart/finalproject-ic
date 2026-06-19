@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class StaffDatailUIRenderer : MonoBehaviour
 {
+    [SerializeField] private Image staffImage;
     [SerializeField] private TextMeshProUGUI salaryText;
     [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI genderText;
+    [SerializeField] private GameObject genderMale;
+    [SerializeField] private GameObject genderFemale;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI gradeText;
     [SerializeField] private TextMeshProUGUI discText;
@@ -37,9 +39,10 @@ public class StaffDatailUIRenderer : MonoBehaviour
         closeBtn.onClick.RemoveAllListeners();
         if (onCloseCallback != null) closeBtn.onClick.AddListener(() => onCloseCallback());
         closeBtn.onClick.AddListener(() => gameObject.SetActive(false));
-        
+        staffImage.sprite = viewData.Thumbnail; 
         nameText.text = viewData.Staff_Name;
-        genderText.text = viewData.Staff_Gender ? "M" : "F";
+        genderMale.SetActive(viewData.Staff_Gender);
+        genderFemale.SetActive(!viewData.Staff_Gender);
         levelText.text = viewData.Level.ToString();
         gradeText.text = viewData.Grade;
         discText.text = viewData.DISC_Type;
@@ -52,6 +55,23 @@ public class StaffDatailUIRenderer : MonoBehaviour
         developText.text = viewData.Final_Job_Development.ToString();
         artText.text = viewData.Final_Job_Art.ToString();
         salaryText.text = viewData.Salary.ToString();
+
+        artPanel.SetActive(false);
+        designPanel.SetActive(false);
+        devPanel.SetActive(false);
+        
+        switch (viewData.Job_Type)
+        {
+            case JobType.Artist:
+                artPanel.SetActive(true);
+                break;
+            case JobType.Designer:
+                designPanel.SetActive(true);
+                break;
+            default:
+                devPanel.SetActive(true);
+                break;
+        }
         
         for (int i = 0; i < viewData.All_Tags.Count; i++)
         {

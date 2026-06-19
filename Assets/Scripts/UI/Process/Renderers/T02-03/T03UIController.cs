@@ -12,7 +12,6 @@ public class T0203UIController : MonoBehaviour, IUIRender
     [Header("T02 UI Components")]
     [SerializeField] private GameObject middleSession01;
     [SerializeField] private GameObject tailSession01;
-    [SerializeField] private TextMeshProUGUI what;
     [SerializeField] private Button confirmBtn;
 
     [Header("T03-1 UI Components")] 

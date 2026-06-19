@@ -8,9 +8,11 @@ public class StaffViewData
 {
     // 기본 정보
     public int Staff_ID;
+
     public string Staff_Name;
-    public bool Staff_Gender;       
+    public bool Staff_Gender;
     public string Job_Name;
+    public JobType Job_Type;
     public Sprite Thumbnail;
 
     // 핵심 성향

@@ -49,7 +49,7 @@ namespace Utils
     /// <exception cref="TimeoutException">제한 시간 내에 조건을 만족하지 못했을 때 발생</exception>
     public static class TaskAsync
     {
-        public static async UniTask WaitUntilOrThrowAsync(Func<bool> condition, float timeoutSeconds = 3f)
+        public static async UniTask WaitUntilOrThrowAsync(Func<bool> condition, float timeoutSeconds = 5f)
         {
             // 1. 시간 기반 취소 토큰 소스 생성
             using (var cts = new CancellationTokenSource())
