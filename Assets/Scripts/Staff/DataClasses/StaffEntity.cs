@@ -18,6 +18,7 @@ public class StaffEntity : IStaffInfo, ISavableStaff
     public StaffRuntimeData runtime;
     public Action<bool, StaffEntity> OnLevelUp;
     private GameObject _gameObject;
+    private GameObject _visualInstance;
     private IStaffDataManager _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
     private StaffDataFactory _staffDataFactory = new ();
     private bool isSelectingTag;
@@ -28,6 +29,7 @@ public class StaffEntity : IStaffInfo, ISavableStaff
     
     // IStaffInfo 구현 (읽기 전용)
     public GameObject GetGameObject() => _gameObject;
+    public GameObject GetAvatar() => _visualInstance;
     public int GetStaffID() => init.Staff_ID;
     public string GetFullName() => init.Staff_Name;
     public JobType GetJob() => init.Job;
@@ -174,4 +176,13 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         _hasThumbnailHandle = false;
         Thumbnail = null;
     }
+
+    public void SetVisualInstance(GameObject go) => _visualInstance = go;
+
+    public void ReleaseVisualInstance()
+    {
+        if (_visualInstance == null) return;
+        Addressables.ReleaseInstance(_visualInstance); // 어드레서블 인스턴스 해제 + 파괴
+        _visualInstance = null; 
+    } 
 }

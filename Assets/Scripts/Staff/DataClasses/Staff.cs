@@ -9,4 +9,5 @@ public class Staff : MonoBehaviour
         _entity = entity;
         entity.SetGameObject(gameObject);
     }
+    private void OnDestroy() => _entity = null;
 }

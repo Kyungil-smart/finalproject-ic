@@ -1,5 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+
 /// <summary>
 /// 스태프 데이터 빌딩 (빌드 패턴)
 /// StaffInitData, StaffRuntimeData, 에셋 넣어서 게임 오브젝트로 빌드 . 
@@ -7,22 +9,12 @@ using UnityEngine;
 public class StaffBuilder
 {
     private StaffEntity _staffData;
-    private StaffRuntimeData _runtimeData;
-    private GameObject _visualPrefab;
+    private GameObject _fallbackPrefab;   // 기존 _visualPrefab → 폴백 용도
+    private string _addressableKey;
 
-    // StaffDataFactory가 만든 초기화 데이터 등록
-    public StaffBuilder WithStaffData(StaffEntity data)
-    {
-        _staffData = data;
-        return this;
-    }
-
-    // 에셋 등록 (향후 어드레서블 + Unitask 적용 예정)
-    public StaffBuilder WithVisualAsset(GameObject prefab)
-    {
-        _visualPrefab = prefab;
-        return this;
-    }
+    public StaffBuilder WithStaffData(StaffEntity data) { _staffData = data; return this; }
+    public StaffBuilder WithVisualAsset(GameObject prefab) { _fallbackPrefab = prefab; return this; }
+    public StaffBuilder WithAddressableKey(string key) { _addressableKey = key; return this; }
 
     // 빌더에 등록된 데이터를 바탕으로 스태프 오브젝트를 생성.
     // 매개변수 parent는 하이래키창에 스태프를 담는 빈 상위 오브젝트(폴더). 폴더 안에 스태프 오브젝트를 생성.
@@ -35,16 +27,31 @@ public class StaffBuilder
         GameObject staffObj = new GameObject($"Staff_{_staffData.init.Staff_ID}_{_staffData.init.Job}");
         staffObj.transform.SetParent(parent);
         GameObject go = null;
-        // 캐릭터 에셋을 엔티티의 자식으로 부착 (향후 어드레서블 적용할 수 있게 변경)
-        if (_visualPrefab != null)
+        // 1) 어드레서블 키로 SPUM 프리팹 인스턴스화
+        if (!string.IsNullOrEmpty(_addressableKey))
         {
-            // await Addressables.InstantiateAsync(...)
-            await UniTask.Delay(500); // 나중에 고정된 시간이 아닌 위의 어드레서블 적용 코드로 변경
-            go = GameObject.Instantiate(_visualPrefab, staffObj.transform);
-            go.GetComponent<Staff>().SetEntity(_staffData);
+            try
+            {
+                go = await Addressables.InstantiateAsync(_addressableKey, staffObj.transform).ToUniTask();
+                _staffData.SetVisualInstance(go); // ↓ ③ 해제용으로 보관 (어드레서블 인스턴스만)
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[StaffBuilder] 프리팹 로드 실패({_addressableKey}) → 폴백: {e.Message}");
+            }
         }
 
-        // 외부에는 읽기 전용 인터페이스만 리턴 (캡슐화)
+        // 2) 실패 시 폴백 프리팹 (어드레서블 아님 → 해제 추적 안 함)
+        if (go == null && _fallbackPrefab != null)
+            go = Object.Instantiate(_fallbackPrefab, staffObj.transform);
+
+        // 3) Staff 컴포넌트 보장 (SPUM 프리팹엔 보통 Staff 스크립트가 없음)
+        if (go != null)
+        {
+            var staffComp = staffObj.AddComponent<Staff>();
+            staffComp.SetEntity(_staffData);
+        }
+
         return (_staffData, staffObj);
     }
 }

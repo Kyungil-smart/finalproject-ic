@@ -20,7 +20,8 @@ public class StaffInitData
     public JobType Job; // 시트에서 읽음
     public int Level = 1;
     public float Exp = 0;
-    public string assetId;
+    public string AssetId;
+    public int AvatarKey; 
     
     // 핵심 성향
     public StaffGrade Grade; // 시트에서 읽은 확률 표에 따라 랜덤 결정.

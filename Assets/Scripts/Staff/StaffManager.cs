@@ -41,8 +41,10 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
     
     private const string ThumbnailLabel  = "Staff_Thumnail"; // 라벨 규칙
     private const string ThumbnailPrefix = "sfth_";          // 어드레서블 이름 규칙: sfth_XXXX
+    private const string PrefabPrefix = "sfpf_";
     // 어드레서블 ID → 키 문자열 ("sfth_0012")
     private static string ToThumbnailKey(int staffId) => $"{ThumbnailPrefix}{staffId:D4}";
+    private static string ToPrefabKey(int staffId) => $"{PrefabPrefix}{staffId:D4}";
     
     private void Awake() => Register();
 
@@ -98,18 +100,20 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         excludedIds.UnionWith(_recruitCandidates.Select(x => x.init.Staff_ID)); // Clear 직후라 비어있지만 안전망
 
         // (B) 어드레서블 라벨로 "썸네일이 실제 존재하는 ID"만 추출
-        var thumbnailIds = await LoadAvailableThumbnailIdsAsync();
-        bool hasThumbnails = thumbnailIds.Count > 0;
-        // (C) 풀 = 썸네일 있음 ∩ Full 아님
+        var avatarPoolIds  = await LoadAvailableThumbnailIdsAsync();
+        
+        // (C) 스태프 풀 = 전체 - Full(Staff_ID 중복). 썸네일 필터 없음!
         var pool = _staffDataManager.StaffList
-            .Where(row => !hasThumbnails || thumbnailIds.Contains(row.Staff_ID))   // 썸네일 0개면 필터 패스, 썸네일 없는 직원은 후보 제외
-            .Where(row => !excludedIds.Contains(row.Staff_ID))   // Full 중복 제외
+            .Where(row => !excludedIds.Contains(row.Staff_ID))
             .ToList();
 
         // 풀이 부족하면 가능한 만큼만 (무한 루프 대신 안전하게 축소)
         int targetCount = Mathf.Min(cardCount, pool.Count);
         if (targetCount < cardCount)
             Debug.LogWarning($"[StaffManager] 뽑을 수 있는 후보가 부족: 요청 {cardCount} / 가능 {targetCount}");
+        
+        // Full(고용 스태프)이 이미 점유한 아바타 XXXX → 중복 배정 방지용
+        var usedAvatarKeys = new HashSet<int>(_staffList.Select(s => s.init.AvatarKey));
         
         for (int i = 0; i < targetCount; i++)
         {
@@ -121,14 +125,22 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
             var candidate = await _dataFactory.CreateDataByStaffIDAsync(readOnlyStaffData.Staff_ID, playerLevel);
             if (candidate == null) continue;
             
-            // (D) 확정된 후보의 썸네일만 실제 로드
-            candidate.assetId = ToThumbnailKey(candidate.Staff_ID); // 키 보관 ("sfth_XXXX")
+            // (D) 아바타 XXXX 배정: 가용 풀에서 Full 미사용분만 랜덤 (동시 중복 없음)
+            var freeAvatars = avatarPoolIds.Where(id => !usedAvatarKeys.Contains(id)).ToList();
             Sprite thumbnail = null;
             AsyncOperationHandle<Sprite> spriteHandle = default;
-            if (thumbnailIds.Contains(candidate.Staff_ID))
+            if (freeAvatars.Count > 0)
             {
-                spriteHandle = Addressables.LoadAssetAsync<Sprite>(candidate.assetId);
+                int avatarKey = freeAvatars[Random.Range(0, freeAvatars.Count)];
+                usedAvatarKeys.Add(avatarKey);          // 다음 후보와도 중복 방지
+                candidate.AvatarKey = avatarKey;
+                candidate.AssetId = ToThumbnailKey(avatarKey);   // "sfth_XXXX"
+                spriteHandle = Addressables.LoadAssetAsync<Sprite>(candidate.AssetId);
                 thumbnail = await spriteHandle.ToUniTask();
+            }
+            else
+            {
+                Debug.LogWarning($"[StaffManager] 가용 아바타 부족(동시 {usedAvatarKeys.Count}개 점유). 썸네일 없이 생성");
             }
         
             StaffEntity staff = new ()
@@ -138,10 +150,8 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
             };
             
             staff.SetThumbnail(thumbnail, spriteHandle); // 핸들 없으면 default 전달
-
             // 다음 루프부터 이 후보도 Full로 취급 (안전망)
             excludedIds.Add(candidate.Staff_ID);
-            
             Debug.Log($"[StaffManager] {staff.init.Staff_ID}:{staff.init.Staff_Name} 대기실 배치");
             _recruitCandidates.Add(staff); // 대기실 리스트업
             
@@ -221,6 +231,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         // 빌더 파이프라인으로 실제 캐릭터 프리팹 생성 및 배치
         (IStaffInfo newStaff, GameObject go) = await new StaffBuilder()
             .WithStaffData(targetData)
+            .WithAddressableKey(ToPrefabKey(targetData.init.AvatarKey))
             .WithVisualAsset(tempCbtPrefab) 
             .BuildAsync(staffContainer);
         
@@ -238,6 +249,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         if (staff == null) return;
         _staffList.Remove(staff);
         staff.ReleaseThumbnail(); 
+        staff.ReleaseVisualInstance();
         await UniTask.Yield(); 
         Destroy(staff.GetGameObject());
         await UniTask.Yield();
