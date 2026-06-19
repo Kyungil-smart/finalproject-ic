@@ -5,13 +5,11 @@ public class EventDataLoader
 {
     public EventTaskSO staffTaskSO;
     public EventTaskSO regularTaskSO;
-    public EventTaskSO linkageTaskSO;
 
     private void ClearData()
     {
         staffTaskSO.tasks.Clear();
         regularTaskSO.tasks.Clear();
-        linkageTaskSO.tasks.Clear();
     }
     
     public void LoadEvent(GSheetManager gsheet)
@@ -51,14 +49,14 @@ public class EventDataLoader
                 }
             };
 
-            if (taskData.id >= 310000 && taskData.id < 320000) staffTaskSO.tasks.Add(taskData);
-            else if (taskData.id >= 320000 && taskData.id < 330000) linkageTaskSO.tasks.Add(taskData);
-            else if (taskData.id >= 330000 && taskData.id < 340000) regularTaskSO.tasks.Add(taskData);
+            if (taskData.categoryId % 10 == 1 || taskData.categoryId % 10 == 2 || taskData.categoryId % 10 == 3) staffTaskSO.tasks.Add(taskData);
+            else if (taskData.categoryId % 10 == 0) regularTaskSO.tasks.Add(taskData);
+            // Todo. 일단 시너지랑 외부요인만 넣어뒀습니다. 카테고리로 분류했습니다 아래에 새로 아이디로 추가해도 카테고리만 잘 넣어두면
+            // Todo. 순서가 바껴도 되어서 카테고리로 분류했습니다.
         }
         
         ServiceLocater.Register(this);
         Debug.Log($"[EventDataLoader] Load - StaffTask: {staffTaskSO.tasks.Count}");
-        Debug.Log($"[EventDataLoader] Load - LinkageTask: {linkageTaskSO.tasks.Count}");
         Debug.Log($"[EventDataLoader] Load - RegularTask: {regularTaskSO.tasks.Count}");
         Debug.Log($"[EventDataLoader] Complete load and save the event to ScriptableObject.");
     }

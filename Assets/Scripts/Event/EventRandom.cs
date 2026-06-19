@@ -20,12 +20,11 @@ public class EventRandom
     // 시너지에 따라 필터링된 이벤트분류에서 다시 이벤트 발생시키기
     public async UniTask<EventTaskData> GetStaffRandomly(List<EventTaskData> tasks, List<int> runIds, Synergy synergy)
     {
-        // Todo. 기획에서 시너지분류범위가 아직 안나옴
         var filtered = synergy switch
         {
-            Synergy.Good   => tasks.FindAll(t => t.id == 310001),
-            Synergy.Normal => tasks.FindAll(t => t.id >= 310003 && t.id <= 310004),
-            Synergy.Bad    => tasks.FindAll(t => t.id == 310002),
+            Synergy.Good   => tasks.FindAll(t => t.categoryId % 10 == 1),
+            Synergy.Normal => tasks.FindAll(t => t.categoryId % 10 == 3),
+            Synergy.Bad    => tasks.FindAll(t => t.categoryId % 10 == 2),
             _              => tasks
         };
         return await GetRandomly(filtered, runIds);
