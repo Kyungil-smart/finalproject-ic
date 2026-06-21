@@ -287,7 +287,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
             Job_Type = data.init.Job,
             Thumbnail = data.Thumbnail,
             Grade = data.init.Grade.ToString(),
-            DISC_Type = data.init.DISC_Type.ToString(),
+            DISC_Type = data.init.DISC_Type,
             Current_State = data.runtime.Current_State.ToString(),
             Level = data.init.Level,
             Exp = data.init.Exp,

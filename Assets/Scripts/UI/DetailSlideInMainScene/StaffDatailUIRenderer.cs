@@ -12,7 +12,7 @@ public class StaffDatailUIRenderer : MonoBehaviour
     [SerializeField] private GameObject genderFemale;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI gradeText;
-    [SerializeField] private TextMeshProUGUI discText;
+    [SerializeField] private TextMeshProUGUI[] discTexts;
     [SerializeField] private TextMeshProUGUI jobText;
     [SerializeField] private TextMeshProUGUI concentratText;
     [SerializeField] private TextMeshProUGUI careerText;
@@ -32,6 +32,9 @@ public class StaffDatailUIRenderer : MonoBehaviour
     [SerializeField] private GameObject devPanel;
     [SerializeField] private TextMeshProUGUI devValue;
 
+    [Header("DISC 컬러 표기")] 
+    [SerializeField] private Color discDisableColor;
+    [SerializeField] private Color discEnableColor;
     
     public void Render(StaffViewData viewData, Action onCloseCallback = null)
     {
@@ -45,7 +48,26 @@ public class StaffDatailUIRenderer : MonoBehaviour
         genderFemale.SetActive(!viewData.Staff_Gender);
         levelText.text = viewData.Level.ToString();
         gradeText.text = viewData.Grade;
-        discText.text = viewData.DISC_Type;
+
+        foreach (var textObj in discTexts)
+        {
+            textObj.color = discDisableColor;
+        }
+        switch (viewData.DISC_Type)
+        {
+            case DiscType.D:
+                discTexts[0].color = discEnableColor;
+                break;
+            case DiscType.I:
+                discTexts[1].color = discEnableColor;
+                break;
+            case DiscType.S:
+                discTexts[2].color = discEnableColor;
+                break;
+            case DiscType.C:
+                discTexts[3].color = discEnableColor;
+                break;
+        }
         jobText.text = viewData.Job_Name;
         concentratText.text = viewData.Final_Common_Concentration.ToString();
         careerText.text = viewData.Final_Career.ToString();

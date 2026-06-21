@@ -17,7 +17,7 @@ public class StaffViewData
 
     // 핵심 성향
     public string Grade;            
-    public string DISC_Type;        
+    public DiscType DISC_Type;        
     // 나중에 Fixed_Tag 추가
 
     // 상태 및 성장 정보 (RuntimeData 기반)

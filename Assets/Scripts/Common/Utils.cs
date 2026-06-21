@@ -99,4 +99,16 @@ namespace Utils
             return result;
         }
     }
+
+    public static class DayCheck
+    {
+        public static bool IsDaytime()
+        {
+            // 1. 현재 시스템 시간의 '시(Hour)' 정보를 가져옴
+            int currentHour = DateTime.Now.Hour;
+
+            // 2. 6시 이상 19시 미만인지 조건 검증
+            return currentHour >= 6 && currentHour < 19;
+        }
+    }
 }

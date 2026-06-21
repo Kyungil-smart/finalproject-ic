@@ -262,7 +262,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
 
             // 가챠 전이므로 알 수 없는 데이터들은 도감같은 것들 용도로 기본값(??? 또는 0) 처리
             viewData.Grade = "???";
-            viewData.DISC_Type = "???";
+            viewData.DISC_Type = DiscType.D;
             
             viewData.Current_State = "None";
             viewData.Level = 0;
