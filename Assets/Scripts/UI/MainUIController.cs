@@ -62,6 +62,8 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         ServiceLocater.Register<IMainUIReadyable>(this);
         foreach (var slotBtn in staffSlots)
             slotBtn.onClick.AddListener(UnlockSlot);
+        staffSlots[0].gameObject.SetActive(false);
+        staffSlots[1].gameObject.SetActive(false);
     }
 
     private void Start()
