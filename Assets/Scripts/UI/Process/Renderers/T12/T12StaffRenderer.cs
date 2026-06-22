@@ -4,15 +4,12 @@ using UnityEngine.UI;
 
 public class T12StaffRenderer : MonoBehaviour
 {
-    [SerializeField] private Sprite[] sprites;
-    [SerializeField] private Image bgImage;
+    [SerializeField] private Image staffFaceImg;
     [SerializeField] private TextMeshProUGUI staffNameTxt;
-    [SerializeField] private TextMeshProUGUI staffLevelTxt;
-
-    public void Render(GameDevProcName procName, string staffName, int staffLevel)
+    
+    public void Render(Sprite staffSprite, string staffName, int staffLevel)
     {
-        // ToDo. procName 별로 image 교체
+        staffFaceImg.sprite = staffSprite;
         staffNameTxt.text = staffName;
-        staffLevelTxt.text = $"Lv. {staffLevel:D2}";
     }
 }

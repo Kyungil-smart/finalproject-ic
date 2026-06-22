@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public struct StaffTagUIRenderData
 {
-    public GameDevProcName procName;
+    public Sprite staffSprite;
     public string staffName;
     public int staffLevel;
 }
@@ -49,7 +49,7 @@ public class T12ProjectDetailUIRender : MonoBehaviour
         MakeStaffTagList(GameDevProcName.ArtFullProduction, staffList);
 
         for (int i = 0; i < 12; i++)  // 총 12개.
-            staffTags[i].Render(staffList[i].procName, staffList[i].staffName, staffList[i].staffLevel);
+            staffTags[i].Render(staffList[i].staffSprite, staffList[i].staffName, staffList[i].staffLevel);
         
         confirmBtn.onClick.RemoveAllListeners();
         confirmBtn.onClick.AddListener(() => data.btCallback?.Invoke() );
@@ -67,6 +67,6 @@ public class T12ProjectDetailUIRender : MonoBehaviour
     {
         var staff = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(staffId);
         return new StaffTagUIRenderData() 
-            { procName = proc, staffName = staff.init.Staff_Name, staffLevel = staff.init.Level};
+            { staffSprite = staff.Thumbnail, staffName = staff.init.Staff_Name, staffLevel = staff.init.Level};
     }
 }
