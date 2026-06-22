@@ -48,7 +48,7 @@ public class T12ProjectDetailUIRender : MonoBehaviour
         MakeStaffTagList(GameDevProcName.DevelopmentFullProduction, staffList);
         MakeStaffTagList(GameDevProcName.ArtFullProduction, staffList);
 
-        for (int i = 0; i < 12; i++)  // 총 12개.
+        for (int i = 0; i < staffTags.Length; i++)  // 총 12개.
             staffTags[i].Render(staffList[i].staffSprite, staffList[i].staffName, staffList[i].staffLevel);
         
         confirmBtn.onClick.RemoveAllListeners();
@@ -60,10 +60,10 @@ public class T12ProjectDetailUIRender : MonoBehaviour
     {
         var projectManager = ServiceLocater.Get<IProjectManager>();
         foreach (var staffId in projectManager.GetAssignedStaffIds(procName))
-            staffList.Add(ExtractStaffData(procName, staffId));
+            staffList.Add(ExtractStaffData(staffId));
     }
     
-    private StaffTagUIRenderData ExtractStaffData(GameDevProcName proc, int staffId)
+    private StaffTagUIRenderData ExtractStaffData(int staffId)
     {
         var staff = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(staffId);
         return new StaffTagUIRenderData() 

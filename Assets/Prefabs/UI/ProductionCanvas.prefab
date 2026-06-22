@@ -327,7 +327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9cdf93761b13e640853dfffc592ad95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffSummaryPanelRender
-  faseImage: {fileID: 5974779024229813019}
+  faceImage: {fileID: 0}
   staffIdText: {fileID: 8769901889306922882}
   nameTxt: {fileID: 7680742974521306555}
   hiredText: {fileID: 8858615279042455347}
@@ -340,7 +340,7 @@ MonoBehaviour:
   detailButton: {fileID: 7596908937032072832}
   trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
-  detailPanel: {fileID: 166294540196752090}
+  detailPanel: {fileID: 0}
 --- !u!1 &512599528162470319
 GameObject:
   m_ObjectHideFlags: 0
@@ -2907,7 +2907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9cdf93761b13e640853dfffc592ad95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffSummaryPanelRender
-  faseImage: {fileID: 5900672271828926139}
+  faceImage: {fileID: 0}
   staffIdText: {fileID: 4451628583476323949}
   nameTxt: {fileID: 672327626510959840}
   hiredText: {fileID: 8958270158278412668}
@@ -2920,7 +2920,7 @@ MonoBehaviour:
   detailButton: {fileID: 1066782102321067641}
   trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
-  detailPanel: {fileID: 166294540196752090}
+  detailPanel: {fileID: 0}
 --- !u!1 &2417600375754672236
 GameObject:
   m_ObjectHideFlags: 0
@@ -4639,7 +4639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9cdf93761b13e640853dfffc592ad95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffSummaryPanelRender
-  faseImage: {fileID: 3951861100910306157}
+  faceImage: {fileID: 0}
   staffIdText: {fileID: 1574830289969645931}
   nameTxt: {fileID: 2371049002682431942}
   hiredText: {fileID: 700341203763520761}
@@ -4652,7 +4652,7 @@ MonoBehaviour:
   detailButton: {fileID: 4989606819927368316}
   trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
-  detailPanel: {fileID: 166294540196752090}
+  detailPanel: {fileID: 0}
 --- !u!1 &2985067372004895906
 GameObject:
   m_ObjectHideFlags: 0
@@ -4893,7 +4893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9cdf93761b13e640853dfffc592ad95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffSummaryPanelRender
-  faseImage: {fileID: 3642612769392236593}
+  faceImage: {fileID: 0}
   staffIdText: {fileID: 4437938591290036747}
   nameTxt: {fileID: 1150149443024556140}
   hiredText: {fileID: 2511302956840126765}
@@ -4906,7 +4906,7 @@ MonoBehaviour:
   detailButton: {fileID: 4769903926493611983}
   trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
-  detailPanel: {fileID: 166294540196752090}
+  detailPanel: {fileID: 0}
 --- !u!1 &3138699532455563897
 GameObject:
   m_ObjectHideFlags: 0
@@ -5285,7 +5285,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6625032650706685526}
-  - {fileID: 2508500522828247322}
   - {fileID: 4060498143975217099}
   m_Father: {fileID: 3613635724576791158}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6857,8 +6856,8 @@ MonoBehaviour:
   confirmBtn: {fileID: 8901829920738515587}
   leaderResultPanel: {fileID: 5165032226745354978}
   leaderResults:
-  - {fileID: 774298102218223110}
-  - {fileID: 717800779846354522}
+  - {fileID: 0}
+  - {fileID: 0}
   goBackBtn: {fileID: 5879928053967111817}
   goNextBtn: {fileID: 9177413545671690441}
 --- !u!1 &4231591378712576053
@@ -7264,7 +7263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9cdf93761b13e640853dfffc592ad95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffSummaryPanelRender
-  faseImage: {fileID: 4779607511836603974}
+  faceImage: {fileID: 0}
   staffIdText: {fileID: 2370698738429442960}
   nameTxt: {fileID: 6074872637665539362}
   hiredText: {fileID: 4489495838983325189}
@@ -7277,7 +7276,7 @@ MonoBehaviour:
   detailButton: {fileID: 4002632053641009673}
   trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
-  detailPanel: {fileID: 166294540196752090}
+  detailPanel: {fileID: 0}
 --- !u!1 &4472784246196586604
 GameObject:
   m_ObjectHideFlags: 0
@@ -7468,7 +7467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9cdf93761b13e640853dfffc592ad95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffSummaryPanelRender
-  faseImage: {fileID: 1614992147212795626}
+  faceImage: {fileID: 0}
   staffIdText: {fileID: 7653822305504418255}
   nameTxt: {fileID: 1471590719007227574}
   hiredText: {fileID: 8006100321745013209}
@@ -7481,7 +7480,7 @@ MonoBehaviour:
   detailButton: {fileID: 1023733380192625819}
   trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
-  detailPanel: {fileID: 166294540196752090}
+  detailPanel: {fileID: 0}
 --- !u!1 &4501447629439511490
 GameObject:
   m_ObjectHideFlags: 0
@@ -12025,7 +12024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9cdf93761b13e640853dfffc592ad95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffSummaryPanelRender
-  faseImage: {fileID: 2331614059336615071}
+  faceImage: {fileID: 0}
   staffIdText: {fileID: 8007693785091923712}
   nameTxt: {fileID: 7283546590927283223}
   hiredText: {fileID: 1065793934552273904}
@@ -12038,7 +12037,7 @@ MonoBehaviour:
   detailButton: {fileID: 5977535077183807287}
   trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
-  detailPanel: {fileID: 166294540196752090}
+  detailPanel: {fileID: 0}
 --- !u!1 &7431590225151815668
 GameObject:
   m_ObjectHideFlags: 0
@@ -14993,7 +14992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9cdf93761b13e640853dfffc592ad95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaffSummaryPanelRender
-  faseImage: {fileID: 1804974729092572080}
+  faceImage: {fileID: 0}
   staffIdText: {fileID: 2013313457140407393}
   nameTxt: {fileID: 2418018587798567295}
   hiredText: {fileID: 5044465469358694325}
@@ -15006,7 +15005,7 @@ MonoBehaviour:
   detailButton: {fileID: 3578113828040813928}
   trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
-  detailPanel: {fileID: 166294540196752090}
+  detailPanel: {fileID: 0}
 --- !u!1 &8756240926460029391
 GameObject:
   m_ObjectHideFlags: 0
@@ -16181,120 +16180,3 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1001 &2432571002538512040
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2619134381920124976}
-    m_Modifications:
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2538653900800267671, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_Name
-      value: StaffsDetailPanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 2538653900800267671, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
---- !u!114 &166294540196752090 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2561693251475793010, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-  m_PrefabInstance: {fileID: 2432571002538512040}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 127ec22c288a44b6b9d46272e0f274c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StaffDatailUIRenderer
---- !u!224 &2508500522828247322 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 220044845844430770, guid: 0c3b48d158603da42b75970b29b600ef, type: 3}
-  m_PrefabInstance: {fileID: 2432571002538512040}
-  m_PrefabAsset: {fileID: 0}
