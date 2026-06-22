@@ -27,7 +27,7 @@ public class UITextManager : Manager, IUITextManager, IReadyStatus
     private List<Line> _texts = new();
     public bool IsDataUpdated { get; set; }
     private Dictionary<string, bool> _readyStatus = new ();
-    public Dictionary<string, bool> ReadyStatus { get; }
+    public Dictionary<string, bool> ReadyStatus => _readyStatus;
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
@@ -76,21 +76,13 @@ public class UITextManager : Manager, IUITextManager, IReadyStatus
 
     private void UpdateUITextData()
     {
-        if (Utils.Environment.isDevelopment)
+        UniTask.Void(async () =>
         {
-            UniTask.Void(async () =>
-            {
-                await GetDataFromGSheet();
-                await ConvertSOtoData();
-                IsDataUpdated = true;
-                _readyStatus["UIText"] = true;
-            });
-        }
-        else
-        {
+            if (Utils.Environment.isDevelopment) await GetDataFromGSheet();
+            await ConvertSOtoData();
             IsDataUpdated = true;
             _readyStatus["UIText"] = true;
-        }
+        });
     }
 
     private async UniTask GetDataFromGSheet()
