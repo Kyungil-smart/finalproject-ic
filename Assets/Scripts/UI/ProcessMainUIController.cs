@@ -25,7 +25,8 @@ public class ProcessMainUIController : MonoBehaviour
         _projectManager = ServiceLocater.Get<IProjectManager>();
         _gameManager = ServiceLocater.Get<IGameManager>();
         _postManager = ServiceLocater.Get<IPostManager>();
-        projectName.text = _projectManager.GetProjectData().name;
+        
+        projectName.text = $"Project: {_projectManager?.GetProjectData()?.name}";
         UpdateDateUI();
         UpdateGoldUI();
         var data = _postManager.Request<bool, StateViewData>(Channel.ProcessUIUpdate, true);

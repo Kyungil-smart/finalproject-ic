@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class GameManager : Manager, IGameManager
 {
-    private ReactiveProperty<int> _playerLevel = new(1);      // 회사 레벨
-    private int _playerMaxLevel = 15;                   // 최대 회사 레벨
-    private ReactiveProperty<int> _money = new (1000000);     // 재화 ; Test 목적으로 일단 많이 넣어둠.
-    private ReactiveProperty<int> _heart = new (0);
-    private ReactiveProperty<DateTime> _date = new ();
-    private List<ProjectData> _projects = new();        // 프로젝트 리스트
+    private ReactiveProperty<int> _playerLevel = new(1); // 회사 레벨
+    private int _playerMaxLevel = 15; // 최대 회사 레벨
+    private ReactiveProperty<int> _money = new(1000000); // 재화 ; Test 목적으로 일단 많이 넣어둠.
+    private ReactiveProperty<int> _heart = new(0);
+    private ReactiveProperty<DateTime> _date = new(new DateTime(2026, 1, 1));
+    private List<ProjectData> _projects = new(); // 프로젝트 리스트
     private ReactiveProperty<GameDevProcName> _procName = new();
     private bool _inputProjectNameActive;
-    
-    public string PlayerName { get; private set; }      // 회사 이름
+
+    public string PlayerName { get; private set; } // 회사 이름
     public ReadOnlyReactiveProperty<int> PlayerLevel => _playerLevel;
     private float _exp;
     public ReadOnlyReactiveProperty<int> Money => _money;
@@ -28,21 +28,23 @@ public class GameManager : Manager, IGameManager
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
     protected override void Register() => ServiceLocater.Register<IGameManager>(this);
-    
+
     protected override void Unregister() => ServiceLocater.Unregister<IGameManager>(this);
 
     public void SetPlayerName(string playerName) => PlayerName = playerName;
+
     public void AddPlayerLevel(int playerLevel)
     {
         if (_playerLevel.Value >= _playerMaxLevel) _playerLevel.Value = _playerMaxLevel;
-            _playerLevel.Value += playerLevel;
+        _playerLevel.Value += playerLevel;
     }
+
     public void AddMoney(int money) => _money.Value += money;
     public void AddHeart(int heart) => _heart.Value += heart;
     public void AddProject(ProjectData project) => _projects.Add(project);
     public void ChangeState(GameDevProcName state) => _procName.Value = state;
     public int GetProjectYear() => _projects.Count == 0 ? 1 : _projects.Count + 1;
-    
+
 
     public void AddExp(float exp)
     {
@@ -52,8 +54,10 @@ public class GameManager : Manager, IGameManager
         if (_exp >= lvData.requiredExp)
             _playerLevel.Value++;
     }
+
     public void UpdateInputProjectNameActive(bool active) => _inputProjectNameActive = active;
 
+    public void AddAYear() => _date.Value = _date.Value.AddYears(1);
 
     private void Start()
     {

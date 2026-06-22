@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class T0409UIController : MonoBehaviour, IUIRender
 {
     [SerializeField] private GameObject mainPanel;
@@ -16,7 +17,7 @@ public class T0409UIController : MonoBehaviour, IUIRender
     
     [Header("Leader Result")]
     [SerializeField] private GameObject leaderResultPanel;
-    [SerializeField] private List<TextMeshProUGUI> leaderResults;
+    [SerializeField] private List<StaffSummaryPanelRender> leaderResults;
     [SerializeField] private Button goBackBtn;
     [SerializeField] private Button goNextBtn;
 
@@ -69,7 +70,7 @@ public class T0409UIController : MonoBehaviour, IUIRender
             for (int i = 0; i < renderLeaderData.leaderList.Count; i++)
             {
                 var leader = renderLeaderData.leaderList[i];
-                leaderResults[i].text = leader.Staff_Name;
+                leaderResults[i].Render(leader, false,false,false);
             }
             
             goBackBtn.onClick.RemoveAllListeners();

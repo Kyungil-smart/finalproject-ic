@@ -42,18 +42,20 @@ public class StaffSummaryPanelRender : MonoBehaviour
     
     private void Start()
     {
-        panelToggle.onValueChanged
-            .AsObservable()
-            .Subscribe(isOn =>
-            {
-                if (_isRendering) return;
-                if (_selectable) imageToggle.color = isOn ? trueColor : falseColor;
-                onItemSelected.OnNext((isOn, _itemIndex));
-            })
-            .AddTo(this);
-        
-        detailButton.onClick.RemoveAllListeners();
-        detailButton.onClick.AddListener(ViewDetail);
+        if (panelToggle)
+        {
+            panelToggle.onValueChanged
+                .AsObservable()
+                .Subscribe(isOn =>
+                {
+                    if (_isRendering) return;
+                    if (_selectable) imageToggle.color = isOn ? trueColor : falseColor;
+                    onItemSelected.OnNext((isOn, _itemIndex));
+                })
+                .AddTo(this);
+        }
+        detailButton?.onClick.RemoveAllListeners();
+        detailButton?.onClick.AddListener(ViewDetail);
     }
 
     public void Render(StaffViewData data, bool hired, bool selected, bool selectable)
