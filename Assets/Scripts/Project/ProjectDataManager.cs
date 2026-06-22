@@ -85,7 +85,8 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
             {
                 await UniTask.WaitUntil(() => ServiceLocater.Get<IUITextManager>().IsDataUpdated);
                 DownloadAwardData();
-                DownloadGenreThemeData();    
+                DownloadGenreThemeData();
+                DownloadIncomeData();
             });
         }
     }
@@ -151,5 +152,27 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
             });
         }
         _readyStatus["GenreThemeData"] = true;
+    }
+    
+    private async UniTask DownloadIncomeData()
+    {
+        _readyStatus.Add("IncomeData", false);
+        if (_incomeRatioDataSO.ratioList == null) _incomeRatioDataSO.ratioList = new();
+        _incomeRatioDataSO.ratioList.Clear();
+        GSheetManager gSheetManager = new(incomeRatioGsheetInfo.gsheedId, incomeRatioGsheetInfo.gid);
+        await UniTask.WaitUntil(() => gSheetManager.IsDownload);
+        var dataList = gSheetManager.GetData();
+        foreach (var data in dataList)
+        {
+            Debug.Log($"[IncomeData] More:'{data["More"]}', Under:'{data["Under"]}', Money:'{data["Money"]}', Heart:'{data["Heart"]}'");
+            _incomeRatioDataSO.ratioList.Add(new IncomeRatioRow()
+            {
+                achieveMin = float.Parse(data["More"].Replace("%", "")),
+                achieveMax = float.Parse(data["Under"].Replace("%", "")),
+                moneyRatio = float.Parse(data["Money"]),
+                heartRatio = float.Parse(data["Heart"]),
+            });
+        }
+        _readyStatus["IncomeData"] = true;
     }
 }

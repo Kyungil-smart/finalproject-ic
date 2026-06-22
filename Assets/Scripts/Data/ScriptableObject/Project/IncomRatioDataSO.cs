@@ -5,8 +5,10 @@ using UnityEngine;
 [Serializable]
 public class IncomeRatioRow
 {
-    public float achieveThreshold;
-    public float ratio;
+    public float achieveMin;
+    public float achieveMax;
+    public float moneyRatio;
+    public float heartRatio;
 }
 
 [CreateAssetMenu(fileName = "IncomeRatioDataSO", menuName = "Scriptable Objects/Project/IncomeRatioDataSO")]
