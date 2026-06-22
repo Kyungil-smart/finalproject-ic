@@ -70,10 +70,13 @@ public class StaffSummaryPanelRender : MonoBehaviour
         gradeTxt.text = data.Grade;
         tag1Txt.text = null;  // ToDo. Tag 개발 완료시 추가
         tag2Txt.text = null;
-        panelToggle.interactable = selectable;
-        _selectable = selectable;
-        panelToggle.isOn = selected;
-        imageToggle.color = selected ? trueColor : falseColor;
+        if (panelToggle)
+        {
+            panelToggle.interactable = selectable;
+            _selectable = selectable;
+            panelToggle.isOn = selected;
+            imageToggle.color = selected ? trueColor : falseColor;
+        }
         _isRendering = false;
     }
     
