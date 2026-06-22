@@ -88,6 +88,13 @@ public class GetExpRow
     public int expValue;
 }
 
+[Serializable]
+public class SynergyRow
+{
+    public int synergyId;
+    public int discSum;
+    public int synergyType;
+}
 /// <summary>
 /// 스태프 원본 정보같은 시트의 내용을 꺼내볼 수 있게 들고 있는 역할
 /// 시작 시에는 SO의 데이터를 참조해서 시트의 전체 내용을 가져오고. (InitData)
@@ -103,6 +110,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
     [SerializeField] private GradeRatioDataSO gradeRatioDataSO;
     [SerializeField] private LevelExpSO levelExpSo;
     [SerializeField] private GetExpSO getExpSo;
+    [SerializeField] private SynergyDataSO synergyDataSo;
     
     // Data Loading 체크용
     private Dictionary<string, bool> _readyStates = new();
@@ -116,6 +124,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
     private Dictionary<int, List<GradeRatioRow>> _gradeRatioDict = new ();
     private List<LevelExpRow> _levelExpList = new ();
     private List<GetExpRow> _getExpList = new ();
+    private List<SynergyRow> _synergyList = new ();
     
     public List<StaffRow> StaffList => _staffList;
     public List<TagRow> TagList => _tagList;
@@ -124,6 +133,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
     public Dictionary<int, List<GradeRatioRow>> GradeRatiosDict => _gradeRatioDict;
     public List<LevelExpRow> LevelExpList => _levelExpList;
     public List<GetExpRow> GetExpList => _getExpList;
+    public List<SynergyRow> SynergyList => _synergyList;
     
 
 
@@ -183,6 +193,8 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
         levelExpSo.levelExpList = fetchedData.LevelExps;
         getExpSo.getExpList.Clear();
         getExpSo.getExpList = fetchedData.GetExps;
+        synergyDataSo.synergyList.Clear();
+        synergyDataSo.synergyList = fetchedData.Synergy;
         Debug.Log("런타임 실시간 데이터 동기화 시작... 완료");
         
         _gradeRatioDict.Clear();
@@ -196,7 +208,6 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
         InitData();
     }
     
-
     private void InitData()
     {
         _readyStates["StaffInitData"] = false;
@@ -236,6 +247,12 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
         {
             _levelExpList.Clear();
             _levelExpList = new(levelExpSo.levelExpList);
+        }
+
+        if (synergyDataSo != null)
+        {
+            _synergyList.Clear();
+            _synergyList.AddRange(synergyDataSo.synergyList);
         }
         Debug.Log($"[StaffDataManager] " +
                   $"모든 데이터 메모리 로드 완료 (스태프:{_staffList.Count}개, " +
