@@ -497,6 +497,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5750533700892795870, guid: 3f6ac2b62742b5f48b1bb2faeffc7183, type: 3}
   m_PrefabInstance: {fileID: 379374175}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &379374177 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8378472068219016082, guid: 3f6ac2b62742b5f48b1bb2faeffc7183, type: 3}
+  m_PrefabInstance: {fileID: 379374175}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &416347103
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,6 +680,7 @@ MonoBehaviour:
   - {fileID: 30760899}
   - {fileID: 1552348622}
   - {fileID: 1910999241}
+  - {fileID: 379374177}
   progressBar: {fileID: 1863448752}
   progressBarText: {fileID: 1022763657}
 --- !u!1 &583636013

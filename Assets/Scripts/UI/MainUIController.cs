@@ -17,6 +17,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     [Header("Top UI")]
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private TextMeshProUGUI dateText;
+    [SerializeField] private TextMeshProUGUI ProjectText;
     
     [Header("Process UI")]
     [SerializeField] private GameObject previousStepSession;
@@ -77,6 +78,8 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         UpdateProcessData(data);
         UpdateGoldUI();
         UpdateDateUI();
+        if (ServiceLocater.Get<IGameManager>().ProcName.CurrentValue == GameDevProcName.HumanResources)
+            ProjectText.text = "미정";
         // ServiceLocater.Get<IStaffRegister>().SetSlotPos(staffSlots);
         if (ServiceLocater.Get<IGameManager>().InputProjectNameActive) 
             OpenInputProjectNamePanel();
@@ -230,6 +233,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         else
         {
             ServiceLocater.Get<IProjectManager>().SetProjectName(name);
+            ProjectText.text = name;
             ServiceLocater.Get<IGameManager>().UpdateInputProjectNameActive(false);
             inputProjectPanel.SetActive(false);    
         }

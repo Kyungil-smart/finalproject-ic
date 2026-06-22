@@ -2041,6 +2041,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainUIController
   goldText: {fileID: 148980424}
   dateText: {fileID: 2041649020}
+  ProjectText: {fileID: 338711395}
   previousStepSession: {fileID: 2000990736}
   previousStepTl: {fileID: 1574264959}
   currentStepTl: {fileID: 1554956983}
@@ -3510,7 +3511,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: IC Test
+  m_text: "\uBBF8\uC815"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e33da2ed35a2607458b7274f3b10efce, type: 2}
   m_sharedMaterial: {fileID: 6149625765283235433, guid: e33da2ed35a2607458b7274f3b10efce, type: 2}
