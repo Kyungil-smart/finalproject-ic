@@ -1,7 +1,4 @@
-using System;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 
 public class T12ReleaseUIController : MonoBehaviour, IUIRender
