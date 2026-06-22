@@ -19,8 +19,10 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     [SerializeField] private TextMeshProUGUI dateText;
     
     [Header("Process UI")]
+    [SerializeField] private GameObject previousStepSession;
     [SerializeField] private TextLoader previousStepTl;
     [SerializeField] private TextLoader currentStepTl;
+    [SerializeField] private GameObject nextStepSession;
     [SerializeField] private TextLoader nextStepTl;
     
     [Header("Bottom UI")]
@@ -136,11 +138,27 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     private void UpdateProcessData(StateViewData stateView)
     {
         Debug.Log("[MainUIController:UpdateProcessData] Get Data");
-        if (stateView.prev.id <= 0) previousStepTl.TextId = 0;
-        else previousStepTl.TextId = stateView.prev.textId;
-        currentStepTl.TextId = stateView.current.textId; 
-        if (stateView.next.id <= 0) nextStepTl.TextId = 0;
-        else nextStepTl.TextId = stateView.next.textId;  
+        if (stateView.prev.id <= 0)
+        {
+            previousStepTl.TextId = 0;
+            previousStepSession.SetActive(false);
+        }
+        else
+        {
+            previousStepTl.TextId = stateView.prev.textId;
+            previousStepSession.SetActive(true);
+        }
+        currentStepTl.TextId = stateView.current.textId;
+        if (stateView.next.id <= 0)
+        {
+            nextStepTl.TextId = 0;
+            nextStepSession.SetActive(false);
+        }
+        else
+        {
+            nextStepTl.TextId = stateView.next.textId;
+            nextStepSession.SetActive(true);
+        }  
     }
     
     // ------------ 버튼 핸들러들 -------------

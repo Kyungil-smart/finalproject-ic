@@ -1863,8 +1863,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainUIController
   goldText: {fileID: 148980424}
   dateText: {fileID: 2041649020}
+  previousStepSession: {fileID: 2000990736}
   previousStepTl: {fileID: 1574264959}
   currentStepTl: {fileID: 1554956983}
+  nextStepSession: {fileID: 1877000587}
   nextStepTl: {fileID: 1162732484}
   lastProjectsButton: {fileID: 534543882}
   lastProjectsTl: {fileID: 1119553486}
