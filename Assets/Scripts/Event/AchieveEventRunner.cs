@@ -15,17 +15,16 @@ public class AchieveEventRunner
     {
         var tcs = new UniTaskCompletionSource<int>();
 
-        var renderData = new RewardEventUIRenderData(
+        var renderData = new NormalEventUIRenderData(
             eventType: EventType.Reward,
             mainTextId: _taskData.titleTextId,
-            callback: (selectedId) => tcs.TrySetResult(selectedId),
-            gradeImage: null
+            callback: (selectedId) => tcs.TrySetResult(selectedId)
         );
 
         for (int i = 0; i < _taskData.buttons.Count; i++)
         {
             var btn = _taskData.buttons[i];
-            if (btn.textId != 0) renderData.options.Add((i, null, btn.textId));
+            if (btn.textId != 0) renderData.choices.Add((i, btn.textId));
         }
         
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.EventUI, renderData);
