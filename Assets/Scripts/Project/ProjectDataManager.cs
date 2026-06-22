@@ -101,6 +101,7 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
 
     private async UniTask DownloadAwardData()
     {
+        if (!Utils.Environment.isDevelopment) return;
         _readyStatus.Add("AwardsData", false);
         if (_awardsDataSO.awardsDataList == null) _awardsDataSO.awardsDataList = new();
         _awardsDataSO.awardsDataList.Clear();
@@ -131,6 +132,7 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
     
     private async UniTask DownloadGenreThemeData()
     {
+        if (!Utils.Environment.isDevelopment) return;
         _readyStatus.Add("GenreThemeData", false);
         if (_genreThemeDataSO.genreThemeList == null) _genreThemeDataSO.genreThemeList = new();
         _genreThemeDataSO.genreThemeList.Clear();

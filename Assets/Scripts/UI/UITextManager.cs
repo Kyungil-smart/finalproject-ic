@@ -12,7 +12,7 @@ public struct UITextLanguage
     public string gid;
 }
 
-public class UITextManager : Manager, IUITextManager
+public class UITextManager : Manager, IUITextManager, IReadyStatus
 {
     [Header("GSheet Information")]
     [SerializeField] string _gSheetId;
@@ -26,6 +26,8 @@ public class UITextManager : Manager, IUITextManager
     private IPostManager _postManager;
     private List<Line> _texts = new();
     public bool IsDataUpdated { get; set; }
+    private Dictionary<string, bool> _readyStatus = new ();
+    public Dictionary<string, bool> ReadyStatus { get; }
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
@@ -37,11 +39,16 @@ public class UITextManager : Manager, IUITextManager
 
     private async UniTaskVoid InitAsync()
     {
+        _readyStatus.Clear();
+        _readyStatus["UIText"] = false;
         foreach (var textType in _textTypes)
         {
-            var gsManager = new GSheetManager(_gSheetId, textType.gid);
-            await UniTask.WaitUntil(() => gsManager.IsDownload);
-            _gSheetManagers.Add((textType.language, gsManager));
+            if (Utils.Environment.isDevelopment)
+            {
+                var gsManager = new GSheetManager(_gSheetId, textType.gid);
+                await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsManager.IsDownload);
+                _gSheetManagers.Add((textType.language, gsManager));    
+            }
         }
             
         if (IsDataUpdated) return;
@@ -76,11 +83,13 @@ public class UITextManager : Manager, IUITextManager
                 await GetDataFromGSheet();
                 await ConvertSOtoData();
                 IsDataUpdated = true;
+                _readyStatus["UIText"] = true;
             });
         }
         else
         {
-            IsDataUpdated = true;    
+            IsDataUpdated = true;
+            _readyStatus["UIText"] = true;
         }
     }
 
