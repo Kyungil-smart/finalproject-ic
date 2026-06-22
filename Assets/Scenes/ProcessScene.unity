@@ -17635,6 +17635,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1011640401}
   - {fileID: 625301998}
   - {fileID: 1040215109}
   - {fileID: 726630664}
@@ -27052,6 +27053,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1010316021}
   m_CullTransparentMesh: 1
+--- !u!1 &1011640400
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1011640401}
+  - component: {fileID: 1011640402}
+  m_Layer: 0
+  m_Name: ProcessMainUIController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1011640401
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011640400}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 60.42453, y: -76.9281, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 614538836}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1011640402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011640400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411ae1b8411247108b5415ef4c0e43a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProcessMainUIController
+  moneyText: {fileID: 1232753815}
+  dateText: {fileID: 1751806442}
+  projectName: {fileID: 1730910677}
+  prevStepSession: {fileID: 1757684223}
+  prevStepName: {fileID: 1140435929}
+  curStepName: {fileID: 1558426751}
+  nextStepSession: {fileID: 147217244}
+  nextStepName: {fileID: 1061453259}
 --- !u!1 &1017160903
 GameObject:
   m_ObjectHideFlags: 0
@@ -28123,6 +28176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1061453256}
   - component: {fileID: 1061453258}
+  - component: {fileID: 1061453259}
   - component: {fileID: 1061453257}
   m_Layer: 5
   m_Name: Text (TMP)
@@ -28250,6 +28304,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1061453255}
   m_CullTransparentMesh: 1
+--- !u!114 &1061453259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061453255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 051b9462deeedf74a9e68faa6908a5a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextLoader
+  textId: -1
 --- !u!1 &1067188101
 GameObject:
   m_ObjectHideFlags: 0
@@ -30770,6 +30837,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1140435926}
   - component: {fileID: 1140435928}
+  - component: {fileID: 1140435929}
   - component: {fileID: 1140435927}
   m_Layer: 5
   m_Name: Text (TMP)
@@ -30897,6 +30965,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140435925}
   m_CullTransparentMesh: 1
+--- !u!114 &1140435929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140435925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 051b9462deeedf74a9e68faa6908a5a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextLoader
+  textId: -1
 --- !u!1 &1145643146
 GameObject:
   m_ObjectHideFlags: 0
@@ -42076,6 +42157,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1558426748}
   - component: {fileID: 1558426750}
+  - component: {fileID: 1558426751}
   - component: {fileID: 1558426749}
   m_Layer: 5
   m_Name: Text (TMP)
@@ -42203,6 +42285,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1558426747}
   m_CullTransparentMesh: 1
+--- !u!114 &1558426751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558426747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 051b9462deeedf74a9e68faa6908a5a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextLoader
+  textId: -1
 --- !u!1 &1566797472
 GameObject:
   m_ObjectHideFlags: 0
