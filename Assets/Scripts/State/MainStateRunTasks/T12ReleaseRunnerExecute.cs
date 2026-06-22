@@ -155,14 +155,18 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
     {
         _waiting = true;
 
-
         // 전체 스텝에게 경험치 주기
         ServiceLocater.Get<IStaffRegister>().GetExpAllStaffs();
-
+        await UniTask.Yield();
+        
         // 프로젝트에 추가하기
         ServiceLocater.Get<IGameManager>().AddProject(ServiceLocater.Get<IProjectManager>().GetProjectData());
-
         await UniTask.Yield();
+        
+        // 1년 지나기
+        ServiceLocater.Get<IGameManager>().AddAYear();
+        await UniTask.Yield();
+        
         await GoToNextProcess();
         await WaitProcess();
     }

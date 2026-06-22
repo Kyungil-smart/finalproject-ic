@@ -17,6 +17,7 @@ public interface IGameManager
     public void AddPlayerLevel(int playerLevel);
     public void AddMoney(int money);
     public void AddHeart(int heart);
+    public void AddAYear();
     public void AddProject(ProjectData project);
     public void ChangeState(GameDevProcName newState);
     public int GetProjectYear();
