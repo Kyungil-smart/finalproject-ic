@@ -170,7 +170,7 @@ MonoBehaviour:
   gradeRatioDataSO: {fileID: 11400000, guid: 0be8d7be790763f4b964e8dd674f25e8, type: 2}
   levelExpSo: {fileID: 11400000, guid: 8c252f58eac00d442b6f226b8bc9e0e0, type: 2}
   getExpSo: {fileID: 11400000, guid: 9479ec958731f8f438df8b85e45933a0, type: 2}
-  synergyDataSo: {fileID: 11400000, guid: 928de3ed0596d0f419c41ef793e3bed7, type: 2}
+  synergyDataSo: {fileID: 0}
 --- !u!1 &55534876
 GameObject:
   m_ObjectHideFlags: 0
@@ -1682,6 +1682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0adc9b657b8a41e68c4cbcf38c1496ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectManager
+  _genreThemeDataSO: {fileID: 11400000, guid: da33a372739765f46bf647df15737753, type: 2}
 --- !u!1 &1552348622
 GameObject:
   m_ObjectHideFlags: 0
