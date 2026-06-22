@@ -40,8 +40,9 @@ public class StaffDataFactory
         
         // 등급 결정 (여기부턴 시트 결정 방식에 따른 랜덤 결정)
         GradeRow gradeData = RollGradeFromTable(dataManager);
-        data.Grade = gradeData.GradeEnum; 
-        data.DISC_Type = (DiscType)Random.Range(0, 4); 
+        data.Grade = gradeData.GradeEnum;
+        int[] discNum = { 1, 2, 4, 8 };
+        data.DISC_Type = (DiscType)discNum[Random.Range(0, 4)]; 
         data.Base_Career = 0; 
 
         data.Level = playerLevel + Random.Range(-1, 2);

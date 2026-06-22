@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class TagPanelUIController : MonoBehaviour
 {
-    [SerializeField] private Image _icon;
     [SerializeField] private TextMeshProUGUI _tagName;
     [SerializeField] private TextMeshProUGUI _tagDesc;
     [SerializeField] private TextMeshProUGUI _tagEffectAName;

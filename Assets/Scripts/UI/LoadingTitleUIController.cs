@@ -33,6 +33,7 @@ public class LoadingTitleUIController : MonoBehaviour
         }
         finally
         {
+            await UniTask.WaitForSeconds(1f);
             loadingPage.SetActive(false);    
         }
     }
@@ -47,7 +48,7 @@ public class LoadingTitleUIController : MonoBehaviour
             {
                 progressBarText.text = $"Loading ... {status.Key}";
                 if (!status.Value) return false;
-            }
+            }    
         }
         return true;
     }

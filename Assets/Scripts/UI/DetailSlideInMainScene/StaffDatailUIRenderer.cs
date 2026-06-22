@@ -38,6 +38,9 @@ public class StaffDatailUIRenderer : MonoBehaviour
     
     public void Render(StaffViewData viewData, Action onCloseCallback = null)
     {
+        foreach (var textObj in discTexts)
+            textObj.color = discDisableColor;
+        
         foreach (var tag in tags) tag.SetActive(false);
         closeBtn.onClick.RemoveAllListeners();
         if (onCloseCallback != null) closeBtn.onClick.AddListener(() => onCloseCallback());
@@ -48,11 +51,6 @@ public class StaffDatailUIRenderer : MonoBehaviour
         genderFemale.SetActive(!viewData.Staff_Gender);
         levelText.text = viewData.Level.ToString();
         gradeText.text = viewData.Grade;
-
-        foreach (var textObj in discTexts)
-        {
-            textObj.color = discDisableColor;
-        }
         switch (viewData.DISC_Type)
         {
             case DiscType.D:
