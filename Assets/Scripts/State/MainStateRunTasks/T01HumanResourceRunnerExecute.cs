@@ -133,8 +133,14 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     {
         _waiting = true;
         // ToDO. Animation 이 들어올 경우 대비 해야함.
-        var data = new SimpleUIRenderData(9900020, 9900007, GoProcess);
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
+        
+        var data = new ProgressAnimationRenderData()
+        {
+            staticImage = null,
+            progressTexts = new() { "기존 직원 해고", "새 직원 고용", "사무실 자리 셋팅", "Welcome 킷 제공" },
+            callback = GoProcess,
+        };
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcAnimationUI, data);
         foreach (var staff in _totalCandidateStaffs.staffSummaryData)
         {
             Debug.Log($"[T01] {staff.viewData.Staff_Name} - h;{staff.hired}|s;{staff.selected}");

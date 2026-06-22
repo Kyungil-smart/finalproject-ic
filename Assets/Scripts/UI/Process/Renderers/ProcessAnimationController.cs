@@ -32,6 +32,7 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
                 progressImage.fillAmount = 1f;
                 await UniTask.WaitForSeconds(1f);
                 mainPanel.SetActive(false);
+                renderData.callback?.Invoke();
             });
         }
     }

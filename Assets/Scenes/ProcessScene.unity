@@ -3313,7 +3313,7 @@ MonoBehaviour:
   panelToggle: {fileID: 1151620348}
   imageToggle: {fileID: 1151620349}
   detailButton: {fileID: 2071636521}
-  trueColor: {r: 1, g: 1, b: 1, a: 0.27058825}
+  trueColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 0.27058825}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 184300798}
 --- !u!1 &170416496
@@ -5026,7 +5026,7 @@ MonoBehaviour:
   panelToggle: {fileID: 113142886}
   imageToggle: {fileID: 113142887}
   detailButton: {fileID: 2100106503}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &211512078
@@ -6864,7 +6864,7 @@ MonoBehaviour:
   panelToggle: {fileID: 989563862}
   imageToggle: {fileID: 989563863}
   detailButton: {fileID: 1443227999}
-  trueColor: {r: 1, g: 1, b: 1, a: 0.27058825}
+  trueColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 0.27058825}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 184300798}
 --- !u!1 &278729679
@@ -13263,7 +13263,7 @@ MonoBehaviour:
   panelToggle: {fileID: 69471590}
   imageToggle: {fileID: 69471591}
   detailButton: {fileID: 2115451476}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &498329454
@@ -16004,7 +16004,7 @@ MonoBehaviour:
   panelToggle: {fileID: 2097059774}
   imageToggle: {fileID: 2097059775}
   detailButton: {fileID: 547612221}
-  trueColor: {r: 1, g: 1, b: 1, a: 0.27058825}
+  trueColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 0.27058825}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 184300798}
 --- !u!1 &586265062
@@ -20209,7 +20209,7 @@ MonoBehaviour:
   panelToggle: {fileID: 997533149}
   imageToggle: {fileID: 997533150}
   detailButton: {fileID: 1726020683}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &722169809
@@ -20779,7 +20779,7 @@ MonoBehaviour:
   panelToggle: {fileID: 1273961411}
   imageToggle: {fileID: 1273961412}
   detailButton: {fileID: 1313114691}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &764262827
@@ -24564,6 +24564,107 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 964640491}
   m_CullTransparentMesh: 1
+--- !u!1001 &967889199
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3869127437641285462, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5154859822638063033, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_Name
+      value: AnimationCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268472106488118512, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 50d7dc28220b55144a65dda1ce257eac, type: 3}
 --- !u!1 &968906935
 GameObject:
   m_ObjectHideFlags: 0
@@ -26527,7 +26628,7 @@ MonoBehaviour:
   panelToggle: {fileID: 1785881019}
   imageToggle: {fileID: 1785881020}
   detailButton: {fileID: 296534794}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &1018924593
@@ -27070,7 +27171,7 @@ MonoBehaviour:
   panelToggle: {fileID: 540211208}
   imageToggle: {fileID: 540211209}
   detailButton: {fileID: 1551998133}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &1051268203
@@ -29287,7 +29388,7 @@ MonoBehaviour:
   panelToggle: {fileID: 2113236869}
   imageToggle: {fileID: 2113236870}
   detailButton: {fileID: 356212923}
-  trueColor: {r: 1, g: 1, b: 1, a: 0.27058825}
+  trueColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 0.27058825}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 184300798}
 --- !u!1 &1115953348
@@ -29438,7 +29539,7 @@ MonoBehaviour:
   panelToggle: {fileID: 1655485192}
   imageToggle: {fileID: 1655485193}
   detailButton: {fileID: 1916188452}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &1127299163
@@ -29881,7 +29982,7 @@ MonoBehaviour:
   panelToggle: {fileID: 443376157}
   imageToggle: {fileID: 443376158}
   detailButton: {fileID: 633891596}
-  trueColor: {r: 1, g: 1, b: 1, a: 0.27058825}
+  trueColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 0.27058825}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 184300798}
 --- !u!1 &1135713363
@@ -31991,7 +32092,7 @@ MonoBehaviour:
   panelToggle: {fileID: 501080129}
   imageToggle: {fileID: 501080130}
   detailButton: {fileID: 1840136259}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &1227722233
@@ -35595,7 +35696,7 @@ MonoBehaviour:
   panelToggle: {fileID: 1051268205}
   imageToggle: {fileID: 1051268206}
   detailButton: {fileID: 1355317505}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &1350439395
@@ -35974,7 +36075,7 @@ MonoBehaviour:
   panelToggle: {fileID: 964640493}
   imageToggle: {fileID: 964640494}
   detailButton: {fileID: 579661780}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &1353753601
@@ -41394,7 +41495,7 @@ MonoBehaviour:
   panelToggle: {fileID: 2076491489}
   imageToggle: {fileID: 2076491490}
   detailButton: {fileID: 1085905187}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &1594481785
@@ -43133,7 +43234,7 @@ MonoBehaviour:
   panelToggle: {fileID: 1932253229}
   imageToggle: {fileID: 1932253230}
   detailButton: {fileID: 1601459587}
-  trueColor: {r: 1, g: 1, b: 1, a: 0.27058825}
+  trueColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 0.27058825}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 184300798}
 --- !u!1 &1662656114
@@ -44173,7 +44274,7 @@ MonoBehaviour:
   panelToggle: {fileID: 1303023888}
   imageToggle: {fileID: 1303023889}
   detailButton: {fileID: 312588471}
-  trueColor: {r: 1, g: 1, b: 1, a: 0.27058825}
+  trueColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 0.27058825}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 184300798}
 --- !u!1 &1703452364
@@ -44461,7 +44562,7 @@ MonoBehaviour:
   panelToggle: {fileID: 297449772}
   imageToggle: {fileID: 297449773}
   detailButton: {fileID: 1324816859}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &1709885855
@@ -45817,7 +45918,7 @@ MonoBehaviour:
   panelToggle: {fileID: 942996473}
   imageToggle: {fileID: 942996474}
   detailButton: {fileID: 688206623}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &1776839143
@@ -51597,7 +51698,7 @@ MonoBehaviour:
   panelToggle: {fileID: 1185397913}
   imageToggle: {fileID: 1185397914}
   detailButton: {fileID: 547637475}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &1971544460
@@ -52329,7 +52430,7 @@ MonoBehaviour:
   panelToggle: {fileID: 1182811110}
   imageToggle: {fileID: 1182811111}
   detailButton: {fileID: 219622200}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!1 &2009253351
@@ -56540,7 +56641,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &174951790376966434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58678,7 +58779,7 @@ MonoBehaviour:
   panelToggle: {fileID: 8886369233298676424}
   imageToggle: {fileID: 8312232489724575751}
   detailButton: {fileID: 1066782103634825464}
-  trueColor: {r: 1, g: 1, b: 1, a: 0.27058825}
+  trueColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 0.27058825}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 184300798}
 --- !u!1 &741375285291595315
@@ -65048,7 +65149,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2685587346877747389
 Transform:
   m_ObjectHideFlags: 0
@@ -67923,7 +68024,7 @@ MonoBehaviour:
   - uiType: 2
     uiCanvas: {fileID: 1970446845197959372}
   - uiType: 6
-    uiCanvas: {fileID: 0}
+    uiCanvas: {fileID: 1070577053080319665}
 --- !u!222 &3754930627432947791
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -69625,7 +69726,7 @@ MonoBehaviour:
   panelToggle: {fileID: 1335183532288736262}
   imageToggle: {fileID: 7860654162306241472}
   detailButton: {fileID: 6054127330605585702}
-  trueColor: {r: 0.7, g: 0.9, b: 0.7, a: 0.5882353}
+  trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
   detailPanel: {fileID: 202066445}
 --- !u!224 &4164562916059714333
@@ -87305,3 +87406,4 @@ SceneRoots:
   - {fileID: 5525863267572335457}
   - {fileID: 3613635725825490167}
   - {fileID: 3257860423963097809}
+  - {fileID: 967889199}
