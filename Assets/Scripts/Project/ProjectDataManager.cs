@@ -53,10 +53,12 @@ public class ProjectDataManager : Manager, IProjectDataManager, IReadyStatus
     [Header("Gsheet Info")]
     [SerializeField] private GsheedInfo awardsGsheetInfo;
     [SerializeField] private GsheedInfo genreThemeGsheetInfo; 
+    [SerializeField] private GsheedInfo incomeRatioGsheetInfo;
     
     [Header("ScriptableObject Info")]
     [SerializeField] private AwardsDataSO _awardsDataSO;
     [SerializeField] private GenreThemeTypeDataSO _genreThemeDataSO;
+    [SerializeField] private IncomeRatioDataSO _incomeRatioDataSO;
     
     public AwardsDataSO AwardsDataSO => _awardsDataSO;
     private Dictionary<string, bool> _readyStatus = new();
