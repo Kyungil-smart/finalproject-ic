@@ -133,14 +133,18 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
 
         Debug.Log("SelectLeaderProcessing() 시작");
 
-        // ToDO. Animation 이 들어올 경우 대비 해야함.
-        var data = new SimpleUIRenderData(9900020, 9900007, GoProcess); // TODO : 애니메이션 적용 중 단순 텍스트 출력, ID 는 바꿔야 함
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
+        // ToDO. Animation 추가 작업 필요.
+        var data = new ProgressAnimationRenderData()
+        {
+            staticImage = null,
+            progressTexts = ProductionAnimationTexts(),
+            callback = GoProcess,
+        };
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcAnimationUI, data);
 
         // 리더 되는 프로세스는 각 프로덕션 내에서만 저장되면 되기 때문에 매니저에 저장될 필요 없을 듯
 
-        // 점수 계산 진행
-        
+        // 점수 계산 진행   
         Debug.Log($"{curGameDevProcName} | {selectedStaffs.leaderList[0].Staff_Name} | {selectedStaffs.leaderList[1].Staff_Name}"); // 테스트용 임시 로그
         await UniTask.Yield();
         // Todo. 한번에 불러오는 시스템 만들어서 원래 있던거 지움.
@@ -216,5 +220,37 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     {
         _waiting = false;
         _endProcess = true;
+    }
+
+
+    private List<string> ProductionAnimationTexts()
+    {
+        List<string> progressTexts;
+
+        switch (curGameDevProcName)
+        {
+            case GameDevProcName.ConceptPreProduction:
+                progressTexts = new() { "게임 핵심 콘셉트 구상", "타깃 유저 및 시장 설정", "마일스톤 일정표 수립", "시스템 기본 기획서 작성" };
+                break;
+            case GameDevProcName.ArtPreProduction:
+                progressTexts = new() { "무드보드 및 레퍼런스 수집", "아트 가이드라인 정립", "핵심 캐릭터 원화 작업", "테스트용 더미 에셋 제작" };
+                break;
+            case GameDevProcName.DevelopmentPreProduction:
+                progressTexts = new() { "환경 및 플러그인 세팅", "기본 아키텍처 구조 설계", "더미 데이터 조작 테스트", "핵심 기믹 프로토타입 빌드" };
+                break;
+            case GameDevProcName.ConceptFullProduction:
+                progressTexts = new() { "콘텐츠 상세 기획", "UI/UX 화면 명세서 작성", "밸런스 테이블 데이터 구조화", "튜토리얼 및 예외 처리 기획" };
+                break;
+            case GameDevProcName.ArtFullProduction:
+                progressTexts = new() { "인게임 리소스 양산", "오브젝트 애니메이션 작업", "UI 완성형 스킨 최종 가공", "VFX 및 연출 효과 제작" };
+                break;
+            case GameDevProcName.DevelopmentFullProduction:
+                progressTexts = new() { "시스템 전면 구현", "클라이언트 - 서버 연동", "필수 외부 SDK 결합", "메모리 최적화 및 빌드 경량화" };
+                break;
+            default:
+                progressTexts = new() { "오류 발생!", "확인 필요!!", "오류 발생!", "확인 필요!!" };
+                break;
+        }
+        return progressTexts;
     }
 }

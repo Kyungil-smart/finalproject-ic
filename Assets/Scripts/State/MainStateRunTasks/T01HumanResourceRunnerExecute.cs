@@ -132,7 +132,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
     private async UniTask RecruitProcessing()
     {
         _waiting = true;
-        // ToDO. Animation 이 들어올 경우 대비 해야함.
+        // ToDO. Animation 추가 작업 필요.
         
         var data = new ProgressAnimationRenderData()
         {
