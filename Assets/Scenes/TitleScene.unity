@@ -170,6 +170,7 @@ MonoBehaviour:
   gradeRatioDataSO: {fileID: 11400000, guid: 0be8d7be790763f4b964e8dd674f25e8, type: 2}
   levelExpSo: {fileID: 11400000, guid: 8c252f58eac00d442b6f226b8bc9e0e0, type: 2}
   getExpSo: {fileID: 11400000, guid: 9479ec958731f8f438df8b85e45933a0, type: 2}
+  synergyDataSo: {fileID: 11400000, guid: 928de3ed0596d0f419c41ef793e3bed7, type: 2}
 --- !u!1 &55534876
 GameObject:
   m_ObjectHideFlags: 0
@@ -2351,7 +2352,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.2
+  m_fontSize: 33.95
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1

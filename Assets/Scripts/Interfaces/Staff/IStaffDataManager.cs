@@ -9,4 +9,5 @@ public interface IStaffDataManager
     public Dictionary<int, List<GradeRatioRow>> GradeRatiosDict { get; }
     public List<LevelExpRow> LevelExpList { get; }
     public List<GetExpRow> GetExpList { get; }
+    public List<SynergyRow> SynergyList { get; }
 }

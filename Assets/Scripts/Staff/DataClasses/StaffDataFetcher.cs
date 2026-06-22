@@ -15,6 +15,7 @@ public class StaffDataFetcher
     private const string GRADE_RATIO_GID = "671267036";
     private const string LEVEL_EXP_GID = "264636132";
     private const string GET_EXP_GID = "1008469041";
+    private const string GET_SYNERGY_GID = "1031739619";
 
     private string GetString(string textId)
     {
@@ -37,7 +38,8 @@ public class StaffDataFetcher
             GetGradeData(result),
             GetGradeRatioData(result),
             GetLevelExpData(result),
-            GetExpData(result)
+            GetExpData(result),
+            GetSynergyData(result)
         );
         return result;
     }
@@ -175,6 +177,24 @@ public class StaffDataFetcher
             result.GetExps.Add(new GetExpRow() {
                 expType = Enum.TryParse(row["Exp_Type"], out ExpType expType) ? expType : ExpType.Unknown,
                 expValue = int.Parse(row["Exp_Value"]),
+            });
+        }
+        Debug.Log("[StaffDataFetcher] Get Data ... Done");
+    }
+
+    private async UniTask GetSynergyData(FetchedStaffData result)
+    {
+        Debug.Log("[StaffDataFetcher] Get Synergy Data ... Done");
+        // 8. Synergy Type 파싱
+        GSheetManager getSynergySheet = new GSheetManager(SHEET_ID, GET_SYNERGY_GID);
+        await UniTask.WaitUntil(() => getSynergySheet.IsDownload);
+        foreach (var row in getSynergySheet.GetData())
+        {
+            result.Synergy.Add(new SynergyRow()
+            {
+                synergyId = int.Parse(row["Synergy_ID"]),
+                discSum = int.Parse(row["Disc_Sum"]),
+                synergyType = int.Parse(row["Event_Staff_Type"]),
             });
         }
         Debug.Log("[StaffDataFetcher] Get Data ... Done");

@@ -10,4 +10,5 @@ public class FetchedStaffData
     public List<GradeRatioRow> GradeRatios = new ();
     public List<LevelExpRow> LevelExps = new ();
     public List<GetExpRow> GetExps = new ();
+    public List<SynergyRow> Synergy = new ();
 }
