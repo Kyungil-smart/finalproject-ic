@@ -163,11 +163,12 @@ public class EventManager : Manager, IEventManager, IReadyStatus
             var entity = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(id);
             if (entity != null) discSum += (int)entity.GetDiscType();
         }
-        return discSum switch
+        var row = ServiceLocater.Get<IStaffDataManager>().SynergyList.Find(r => r.discSum == discSum);
+        return row.synergyType switch
         {
-            6 or 9 => Synergy.Good,
-            5 or 10 => Synergy.Bad,
-            _ => Synergy.Normal
+            200 => Synergy.Good,
+            300 => Synergy.Bad,
+            100 => Synergy.Normal
         };
     }
     
