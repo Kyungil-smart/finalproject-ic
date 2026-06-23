@@ -29,6 +29,7 @@ public class StaffDataFetcher
     }
     public async UniTask<FetchedStaffData> FetchAllDataAsync()
     {
+        if (!Utils.Environment.isDevelopment) return null;
         var result = new FetchedStaffData();
         Debug.Log("[StaffDataFetcher] 구글 시트 데이터 다운로드 및 파싱 시작...");
         await UniTask.WhenAll(

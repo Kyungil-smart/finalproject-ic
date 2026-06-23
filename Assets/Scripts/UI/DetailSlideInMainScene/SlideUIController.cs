@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class SlideUIController : MonoBehaviour, IUIRender
@@ -161,33 +162,19 @@ public class SlideUIController : MonoBehaviour, IUIRender
     {
         if (!staffMainPanel.activeSelf) return;
         if (_isSwapeMode) return;
-        #if UNITY_EDITOR
-        if (Input.GetMouseButtonDown(0))
+        
+        var pointer = Pointer.current;      // 마우스/터치 공통 (둘 중 활성 디바이스)
+        if (pointer == null) return;        // 포인터 디바이스 없으면 무시
+
+        if (pointer.press.wasPressedThisFrame)
         {
-            _startTouchX = Input.mousePosition.x;
+            _startTouchX = pointer.position.ReadValue().x;
         }
-        else if (Input.GetMouseButtonUp(0))
+        else if (pointer.press.wasReleasedThisFrame)
         {
-            _endTouchX = Input.mousePosition.x;
+            _endTouchX = pointer.position.ReadValue().x;
             UpdateSwipe();
         }
-        #endif
-        
-        #if UNITY_ANDROID
-        if (Input.touchCount == 1)
-        {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
-            {
-                _startTouchX = touch.position.x;
-            }
-            else if (touch.phase == TouchPhase.Ended)
-            {
-                _endTouchX = touch.position.x;
-                UpdateSwipe();
-            }
-        }
-        #endif
     }
 
     private void UpdateSwipe()

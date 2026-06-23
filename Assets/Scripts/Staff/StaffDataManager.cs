@@ -162,7 +162,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
     // SO에 저장은 아직 안하는 중. 변경하려면 #if UnityEditor 전처리 기문을 사용해야 해서 아직은 고민중.  
     private async UniTask SyncDataFromSheetAsync()
     {
-        _readyStates.Add("StaffDowloadData", false);
+        _readyStates.Add("StaffDownloadData", false);
         Debug.Log("런타임 실시간 데이터 동기화 시작...");
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() =>
         {
@@ -174,7 +174,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
 
         if (fetchedData == null)
         {
-            _readyStates["StaffDowloadData"] = true;
+            _readyStates["StaffDownloadData"] = true;
             return;
         }
         
@@ -204,7 +204,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
                 _gradeRatioDict[row.Level] = new List<GradeRatioRow>();
             _gradeRatioDict[row.Level].Add(row);
         }
-        _readyStates["StaffDowloadData"] = true;
+        _readyStates["StaffDownloadData"] = true;
         InitData();
     }
     

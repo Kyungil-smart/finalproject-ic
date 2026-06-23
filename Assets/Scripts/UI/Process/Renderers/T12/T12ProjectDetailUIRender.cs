@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public struct StaffTagUIRenderData
 {
+    public int staffId;
     public Sprite staffSprite;
     public string staffName;
     public int staffLevel;
@@ -39,6 +40,9 @@ public class T12ProjectDetailUIRender : MonoBehaviour
         
         // 유저 평론
         // 전문가 평론
+
+        foreach (var staffTag in staffTags)
+            staffTag.gameObject.SetActive(false);
         
         List<StaffTagUIRenderData> staffList = new();
         MakeStaffTagList(GameDevProcName.ConceptPreProduction, staffList);
@@ -48,8 +52,11 @@ public class T12ProjectDetailUIRender : MonoBehaviour
         MakeStaffTagList(GameDevProcName.DevelopmentFullProduction, staffList);
         MakeStaffTagList(GameDevProcName.ArtFullProduction, staffList);
 
-        for (int i = 0; i < staffTags.Length; i++)  // 총 12개.
+        for (int i = 0; i < staffList.Count; i++) // 총 12개.
+        {
             staffTags[i].Render(staffList[i].staffSprite, staffList[i].staffName, staffList[i].staffLevel);
+            staffTags[i].gameObject.SetActive(true);
+        }
         
         confirmBtn.onClick.RemoveAllListeners();
         confirmBtn.onClick.AddListener(() => data.btCallback?.Invoke() );
@@ -60,13 +67,18 @@ public class T12ProjectDetailUIRender : MonoBehaviour
     {
         var projectManager = ServiceLocater.Get<IProjectManager>();
         foreach (var staffId in projectManager.GetAssignedStaffIds(procName))
-            staffList.Add(ExtractStaffData(staffId));
+        {
+            var staff = staffList.FindAll(x => x.staffId == staffId);
+            if (staff.Count == 0)
+                staffList.Add(ExtractStaffData(staffId));
+        }
     }
     
     private StaffTagUIRenderData ExtractStaffData(int staffId)
     {
         var staff = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(staffId);
         return new StaffTagUIRenderData() 
-            { staffSprite = staff.Thumbnail, staffName = staff.init.Staff_Name, staffLevel = staff.init.Level};
+            { staffId = staff.init.Staff_ID, staffSprite = staff.Thumbnail, 
+                staffName = staff.init.Staff_Name, staffLevel = staff.init.Level};
     }
 }
