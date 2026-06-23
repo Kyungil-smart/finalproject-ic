@@ -6,10 +6,12 @@ public class ProjectManager : Manager, IProjectManager
     private ProjectData _projectData;
     private ProjectDataManager _projectDataManager;
     
+    [SerializeField] private GenreThemeTypeDataSO _genreThemeDataSO;
+    [SerializeField] private IncomeRatioDataSO _incomeRatioDataSO;
     private Dictionary<GameDevProcName, List<int>> _assignedStaff = new();
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
-
+    public ProjectCostCalculate CostCalculator { get; private set; }
     public float TotalQuality => _projectData.Qualities.Value.total;
 
     public float DevQuality
@@ -74,7 +76,9 @@ public class ProjectManager : Manager, IProjectManager
     public uint StaffsCost => _projectData.staffCost;
     
     public uint Earnings => _projectData.income - _projectData.cost; // 수익
-    
+
+    protected override void Init() => CostCalculator = new ProjectCostCalculate(_genreThemeDataSO, _incomeRatioDataSO);
+
     public void UpdateTotalQuality(float value, float ratio = 1f)
     {
         var data = _projectData.Qualities.Value;

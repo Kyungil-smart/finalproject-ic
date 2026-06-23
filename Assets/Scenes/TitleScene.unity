@@ -1688,6 +1688,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0adc9b657b8a41e68c4cbcf38c1496ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectManager
+  _genreThemeDataSO: {fileID: 11400000, guid: da33a372739765f46bf647df15737753, type: 2}
+  _incomeRatioDataSO: {fileID: 11400000, guid: 3ecb75e217187db41b654c70c3bc280b, type: 2}
 --- !u!1 &1552348622
 GameObject:
   m_ObjectHideFlags: 0
@@ -1914,8 +1916,12 @@ MonoBehaviour:
   genreThemeGsheetInfo:
     gsheedId: 1rTZsJojzJyntquzmgbNz5kIY1tn6NwA4rQNjOP4F2TI
     gid: 1887795070
+  incomeRatioGsheetInfo:
+    gsheedId: 1rTZsJojzJyntquzmgbNz5kIY1tn6NwA4rQNjOP4F2TI
+    gid: 811662888
   _awardsDataSO: {fileID: 11400000, guid: 5b27cd837c99b1b4087b5366660f857c, type: 2}
   _genreThemeDataSO: {fileID: 11400000, guid: da33a372739765f46bf647df15737753, type: 2}
+  _incomeRatioDataSO: {fileID: 11400000, guid: 3ecb75e217187db41b654c70c3bc280b, type: 2}
 --- !u!1 &2066119753
 GameObject:
   m_ObjectHideFlags: 0
@@ -2358,7 +2364,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.2
+  m_fontSize: 33.95
   m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 1
