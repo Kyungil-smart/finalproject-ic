@@ -60,16 +60,21 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
     {
         if (renderData is EventUIRenderData data)
         {
-            _normalPanel.SetActive(data.eventType != EventType.Reward);
-            _rewardPanel.SetActive(data.eventType == EventType.Reward);
+            // Todo. 리워드 이벤트가 기존의 이벤트랑 같은 ui디자인이라 주석처리해둠.
+            _normalPanel.SetActive(true);
+            // _rewardPanel.SetActive(data.eventType == EventType.Reward);
 
-            if (data.eventType == EventType.Reward && renderData is RewardEventUIRenderData rewardEventParams)
+            if (
+                // data.eventType == EventType.Reward && 
+                renderData is RewardEventUIRenderData rewardEventParams)
             {
                 _rewardMainTextLoader.TextId = rewardEventParams.mainTextId;
                 _gradeImage.sprite = rewardEventParams.gradeImage;
                 RenderRewardEvent(rewardEventParams);
             }
-            else if (data.eventType != EventType.Reward && renderData is NormalEventUIRenderData normalEventParams)
+            else if (
+                // data.eventType != EventType.Reward && 
+                renderData is NormalEventUIRenderData normalEventParams)
             {
                 _normalMainTextLoader.TextId = normalEventParams.mainTextId;
                 RenderNormalEvent(normalEventParams);

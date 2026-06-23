@@ -73391,7 +73391,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &2106338577359360981
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -74582,7 +74582,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2667525751473860551
 RectTransform:
   m_ObjectHideFlags: 0
@@ -79968,7 +79968,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &5093892749327610224
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -83544,7 +83544,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &6604379907741951004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85060,7 +85060,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &7047116730171542815
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -88268,7 +88268,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8357707109429061551
 RectTransform:
   m_ObjectHideFlags: 0
@@ -90351,10 +90351,6 @@ MonoBehaviour:
     button: {fileID: 8310633803845354964}
     image: {fileID: 6038651531373095386}
     textLoader: {fileID: 4245777523179342205}
-  - btId: 0
-    button: {fileID: 8810536066460373850}
-    image: {fileID: 7413632799241110446}
-    textLoader: {fileID: 5323399841703869059}
   - btId: 0
     button: {fileID: 1781422631779016474}
     image: {fileID: 2045819844895167096}
