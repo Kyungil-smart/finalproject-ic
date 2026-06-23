@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 
-public class EventManager : Manager, IEventManager
+public class EventManager : Manager, IEventManager, IReadyStatus
 {
     [Serializable]
     public class EventDataStruct
@@ -22,53 +22,61 @@ public class EventManager : Manager, IEventManager
     private GSheetManager _gsheet;
     
     [SerializeField] private EventTaskSO staffTasks;
-    [SerializeField] private EventTaskSO linkageTasks;
     [SerializeField] private EventTaskSO regularTasks;
-    [SerializeField] private EventTaskSO rewardTasks;
     
     private Dictionary<EventType, EventDataStruct> _eventTasks = new();
     private CancellationTokenSource _cts;
     private bool _running;
+    private EventRandom _eventRandom = new();
+    
+    private Dictionary<string, bool> _readyStatus = new();
+    public Dictionary<string, bool> ReadyStatus => _readyStatus;
     
     public bool IsRunning => _running;
     
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
 
-    protected override void Register() => ServiceLocater.Register<IEventManager>(this);
+    protected override void Register()
+    {
+        ServiceLocater.Register<IEventManager>(this);
+        ServiceLocater.Register<IEventRouter>(new EventRouter());
+    }
 
-    protected override void Unregister() => ServiceLocater.Unregister<IEventManager>(this);
+    protected override void Unregister()
+    {
+        ServiceLocater.Unregister<IEventManager>(this);
+        ServiceLocater.Unregister<IEventRouter>(new EventRouter());
+    }
 
     protected override void Init()
     {
         Debug.Log("[EventManager] Initializing...");
         InitEvent();
-        DownloadData().Forget();
+        DownloadData();
     }
 
     private async UniTaskVoid DownloadData()
     {
         if (!Utils.Environment.isDevelopment) return;
         if (_wasDownloaded) return;
+        _readyStatus.Add("EventData", false);
         var loader = new EventDataLoader
         {
             staffTaskSO = staffTasks,
             regularTaskSO = regularTasks,
-            linkageTaskSO = linkageTasks,
-            rewardTaskSO = rewardTasks
         };
         var gsManager = new GSheetManager(gSheetId, gid);
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsManager.IsDownload);
         loader.LoadEvent(gsManager);
         _wasDownloaded = true;
+        _readyStatus["EventData"] = true;
     }
 
     private void InitEvent()
     {
         SetEventTask(EventType.Staff, staffTasks, new StaffEventTaskRunner());
-        SetEventTask(EventType.Linkage, linkageTasks, new LinkageEventTaskRunner());
         SetEventTask(EventType.Regular, regularTasks, new RegularEventTaskRunner());
-        SetEventTask(EventType.Reward, rewardTasks, new RewardEventTaskRunner());
         return;
 
         void SetEventTask(EventType evtType, EventTaskSO so, IEventTaskRunner runner)
@@ -85,7 +93,7 @@ public class EventManager : Manager, IEventManager
     public void ResetRunId()
     {
         if (_eventTasks == null) return;
-        EventType[] eventTypes = { EventType.Staff, EventType.Linkage, EventType.Regular, EventType.Reward };
+        EventType[] eventTypes = { EventType.Staff, EventType.Regular};
         foreach (var evtType in eventTypes)
             _eventTasks[evtType].runIds.Clear();
     }
@@ -106,7 +114,10 @@ public class EventManager : Manager, IEventManager
         // if (_running) CancelCurrentEvent();
         // _cts = new CancellationTokenSource();
         _running = true;
-        var data = await GetEventTaskDataRandomly(evtType, dataStruct.so.tasks.Count);
+        // 이벤트 타입이 직원간 이벤트면 직원간 이벤트 랜덤뽑기
+        var data = evtType == EventType.Staff
+            ? await _eventRandom.GetStaffRandomly(dataStruct.so.tasks, dataStruct.runIds, GetSynergy())
+            : await _eventRandom.GetRandomly(dataStruct.so.tasks, dataStruct.runIds);
         if (data == null)
         {
             Debug.Log("[EventManager] 실행 가능한 이벤트가 존재하지 않습니다.");
@@ -136,28 +147,31 @@ public class EventManager : Manager, IEventManager
     {
         _cts?.Cancel();
     }
-    
-    private async UniTask<EventTaskData> GetEventTaskDataRandomly(EventType evtType, int totalEventCount)
-    {
-        Debug.Log($"[EventManager:GetEventTaskDataRandomly] {evtType} {totalEventCount}");
-        while (true)
-        {
-            var index = UnityEngine.Random.Range(0, totalEventCount);
-            if (!_eventTasks.TryGetValue(evtType, out var mdStruct)) return null;
-            var task = mdStruct.so.tasks[index];
-            if (mdStruct.runIds.Count < totalEventCount)
-            {
-                if (!mdStruct.runIds.Contains(task.id))
-                    return task;
-                await UniTask.Yield();
-            }
-            else
-            {
-                return null;    
-            }
-        }
-    }
 
+    // 시너지 반환
+    private Synergy GetSynergy()
+    {
+        // ProjectManager에 투입된 직원의 id값 가져오기
+        var assignedIds = ServiceLocater.Get<IProjectManager>()
+            .GetAssignedStaffIds(ServiceLocater.Get<IGameManager>().ProcName.CurrentValue);
+        int discSum = 0;
+        
+        // 투입된 직원의 id값으로 해당 직원의 DISC값 가져오기
+        foreach (var id in assignedIds)
+        {
+            // Todo. assignedIds로 DISC값 조회 및 계산
+            var entity = ServiceLocater.Get<IStaffRegister>().GetStaffEntity(id);
+            if (entity != null) discSum += (int)entity.GetDiscType();
+        }
+        var row = ServiceLocater.Get<IStaffDataManager>().SynergyList.Find(r => r.discSum == discSum);
+        return row.synergyType switch
+        {
+            200 => Synergy.Good,
+            300 => Synergy.Bad,
+            100 => Synergy.Normal
+        };
+    }
+    
     [ContextMenu("데이터 다운로드")]
     private void DataDownload()
     {

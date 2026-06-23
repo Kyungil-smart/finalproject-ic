@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5285ffdc7ea7d84887bc3c869162c57, type: 3}
+  m_Name: GenreThemeTypeDataSO
+  m_EditorClassIdentifier: Assembly-CSharp::GenreThemeTypeDataSO
+  genreThemeList:
+  - GT_ID: 60001
+    Type: 1
+    GT_Name_ID: 1510001
+    GT_Cost: 7000
+    GT_Cost_Ratio: 1
+  - GT_ID: 60002
+    Type: 1
+    GT_Name_ID: 1510002
+    GT_Cost: 6500
+    GT_Cost_Ratio: 1
+  - GT_ID: 60003
+    Type: 1
+    GT_Name_ID: 1510003
+    GT_Cost: 3000
+    GT_Cost_Ratio: 1
+  - GT_ID: 60004
+    Type: 1
+    GT_Name_ID: 1510004
+    GT_Cost: 6000
+    GT_Cost_Ratio: 1
+  - GT_ID: 60005
+    Type: 1
+    GT_Name_ID: 1510005
+    GT_Cost: 4500
+    GT_Cost_Ratio: 1
+  - GT_ID: 60006
+    Type: 1
+    GT_Name_ID: 1510006
+    GT_Cost: 5000
+    GT_Cost_Ratio: 1
+  - GT_ID: 60007
+    Type: 1
+    GT_Name_ID: 1510007
+    GT_Cost: 6500
+    GT_Cost_Ratio: 1
+  - GT_ID: 60008
+    Type: 1
+    GT_Name_ID: 1510008
+    GT_Cost: 5500
+    GT_Cost_Ratio: 1
+  - GT_ID: 60009
+    Type: 1
+    GT_Name_ID: 1510009
+    GT_Cost: 5000
+    GT_Cost_Ratio: 1
+  - GT_ID: 60010
+    Type: 1
+    GT_Name_ID: 1510010
+    GT_Cost: 4000
+    GT_Cost_Ratio: 1
+  - GT_ID: 61001
+    Type: 2
+    GT_Name_ID: 1520001
+    GT_Cost: 0
+    GT_Cost_Ratio: 1.05
+  - GT_ID: 61002
+    Type: 2
+    GT_Name_ID: 1520002
+    GT_Cost: 0
+    GT_Cost_Ratio: 1.15
+  - GT_ID: 61003
+    Type: 2
+    GT_Name_ID: 1520003
+    GT_Cost: 0
+    GT_Cost_Ratio: 1.05
+  - GT_ID: 61004
+    Type: 2
+    GT_Name_ID: 1520004
+    GT_Cost: 0
+    GT_Cost_Ratio: 1.1
+  - GT_ID: 61005
+    Type: 2
+    GT_Name_ID: 1520005
+    GT_Cost: 0
+    GT_Cost_Ratio: 0.95
+  - GT_ID: 61006
+    Type: 2
+    GT_Name_ID: 1520006
+    GT_Cost: 0
+    GT_Cost_Ratio: 1
+  - GT_ID: 61007
+    Type: 2
+    GT_Name_ID: 1520007
+    GT_Cost: 0
+    GT_Cost_Ratio: 1.1
+  - GT_ID: 61008
+    Type: 2
+    GT_Name_ID: 1520008
+    GT_Cost: 0
+    GT_Cost_Ratio: 1.25
+  - GT_ID: 61009
+    Type: 2
+    GT_Name_ID: 1520009
+    GT_Cost: 0
+    GT_Cost_Ratio: 0.9
+  - GT_ID: 61010
+    Type: 2
+    GT_Name_ID: 1520010
+    GT_Cost: 0
+    GT_Cost_Ratio: 1.2

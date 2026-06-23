@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
+using Cysharp.Threading.Tasks;
 using DataDispatcher;
 using R3;
 using TMPro;
@@ -12,17 +13,16 @@ using Channel = DataDispatcher.Channel;
 public class MainUIController : MonoBehaviour, IMainUIReadyable
 {
     [Header("Top UI")]
-    [SerializeField] private TextLoader goldTl;
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private TextMeshProUGUI dateText;
+    [SerializeField] private TextMeshProUGUI ProjectText;
     
     [Header("Process UI")]
+    [SerializeField] private GameObject previousStepSession;
     [SerializeField] private TextLoader previousStepTl;
-    [SerializeField] private TextMeshProUGUI previousStepNum;
     [SerializeField] private TextLoader currentStepTl;
-    [SerializeField] private TextMeshProUGUI currentStepNum;
+    [SerializeField] private GameObject nextStepSession;
     [SerializeField] private TextLoader nextStepTl;
-    [SerializeField] private TextMeshProUGUI nextStepNum;
     
     [Header("Bottom UI")]
     [SerializeField] private Button lastProjectsButton;
@@ -32,8 +32,19 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     [SerializeField] private Button staffListButton;
     [SerializeField] private TextLoader staffListTl;
 
+    [Header("Staff Slot UI")] 
+    [SerializeField] private Button[] staffSlots;
+    
+    [Header("Input Project Name UI")]
+    [SerializeField] private GameObject inputProjectPanel;
+    [SerializeField] private TMP_InputField projectNameInputField;
+    [SerializeField] private Button inputProjectConfirmBtn;
+    [SerializeField] private GameObject warningMessagePanel;
+    [SerializeField] private TextMeshProUGUI warningMessageText;
+    [SerializeField][Range(1f, 3f)] private float popUpInterval; 
+
     private bool _isReady = false;
-    public bool IsReady { get => _isReady; }    
+    public bool IsReady { get => _isReady; }
     
     // R3 구독 해제를 관리하기 위한 디스포저 컨테이너
     private readonly CompositeDisposable _disposables = new();
@@ -48,7 +59,12 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         lastProjectsButton.onClick.AddListener(OnClickViewLastProject);
         goNextProcessButton.onClick.AddListener(OnClickNextProcess);
         staffListButton.onClick.AddListener(OnClickViewStaffList);
+        inputProjectConfirmBtn.onClick.AddListener(() => ConfirmProjectName());
         ServiceLocater.Register<IMainUIReadyable>(this);
+        foreach (var slotBtn in staffSlots)
+            slotBtn.onClick.AddListener(UnlockSlot);
+        staffSlots[0].gameObject.SetActive(false);
+        staffSlots[1].gameObject.SetActive(false);
     }
 
     private void Start()
@@ -60,6 +76,11 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         UpdateProcessData(data);
         UpdateGoldUI();
         UpdateDateUI();
+        if (ServiceLocater.Get<IGameManager>().ProcName.CurrentValue == GameDevProcName.HumanResources)
+            ProjectText.text = "미정";
+        // ServiceLocater.Get<IStaffRegister>().SetSlotPos(staffSlots);
+        if (ServiceLocater.Get<IGameManager>().InputProjectNameActive) 
+            OpenInputProjectNamePanel();
         _isReady = true;
         CloseLoadingScreen().Forget();
     }
@@ -70,6 +91,9 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         lastProjectsButton.onClick.RemoveListener(OnClickViewLastProject);
         goNextProcessButton.onClick.RemoveListener(OnClickNextProcess);
         staffListButton.onClick.RemoveListener(OnClickViewStaffList);
+        inputProjectConfirmBtn.onClick.RemoveAllListeners();
+        foreach (var slotBtn in staffSlots)
+            slotBtn.onClick.RemoveListener(UnlockSlot);
     }
     
     private void Initialize()
@@ -78,12 +102,18 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         lastProjectsTl.TextId = -1;
         goNextProcessTl.TextId = -1;
         staffListTl.TextId = -1;
-        previousStepNum.text = StepString(0);  
-        currentStepNum.text = StepString(0);
-        nextStepNum.text = StepString(0);
+        LoadingSavedData();
     }
-
+    
     private string StepString(int stepNum) => $"{stepNum:D2}/12";
+
+    /// <summary>
+    /// Save Data 를 Loading 한 후에 UI 에서 초기화 작업 해줘야 할 것들 진행하기
+    /// </summary>
+    private void LoadingSavedData()
+    {
+        
+    }
     
     // ------------ R3 Property Bind 할 것들 -------------
 
@@ -92,7 +122,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         _gameManager.Money
             .Subscribe(gold =>
             {
-                goldText.text = $"{gold}";
+                goldText.text = gold.ToString("N0");;
             }).AddTo(_disposables);
     }
 
@@ -102,7 +132,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
             .DistinctUntilChanged()
             .Subscribe(date =>
             {
-                dateText.text = date.ToString("yyyy-MM-dd");            
+                dateText.text = date.ToString("yyyy") + "년";            
             }).AddTo(_disposables);
     }
 
@@ -112,27 +142,24 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         if (stateView.prev.id <= 0)
         {
             previousStepTl.TextId = 0;
-            previousStepNum.text = "";
+            previousStepSession.SetActive(false);
         }
         else
         {
-            previousStepTl.TextId = stateView.prev.textId;  // ToDo. TextID 화 시키기
-            previousStepNum.text = StepString(stateView.prev.id);
+            previousStepTl.TextId = stateView.prev.textId;
+            previousStepSession.SetActive(true);
         }
-
-        currentStepTl.TextId = stateView.current.textId;  // ToDo. TextID 화 시키기
-        currentStepNum.text = StepString(stateView.current.id);
-        
+        currentStepTl.TextId = stateView.current.textId;
         if (stateView.next.id <= 0)
         {
             nextStepTl.TextId = 0;
-            nextStepNum.text = "";
+            nextStepSession.SetActive(false);
         }
         else
         {
-            nextStepTl.TextId = stateView.next.textId;  // ToDo. TextID 화 시키기
-            nextStepNum.text = StepString(stateView.next.id);
-        } 
+            nextStepTl.TextId = stateView.next.textId;
+            nextStepSession.SetActive(true);
+        }  
     }
     
     // ------------ 버튼 핸들러들 -------------
@@ -145,17 +172,14 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
 
     private void OnClickViewLastProject()
     {
-        // ToDo. Project 는 Game Manager 에서 관리 할 것. 따라서 해당 매니저에게 데이터 요청 진행.
-        var dataList = _gameManager.Projects;
         LastProjectRenderData data = new();
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LastProjectUI, data);
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.SlideUI, data);
     }
     
     private void OnClickViewStaffList()
     {
         StaffDetailRenderData data = new()
         {
-            btnCallback = ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas,
             staffDataList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList()
         };
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.SlideUI, data);
@@ -165,6 +189,59 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     {   // ToDo. 임시 코드
         await UniTask.WaitForSeconds(1f);
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
-        ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
+        // ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
+    }
+
+    private void UnlockSlot()
+    {
+        (bool result, int nextSlotIndex) = ServiceLocater.Get<IStaffRegister>().UpgradeSlot();
+        if (result)
+        {
+            staffSlots[nextSlotIndex - 1].gameObject.SetActive(false);
+            if (nextSlotIndex < staffSlots.Length)
+                staffSlots[nextSlotIndex].interactable = true;
+        }
+    }
+
+    private void OpenInputProjectNamePanel()
+    {
+        inputProjectPanel.SetActive(true);
+    }
+
+    private async UniTask ConfirmProjectName()
+    {   // ToDO. Text 데이터 외부에서 받도록 준비하기.
+        var emptyWarning = "최소 1글자 이상의 이름을 입력해주세요.";
+        var lengthWarning = "20자 이내로 입력해 주시기 바랍니다.";
+        var specificWordWarning = "띄어쓰기는 불가하며, 특수문자는 `-_` 만 사용 가능합니다. \n특수문자로 시작할 수는 없습니다.";
+        string pattern = @"^[a-zA-Z0-9가-힣]([a-zA-Z0-9가-힣_-])*$";
+        
+        var name = projectNameInputField.text;
+        if (name.Length <= 0)
+        {
+            await OpenWarningMessagePanel(emptyWarning);
+        }
+        else if (name.Length > 20)
+        {
+            await OpenWarningMessagePanel(lengthWarning);
+        }
+        else if (!Regex.IsMatch(name, pattern))
+        {
+            await OpenWarningMessagePanel(specificWordWarning);
+        }
+        else
+        {
+            ServiceLocater.Get<IProjectManager>().SetProjectName(name);
+            ProjectText.text = name;
+            ServiceLocater.Get<IGameManager>().UpdateInputProjectNameActive(false);
+            inputProjectPanel.SetActive(false);    
+        }
+    }
+    
+    private async UniTask OpenWarningMessagePanel(string warningMessage)
+    {
+        warningMessageText.text = warningMessage;
+        warningMessagePanel.SetActive(true);
+        await UniTask.WaitForSeconds(popUpInterval);
+        warningMessagePanel.SetActive(false);
     }
 }

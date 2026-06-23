@@ -6,6 +6,7 @@ public class ProcessTaskRunner : MonoBehaviour, IProcessTaskRunnerEnterExit
 {
     protected ProcessStateSO psSO;
     private bool _canGoing;
+    protected bool _waiting;
 
     public async UniTask Enter(ProcessStateSO so)
     {
@@ -35,6 +36,7 @@ public class ProcessTaskRunner : MonoBehaviour, IProcessTaskRunnerEnterExit
             {
                 Debug.Log($"[ProcessTaskRunner:EventPreExecute] {EventType.Regular} 진행");
                 await ServiceLocater.Get<IEventManager>().OccurEvent(EventType.Regular);
+                Debug.Log($"[ProcessTaskRunner:EventPreExecute] {EventType.Regular} 완료");
             }
         }
     }
@@ -61,4 +63,6 @@ public class ProcessTaskRunner : MonoBehaviour, IProcessTaskRunnerEnterExit
     {
         _canGoing = true;
     }
+    
+    protected async UniTask WaitProcess() => await UniTask.WaitUntil(() => !_waiting);
 }

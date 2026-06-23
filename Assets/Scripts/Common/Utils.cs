@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Random = UnityEngine.Random;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace Utils
 {
@@ -44,7 +49,7 @@ namespace Utils
     /// <exception cref="TimeoutException">제한 시간 내에 조건을 만족하지 못했을 때 발생</exception>
     public static class TaskAsync
     {
-        public static async UniTask WaitUntilOrThrowAsync(Func<bool> condition, float timeoutSeconds = 3f)
+        public static async UniTask WaitUntilOrThrowAsync(Func<bool> condition, float timeoutSeconds = 5f)
         {
             // 1. 시간 기반 취소 토큰 소스 생성
             using (var cts = new CancellationTokenSource())
@@ -63,6 +68,47 @@ namespace Utils
                     throw new TimeoutException($"[TaskUtil] {timeoutSeconds}초 동안 조건을 만족하지 못해 대기가 중단되었습니다.");
                 }
             }
+        }
+    }
+
+    public static class NumberExtractor
+    {
+        public static int[] GetUniqueRandomNumbers(int min, int max, int count)
+        {
+            // 1. 1부터 100까지의 숫자가 담긴 배열 생성
+            int range = max - min + 1;
+            int[] numbers = new int[range];
+            for (int i = 0; i < range; i++)
+            {
+                numbers[i] = min + i;
+            }
+
+            // 2. 필요한 개수(count)만큼만 셔플 진행
+            int[] result = new int[count];
+            for (int i = 0; i < count; i++)
+            {
+                int randomIndex = Random.Range(i, range);
+            
+                // 스왑(Swap) 진행
+                int temp = numbers[i];
+                numbers[i] = numbers[randomIndex];
+                numbers[randomIndex] = temp;
+
+                result[i] = numbers[i];
+            }
+            return result;
+        }
+    }
+
+    public static class DayCheck
+    {
+        public static bool IsDaytime()
+        {
+            // 1. 현재 시스템 시간의 '시(Hour)' 정보를 가져옴
+            int currentHour = DateTime.Now.Hour;
+
+            // 2. 6시 이상 19시 미만인지 조건 검증
+            return currentHour >= 6 && currentHour < 19;
         }
     }
 }
