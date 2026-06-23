@@ -68,4 +68,30 @@ public class GameManager : Manager, IGameManager
             ServiceLocater.Get<IMainStateMachine>().SetCurrentMainState(GameDevProcName.HumanResources);
         }
     }
+    
+    public GameManagerSaveData CaptureSaveData() => new()
+    {
+        playerName  = PlayerName,
+        playerLevel = _playerLevel.Value,
+        exp         = _exp,
+        money       = _money.Value,
+        heart       = _heart.Value,
+        procDate    = _date.Value,
+        procName    = _procName.Value,
+        projects    = _projects.ConvertAll(ProjectSaveData.From),
+    };
+    
+    public void RestoreSaveData(GameManagerSaveData dto)
+    {
+        PlayerName       = dto.playerName;
+        _exp             = dto.exp;
+        _playerLevel.Value = dto.playerLevel;   // RP 대입 → 구독 중인 UI 자동 갱신
+        _money.Value     = dto.money;
+        _heart.Value     = dto.heart;
+        _date.Value      = dto.procDate;
+        _procName.Value  = dto.procName;
+
+        _projects.Clear();
+        foreach (var p in dto.projects) _projects.Add(p.ToProjectData());
+    }
 }

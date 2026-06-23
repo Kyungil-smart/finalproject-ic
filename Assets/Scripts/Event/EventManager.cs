@@ -172,6 +172,28 @@ public class EventManager : Manager, IEventManager, IReadyStatus
         };
     }
     
+    public EventManagerSaveData CaptureSaveData()
+    {
+        var dto = new EventManagerSaveData();
+        foreach (var (type, data) in _eventTasks)
+            dto.runIds[type] = new List<int>(data.runIds);  // 내부 리스트 복사(앨리어싱 방지)
+        return dto;
+    }
+
+    public void RestoreSaveData(EventManagerSaveData dto)
+    {
+        if (dto?.runIds == null) return;
+        foreach (var (type, ids) in dto.runIds)
+        {
+            // InitEvent()가 Init(Awake)에서 _eventTasks(so/runner 포함)를 이미 만들어 둠 → runIds만 채움
+            if (_eventTasks.TryGetValue(type, out var data))
+            {
+                data.runIds.Clear();
+                data.runIds.AddRange(ids);
+            }
+        }
+    }
+    
     [ContextMenu("데이터 다운로드")]
     private void DataDownload()
     {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using R3;
 
 public interface IGameManager
@@ -23,4 +24,6 @@ public interface IGameManager
     public int GetProjectYear();
     public void AddExp(float exp);
     public void UpdateInputProjectNameActive(bool active);
+    public GameManagerSaveData CaptureSaveData();
+    public void RestoreSaveData(GameManagerSaveData dto);
 }
