@@ -7,6 +7,7 @@ public class ProjectManager : Manager, IProjectManager
     private ProjectDataManager _projectDataManager;
     
     [SerializeField] private GenreThemeTypeDataSO _genreThemeDataSO;
+    [SerializeField] private IncomeRatioDataSO _incomeRatioDataSO;
     private Dictionary<GameDevProcName, List<int>> _assignedStaff = new();
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
@@ -76,7 +77,7 @@ public class ProjectManager : Manager, IProjectManager
     
     public uint Earnings => _projectData.income - _projectData.cost; // 수익
 
-    protected override void Init() => CostCalculator = new ProjectCostCalculate(_genreThemeDataSO);
+    protected override void Init() => CostCalculator = new ProjectCostCalculate(_genreThemeDataSO, _incomeRatioDataSO);
 
     public void UpdateTotalQuality(float value, float ratio = 1f)
     {

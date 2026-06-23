@@ -1683,6 +1683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectManager
   _genreThemeDataSO: {fileID: 11400000, guid: da33a372739765f46bf647df15737753, type: 2}
+  _incomeRatioDataSO: {fileID: 11400000, guid: 3ecb75e217187db41b654c70c3bc280b, type: 2}
 --- !u!1 &1552348622
 GameObject:
   m_ObjectHideFlags: 0
