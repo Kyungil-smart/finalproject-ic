@@ -169,7 +169,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.4
   androidMinAspectRatio: 1
   applicationIdentifier:
-    Android: com.develrocket.thisisindieinthisworld
+    Android: com.develrocket.IndiesGameDevInThisWorld
     Standalone: com.Unity-Technologies.com.unity.template.urp-blank
     iPhone: com.Unity-Technologies.com.unity.template.urp-blank
   buildNumber:
@@ -274,8 +274,8 @@ PlayerSettings:
   AndroidAllowedArchitectures: -13
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: '{inproject}: Assets/WorkSpace/finalproject_ic.keystore'
-  AndroidKeyaliasName: finalproject-ic
+  AndroidKeystoreName: '{inproject}: Assets/WorkSpace/finalproject_ic_2.keystore'
+  AndroidKeyaliasName: indiesgamedevinthisworld
   AndroidEnableArmv9SecurityFeatures: 0
   AndroidEnableArm64MTE: 0
   AndroidBuildApkPerCpuArchitecture: 0
@@ -299,7 +299,14 @@ PlayerSettings:
   AndroidAppBundleSizeToValidate: 150
   AndroidReportGooglePlayAppDependencies: 1
   androidSymbolsSizeThreshold: 800
-  m_BuildTargetIcons: []
+  m_BuildTargetIcons:
+  - m_BuildTarget: 
+    m_Icons:
+    - serializedVersion: 2
+      m_Icon: {fileID: 2800000, guid: 09d49c14ae322314a81b88db4513d22e, type: 3}
+      m_Width: 128
+      m_Height: 128
+      m_Kind: 0
   m_BuildTargetPlatformIcons:
   - m_BuildTarget: iPhone
     m_Icons:
@@ -460,7 +467,9 @@ PlayerSettings:
       m_Height: 36
       m_Kind: 0
       m_SubKind: 
-    - m_Textures: []
+    - m_Textures:
+      - {fileID: 2800000, guid: 09d49c14ae322314a81b88db4513d22e, type: 3}
+      - {fileID: 2800000, guid: 09d49c14ae322314a81b88db4513d22e, type: 3}
       m_Width: 432
       m_Height: 432
       m_Kind: 2

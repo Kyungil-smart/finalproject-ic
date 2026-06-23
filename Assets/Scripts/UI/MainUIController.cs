@@ -1,10 +1,8 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Cysharp.Threading.Tasks;
 using DataDispatcher;
 using R3;
 using TMPro;
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.UI;
 using Channel = DataDispatcher.Channel;
