@@ -182,7 +182,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         Debug.Log($"[PreProduction] 계산 완료 달성률 : {ServiceLocater.Get<IQualityManager>().Calculator.CalculateAchieve()}");
         Debug.Log("EmitResultEvent() 시작");
 
-        await ServiceLocater.Get<IEventManager>().OccurEvent(EventType.Reward); // 지표 이벤트 발생
+        await ServiceLocater.Get<IQualityManager>().ShowAchieveResult(); // 지표 이벤트 발생
         
         await UniTask.Yield();
         // await WaitProcess();
