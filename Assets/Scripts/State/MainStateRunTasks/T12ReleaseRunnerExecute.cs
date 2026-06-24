@@ -77,7 +77,7 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         curAwardsData.reqArt = (int)ServiceLocater.Get<IQualityManager>().Calculator.GetArtAchieve();
         curAwardsData.reqDev = (int)ServiceLocater.Get<IQualityManager>().Calculator.GetDevAchieve();
 
-        Debug.Log($"현재 점수 : {curAwardsData.reqDesign} {curAwardsData.reqArt} {curAwardsData.reqDev}");
+        Debug.Log($"[T12ReleaseRunnerExecute] 현재 점수 : {curAwardsData.reqDesign} {curAwardsData.reqArt} {curAwardsData.reqDev}");
 
         // 기준이 되는 어워즈 SO(리스트) 불러오기
         List <AwardsData> awardsList  = ServiceLocater.Get<IProjectDataManager>().AwardsDataSO.awardsDataList;
@@ -106,7 +106,7 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
             ServiceLocater.Get<IGameManager>().AddMoney(awardsList[index].value);
         }
 
-        Debug.Log($"어워즈 번호 : {awardsList[index]} | 보상 {awardsList[index].target} | {awardsList[index].value}");
+        Debug.Log($"[T12ReleaseRunnerExecute] 어워즈 번호 : {awardsList[index]} | 보상 {awardsList[index].target} | {awardsList[index].value}");
 
         // ToDO. Animation 추가 작업 필요.
 
