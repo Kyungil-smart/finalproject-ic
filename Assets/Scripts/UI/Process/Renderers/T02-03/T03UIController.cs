@@ -15,6 +15,7 @@ public class T0203UIController : MonoBehaviour, IUIRender
     [SerializeField] private Button confirmBtn;
     [SerializeField] private TextMeshProUGUI trendGenreText;
     [SerializeField] private TextMeshProUGUI trendThemeText;
+    [SerializeField] private TextMeshProUGUI yearText;
 
     [Header("T03-1 UI Components")] 
     [SerializeField] private GameObject middleSession02;
@@ -22,6 +23,7 @@ public class T0203UIController : MonoBehaviour, IUIRender
     [SerializeField] private DataRolePicker genrePicker;
     [SerializeField] private DataRolePicker themePicker;
     [SerializeField] private Button selectBtn;
+    [SerializeField] private TextMeshProUGUI t031costText;
     
     [Header("T03-2 UI Components")]
     [SerializeField] private GameObject middleSession03;
@@ -30,6 +32,7 @@ public class T0203UIController : MonoBehaviour, IUIRender
     [SerializeField] private TextMeshProUGUI theme;
     [SerializeField] private Button previousBtn;
     [SerializeField] private Button nextBtn;
+    [SerializeField] private TextMeshProUGUI t032costText;
 
     private T03TrendGenreThemeSelectRenderData _t031Cache;
     
@@ -53,6 +56,10 @@ public class T0203UIController : MonoBehaviour, IUIRender
             title.Text = "트랜드 조사 결과"; // ToDo. 추후 Text ID 로 변경 예정
             middleSession01.SetActive(true);
             tailSession01.SetActive(true);
+            
+            trendGenreText.text = renderT2Data.genre.name;
+            trendThemeText.text = renderT2Data.theme.name;
+            // yearText.text = $"{renderT2Data.year}년 트렌드";
             
             confirmBtn.onClick.RemoveAllListeners();
             confirmBtn.onClick.AddListener(() => renderT2Data.confirmCallback?.Invoke());
