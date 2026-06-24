@@ -83518,6 +83518,8 @@ MonoBehaviour:
   middleSession01: {fileID: 7035826738635446281}
   tailSession01: {fileID: 6601390132526051401}
   confirmBtn: {fileID: 2100751122286586974}
+  trendGenreText: {fileID: 968906938}
+  trendThemeText: {fileID: 1379384221}
   middleSession02: {fileID: 8291081320167555455}
   tailSession02: {fileID: 2405449681967900963}
   genrePicker: {fileID: 1522291094437228076}
@@ -88268,7 +88270,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8357707109429061551
 RectTransform:
   m_ObjectHideFlags: 0

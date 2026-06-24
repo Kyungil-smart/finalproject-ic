@@ -13,6 +13,8 @@ public class T0203UIController : MonoBehaviour, IUIRender
     [SerializeField] private GameObject middleSession01;
     [SerializeField] private GameObject tailSession01;
     [SerializeField] private Button confirmBtn;
+    [SerializeField] private TextMeshProUGUI trendGenreText;
+    [SerializeField] private TextMeshProUGUI trendThemeText;
 
     [Header("T03-1 UI Components")] 
     [SerializeField] private GameObject middleSession02;
@@ -49,8 +51,11 @@ public class T0203UIController : MonoBehaviour, IUIRender
         {
             Debug.Log("[T0203UIController] Render - T02");
             title.Text = "트랜드 조사 결과"; // ToDo. 추후 Text ID 로 변경 예정
+            middleSession01.SetActive(true);
+            tailSession01.SetActive(true);
             
             confirmBtn.onClick.RemoveAllListeners();
+            confirmBtn.onClick.AddListener(() => renderT2Data.confirmCallback?.Invoke());
             confirmBtn.onClick.AddListener(() => middleSession01.SetActive(false));
             confirmBtn.onClick.AddListener(() => tailSession01.SetActive(false));
             confirmBtn.onClick.AddListener(() => mainPanel.SetActive(false));
