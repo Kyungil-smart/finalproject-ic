@@ -58,6 +58,17 @@ public class ProjectManager : Manager, IProjectManager
         get => _projectData.theme; 
         set => _projectData.theme = value;
     }
+    public NameTag TrendGenre
+    {
+        get => _projectData.trendGenre;
+        set => _projectData.trendGenre = value;
+    }
+
+    public NameTag TrendTheme
+    {
+        get => _projectData.trendTheme;
+        set => _projectData.trendTheme = value;
+    }
 
     public uint Cost
     {

@@ -84018,9 +84018,9 @@ MonoBehaviour:
   middleSession01: {fileID: 7035826738635446281}
   tailSession01: {fileID: 6601390132526051401}
   confirmBtn: {fileID: 2100751122286586974}
-  trendGenreText: {fileID: 968906938}
-  trendThemeText: {fileID: 1379384221}
-  yearText: {fileID: 0}
+  trendGenreText: {fileID: 647803755}
+  trendThemeText: {fileID: 711369891}
+  yearText: {fileID: 634784961}
   middleSession02: {fileID: 8291081320167555455}
   tailSession02: {fileID: 2405449681967900963}
   genrePicker: {fileID: 1522291094437228076}
@@ -84049,7 +84049,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &6604379907741951004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85565,7 +85565,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &7047116730171542815
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -90229,7 +90229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &8855003158593741297
 GameObject:
   m_ObjectHideFlags: 0
