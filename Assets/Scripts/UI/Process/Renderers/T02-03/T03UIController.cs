@@ -59,7 +59,7 @@ public class T0203UIController : MonoBehaviour, IUIRender
             
             trendGenreText.text = renderT2Data.genre.name;
             trendThemeText.text = renderT2Data.theme.name;
-            // yearText.text = $"{renderT2Data.year}년 트렌드";
+            yearText.text = $"{ServiceLocater.Get<IGameManager>().Date.CurrentValue.Year}년 트렌드";
             
             confirmBtn.onClick.RemoveAllListeners();
             confirmBtn.onClick.AddListener(() => renderT2Data.confirmCallback?.Invoke());
