@@ -13,12 +13,14 @@ public interface IGameManager
     public IReadOnlyList<ProjectData> Projects { get; }
     public ReadOnlyReactiveProperty<GameDevProcName> ProcName {get; }
     public bool InputProjectNameActive { get; }
+    public int Floor { get; }
     
     public void SetPlayerName(string playerName);
     public void AddPlayerLevel(int playerLevel);
     public void AddMoney(int money);
     public void AddHeart(int heart);
     public void AddAYear();
+    public void UnlockFloor();
     public int GetCalendarYear();
     public void AddProject(ProjectData project);
     public void ChangeState(GameDevProcName newState);

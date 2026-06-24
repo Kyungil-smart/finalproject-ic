@@ -14,6 +14,7 @@ public class GameManager : Manager, IGameManager
     private List<ProjectData> _projects = new(); // 프로젝트 리스트
     private ReactiveProperty<GameDevProcName> _procName = new();
     private bool _inputProjectNameActive;
+    private int _floor = 2;  // 현재 층수
 
     public string PlayerName { get; private set; } // 회사 이름
     public ReadOnlyReactiveProperty<int> PlayerLevel => _playerLevel;
@@ -24,6 +25,7 @@ public class GameManager : Manager, IGameManager
     public IReadOnlyList<ProjectData> Projects => _projects;
     public ReadOnlyReactiveProperty<GameDevProcName> ProcName => _procName;
     public bool InputProjectNameActive => _inputProjectNameActive;
+    public int Floor => _floor;
     private int _maxSlotNum = 8;
 
     private void OnEnable() => Register();
@@ -43,6 +45,7 @@ public class GameManager : Manager, IGameManager
     public void AddMoney(int money) => _money.Value += money;
     public void AddHeart(int heart) => _heart.Value += heart;
     public void AddProject(ProjectData project) => _projects.Add(project);
+    public void UnlockFloor() => _floor++;
     public void ChangeState(GameDevProcName state)
     {
         bool changed = _procName.Value != state;
@@ -70,7 +73,7 @@ public class GameManager : Manager, IGameManager
     public GameManagerSaveData CaptureSaveData() => new()
     {
         playerName  = PlayerName,
-        playerLevel = _playerLevel.Value,
+        floor       = _floor,
         exp         = _exp,
         money       = _money.Value,
         heart       = _heart.Value,
@@ -81,13 +84,13 @@ public class GameManager : Manager, IGameManager
     
     public void RestoreSaveData(GameManagerSaveData dto)
     {
-        PlayerName       = dto.playerName;
-        _exp             = dto.exp;
-        _playerLevel.Value = dto.playerLevel;   // RP 대입 → 구독 중인 UI 자동 갱신
-        _money.Value     = dto.money;
-        _heart.Value     = dto.heart;
-        _date.Value      = dto.procDate;
-        _procName.Value  = dto.procName;
+        PlayerName         = dto.playerName;
+        _exp               = dto.exp;
+        _playerLevel.Value = dto.floor;   // RP 대입 → 구독 중인 UI 자동 갱신
+        _money.Value       = dto.money;
+        _heart.Value       = dto.heart;
+        _date.Value        = dto.procDate;
+        _procName.Value    = dto.procName;
 
         _projects.Clear();
         foreach (var p in dto.projects) _projects.Add(p.ToProjectData());

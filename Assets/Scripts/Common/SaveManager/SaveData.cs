@@ -42,7 +42,7 @@ public class ProjectSaveData
 public class GameManagerSaveData 
 {
     public string playerName;
-    public int    playerLevel;
+    public int    floor;
     public float  exp;
     public int    money;
     public int    heart;
@@ -105,7 +105,7 @@ public class EventManagerSaveData
 public class SaveMeta              // 슬롯 카드 표시용 스냅샷 (저장 시 같이 기록)
 {
     public string playerName;          // 회사 이름 (구분 + 표시)
-    public int    playerLevel;         // 2F / 1F
+    public int    floor;         // 2F / 1F
     public int    completedProjectCount; // 완성한 프로젝트 N개
     public int    year;                // N년차
     public int    money;               // 보유 재화
