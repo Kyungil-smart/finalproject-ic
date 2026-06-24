@@ -1,5 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using DataDispatcher;
+using Channel = DataDispatcher.Channel;
 
 
 public class DummyData 
@@ -35,6 +37,7 @@ public class ReadyGameData : MonoBehaviour
                 ServiceLocater.Get<IMainStateMachine>().SetCurrentMainState(procName);   // 복원된 공정으로 진입
             }
             await UniTask.Yield();
+            ServiceLocater.Get<IPostManager>().Post(Channel.CloseLoading, true);
         });
     }
     

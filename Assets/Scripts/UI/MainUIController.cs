@@ -10,7 +10,7 @@ using Channel = DataDispatcher.Channel;
 /// <summary>
 /// Main Scene 에서 상시 뜨고 있어야 한다. 이벤트 성으로 UI 를 뛰워주는 것이 아니기 때문에 MonoBehaviour 로 충분히 대처.
 /// </summary>
-public class MainUIController : MonoBehaviour, IMainUIReadyable
+public class MainUIController : MonoBehaviour
 {
     [Header("Top UI")]
     [SerializeField] private TextMeshProUGUI goldText;
@@ -43,8 +43,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     [SerializeField] private TextMeshProUGUI warningMessageText;
     [SerializeField][Range(1f, 3f)] private float popUpInterval; 
 
-    private bool _isReady = false;
-    public bool IsReady { get => _isReady; }
+    private bool _isDataReady;
     
     // R3 구독 해제를 관리하기 위한 디스포저 컨테이너
     private readonly CompositeDisposable _disposables = new();
@@ -60,7 +59,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         goNextProcessButton.onClick.AddListener(OnClickNextProcess);
         staffListButton.onClick.AddListener(OnClickViewStaffList);
         inputProjectConfirmBtn.onClick.AddListener(() => ConfirmProjectName());
-        ServiceLocater.Register<IMainUIReadyable>(this);
+        ServiceLocater.Get<IPostManager>().Subscribe<bool>(Channel.CloseLoading, IsReady);
         foreach (var slotBtn in staffSlots)
             slotBtn.onClick.AddListener(UnlockSlot);
         staffSlots[0].gameObject.SetActive(false);
@@ -69,6 +68,7 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
 
     private void Start()
     {
+        _isDataReady = false;
         _gameManager = ServiceLocater.Get<IGameManager>();      
         _stateMachine = ServiceLocater.Get<IMainStateMachine>();
         _postManager = ServiceLocater.Get<IPostManager>();
@@ -81,28 +81,28 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         // ServiceLocater.Get<IStaffRegister>().SetSlotPos(staffSlots);
         if (ServiceLocater.Get<IGameManager>().InputProjectNameActive) 
             OpenInputProjectNamePanel();
-        _isReady = true;
         CloseLoadingScreen().Forget();
     }
 
     private void OnDisable()
     {
-        ServiceLocater.Unregister<IMainUIReadyable>(this);
         lastProjectsButton.onClick.RemoveListener(OnClickViewLastProject);
         goNextProcessButton.onClick.RemoveListener(OnClickNextProcess);
         staffListButton.onClick.RemoveListener(OnClickViewStaffList);
         inputProjectConfirmBtn.onClick.RemoveAllListeners();
         foreach (var slotBtn in staffSlots)
             slotBtn.onClick.RemoveListener(UnlockSlot);
+        ServiceLocater.Get<IPostManager>().Unsubscribe<bool>(Channel.CloseLoading, IsReady);
     }
     
     private void Initialize()
     {
-        _isReady = false;
         lastProjectsTl.TextId = -1;
         goNextProcessTl.TextId = -1;
         staffListTl.TextId = -1;
     }
+
+    private void IsReady(bool ready) => _isDataReady = ready;
    
     // ------------ R3 Property Bind 할 것들 -------------
 
@@ -175,10 +175,9 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
     }
     
     private async UniTaskVoid CloseLoadingScreen()
-    {   // ToDo. 임시 코드
-        await UniTask.WaitForSeconds(1f);
+    {
+        await Utils.TaskAsync.WaitUntilOrThrowAsync(() => _isDataReady, 10f);
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
-        // ServiceLocater.Get<IUIRouter>().CloseCurrentCanvas();
     }
 
     private void UnlockSlot()
