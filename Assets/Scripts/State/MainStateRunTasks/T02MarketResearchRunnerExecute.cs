@@ -72,7 +72,7 @@ public class T02MarketResearchRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         ServiceLocater.Get<IProjectManager>().TrendGenre = trendGenre;
         ServiceLocater.Get<IProjectManager>().TrendTheme = trendTheme;
 
-        Debug.Log($"[T02MarketResearchRunnerExecute] 트랜드 장르 : {ServiceLocater.Get<IProjectManager>().TrendGenre} | 트랜드 테마 : {ServiceLocater.Get<IProjectManager>().TrendTheme}");
+        Debug.Log($"[T02MarketResearchRunnerExecute] 트랜드 장르 : {ServiceLocater.Get<IProjectManager>().TrendGenre.name} | 트랜드 테마 : {ServiceLocater.Get<IProjectManager>().TrendTheme.name}");
     }
 
     private void GoProcess()
