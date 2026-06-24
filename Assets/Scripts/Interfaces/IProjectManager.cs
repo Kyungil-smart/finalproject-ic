@@ -27,6 +27,7 @@ public interface IProjectManager
     public string ToJsonData();
     public ProjectData GetProjectData();
     public void SetAwards(AwardsData awardsData);
+    public ProjectCostCalculate CostCalculator {get;}
 
     // Staff Part
     public void SetStaffsCost();  // 직원 고용 마지막에 한번 실행해놓기.
