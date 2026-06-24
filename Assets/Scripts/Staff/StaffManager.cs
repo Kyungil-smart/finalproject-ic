@@ -327,7 +327,9 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         
         _currentSlot.unlocked = true;
         ServiceLocater.Get<IGameManager>().AddMoney(_currentSlot.cost * -1);
+        if (_currentSlot.IsRoom) ServiceLocater.Get<IGameManager>().UnlockFloor();
         _currentSlot = _slots[++_slotIndex];
+        ServiceLocater.Get<ISaveManager>()?.Save();
         Debug.Log($"[StaffManager] Slot 해금 성공 : 최대 고용 가능 인원수: {maxHiredStaffCount}");
         return (true, _slotIndex);
     }

@@ -102,19 +102,8 @@ public class MainUIController : MonoBehaviour, IMainUIReadyable
         lastProjectsTl.TextId = -1;
         goNextProcessTl.TextId = -1;
         staffListTl.TextId = -1;
-        LoadingSavedData();
     }
-    
-    private string StepString(int stepNum) => $"{stepNum:D2}/12";
-
-    /// <summary>
-    /// Save Data 를 Loading 한 후에 UI 에서 초기화 작업 해줘야 할 것들 진행하기
-    /// </summary>
-    private void LoadingSavedData()
-    {
-        
-    }
-    
+   
     // ------------ R3 Property Bind 할 것들 -------------
 
     private void UpdateGoldUI()

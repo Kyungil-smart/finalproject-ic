@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class SlotUIController : MonoBehaviour
 {
     [SerializeField] private SlotUIButtonRender[] slotButtons;
+    [SerializeField] private GameObject checkValidatePanel;
 
     [Header("Player Name Input Panel Control")] 
     [SerializeField] private GameObject inputPlayerNamePanel;
@@ -23,6 +24,8 @@ public class SlotUIController : MonoBehaviour
     private ISaveManager _saveManager;
     private ReactiveProperty<string> _playerName = new();
     private readonly CompositeDisposable _disposables = new();
+    private static readonly System.Text.RegularExpressions.Regex PlayerNameRegex =
+        new(@"^[A-Za-z0-9가-힣][A-Za-z0-9가-힣_-]*$");
 
     private void Start()
     {
@@ -32,6 +35,7 @@ public class SlotUIController : MonoBehaviour
 
         inputPlayerNamePanel.SetActive(false);
         confirmPanel.SetActive(false);
+        checkValidatePanel.SetActive(false);
         _playerName.Subscribe(playername =>
         {
             confirmText.text = playername;
@@ -90,9 +94,17 @@ public class SlotUIController : MonoBehaviour
         _playerName.Value = "";
         inputPlayerNamePanel.SetActive(true);
     }
+    
+    private bool IsValidPlayerName(string name)
+        => !string.IsNullOrWhiteSpace(name) && PlayerNameRegex.IsMatch(name);
 
     private void OpenConfirmButton()
     {
+        if (!IsValidPlayerName(playerNameInputField.text))
+        {
+            ShowValidateWarning().Forget();   // 1.5초 경고
+            return;                            // confirm 단계 진입 차단
+        }
         _playerName.Value = playerNameInputField.text;
         confirmPanel.SetActive(true);
     }
@@ -106,5 +118,12 @@ public class SlotUIController : MonoBehaviour
     {
         ServiceLocater.Get<IGameManager>().SetPlayerName(_playerName.Value);
         GoToNextScene();
+    }
+    
+    private async UniTaskVoid ShowValidateWarning()
+    {
+        checkValidatePanel.SetActive(true);
+        await UniTask.WaitForSeconds(1.5f);
+        checkValidatePanel.SetActive(false);
     }
 }

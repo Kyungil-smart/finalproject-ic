@@ -86,7 +86,7 @@ public class GameManager : Manager, IGameManager
     {
         PlayerName         = dto.playerName;
         _exp               = dto.exp;
-        _playerLevel.Value = dto.floor;   // RP 대입 → 구독 중인 UI 자동 갱신
+        _floor             = dto.floor;
         _money.Value       = dto.money;
         _heart.Value       = dto.heart;
         _date.Value        = dto.procDate;

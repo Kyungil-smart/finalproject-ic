@@ -18,24 +18,24 @@ public class ReadyGameData : MonoBehaviour
         UniTask.Void(async () =>
         {
             await UniTask.Yield();
-            var data = await LoadSavedData();
-            if (data == null)
+            var save = ServiceLocater.Get<ISaveManager>();
+            int slot = save.CurrentSlot;
+            
+            if (slot < 0 || save.IsEmpty(slot))
             {   // 게임 데이터가 없다.
                 await InitStaff();
                 await UniTask.Yield();
                 ServiceLocater.Get<IMainStateMachine>().SetCurrentMainState(GameDevProcName.HumanResources);
             }
+            else
+            {
+                await save.Load(slot);    // RestoreGame → _procName 복원(ChangeState 우회라 Save 안 일어남)
+                await UniTask.Yield();
+                var procName = ServiceLocater.Get<IGameManager>().ProcName.CurrentValue;
+                ServiceLocater.Get<IMainStateMachine>().SetCurrentMainState(procName);   // 복원된 공정으로 진입
+            }
             await UniTask.Yield();
         });
-    }
-
-    private async UniTask<DummyData> LoadSavedData()
-    {   
-        // Slot 을 기반으로 Save Game Data 를 Loading.
-        // 없으면 null return => 완전 처음 시작 하는 케이스
-        // 없고 있고는, File 내 컨텐츠가 없거나 File 자체가 없는 케이스로 생각하기.
-        // 혹은 Save Data 를 SO 로 관리할 수 있음 -> 오..?
-        return null;
     }
     
     private async UniTask InitStaff()
