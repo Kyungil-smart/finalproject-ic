@@ -58,7 +58,7 @@ public class SaveManager : Manager, ISaveManager
                 playerName = game.playerName,
                 playerLevel = game.playerLevel,
                 completedProjectCount = game.projects.Count,
-                year = gm.GetProjectYear(),
+                year = gm.GetCalendarYear(),
                 money = game.money,
                 savedAt = DateTime.Now.ToString("yyyy.MM.dd HH:mm"),  // 실제 저장 시각
             },

@@ -1885,6 +1885,7 @@ GameObject:
   - component: {fileID: 485227231}
   - component: {fileID: 485227234}
   - component: {fileID: 485227233}
+  - component: {fileID: 485227235}
   - component: {fileID: 485227232}
   m_Layer: 5
   m_Name: SaveFile002Btn
@@ -1997,6 +1998,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 485227230}
   m_CullTransparentMesh: 1
+--- !u!114 &485227235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485227230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 414d0e9cd2c04c959202342e1d82b813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SlotUIButtonRender
 --- !u!1 &544310721
 GameObject:
   m_ObjectHideFlags: 0
@@ -5103,6 +5116,7 @@ GameObject:
   - component: {fileID: 1419105253}
   - component: {fileID: 1419105256}
   - component: {fileID: 1419105255}
+  - component: {fileID: 1419105257}
   - component: {fileID: 1419105254}
   m_Layer: 5
   m_Name: SaveFile003Btn
@@ -5215,6 +5229,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1419105252}
   m_CullTransparentMesh: 1
+--- !u!114 &1419105257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419105252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 414d0e9cd2c04c959202342e1d82b813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SlotUIButtonRender
 --- !u!1 &1465864915
 GameObject:
   m_ObjectHideFlags: 0
@@ -5565,6 +5591,7 @@ GameObject:
   - component: {fileID: 1516090907}
   - component: {fileID: 1516090910}
   - component: {fileID: 1516090909}
+  - component: {fileID: 1516090911}
   - component: {fileID: 1516090908}
   m_Layer: 5
   m_Name: SaveFile001Btn
@@ -5677,6 +5704,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1516090906}
   m_CullTransparentMesh: 1
+--- !u!114 &1516090911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516090906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 414d0e9cd2c04c959202342e1d82b813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SlotUIButtonRender
 --- !u!1001 &1564091214
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5685,6 +5724,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6041478881412009677, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7529751863290996877, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -6620,9 +6663,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotUIController
   slotButtons:
-  - {fileID: 1516090908}
-  - {fileID: 485227232}
-  - {fileID: 1419105254}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &2083850890
 GameObject:
   m_ObjectHideFlags: 0

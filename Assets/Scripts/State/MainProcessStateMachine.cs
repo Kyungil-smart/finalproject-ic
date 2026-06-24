@@ -62,6 +62,7 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
             if (s.name == stepName)
             {
                 _curStateData = s;
+                ServiceLocater.Get<IGameManager>().ChangeState(stepName);
                 UpdateStateInformation(true);
                 return UniTask.CompletedTask;
             }          

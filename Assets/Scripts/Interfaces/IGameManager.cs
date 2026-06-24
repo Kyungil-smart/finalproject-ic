@@ -19,6 +19,7 @@ public interface IGameManager
     public void AddMoney(int money);
     public void AddHeart(int heart);
     public void AddAYear();
+    public int GetCalendarYear();
     public void AddProject(ProjectData project);
     public void ChangeState(GameDevProcName newState);
     public int GetProjectYear();

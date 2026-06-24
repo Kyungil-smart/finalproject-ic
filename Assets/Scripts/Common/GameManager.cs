@@ -9,7 +9,8 @@ public class GameManager : Manager, IGameManager
     private int _playerMaxLevel = 15; // 최대 회사 레벨
     private ReactiveProperty<int> _money = new(1000000); // 재화 ; Test 목적으로 일단 많이 넣어둠.
     private ReactiveProperty<int> _heart = new(0);
-    private ReactiveProperty<DateTime> _date = new(new DateTime(2026, 1, 1));
+    private const int StartYear = 2026;
+    private ReactiveProperty<DateTime> _date = new(new DateTime(StartYear, 1, 1));
     private List<ProjectData> _projects = new(); // 프로젝트 리스트
     private ReactiveProperty<GameDevProcName> _procName = new();
     private bool _inputProjectNameActive;
@@ -42,7 +43,13 @@ public class GameManager : Manager, IGameManager
     public void AddMoney(int money) => _money.Value += money;
     public void AddHeart(int heart) => _heart.Value += heart;
     public void AddProject(ProjectData project) => _projects.Add(project);
-    public void ChangeState(GameDevProcName state) => _procName.Value = state;
+    public void ChangeState(GameDevProcName state)
+    {
+        bool changed = _procName.Value != state;
+        _procName.Value = state;                              
+        if (changed) ServiceLocater.Get<ISaveManager>()?.Save();
+    }
+
     public int GetProjectYear() => _projects.Count == 0 ? 1 : _projects.Count + 1;
 
 
@@ -58,16 +65,7 @@ public class GameManager : Manager, IGameManager
     public void UpdateInputProjectNameActive(bool active) => _inputProjectNameActive = active;
 
     public void AddAYear() => _date.Value = _date.Value.AddYears(1);
-
-    private void Start()
-    {
-        // ToDo. Save Data 를 Load 했을 경우 해당 내용 적용 하기
-        if (_procName.Value == GameDevProcName.Initialization)
-        {
-            _procName.Value = GameDevProcName.HumanResources;
-            ServiceLocater.Get<IMainStateMachine>().SetCurrentMainState(GameDevProcName.HumanResources);
-        }
-    }
+    public int GetCalendarYear() => _date.Value.Year - StartYear + 1;
     
     public GameManagerSaveData CaptureSaveData() => new()
     {

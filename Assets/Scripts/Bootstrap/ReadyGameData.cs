@@ -21,7 +21,9 @@ public class ReadyGameData : MonoBehaviour
             var data = await LoadSavedData();
             if (data == null)
             {   // 게임 데이터가 없다.
-                await InitStaff();    
+                await InitStaff();
+                await UniTask.Yield();
+                ServiceLocater.Get<IMainStateMachine>().SetCurrentMainState(GameDevProcName.HumanResources);
             }
             await UniTask.Yield();
         });
