@@ -18,8 +18,42 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
     public async UniTask Execute()
     {
         _endProcess = false;
-        await CalculateRevenue();
+        await UserReview();
         await UniTask.WaitUntil(() => _endProcess);
+    }
+
+    // 유저 리뷰
+    private async UniTask UserReview()
+    {
+        _waiting = true;
+
+        // TODO : 유저 리뷰 UI 랜더 데이터 보내기
+        GoProcessF();
+
+        await WaitProcess();
+        await CriticReview();
+    }
+
+    private void GoProcessF()
+    {
+        _waiting = false;
+    }
+
+    // 평론가 리뷰
+    private async UniTask CriticReview()
+    {
+        _waiting = true;
+
+        // TODO : 평론가 리뷰 UI 랜더 데이터 보내기
+        GoProcessG();
+
+        await WaitProcess();
+        await CalculateRevenue();
+    }
+
+    private void GoProcessG()
+    {
+        _waiting = false;
     }
 
     // 매출 받아오기 및 매출 집계 애니메이션 완료 대기
