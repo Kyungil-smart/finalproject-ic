@@ -17,6 +17,7 @@ public class MarketingTailData
     public int num = 1;
     public Func<UniTaskVoid> nextCallback;
 }
+
 public class MarketingRenderData : UIRenderData
 {
     public bool selectable;
