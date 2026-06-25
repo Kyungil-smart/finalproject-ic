@@ -59,10 +59,6 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         
         _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
         await InitSlot();
-        var data = LoadingSavedData();
-        // ToDo: Save file loading 후에 slot 상태에 대한 업데이트 필요.
-        if (data == null)
-            _currentSlot = _slots[_slotIndex]; 
     }
 
     protected override void Register()
@@ -80,10 +76,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         ServiceLocater.Unregister<IStaffRecruit>(this);
     }
 
-    private object LoadingSavedData()
-    {
-        return null;
-    }
+    public SlotState GetSlotData(int index) => _slots[index];
     
     // ## 채용 1단계
     // 카드 수만큼 채용 후보 리스트 생성 (가챠 UI 창 열거나 새로고침 시 호출)
@@ -318,8 +311,11 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
     
     public (bool result, int nextSlotIndex) UpgradeSlot()
     {
+        if (_currentSlot == null) _currentSlot = _slots[_slotIndex];
+        
+        Debug.Log($"[StaffManager] {_slotIndex} 해금 시작");
         var money = ServiceLocater.Get<IGameManager>().Money.CurrentValue;
-        if (money < _currentSlot.cost || _slotIndex >= _slots.Count - 1)
+        if (money < _currentSlot.cost || _slotIndex > _slots.Count - 1)
         {
             Debug.Log("[StaffManager] Slot 해금 실패");
             return (false, 0);
@@ -328,9 +324,13 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         _currentSlot.unlocked = true;
         ServiceLocater.Get<IGameManager>().AddMoney(_currentSlot.cost * -1);
         if (_currentSlot.IsRoom) ServiceLocater.Get<IGameManager>().UnlockFloor();
-        _currentSlot = _slots[++_slotIndex];
+        Debug.Log($"[StaffManager] 해금된 slot data: id:{_currentSlot.id}| c:{_currentSlot.cost}| r:{_currentSlot.IsRoom}");
+        if (_slotIndex < 8)
+            _currentSlot = _slots[++_slotIndex];
+        else
+            _slotIndex++;
         ServiceLocater.Get<ISaveManager>()?.Save();
-        Debug.Log($"[StaffManager] Slot 해금 성공 : 최대 고용 가능 인원수: {maxHiredStaffCount}");
+        Debug.Log($"[StaffManager] Slot {_slotIndex - 1} 해금 성공 : 최대 고용 가능 인원수: {maxHiredStaffCount}");
         return (true, _slotIndex);
     }
 
@@ -538,6 +538,17 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
     }
 
     // ------------------------------------------------------------------------
+
+    [ContextMenu("Show Runtime Slot Data")]
+    private void ShowRuntimeSlotData()
+    {
+        Debug.Log($"[StaffManager] current slot index = {_slotIndex}");
+        foreach (var slot in _slots)
+        {
+            Debug.Log($"[StaffManager] > id;{slot.id} | u;{slot.unlocked} | k;{slot.staffId}");
+        }
+        Debug.Log($"[StaffManager] --------------------------------");
+    }
     
     [ContextMenu("Download Slot Data")]
     private async UniTask DownloadSlotData()
