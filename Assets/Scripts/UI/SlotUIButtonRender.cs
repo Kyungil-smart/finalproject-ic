@@ -16,10 +16,11 @@ public class SlotUIButtonRender : MonoBehaviour
     [SerializeField] private TextMeshProUGUI saveAt;
     [SerializeField] private TextMeshProUGUI money;
     [SerializeField] private Image icon;  // ToDo. 추후 추가
+    [SerializeField] private ConfirmMsgController confirmMsgController;
     
     private int _slotIndex;
-    private void OnEnable() => deleteBtn.onClick.AddListener(DeleteSlotData);
-    private void OnDisable() => deleteBtn.onClick.RemoveListener(DeleteSlotData);
+    private void OnEnable() => deleteBtn.onClick.AddListener(ConfirmDelete);
+    private void OnDisable() => deleteBtn.onClick.RemoveListener(ConfirmDelete);
     
     public void Render(int slotIndex, SaveMeta meta)
     {
@@ -45,6 +46,8 @@ public class SlotUIButtonRender : MonoBehaviour
         }
     }
 
+    private void ConfirmDelete()=> confirmMsgController.Render(9900038, DeleteSlotData);
+    
     private void DeleteSlotData()
     {
         ServiceLocater.Get<ISaveManager>().DeleteSlot(_slotIndex);
