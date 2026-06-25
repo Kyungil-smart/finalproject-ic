@@ -16,6 +16,9 @@ public interface IProjectManager
     public uint Income {get; set;}
     public uint StaffsCost {get; }
     public uint Earnings { get; }
+    public uint MarketingCost { get; set; }
+    public uint MarketingBonus { get; set; }
+
     public void UpdateTotalQuality(float value, float ratio = 1f);
     public void UpdateDesignQuality(float value, float ratio = 1f);
     public void UpdateArtQuality(float value, float ratio = 1f);

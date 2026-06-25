@@ -81,7 +81,19 @@ public class ProjectManager : Manager, IProjectManager
         get => _projectData.income;
         set => _projectData.income = value;
     }
-    
+
+    public uint MarketingCost
+    {
+        get => _projectData.marketingCost;
+        set => _projectData.marketingCost = value;
+    }
+
+    public uint MarketingBonus
+    {
+        get => _projectData.marketingBonus;
+        set => _projectData.marketingBonus = value;
+    }
+
     public AwardsData Awards => _projectData.award;
     
     public uint StaffsCost => _projectData.staffCost;
