@@ -20,13 +20,11 @@ public class T11UIController : MonoBehaviour, IUIRender
     
     [Header("Tail 2 Panels")]
     [SerializeField] private GameObject tail2Panel;
-    [SerializeField] private Button selectBtn2;
-
+    [SerializeField] private Button previousBtn;
+    [SerializeField] private Button nextBtn;
+    
     private List<int> _selectedMarketings = new();
-    private MarketingData _defaultMarketing;
-    public MarketingData defaultMarketing => _defaultMarketing;
-
-    private int _selectedIndex = -1;
+    
     private void Awake()
     {
         // Todo. 마케팅 UIType 성우님이 만드신다고 하셔서 놔둠
@@ -56,17 +54,23 @@ public class T11UIController : MonoBehaviour, IUIRender
 
             for (int i = 0; i < marketingPanels.Count; i++)
             {
-                SetUpPanel(i, renderData.marketingData[i], marketingPanels[i], renderData.selectable);
-                marketingPanels[i].gameObject.SetActive(true);
-                if (renderData.marketingData[i].selected
-                    && !_selectedMarketings.Contains(i))
+                if (i < renderData.marketingData.Count)
                 {
-                    _selectedMarketings.Add(i);
-                    cnt++;
+                    SetUpPanel(i, renderData.marketingData[i], marketingPanels[i], renderData.selectable);
+                    marketingPanels[i].gameObject.SetActive(true);
+                    if (renderData.marketingData[i].selected
+                        && !_selectedMarketings.Contains(i))
+                    {
+                        _selectedMarketings.Add(i);
+                        cnt++;
+                    }
+                }
+                else
+                {
+                    marketingPanels[i].gameObject.SetActive(false);
                 }
             }
             
-            _defaultMarketing = renderData.marketingData[marketingPanels.Count];
             switch (renderData.tailType.num)
             {
                 case 1:
@@ -75,20 +79,21 @@ public class T11UIController : MonoBehaviour, IUIRender
                     selectBtn.onClick.AddListener(Close);
                     selectBtn.onClick.AddListener(() =>
                     {
-                        if (_selectedMarketings.Count == 0)
-                        {
-                            // 디폴트값 처리
-                        }
-                        renderData.tailType.nextCallback();
+                        renderData.tailType.confirmCallback(_selectedMarketings);
                     });
                     selectBtn.onClick.AddListener(() => mainPanel.SetActive(false));
                     break;
                 case 2:
                     tail2Panel.SetActive(true);
-                    selectBtn2.onClick.RemoveAllListeners();
-                    selectBtn2.onClick.AddListener(Close);
-                    selectBtn2.onClick.AddListener(() => renderData.tailType.nextCallback());
-                    selectBtn2.onClick.AddListener(() => mainPanel.SetActive(false));
+                    previousBtn.onClick.RemoveAllListeners();
+                    previousBtn.onClick.AddListener(Close);
+                    previousBtn.onClick.AddListener(() => renderData.tailType.previousCallback());
+                    previousBtn.onClick.AddListener(() => mainPanel.SetActive(false));
+                    
+                    nextBtn.onClick.RemoveAllListeners();
+                    nextBtn.onClick.AddListener(Close);
+                    nextBtn.onClick.AddListener(() => renderData.tailType.nextCallback());
+                    nextBtn.onClick.AddListener(() => mainPanel.SetActive(false));
                     break;
             }
         }
@@ -102,8 +107,15 @@ public class T11UIController : MonoBehaviour, IUIRender
 
     private void SelectItem((bool isOn, int index) data)
     {
-        if (data.isOn) _selectedIndex = data.index;
-        else if(_selectedIndex == data.index) _selectedIndex = -1;
+        if (data.isOn)
+        {
+            if (_selectedMarketings.Contains(data.index)) return;
+            _selectedMarketings.Add(data.index);
+        }
+        else
+        {
+            _selectedMarketings.Remove(data.index);
+        }
     }
     
     private void Close()
