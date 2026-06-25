@@ -179,4 +179,27 @@ public class ProjectManager : Manager, IProjectManager
     public IReadOnlyList<int> GetAssignedStaffIds(GameDevProcName procName) => _assignedStaff[procName];
     protected override void Register() => ServiceLocater.Register<IProjectManager>(this);
     protected override void Unregister()=> ServiceLocater.Unregister<IProjectManager>(this);
+    public ProjectManagerSaveData CaptureSaveData()
+    {
+        var dto = new ProjectManagerSaveData
+        {
+            currentProject = _projectData != null ? ProjectSaveData.From(_projectData) : null,
+        };
+        foreach (var (proc, ids) in _assignedStaff)
+            dto.assignedStaff[proc] = new List<int>(ids);   // 내부 리스트 복사
+        return dto;
+    }
+
+    public void RestoreSaveData(ProjectManagerSaveData dto)
+    {
+        if (dto == null) return;
+
+        // 진행 중 프로젝트 (없으면 null = NewProject 전 상태와 동일)
+        _projectData = dto.currentProject?.ToProjectData();
+
+        _assignedStaff.Clear();
+        if (dto.assignedStaff != null)
+            foreach (var (proc, ids) in dto.assignedStaff)
+                _assignedStaff[proc] = new List<int>(ids);
+    }
 }
