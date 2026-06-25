@@ -91,7 +91,7 @@ public class MainUIController : MonoBehaviour
         UpdateProcessData(data);
         UpdateGoldUI();
         UpdateDateUI();
-        
+        Debug.Log($"[MainUIController] {_gameManager.ProcName.CurrentValue}");
         staffSlotPanel.gameObject.SetActive(_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources);
         if (_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources) ProjectText.text = "미정";
         if (_gameManager.InputProjectNameActive) OpenInputProjectNamePanel();
@@ -99,7 +99,7 @@ public class MainUIController : MonoBehaviour
         CloseLoadingScreen().Forget();
     }
 
-    public void MainUIWordaround()
+    public void MainUIWorkaround()
     {   // Save Data Loading 후 진행해야 할 것들
         for (int i = 0; i < staffSlots.Length; i++)
         {
@@ -107,6 +107,7 @@ public class MainUIController : MonoBehaviour
             if (slot.unlocked) UnlockActions(i);
             else break;
         }
+        staffSlotPanel.gameObject.SetActive(_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources);
     }
 
     private void OnDisable()
@@ -135,7 +136,7 @@ public class MainUIController : MonoBehaviour
 
     private void IsReady(bool ready)
     {
-        MainUIWordaround();
+        MainUIWorkaround();
         _isDataReady = ready;
     } 
    

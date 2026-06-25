@@ -2475,6 +2475,7 @@ MonoBehaviour:
   goNextProcessTl: {fileID: 1589884611}
   staffListButton: {fileID: 2024059873}
   staffListTl: {fileID: 7144120982181054468}
+  staffSlotPanel: {fileID: 656593925}
   staffSlots:
   - isRoom: 0
     btn: {fileID: 1963604353}
@@ -4530,6 +4531,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2549022349224100448, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.723877
+      objectReference: {fileID: 0}
     - target: {fileID: 2561693251475793010, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
       propertyPath: artPanel
       value: 
@@ -5664,6 +5669,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2549022349224100448, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.723877
+      objectReference: {fileID: 0}
     - target: {fileID: 2561693251475793010, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
       propertyPath: artPanel
       value: 
@@ -6135,6 +6144,10 @@ PrefabInstance:
     - target: {fileID: 2538653900800267671, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2549022349224100448, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.723877
       objectReference: {fileID: 0}
     - target: {fileID: 2561693251475793010, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
       propertyPath: artPanel
@@ -13379,6 +13392,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2549022349224100448, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.723877
+      objectReference: {fileID: 0}
     - target: {fileID: 2561693251475793010, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
       propertyPath: artPanel
       value: 
@@ -19234,6 +19251,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 764292748422071404, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -14.400024
+      objectReference: {fileID: 0}
+    - target: {fileID: 2453682609476951112, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 15.400024
+      objectReference: {fileID: 0}
     - target: {fileID: 6041478881412009677, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -19869,6 +19894,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2549022349224100448, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.723877
+      objectReference: {fileID: 0}
     - target: {fileID: 2561693251475793010, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
       propertyPath: artPanel
       value: 
@@ -20254,6 +20283,10 @@ PrefabInstance:
     - target: {fileID: 2538653900800267671, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2549022349224100448, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.723877
       objectReference: {fileID: 0}
     - target: {fileID: 2561693251475793010, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
       propertyPath: artPanel
@@ -21036,6 +21069,10 @@ PrefabInstance:
     - target: {fileID: 2538653900800267671, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2549022349224100448, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.723877
       objectReference: {fileID: 0}
     - target: {fileID: 2561693251475793010, guid: 48e13d423c0640a4bbd3fcc84fe3c18c, type: 3}
       propertyPath: artPanel
