@@ -24,8 +24,9 @@ public class T11UIController : MonoBehaviour
 
     private List<int> _selectedMarketings = new();
     private MarketingData _defaultMarketing;
-    public MarketingData defaultMarketing => _defaultMarketing; 
+    public MarketingData defaultMarketing => _defaultMarketing;
 
+    private int _selectedIndex = -1;
     private void Awake()
     {
         // Todo. 마케팅 UIType 성우님이 만드신다고 하셔서 놔둠
@@ -100,17 +101,8 @@ public class T11UIController : MonoBehaviour
 
     private void SelectItem((bool isOn, int index) data)
     {
-        if (data.isOn)
-        {
-            if (_selectedMarketings.Contains(data.index)) return;
-            
-            _selectedMarketings.Add(data.index);
-        }
-        else
-        {
-            _selectedMarketings.Remove(data.index);
-        }
-        
+        if (data.isOn) _selectedIndex = data.index;
+        else if(_selectedIndex == data.index) _selectedIndex = -1;
     }
     
     private void Close()
