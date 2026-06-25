@@ -2,7 +2,12 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.InputSystem; 
+using System.Linq;
+using System.Text.RegularExpressions;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.AddressableAssets;
+#endif
 
 // 시트에서 가져온 정보를 저장하기 위한 직렬화된 클래스들
 
@@ -309,5 +314,33 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
     public void SyncDataFromSheetRuntime()
     {
         SyncDataFromSheetAsync().Forget();
+    }
+    
+    [ContextMenu("Tools/Addressables/Rename StaffImgs → sfth_")]
+    private void RenameThumbnails()
+    {
+        var settings = AddressableAssetSettingsDefaultObject.Settings;
+        var group = settings.FindGroup("StaffThumnails");
+        foreach (var entry in group.entries.OrderBy(e => e.AssetPath)) // 정렬 기준 주의
+        {
+            var m = Regex.Match(entry.AssetPath, @"\d+");
+            int num = int.Parse(m.Value);
+            entry.SetAddress($"sfth_{num:D4}");
+        }
+        AssetDatabase.SaveAssets();
+    }
+    
+    [ContextMenu("Tools/Addressables/Rename StaffImgs → sfpf_")]
+    private void RenamePrefabs()
+    {
+        var settings = AddressableAssetSettingsDefaultObject.Settings;
+        var group = settings.FindGroup("StaffPrefabs");
+        foreach (var entry in group.entries.OrderBy(e => e.AssetPath)) // 정렬 기준 주의
+        {
+            var m = Regex.Match(entry.AssetPath, @"\d+");
+            int num = int.Parse(m.Value);
+            entry.SetAddress($"sfpf_{num:D4}");
+        }
+        AssetDatabase.SaveAssets();
     }
 }
