@@ -35,6 +35,7 @@ public class T11UIController : MonoBehaviour, IUIRender
             panel.OnItemSelect.Subscribe(SelectItem).AddTo(panel);
     }
 
+    // Todo. Enable / Disalble 성우님이 UIType Enum생성한다고 하셔서 완성되시면 추가할려고 남겨뒀습니다.
     private void OnEnable()
     {
         
