@@ -42,6 +42,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: OfficeBackgroundLayer
+    uniqueID: 2593757251
+    locked: 0
+  - name: ChrMoveLayer
+    uniqueID: 1382295489
+    locked: 0
+  - name: ChrShitLayer
+    uniqueID: 2380122611
+    locked: 0
+  - name: FrontLayer
+    uniqueID: 2395102287
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1
