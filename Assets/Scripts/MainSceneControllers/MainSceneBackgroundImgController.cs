@@ -7,7 +7,7 @@ public class MainSceneBackgroundImgController : MonoBehaviour
     [SerializeField] private Sprite dayBackground;
     [SerializeField] private Sprite nightBackground;
     
-    [SerializeField] private SpriteRenderer buildingRobbyImage;
+    [SerializeField] private SpriteRenderer[] buildingRobbyImages;
     [SerializeField] private SpriteRenderer buildingRoofImage;
     [SerializeField] private Sprite dayBuildingRobby;
     [SerializeField] private Sprite nightBuildingRobby;
@@ -17,7 +17,8 @@ public class MainSceneBackgroundImgController : MonoBehaviour
     private void Update()
     {
         bgImage.sprite = Utils.DayCheck.IsDaytime() ? dayBackground : nightBackground;
-        buildingRobbyImage.sprite = Utils.DayCheck.IsDaytime() ? dayBuildingRobby : nightBuildingRobby;
+        foreach (var buildingRobby in buildingRobbyImages)
+            buildingRobby.sprite = Utils.DayCheck.IsDaytime() ? dayBuildingRobby : nightBuildingRobby;
         buildingRoofImage.sprite = Utils.DayCheck.IsDaytime() ? dayBuildingRoof : nightBuildingRoof;
     }
 }

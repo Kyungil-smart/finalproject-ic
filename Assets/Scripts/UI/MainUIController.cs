@@ -23,6 +23,7 @@ public class MainUIController : MonoBehaviour
     [Header("Top UI")]
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private TextMeshProUGUI dateText;
+    [SerializeField] private TextMeshProUGUI playerName;
     [SerializeField] private TextMeshProUGUI ProjectText;
     
     [Header("Process UI")]
@@ -87,8 +88,7 @@ public class MainUIController : MonoBehaviour
         _gameManager = ServiceLocater.Get<IGameManager>();      
         _stateMachine = ServiceLocater.Get<IMainStateMachine>();
         _postManager = ServiceLocater.Get<IPostManager>();
-        var data = _postManager.Request<bool, StateViewData>(Channel.ProcessUIUpdate, true);
-        UpdateProcessData(data);
+        playerName.text = _gameManager.PlayerName;
         UpdateGoldUI();
         UpdateDateUI();
         Debug.Log($"[MainUIController] {_gameManager.ProcName.CurrentValue}");
@@ -108,6 +108,8 @@ public class MainUIController : MonoBehaviour
             else break;
         }
         staffSlotPanel.gameObject.SetActive(_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources);
+        var data = _postManager.Request<bool, StateViewData>(Channel.ProcessUIUpdate, true);
+        UpdateProcessData(data);
     }
 
     private void OnDisable()
@@ -212,6 +214,7 @@ public class MainUIController : MonoBehaviour
     
     private async UniTaskVoid CloseLoadingScreen()
     {
+        Debug.Log("[MainUIController] CloseLoadingScreen 감지 시작");
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() => _isDataReady, 10f);
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
     }
