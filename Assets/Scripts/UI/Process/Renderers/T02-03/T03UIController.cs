@@ -13,6 +13,9 @@ public class T0203UIController : MonoBehaviour, IUIRender
     [SerializeField] private GameObject middleSession01;
     [SerializeField] private GameObject tailSession01;
     [SerializeField] private Button confirmBtn;
+    [SerializeField] private TextMeshProUGUI trendGenreText;
+    [SerializeField] private TextMeshProUGUI trendThemeText;
+    [SerializeField] private TextMeshProUGUI yearText;
 
     [Header("T03-1 UI Components")] 
     [SerializeField] private GameObject middleSession02;
@@ -20,6 +23,7 @@ public class T0203UIController : MonoBehaviour, IUIRender
     [SerializeField] private DataRolePicker genrePicker;
     [SerializeField] private DataRolePicker themePicker;
     [SerializeField] private Button selectBtn;
+    [SerializeField] private TextMeshProUGUI t031costText;
     
     [Header("T03-2 UI Components")]
     [SerializeField] private GameObject middleSession03;
@@ -28,17 +32,30 @@ public class T0203UIController : MonoBehaviour, IUIRender
     [SerializeField] private TextMeshProUGUI theme;
     [SerializeField] private Button previousBtn;
     [SerializeField] private Button nextBtn;
+    [SerializeField] private TextMeshProUGUI t032costText;
 
     private T03TrendGenreThemeSelectRenderData _t031Cache;
-    
+
+    private void OnPickerChanged(NameTag _) => t031costText.text = $"예상비용 : {UpdateEstimatedCost()}";
     private void OnEnable()
     {
         ServiceLocater.Get<IUIRouter>().RegisterUIRender(UIType.MarketGenreThemeUI, this);
+        genrePicker.OnCenterDataChanged += OnPickerChanged;
+        themePicker.OnCenterDataChanged += OnPickerChanged;
     }
 
     private void OnDisable()
     {
         ServiceLocater.Get<IUIRouter>().UnregisterUIRender(UIType.MarketGenreThemeUI);
+        genrePicker.OnCenterDataChanged -= OnPickerChanged;
+        themePicker.OnCenterDataChanged -= OnPickerChanged;
+    }
+    
+    public float UpdateEstimatedCost()
+    {
+        var cal = ServiceLocater.Get<IProjectManager>().CostCalculator;
+        uint cost = cal.CalculateDevCost(genrePicker.GetCenterData().id, themePicker.GetCenterData().id);
+        return cost;
     }
     
     public void Render(UIRenderData data)
@@ -49,8 +66,15 @@ public class T0203UIController : MonoBehaviour, IUIRender
         {
             Debug.Log("[T0203UIController] Render - T02");
             title.Text = "트랜드 조사 결과"; // ToDo. 추후 Text ID 로 변경 예정
+            middleSession01.SetActive(true);
+            tailSession01.SetActive(true);
+            
+            trendGenreText.text = renderT2Data.genre.name;
+            trendThemeText.text = renderT2Data.theme.name;
+            yearText.text = $"{ServiceLocater.Get<IGameManager>().Date.CurrentValue.Year}년 트렌드";
             
             confirmBtn.onClick.RemoveAllListeners();
+            confirmBtn.onClick.AddListener(() => renderT2Data.confirmCallback?.Invoke());
             confirmBtn.onClick.AddListener(() => middleSession01.SetActive(false));
             confirmBtn.onClick.AddListener(() => tailSession01.SetActive(false));
             confirmBtn.onClick.AddListener(() => mainPanel.SetActive(false));
@@ -65,6 +89,7 @@ public class T0203UIController : MonoBehaviour, IUIRender
             _t031Cache = renderT31Data;
             genrePicker.SetDataList(renderT31Data.genres);
             themePicker.SetDataList(renderT31Data.themes);
+            t031costText.text = $"예상 비용 : {UpdateEstimatedCost()}";
             
             selectBtn.onClick.RemoveAllListeners();
             selectBtn.onClick.AddListener(ConnectSelectGenreAndThemes);
@@ -86,6 +111,7 @@ public class T0203UIController : MonoBehaviour, IUIRender
 
             genre.text = renderT32Data.genre.name;
             theme.text = renderT32Data.theme.name;
+            t032costText.text = $"예상 비용 : {UpdateEstimatedCost()}";
             
             nextBtn.onClick.RemoveAllListeners();
             nextBtn.onClick.AddListener(() => renderT32Data.goNextCallback?.Invoke());

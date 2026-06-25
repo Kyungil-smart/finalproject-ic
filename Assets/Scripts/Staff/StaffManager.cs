@@ -327,7 +327,9 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         
         _currentSlot.unlocked = true;
         ServiceLocater.Get<IGameManager>().AddMoney(_currentSlot.cost * -1);
+        if (_currentSlot.IsRoom) ServiceLocater.Get<IGameManager>().UnlockFloor();
         _currentSlot = _slots[++_slotIndex];
+        ServiceLocater.Get<ISaveManager>()?.Save();
         Debug.Log($"[StaffManager] Slot 해금 성공 : 최대 고용 가능 인원수: {maxHiredStaffCount}");
         return (true, _slotIndex);
     }
@@ -353,7 +355,106 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         for (int i = 0; i < transforms.Length; i++)
             _slots[i].pos = transforms[i];
     }
+
+    public StaffManagerSaveData CaptureSaveData()
+    {
+        var dto = new StaffManagerSaveData { slotIndex = _slotIndex };
     
+        foreach (var e in _staffList)
+            dto.staff.Add(new StaffSaveData
+            {
+                init = e.init,
+                runtime = new StaffRuntimeSaveData
+                {
+                    currentState = e.runtime.Current_State,
+                    addedCareer = e.runtime.Added_Career,
+                    addedCommonConcentration = e.runtime.Added_Common_Concentration,
+                    addedCommonCreativity = e.runtime.Added_Common_Creativity,
+                    addedCommonCommunication = e.runtime.Added_Common_Communication,
+                    addedJobDesign = e.runtime.Added_Job_Design,
+                    addedJobDevelopment = e.runtime.Added_Job_Development,
+                    addedJobArt = e.runtime.Added_Job_Art,
+                    tagIds = e.runtime.Added_Tags.ConvertAll(t => t.Tag_Id),
+                }
+            });
+    
+        foreach (var s in _slots)
+            dto.slots.Add(new SlotSaveData { id = s.id, unlocked = s.unlocked, staffId = s.staffId });
+    
+        return dto;
+    }
+    
+    public async UniTask RestoreSaveData(StaffManagerSaveData dto)
+    {
+        if (dto == null) return;
+        _staffDataManager ??= ServiceLocater.Get<IStaffDataManager>();
+
+        // 기존 직원/비주얼 정리 (다른 슬롯 로드 대비 누수 방지)
+        foreach (var e in _staffList)
+        {
+            e.ReleaseThumbnail();
+            e.ReleaseVisualInstance();
+            if (e.GetGameObject() != null) Destroy(e.GetGameObject());
+        }
+        _staffList.Clear();
+
+        // 직원 재생성 (init/runtime + 썸네일 + 프리팹)
+        foreach (var s in dto.staff)
+        {
+            var entity = new StaffEntity { init = s.init, runtime = BuildRuntime(s.runtime) };
+
+            // 썸네일 재로드
+            if (!string.IsNullOrEmpty(s.init.AssetId))
+            {
+                var handle = Addressables.LoadAssetAsync<Sprite>(s.init.AssetId);
+                var sprite = await handle.ToUniTask();
+                entity.SetThumbnail(sprite, handle);
+            }
+
+            // 프리팹 재생성 (ConfirmHireAsync와 동일 파이프라인)
+            (IStaffInfo _, GameObject go) = await new StaffBuilder()
+                .WithStaffData(entity)
+                .WithAddressableKey(ToPrefabKey(s.init.AvatarKey))
+                .WithVisualAsset(tempCbtPrefab)
+                .BuildAsync(staffContainer);
+            entity.SetGameObject(go);
+
+            _staffList.Add(entity);
+        }
+
+        // 슬롯 복원 (_slots는 InitSlot()에서 SO로 이미 생성됨 → 상태만 덮어씀)
+        _slotIndex = dto.slotIndex;
+        if (dto.slots != null)
+            foreach (var sd in dto.slots)
+            {
+                var slot = _slots.Find(x => x.id == sd.id);
+                if (slot == null) continue;
+                slot.unlocked = sd.unlocked;
+                slot.staffId  = sd.staffId;
+            }
+        if (_slotIndex >= 0 && _slotIndex < _slots.Count)
+            _currentSlot = _slots[_slotIndex];
+    }
+    
+    // 태그 효과는 저장된 스탯에 이미 반영돼 있으므로 재적용 X — 리스트만 복원
+    private StaffRuntimeData BuildRuntime(StaffRuntimeSaveData rt)
+    {
+        var runtime = new StaffRuntimeData
+        {
+            Current_State = rt.currentState,
+            Added_Career = rt.addedCareer,
+            Added_Common_Concentration = rt.addedCommonConcentration,
+            Added_Common_Creativity = rt.addedCommonCreativity,
+            Added_Common_Communication = rt.addedCommonCommunication,
+            Added_Job_Design = rt.addedJobDesign,
+            Added_Job_Development = rt.addedJobDevelopment,
+            Added_Job_Art = rt.addedJobArt,
+        };
+        foreach (var id in rt.tagIds)
+            runtime.Added_Tags.Add(_staffDataManager.TagList.Find(x => x.Tag_Id == id));
+        return runtime;
+    }
+
     // --- Leveling 관련
     public void GetExpAllStaffs()
     {

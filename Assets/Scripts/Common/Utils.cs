@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Random = UnityEngine.Random;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
+
 
 namespace Utils
 {
@@ -110,5 +108,37 @@ namespace Utils
             // 2. 6시 이상 19시 미만인지 조건 검증
             return currentHour >= 6 && currentHour < 19;
         }
+    }
+    
+    public static class SaveSerializer
+    {
+        private static readonly JsonSerializerSettings _settings = new()
+        {
+            Formatting = Formatting.Indented,
+            NullValueHandling = NullValueHandling.Ignore,
+            Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() },
+        };
+
+        public static string Serialize<T>(T data) => JsonConvert.SerializeObject(data, _settings);
+        public static T Deserialize<T>(string json)
+            => string.IsNullOrEmpty(json) ? default : JsonConvert.DeserializeObject<T>(json, _settings);
+    }
+    
+    public static class SaveFileIO
+    {
+        private static string PathOf(string fileName)
+            => Path.Combine(Application.persistentDataPath, fileName);
+
+        public static void Write(string fileName, string json)
+            => File.WriteAllText(PathOf(fileName), json);
+
+        public static string Read(string fileName)
+        {
+            var p = PathOf(fileName);
+            return File.Exists(p) ? File.ReadAllText(p) : null;
+        }
+
+        public static bool Exists(string fileName) => File.Exists(PathOf(fileName));
+        public static void Delete(string fileName) { if (Exists(fileName)) File.Delete(PathOf(fileName)); }
     }
 }

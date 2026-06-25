@@ -9,6 +9,8 @@ public interface IProjectManager
     public float DesignQuality {get; set;}
     public NameTag Genre {get; set;}
     public NameTag Theme {get; set;}
+    public NameTag TrendGenre { get; set; }
+    public NameTag TrendTheme { get; set; }
     public AwardsData Awards { get; }
     public uint Cost {get; set;}
     public uint Income {get; set;}
@@ -27,10 +29,13 @@ public interface IProjectManager
     public string ToJsonData();
     public ProjectData GetProjectData();
     public void SetAwards(AwardsData awardsData);
+    public ProjectCostCalculate CostCalculator {get;}
 
     // Staff Part
     public void SetStaffsCost();  // 직원 고용 마지막에 한번 실행해놓기.
     public void AssignStaff(GameDevProcName procName, int staffId);
     public void ClearStaffs();
     public IReadOnlyList<int> GetAssignedStaffIds(GameDevProcName procName);
+    public ProjectManagerSaveData CaptureSaveData();
+    public void RestoreSaveData(ProjectManagerSaveData dto);
 }
