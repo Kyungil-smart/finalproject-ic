@@ -7,9 +7,10 @@ public class MarketingData
 {
     public bool selected;
     public string marketType;
-    public float moneyMarket;
-    public float heartMarket;
-    public float rateMarket;
+    public uint moneyMarket;
+    public uint heartMarket;
+    public uint rateMarket;
+    public string moneyResultType;
 }
 
 public class MarketingTailData
