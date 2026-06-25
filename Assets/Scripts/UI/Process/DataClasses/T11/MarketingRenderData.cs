@@ -15,7 +15,9 @@ public class MarketingData
 public class MarketingTailData
 {
     public int num = 1;
+    public Func<UniTaskVoid> previousCallback;
     public Func<UniTaskVoid> nextCallback;
+    public Func<List<int>, UniTaskVoid> confirmCallback;
 }
 
 public class MarketingRenderData : UIRenderData
