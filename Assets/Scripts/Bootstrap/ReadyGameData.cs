@@ -4,12 +4,6 @@ using DataDispatcher;
 using Channel = DataDispatcher.Channel;
 
 
-public class DummyData 
-// 추후 SaveData Format 나오면 거기에 맞는 Data 구조로 변경 예정
-{
-    
-}
-
 /// <summary>
 /// 게임 시작시
 /// </summary>
