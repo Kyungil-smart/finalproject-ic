@@ -9,6 +9,8 @@ public interface IProjectManager
     public float DesignQuality {get; set;}
     public NameTag Genre {get; set;}
     public NameTag Theme {get; set;}
+    public NameTag TrendGenre { get; set; }
+    public NameTag TrendTheme { get; set; }
     public AwardsData Awards { get; }
     public uint Cost {get; set;}
     public uint Income {get; set;}
@@ -34,4 +36,6 @@ public interface IProjectManager
     public void AssignStaff(GameDevProcName procName, int staffId);
     public void ClearStaffs();
     public IReadOnlyList<int> GetAssignedStaffIds(GameDevProcName procName);
+    public ProjectManagerSaveData CaptureSaveData();
+    public void RestoreSaveData(ProjectManagerSaveData dto);
 }

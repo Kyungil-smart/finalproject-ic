@@ -11,6 +11,14 @@ public class ProjectCostCalculate
         _incomeRatioDataSO = incomeRatioDataSO;
     }
 
+    public uint CalculateDevCost(int genreId, int themeId)
+    {
+        var genre = _genreThemeData.genreThemeList.Find(r => r.GT_ID == genreId);
+        var theme = _genreThemeData.genreThemeList.Find(r => r.GT_ID == themeId);
+        if (genre == null || theme == null) return 0;
+        return (uint)(genre.GT_Cost * theme.GT_Cost_Ratio);
+    }
+    
     public void CalculateCost()
     {
         var pm = ServiceLocater.Get<IProjectManager>();

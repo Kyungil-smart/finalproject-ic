@@ -13,4 +13,6 @@ public interface IStaffRegister
     public void GetExpAllStaffs();
     public UniTask LevelUpStaffs();
     public void SetSlotPos(Transform[] transforms);
+    public UniTask RestoreSaveData(StaffManagerSaveData dto);
+    public StaffManagerSaveData CaptureSaveData();
 }

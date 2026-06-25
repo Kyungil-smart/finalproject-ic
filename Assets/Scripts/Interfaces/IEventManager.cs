@@ -7,4 +7,6 @@ public interface IEventManager
     public UniTask OccurEvent(EventType evtType);
     public void ResetRunId();
     public bool IsRunning { get; }
+    public EventManagerSaveData CaptureSaveData();
+    public void RestoreSaveData(EventManagerSaveData dto);
 }

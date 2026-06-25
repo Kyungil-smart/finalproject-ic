@@ -9,10 +9,12 @@ public class GameManager : Manager, IGameManager
     private int _playerMaxLevel = 15; // 최대 회사 레벨
     private ReactiveProperty<int> _money = new(1000000); // 재화 ; Test 목적으로 일단 많이 넣어둠.
     private ReactiveProperty<int> _heart = new(0);
-    private ReactiveProperty<DateTime> _date = new(new DateTime(2026, 1, 1));
+    private const int StartYear = 2026;
+    private ReactiveProperty<DateTime> _date = new(new DateTime(StartYear, 1, 1));
     private List<ProjectData> _projects = new(); // 프로젝트 리스트
     private ReactiveProperty<GameDevProcName> _procName = new();
     private bool _inputProjectNameActive;
+    private int _floor = 2;  // 현재 층수
 
     public string PlayerName { get; private set; } // 회사 이름
     public ReadOnlyReactiveProperty<int> PlayerLevel => _playerLevel;
@@ -23,6 +25,7 @@ public class GameManager : Manager, IGameManager
     public IReadOnlyList<ProjectData> Projects => _projects;
     public ReadOnlyReactiveProperty<GameDevProcName> ProcName => _procName;
     public bool InputProjectNameActive => _inputProjectNameActive;
+    public int Floor => _floor;
     private int _maxSlotNum = 8;
 
     private void OnEnable() => Register();
@@ -42,7 +45,14 @@ public class GameManager : Manager, IGameManager
     public void AddMoney(int money) => _money.Value += money;
     public void AddHeart(int heart) => _heart.Value += heart;
     public void AddProject(ProjectData project) => _projects.Add(project);
-    public void ChangeState(GameDevProcName state) => _procName.Value = state;
+    public void UnlockFloor() => _floor++;
+    public void ChangeState(GameDevProcName state)
+    {
+        bool changed = _procName.Value != state;
+        _procName.Value = state;                              
+        if (changed) ServiceLocater.Get<ISaveManager>()?.Save();
+    }
+
     public int GetProjectYear() => _projects.Count == 0 ? 1 : _projects.Count + 1;
 
 
@@ -58,14 +68,31 @@ public class GameManager : Manager, IGameManager
     public void UpdateInputProjectNameActive(bool active) => _inputProjectNameActive = active;
 
     public void AddAYear() => _date.Value = _date.Value.AddYears(1);
-
-    private void Start()
+    public int GetCalendarYear() => _date.Value.Year - StartYear + 1;
+    
+    public GameManagerSaveData CaptureSaveData() => new()
     {
-        // ToDo. Save Data 를 Load 했을 경우 해당 내용 적용 하기
-        if (_procName.Value == GameDevProcName.Initialization)
-        {
-            _procName.Value = GameDevProcName.HumanResources;
-            ServiceLocater.Get<IMainStateMachine>().SetCurrentMainState(GameDevProcName.HumanResources);
-        }
+        playerName  = PlayerName,
+        floor       = _floor,
+        exp         = _exp,
+        money       = _money.Value,
+        heart       = _heart.Value,
+        procDate    = _date.Value,
+        procName    = _procName.Value,
+        projects    = _projects.ConvertAll(ProjectSaveData.From),
+    };
+    
+    public void RestoreSaveData(GameManagerSaveData dto)
+    {
+        PlayerName         = dto.playerName;
+        _exp               = dto.exp;
+        _floor             = dto.floor;
+        _money.Value       = dto.money;
+        _heart.Value       = dto.heart;
+        _date.Value        = dto.procDate;
+        _procName.Value    = dto.procName;
+
+        _projects.Clear();
+        foreach (var p in dto.projects) _projects.Add(p.ToProjectData());
     }
 }
