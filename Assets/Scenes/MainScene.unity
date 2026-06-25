@@ -18983,6 +18983,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
+--- !u!223 &1936870906 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 3078864273527415837, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
+  m_PrefabInstance: {fileID: 1936870905}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1936961003
 GameObject:
   m_ObjectHideFlags: 0
@@ -22607,8 +22612,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CanvasController
   _canvasList:
-  - uiType: 6
-    uiCanvas: {fileID: 0}
+  - uiType: 8
+    uiCanvas: {fileID: 1936870906}
   - uiType: 7
     uiCanvas: {fileID: 4903216548062806552}
 --- !u!1 &8789068642610938160
