@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using Cysharp.Threading.Tasks;
 using DataDispatcher;
 using R3;
@@ -6,6 +7,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Channel = DataDispatcher.Channel;
+
+[Serializable]
+public class SlotButton
+{
+    public bool isRoom;
+    public Button btn;
+}
 
 /// <summary>
 /// Main Scene 에서 상시 뜨고 있어야 한다. 이벤트 성으로 UI 를 뛰워주는 것이 아니기 때문에 MonoBehaviour 로 충분히 대처.
@@ -33,7 +41,11 @@ public class MainUIController : MonoBehaviour
     [SerializeField] private TextLoader staffListTl;
 
     [Header("Staff Slot UI")] 
-    [SerializeField] private Button[] staffSlots;
+    [SerializeField] private GameObject staffSlotPanel;
+    [SerializeField] private SlotButton[] staffSlots;
+    [SerializeField] private Transform[] seatAndRoomPos;
+    [SerializeField] private GameObject[] desks;
+    [SerializeField] private GameObject forSale;
     
     [Header("Input Project Name UI")]
     [SerializeField] private GameObject inputProjectPanel;
@@ -43,6 +55,9 @@ public class MainUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI warningMessageText;
     [SerializeField][Range(1f, 3f)] private float popUpInterval; 
 
+    [Header("ConfirmMsg Panel")]
+    [SerializeField] private ConfirmMsgController confirmMsgController;
+    
     private bool _isDataReady;
     
     // R3 구독 해제를 관리하기 위한 디스포저 컨테이너
@@ -61,9 +76,9 @@ public class MainUIController : MonoBehaviour
         inputProjectConfirmBtn.onClick.AddListener(() => ConfirmProjectName());
         ServiceLocater.Get<IPostManager>().Subscribe<bool>(Channel.CloseLoading, IsReady);
         foreach (var slotBtn in staffSlots)
-            slotBtn.onClick.AddListener(UnlockSlot);
-        staffSlots[0].gameObject.SetActive(false);
-        staffSlots[1].gameObject.SetActive(false);
+            slotBtn.btn.onClick.AddListener(() => UnlockSlotConfirm(slotBtn.isRoom));
+        staffSlots[0].btn.gameObject.SetActive(false);
+        staffSlots[1].btn.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -76,12 +91,23 @@ public class MainUIController : MonoBehaviour
         UpdateProcessData(data);
         UpdateGoldUI();
         UpdateDateUI();
-        if (ServiceLocater.Get<IGameManager>().ProcName.CurrentValue == GameDevProcName.HumanResources)
-            ProjectText.text = "미정";
-        // ServiceLocater.Get<IStaffRegister>().SetSlotPos(staffSlots);
-        if (ServiceLocater.Get<IGameManager>().InputProjectNameActive) 
-            OpenInputProjectNamePanel();
+        Debug.Log($"[MainUIController] {_gameManager.ProcName.CurrentValue}");
+        staffSlotPanel.gameObject.SetActive(_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources);
+        if (_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources) ProjectText.text = "미정";
+        if (_gameManager.InputProjectNameActive) OpenInputProjectNamePanel();
+        
         CloseLoadingScreen().Forget();
+    }
+
+    public void MainUIWorkaround()
+    {   // Save Data Loading 후 진행해야 할 것들
+        for (int i = 0; i < staffSlots.Length; i++)
+        {
+            var slot = ServiceLocater.Get<IStaffRegister>().GetSlotData(i);
+            if (slot.unlocked) UnlockActions(i);
+            else break;
+        }
+        staffSlotPanel.gameObject.SetActive(_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources);
     }
 
     private void OnDisable()
@@ -91,7 +117,7 @@ public class MainUIController : MonoBehaviour
         staffListButton.onClick.RemoveListener(OnClickViewStaffList);
         inputProjectConfirmBtn.onClick.RemoveAllListeners();
         foreach (var slotBtn in staffSlots)
-            slotBtn.onClick.RemoveListener(UnlockSlot);
+            slotBtn.btn.onClick.RemoveAllListeners();
         ServiceLocater.Get<IPostManager>().Unsubscribe<bool>(Channel.CloseLoading, IsReady);
     }
     
@@ -100,9 +126,19 @@ public class MainUIController : MonoBehaviour
         lastProjectsTl.TextId = -1;
         goNextProcessTl.TextId = -1;
         staffListTl.TextId = -1;
+        for (int i = 0; i < staffSlots.Length; i++)
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(seatAndRoomPos[i].position);
+            screenPos.z = 0f;
+            staffSlots[i].btn.GetComponent<RectTransform>().position = screenPos;
+        }
     }
 
-    private void IsReady(bool ready) => _isDataReady = ready;
+    private void IsReady(bool ready)
+    {
+        MainUIWorkaround();
+        _isDataReady = ready;
+    } 
    
     // ------------ R3 Property Bind 할 것들 -------------
 
@@ -180,15 +216,29 @@ public class MainUIController : MonoBehaviour
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
     }
 
+    private void UnlockSlotConfirm(bool isRoom)
+    {
+        if (isRoom) confirmMsgController.Render(9900041, UnlockSlot);
+        else confirmMsgController.Render(9900039, UnlockSlot);
+    }
+
     private void UnlockSlot()
     {
         (bool result, int nextSlotIndex) = ServiceLocater.Get<IStaffRegister>().UpgradeSlot();
-        if (result)
-        {
-            staffSlots[nextSlotIndex - 1].gameObject.SetActive(false);
-            if (nextSlotIndex < staffSlots.Length)
-                staffSlots[nextSlotIndex].interactable = true;
-        }
+        Debug.Log($"[MainUIController] [{result}] -> Unlock slot {nextSlotIndex}");
+        if (result) UnlockActions(nextSlotIndex - 1);
+    }
+
+    private void UnlockActions(int index)
+    {
+        Debug.Log($"[MainUIController] [idx:{index}] Unlock Action");
+        staffSlots[index].btn.gameObject.SetActive(false);
+        desks[index]?.SetActive(true);
+        var slot = ServiceLocater.Get<IStaffRegister>().GetSlotData(index);
+        if (slot.IsRoom) forSale.SetActive(false);
+        seatAndRoomPos[index].gameObject.SetActive(true);
+        if (index < staffSlots.Length - 1)
+            staffSlots[index + 1].btn.interactable = true;
     }
 
     private void OpenInputProjectNamePanel()
@@ -204,25 +254,19 @@ public class MainUIController : MonoBehaviour
         string pattern = @"^[a-zA-Z0-9가-힣]([a-zA-Z0-9가-힣_-])*$";
         
         var name = projectNameInputField.text;
-        if (name.Length <= 0)
-        {
-            await OpenWarningMessagePanel(emptyWarning);
-        }
-        else if (name.Length > 20)
-        {
-            await OpenWarningMessagePanel(lengthWarning);
-        }
-        else if (!Regex.IsMatch(name, pattern))
-        {
-            await OpenWarningMessagePanel(specificWordWarning);
-        }
-        else
-        {
-            ServiceLocater.Get<IProjectManager>().SetProjectName(name);
-            ProjectText.text = name;
-            ServiceLocater.Get<IGameManager>().UpdateInputProjectNameActive(false);
-            inputProjectPanel.SetActive(false);    
-        }
+        if      (name.Length <= 0) await OpenWarningMessagePanel(emptyWarning);
+        else if (name.Length > 20) await OpenWarningMessagePanel(lengthWarning);
+        else if (!Regex.IsMatch(name, pattern)) await OpenWarningMessagePanel(specificWordWarning);
+        else    confirmMsgController.Render(9900040, SetProjectName);
+        
+    }
+
+    private void SetProjectName()
+    {
+        ServiceLocater.Get<IProjectManager>().SetProjectName(name);
+        ProjectText.text = name;
+        ServiceLocater.Get<IGameManager>().UpdateInputProjectNameActive(false);
+        inputProjectPanel.SetActive(false);    
     }
     
     private async UniTask OpenWarningMessagePanel(string warningMessage)
