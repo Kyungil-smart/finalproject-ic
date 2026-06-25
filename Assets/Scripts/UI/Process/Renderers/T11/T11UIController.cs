@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class T11UIController : MonoBehaviour
+public class T11UIController : MonoBehaviour, IUIRender
 {
     [SerializeField] private List<MarketingPanelRender> marketingPanels;
     [SerializeField] private GameObject mainPanel;
