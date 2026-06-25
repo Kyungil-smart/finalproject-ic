@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StaffPrefabs
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: StaffPrefabs
-  m_GUID: 4768328608da1814587cd79336e0f8ee
+  m_GUID: a330d1941d547f141a20e4445c9dbecb
   m_SerializeEntries:
   - m_GUID: 021c10dff6d8425489ab35e2a4682be0
     m_Address: sfpf_0010
@@ -352,8 +352,8 @@ MonoBehaviour:
     - Staff_Prefab
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
-  m_Settings: {fileID: 11400000, guid: 72cbc3595a2803e48b6e02cf3d797705, type: 2}
+  m_Settings: {fileID: 11400000, guid: 6b89002968670604599498e0473ba096, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 1d99634b43989214f92a39a37c88fb00, type: 2}
-    - {fileID: 11400000, guid: 5058576e9a5d4024c82b2725bf8b7a39, type: 2}
+    - {fileID: 11400000, guid: cd341d2550732b2458a3d6367610eb64, type: 2}
+    - {fileID: 11400000, guid: 5f8f1040a5c16d343b18c1c0d911524a, type: 2}

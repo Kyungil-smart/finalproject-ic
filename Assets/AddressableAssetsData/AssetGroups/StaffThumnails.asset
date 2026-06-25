@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: StaffImgs
+  m_Name: StaffThumnails
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: StaffImgs
-  m_GUID: c185efdfd93b91146a392a33e33514a4
+  m_GroupName: StaffThumnails
+  m_GUID: 8c3ad43e65bfe9f47bf763eb8e2c48df
   m_SerializeEntries:
   - m_GUID: 07df72b7a2a4e62429bb05f493c123cc
     m_Address: sfth_0017
@@ -352,8 +352,8 @@ MonoBehaviour:
     - Staff_Thumnail
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
-  m_Settings: {fileID: 11400000, guid: 72cbc3595a2803e48b6e02cf3d797705, type: 2}
+  m_Settings: {fileID: 11400000, guid: 6b89002968670604599498e0473ba096, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 1f4bc6d340de383448532637acdf41c1, type: 2}
-    - {fileID: 11400000, guid: 5b2a90f89ec50204395dc5fc877d0314, type: 2}
+    - {fileID: 11400000, guid: 402d6503b56329648a0f7b1cf652efd4, type: 2}
+    - {fileID: 11400000, guid: bda356ca479e42e4c81f3af8441b3c55, type: 2}
