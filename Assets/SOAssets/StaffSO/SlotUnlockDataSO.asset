@@ -12,4 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 129ae27aa1dc4e279dfed3c68ff997dc, type: 3}
   m_Name: SlotUnlockDataSO
   m_EditorClassIdentifier: Assembly-CSharp::SlotUnlockDataSO
-  slots: []
+  slots:
+  - id: 11
+    cost: 0
+  - id: 12
+    cost: 0
+  - id: 21
+    cost: 500
+  - id: 22
+    cost: 1000
+  - id: 23
+    cost: 2000
+  - id: 30
+    cost: 5000
+  - id: 31
+    cost: 6000
+  - id: 32
+    cost: 8000
+  - id: 33
+    cost: 10000
