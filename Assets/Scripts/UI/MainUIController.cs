@@ -34,6 +34,7 @@ public class MainUIController : MonoBehaviour
 
     [Header("Staff Slot UI")] 
     [SerializeField] private Button[] staffSlots;
+    [SerializeField] private Transform[] seatAndRoomPos;
     
     [Header("Input Project Name UI")]
     [SerializeField] private GameObject inputProjectPanel;
@@ -100,6 +101,12 @@ public class MainUIController : MonoBehaviour
         lastProjectsTl.TextId = -1;
         goNextProcessTl.TextId = -1;
         staffListTl.TextId = -1;
+        for (int i = 0; i < staffSlots.Length; i++)
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(seatAndRoomPos[i].position);
+            screenPos.z = 0f;
+            staffSlots[i].GetComponent<RectTransform>().position = screenPos;
+        }
     }
 
     private void IsReady(bool ready) => _isDataReady = ready;
