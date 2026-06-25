@@ -38,9 +38,9 @@ public class SlotUIButtonRender : MonoBehaviour
             deleteBtn.gameObject.SetActive(true);
             
             playerName.text   = meta.playerName;
-            floor.text        = meta.floor.ToString();    // "1F"/"2F" 라벨은 포맷/UI로 -> 데이터 잘못 매핑. 변경필요.
-            projectCount.text = meta.completedProjectCount.ToString();
-            yearCount.text    = meta.year.ToString();
+            floor.text        = $"{meta.floor} F";    // "1F"/"2F" 라벨은 포맷/UI로 -> 데이터 잘못 매핑. 변경필요.
+            projectCount.text = $"Projects: {meta.completedProjectCount}개";
+            yearCount.text    = $"{meta.year} 년차";
             saveAt.text       = meta.savedAt;
             money.text        = meta.money.ToString("N0");
         }

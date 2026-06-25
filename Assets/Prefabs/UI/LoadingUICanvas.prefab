@@ -629,9 +629,9 @@ MonoBehaviour:
   dayBackground: {fileID: -5491571207797825309, guid: ee2655cd059cca2468e79216b66609e1, type: 3}
   nightBackground: {fileID: -1595888488498664526, guid: 3380cd87687511e4696c0e6bbbc2130d, type: 3}
   dots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8287842354110700798}
+  - {fileID: 2293746087343847494}
+  - {fileID: 4757931451593089429}
   dotInterval: 0.3
 --- !u!1 &8287842354110700798
 GameObject:
