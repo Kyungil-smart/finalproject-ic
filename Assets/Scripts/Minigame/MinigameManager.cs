@@ -207,6 +207,7 @@ public class MinigameManager : Manager, IMinigameManager
             return;
         }
         pm.QAResult = result;
+        Time.timeScale = 1;
         SceneManager.LoadScene("ProcessScene");
     }
 

@@ -5,7 +5,7 @@ public class ProcessUIController : MonoBehaviour
 {
     private void Start()
     {
-        CloseLoadingScreen();
+        CloseLoadingScreen().Forget();
     }
     
     private async UniTaskVoid CloseLoadingScreen()

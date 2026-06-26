@@ -78,31 +78,28 @@ public class T11UIController : MonoBehaviour, IUIRender
                 case 1:
                     tail1Panel.SetActive(true);
                     selectBtn.onClick.RemoveAllListeners();
-                    selectBtn.onClick.AddListener(Close);
                     selectBtn.onClick.AddListener(() =>
                     {
                         renderData.tailType.confirmCallback(_selectedMarketings);
                     });
                     selectBtn.onClick.AddListener(() => mainPanel.SetActive(false));
+                    selectBtn.onClick.AddListener(Close);
                     break;
                 case 2:
                     tail2Panel.SetActive(true);
                     previousBtn.onClick.RemoveAllListeners();
+                    previousBtn.onClick.AddListener(() => renderData.tailType.previousCallback?.Invoke());
                     previousBtn.onClick.AddListener(Close);
-                    previousBtn.onClick.AddListener(() => renderData.tailType.previousCallback());
-                    previousBtn.onClick.AddListener(() => mainPanel.SetActive(false));
                     
                     nextBtn.onClick.RemoveAllListeners();
+                    nextBtn.onClick.AddListener(() => renderData.tailType.nextCallback?.Invoke());
                     nextBtn.onClick.AddListener(Close);
-                    nextBtn.onClick.AddListener(() => renderData.tailType.nextCallback());
-                    nextBtn.onClick.AddListener(() => mainPanel.SetActive(false));
                     break;
                 case 3:
                     tail3Panel.SetActive(true);
                     okBtn.onClick.RemoveAllListeners();
+                    okBtn.onClick.AddListener(() => renderData.tailType.nextCallback?.Invoke());
                     okBtn.onClick.AddListener(Close);
-                    okBtn.onClick.AddListener(() => renderData.tailType.nextCallback());
-                    okBtn.onClick.AddListener(() => mainPanel.SetActive(false));
                     break;
             }
         }
@@ -136,5 +133,6 @@ public class T11UIController : MonoBehaviour, IUIRender
         tail1Panel.SetActive(false);
         tail2Panel.SetActive(false);
         tail3Panel.SetActive(false);
+        mainPanel.SetActive(false);
     }
 }
