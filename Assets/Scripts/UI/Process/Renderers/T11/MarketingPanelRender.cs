@@ -49,8 +49,8 @@ public class MarketingPanelRender : MonoBehaviour
     {
         _isRendering = true;
         marketName.text = data.marketType;
-        marketCost.text = $"{data.moneyMarket}";
-        marketEffect.text = $"{data.moneyMarket} / 비율 : {data.rateMarket}";
+        marketCost.text = $"{data.rateMarket}";
+        marketEffect.text = $"{data.moneyResultType}";
         if (panelToggle)
         {
             panelToggle.interactable = selectable;
