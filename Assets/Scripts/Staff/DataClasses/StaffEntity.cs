@@ -22,6 +22,7 @@ public class StaffEntity : IStaffInfo, ISavableStaff
     private IStaffDataManager _staffDataManager = ServiceLocater.Get<IStaffDataManager>();
     private StaffDataFactory _staffDataFactory = new ();
     private bool isSelectingTag;
+    private int _seatId;
 
     public Sprite Thumbnail { get; private set; }
     private AsyncOperationHandle<Sprite> _thumbnailHandle;
@@ -82,8 +83,10 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         state += runtime.Added_Job_Art;
         return state;
     }
+    public int GetSeatId() => _seatId;
 
     // Set 인터페이스 추가.
+    public int SetSeatId(int seatId) => _seatId = seatId;
     public void SetGameObject(GameObject gameObject) => _gameObject = gameObject;
     
     public UniTask LevelUp(bool isAttachTag)
@@ -184,5 +187,5 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         if (_visualInstance == null) return;
         Addressables.ReleaseInstance(_visualInstance); // 어드레서블 인스턴스 해제 + 파괴
         _visualInstance = null; 
-    } 
+    }
 }
