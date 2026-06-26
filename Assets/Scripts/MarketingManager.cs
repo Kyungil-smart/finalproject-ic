@@ -16,7 +16,7 @@ public struct MarketingResult
 
 
 // 마케팅 SO를 받아서 실제 마케팅에 들어가도록 계산하는 기능 필요
-public class MarketingManager : Manager, IMarketingManager
+public class MarketingManager : Manager, IMarketingManager, IReadyStatus
 {
     [SerializeField] private MarketingDataSO marketingTasks;
 
@@ -41,8 +41,8 @@ public class MarketingManager : Manager, IMarketingManager
 
     protected override void Unregister()
     {
-        ServiceLocater.Register<IMarketingManager>(this);
-        ServiceLocater.Register<IEventRouter>(new EventRouter());
+        ServiceLocater.Unregister<IMarketingManager>(this);
+        ServiceLocater.Unregister<IEventRouter>(new EventRouter());
     }
 
     protected override void Init()
@@ -57,13 +57,12 @@ public class MarketingManager : Manager, IMarketingManager
         /*
         if (!Utils.Environment.isDevelopment) return;
         if (_wasDownloaded) return;
-        _readyStatus.Add("MarketingData", false);
-        var loader = new MarketingDataLoader
-        {
-            staffTaskSO = marketingTasks,
-        };
-        var gsManager = new GSheetManager(gSheetId, gid);
+        
+        _readyStatus["MarketingData"] = false;
+
+        GSheetManager gsManager = new GSheetManager(gSheetId, gid);
         await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsManager.IsDownload);
+        var dataList = gsManager.GetData();
         loader.LoadEvent(gsManager);
         _wasDownloaded = true;
         _readyStatus["MarketingData"] = true;
@@ -88,6 +87,8 @@ public class MarketingManager : Manager, IMarketingManager
 
                 result.costResult = (uint)(ServiceLocater.Get<IProjectManager>().Cost * (item.Money_Marketing - 1));
                 result.bonusResult = (uint)(ServiceLocater.Get<IProjectManager>().Income * (item.Rate_Marketing - 1));
+
+                Debug.Log($"[MarketingManager] : {result.typeName} | {result.costResult} = {ServiceLocater.Get<IProjectManager>().Cost} * {item.Money_Marketing - 1}");
 
                 resultList.Add(result);
             }

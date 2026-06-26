@@ -22,26 +22,28 @@ public class T11UIController : MonoBehaviour, IUIRender
     [SerializeField] private GameObject tail2Panel;
     [SerializeField] private Button previousBtn;
     [SerializeField] private Button nextBtn;
-    
+
+    [Header("Tail 3 Panels")]
+    [SerializeField] private GameObject tail3Panel;
+    [SerializeField] private Button okBtn;
+
+
     private List<int> _selectedMarketings = new();
     
     private void Awake()
     {
-        // Todo. 마케팅 UIType 성우님이 만드신다고 하셔서 놔둠
-        // ServiceLocater.Get<IUIRouter>().RegisterUIRender();
         foreach (var panel in marketingPanels)
             panel.OnItemSelect.Subscribe(SelectItem).AddTo(panel);
     }
 
-    // Todo. Enable / Disalble 성우님이 UIType Enum생성한다고 하셔서 완성되시면 추가할려고 남겨뒀습니다.
     private void OnEnable()
     {
-        
+        ServiceLocater.Get<IUIRouter>().RegisterUIRender(UIType.MarketingUI, this);
     }
 
     private void OnDisable()
     {
-        
+        ServiceLocater.Get<IUIRouter>().UnregisterUIRender(UIType.MarketingUI);
     }
 
     public void Render(UIRenderData data)
@@ -95,6 +97,13 @@ public class T11UIController : MonoBehaviour, IUIRender
                     nextBtn.onClick.AddListener(() => renderData.tailType.nextCallback());
                     nextBtn.onClick.AddListener(() => mainPanel.SetActive(false));
                     break;
+                case 3:
+                    tail3Panel.SetActive(true);
+                    okBtn.onClick.RemoveAllListeners();
+                    okBtn.onClick.AddListener(Close);
+                    okBtn.onClick.AddListener(() => renderData.tailType.nextCallback());
+                    okBtn.onClick.AddListener(() => mainPanel.SetActive(false));
+                    break;
             }
         }
     }
@@ -126,5 +135,6 @@ public class T11UIController : MonoBehaviour, IUIRender
         }
         tail1Panel.SetActive(false);
         tail2Panel.SetActive(false);
+        tail3Panel.SetActive(false);
     }
 }
