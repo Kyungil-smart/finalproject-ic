@@ -6,6 +6,7 @@ public class T12ReleaseUIController : MonoBehaviour, IUIRender
     [SerializeField] private T12IncomeUIRender incomeUIRender;
     [SerializeField] private T12AwardsUIRender awardsUIRender;
     [SerializeField] private T12ProjectDetailUIRender projectDetailUIRender;
+    [SerializeField] private T12ReviewUIRender reviewUIRender;
 
     private void OnEnable()
     {
@@ -33,6 +34,11 @@ public class T12ReleaseUIController : MonoBehaviour, IUIRender
         {
             projectDetailUIRender?.Render(pRenderData);
             projectDetailUIRender?.gameObject.SetActive(true);
+        }
+        else if (data is T12ReviewUIRenderData rRenderData)
+        {
+            reviewUIRender?.Render(rRenderData);
+            reviewUIRender?.gameObject.SetActive(true);
         }
     }
 }
