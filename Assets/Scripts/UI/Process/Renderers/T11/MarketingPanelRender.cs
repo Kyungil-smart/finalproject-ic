@@ -49,7 +49,7 @@ public class MarketingPanelRender : MonoBehaviour
     {
         _isRendering = true;
         marketName.text = data.marketType;
-        marketCost.text = $"{data.moneyMarket}";
+        marketCost.text = $"{data.rateMarket}";
         marketEffect.text = $"{data.moneyResultType}";
         if (panelToggle)
         {
