@@ -19,4 +19,10 @@ public class SlotState
         id = def.id;
         cost = def.cost;
     }
+
+    public void SetStaffToSlot(StaffEntity staff)
+    {
+        staffId = staff.init.Staff_ID;
+        staff.SetSeatId(id);
+    }
 }

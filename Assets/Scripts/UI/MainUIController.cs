@@ -99,7 +99,7 @@ public class MainUIController : MonoBehaviour
         CloseLoadingScreen().Forget();
     }
 
-    public void MainUIWorkaround()
+    public void MainUIPostProcessing()
     {   // Save Data Loading 후 진행해야 할 것들
         for (int i = 0; i < staffSlots.Length; i++)
         {
@@ -107,8 +107,10 @@ public class MainUIController : MonoBehaviour
             if (slot.unlocked) UnlockActions(i);
             else break;
         }
+        ServiceLocater.Get<IStaffRegister>().SetSlotPos(seatAndRoomPos);
         staffSlotPanel.gameObject.SetActive(_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources);
         var data = _postManager.Request<bool, StateViewData>(Channel.ProcessUIUpdate, true);
+        ServiceLocater.Get<IStaffAIManager>()?.Begin();
         UpdateProcessData(data);
     }
 
@@ -138,7 +140,7 @@ public class MainUIController : MonoBehaviour
 
     private void IsReady(bool ready)
     {
-        MainUIWorkaround();
+        MainUIPostProcessing();
         _isDataReady = ready;
     } 
    

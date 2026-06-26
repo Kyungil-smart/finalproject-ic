@@ -3,10 +3,13 @@
 public class Staff : MonoBehaviour
 {
     private StaffEntity _entity;
+    private StaffMovement _movement;
     
-    public void SetEntity(StaffEntity entity)
+    public void SetEntity(StaffEntity entity, StaffMovement movement)
     {
         _entity = entity;
+        _movement = movement;
+        _movement.SetEntity(entity);
         entity.SetGameObject(gameObject);
     }
     private void OnDestroy() => _entity = null;
