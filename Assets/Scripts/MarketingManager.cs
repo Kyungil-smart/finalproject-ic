@@ -88,8 +88,6 @@ public class MarketingManager : Manager, IMarketingManager, IReadyStatus
                 result.costResult = (uint)(ServiceLocater.Get<IProjectManager>().Cost * (item.Money_Marketing - 1));
                 result.bonusResult = (uint)(ServiceLocater.Get<IProjectManager>().Income * (item.Rate_Marketing - 1));
 
-                Debug.Log($"[MarketingManager] : {result.typeName} | {result.costResult} = {ServiceLocater.Get<IProjectManager>().Cost} * {item.Money_Marketing - 1}");
-
                 resultList.Add(result);
             }
         }

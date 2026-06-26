@@ -7,10 +7,10 @@ public class MarketingData
 {
     public bool selected;
     public string marketType;
-    public uint moneyMarket;
+    public uint moneyMarket;    // 골드 수익
     public uint heartMarket;
-    public uint rateMarket;
-    public string moneyResultType;
+    public uint rateMarket; // 비용
+    public string moneyResultType;  // 효과 표시
 }
 
 public class MarketingTailData
