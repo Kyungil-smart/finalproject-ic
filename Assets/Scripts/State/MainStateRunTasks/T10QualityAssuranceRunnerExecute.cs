@@ -1,24 +1,27 @@
 using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class T10QualityAssuranceRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExecute
 {
     public async UniTask Execute()
     {
-        StartQAMiniGame();
+        await StartQAMiniGame();
         CalculateResult();
     }
 
-    private void StartQAMiniGame()
+    private async UniTask StartQAMiniGame()
     {
         Debug.Log($"[QAMiniGameSubState] : QA 미니게임 시작");
-        // TODO : 작업 진행 (미니게임 또는 랜덤)
+        await SceneManager.LoadSceneAsync("MinigameScene").ToUniTask();
+        await UniTask.WaitUntil(() => SceneManager.GetActiveScene().name == "ProcessScene");
     }
 
     private void CalculateResult()
     {
         Debug.Log($"[QAMiniGameSubState] : 보정 결과 계산");
-        // TODO : 퀄리티 보정 계수 산출
+        var qm = ServiceLocater.Get<IQualityManager>();
+        qm.Calculator.ApplyTotalQualityWithQAResult();
     }
 }

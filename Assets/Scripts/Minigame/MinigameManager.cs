@@ -4,6 +4,7 @@ using R3;
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public struct SpawnPosition
@@ -199,14 +200,14 @@ public class MinigameManager : Manager, IMinigameManager
         float result = (CatchBugs.Value / (float)totalBugCount) * correctionValue;
         
         var pm = ServiceLocater.Get<IProjectManager>();
-        var qm = ServiceLocater.Get<IQualityManager>();
-        if (pm == null || qm == null)
+        
+        if (pm == null)
         {
             Debug.Log($"[MinigameManager] result = {result}");
             return;
         }
         pm.QAResult = result;
-        qm.Calculator.ApplyTotalQualityWithQAResult();
+        SceneManager.LoadScene("ProcessScene");
     }
 
     private void OnDestroy()
