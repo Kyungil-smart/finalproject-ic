@@ -1,7 +1,21 @@
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using System;
+
+
+public struct ReviewResult
+{
+    public UserReviewRow userReviewRow;
+    public bool isPositiveComment;  // 긍정 리뷰인지 여부
+
+    public ReviewResult(UserReviewRow row)
+    {
+        this.userReviewRow = row;
+        this.isPositiveComment = false; // 초기값 설정
+    }
+}
+
 
 public class ReviewManager : Manager, IReviewManager, IReadyStatus
 {
@@ -58,7 +72,7 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
                 themeId = int.Parse(data["ThemeId"]),
                 positiveCommentId = int.Parse(data["PositiveCommentId"]),
                 negativeCommentId = int.Parse(data["NegativeCommentId"]),
-                reqType = Enum.Parse<RequireReviewType>(data["ReqType"].ToString()),
+                reqType = System.Enum.Parse<RequireReviewType>(data["ReqType"].ToString()),
                 reqValue = int.Parse(data["ReqValue"]),
             });
         }
@@ -66,17 +80,93 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
         */
     }
 
-    // 평점 계산하기
-    public void CheckRequirements()
+    // 대상 리뷰 골라내 넣는 기능
+    public List<ReviewResult> CheckRequirements()
     {
+        List<ReviewResult> tempResultList = new List<ReviewResult>();   // 대상이 되는 모든 리뷰 가져오기
+        List<ReviewResult> resultList = new List<ReviewResult>();   // 대상이 되는 모든 리뷰 중 3개만 최종적으로 골라내기(단순 랜덤ㄴ)
+
+        // 기존에 선택된 장르와 테마 가져오기
+        NameTag currentGenre = ServiceLocater.Get<IProjectManager>().Genre;
+        NameTag currentTheme = ServiceLocater.Get<IProjectManager>().Theme;
+        int targetGenreId = currentGenre.id;
+        int targetThemeId = currentTheme.id;
+
         // and 조건으로 장르랑 테마 확인해서 리스트화
+        foreach (var item in reviewTasks.userReviewList)
+        {
+            if (item.genreId == targetGenreId && item.themeId == targetThemeId)
+            {
+                tempResultList.Add(new ReviewResult(item));
+            }
+        }
 
         // 리스트에서 단순 랜덤으로 최대 3개 뽑기(기획 쪽에서 데이터는 꼭 3개가 나오도록 맞춘다고 함)
+        if (tempResultList.Count >= 3)
+        {
+            // Unity의 Random.value를 기준으로 리스트를 무작위 정렬(Shuffle)한 뒤 최상위 3개만 추출
+            resultList = tempResultList
+                .OrderBy(x => Random.value)
+                .Take(3)
+                .ToList();
+        }
+        else
+        {
+            resultList = new List<ReviewResult>(tempResultList);    // 데이터가 3개 미만일 경우 다 담기
+        }
 
         // 점수 이상인지 이하인지 확인
+        IProjectManager projectManager = ServiceLocater.Get<IProjectManager>();
 
-        // T12에 전달하기
+        for (int i = 0; i < resultList.Count; i++)
+        {
+            // 리스트에서 원본 데이터 복사 (값 타입 구조체이므로 임시 변수에 대입)
+            ReviewResult result = resultList[i];
 
-        
+            float currentStatValue = 0f;
+
+            switch (result.userReviewRow.reqType)
+            {
+                case RequireReviewType.Design:
+                    currentStatValue = projectManager.DesignQuality;
+                    break;
+                case RequireReviewType.Dev:
+                    currentStatValue = projectManager.DevQuality;
+                    break;
+                case RequireReviewType.Art:
+                    currentStatValue = projectManager.ArtQuality;
+                    break;
+                case RequireReviewType.Total:
+                    currentStatValue = projectManager.TotalQuality;
+                    break;
+                case RequireReviewType.None:
+                default:
+                    currentStatValue = 0f;
+                    break;
+            }
+
+            // 요구 수치 이상일 경우 isPositiveComment true로
+            if (currentStatValue >= result.userReviewRow.reqValue)
+            {
+                result.isPositiveComment = true;
+            }
+            else
+            {
+                result.isPositiveComment = false;
+            }
+
+            resultList[i] = result;
+        }
+
+        // 외부에 전달하기
+        return resultList;
+    }
+
+
+    // TODO : SO 다운로드 받기 기능 추가 필요
+    [ContextMenu("데이터 다운로드")]
+    private void DataDownload()
+    {
+        DownloadData();
     }
 }
