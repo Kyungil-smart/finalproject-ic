@@ -127,6 +127,12 @@ public class T03GenreAndThemeRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         Debug.Log($"[T03] {_selectedTheme} 테마 선택");
         ServiceLocater.Get<IProjectManager>().Theme = _selectedTheme;
 
+        // 장르 & 테마 선택에 따른 비용 넣어주기 -> T11에서도 사용
+        var cal = ServiceLocater.Get<IProjectManager>().CostCalculator; 
+        uint cost = cal.CalculateDevCost(_selectedGenre.id, _selectedTheme.id);
+        ServiceLocater.Get<IProjectManager>().Cost = cost;
+        Debug.Log($"[T03] 개발 비용 : {cost}");
+
         await UniTask.Yield();
         await GoToNextProcess();    // 선정하기 버튼이 눌리면 CheckGenreTheme() -> GenreThemeProcessing()로 자동 진행되고 프로세스가 끝나도록(선택 확정한 뒤에 다시확인하는 UI는 없음)
         await WaitProcess();
