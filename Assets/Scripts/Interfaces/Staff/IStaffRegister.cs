@@ -16,4 +16,5 @@ public interface IStaffRegister
     public void SetSlotPos(Transform[] transforms);
     public UniTask RestoreSaveData(StaffManagerSaveData dto);
     public StaffManagerSaveData CaptureSaveData();
+    public Transform GetSeatTransform(int staffId); 
 }

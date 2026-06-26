@@ -11,10 +11,12 @@ public class StaffBuilder
     private StaffEntity _staffData;
     private GameObject _fallbackPrefab;   // 기존 _visualPrefab → 폴백 용도
     private string _addressableKey;
+    private Vector3 _spawnPosition = new Vector3(9999f, 9999f, 0f);
 
     public StaffBuilder WithStaffData(StaffEntity data) { _staffData = data; return this; }
     public StaffBuilder WithVisualAsset(GameObject prefab) { _fallbackPrefab = prefab; return this; }
     public StaffBuilder WithAddressableKey(string key) { _addressableKey = key; return this; }
+    public StaffBuilder WithSpawnPosition(Vector3 pos) { _spawnPosition = pos; return this; }
 
     // 빌더에 등록된 데이터를 바탕으로 스태프 오브젝트를 생성.
     // 매개변수 parent는 하이래키창에 스태프를 담는 빈 상위 오브젝트(폴더). 폴더 안에 스태프 오브젝트를 생성.
@@ -48,8 +50,16 @@ public class StaffBuilder
         // 3) Staff 컴포넌트 보장 (SPUM 프리팹엔 보통 Staff 스크립트가 없음)
         if (go != null)
         {
-            var staffComp = staffObj.AddComponent<Staff>();
-            staffComp.SetEntity(_staffData);
+            var movement = go.GetComponent<StaffMovement>();   // SPUM 루트에 있음
+            if (movement == null)
+            {
+                Debug.LogError($"[StaffBuilder] {_addressableKey}: StaffMovement 없음(폴백/프리팹 확인). 주입 생략");
+            }
+            else
+            {
+                var staffComp = staffObj.AddComponent<Staff>();
+                staffComp.SetEntity(_staffData, movement);
+            }
         }
 
         return (_staffData, staffObj);

@@ -501,6 +501,14 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         ServiceLocater.Get<IGameManager>().AddExp(exp);
     }
     
+    public Transform GetSeatTransform(int staffId)
+    {
+        var staff = _staffList.Find(x => x.init.Staff_ID == staffId);
+        if (staff == null) return null;
+        var slot = _slots.Find(s => s.id == staff.GetSeatId());
+        return slot?.pos;
+    }
+    
     public void GetExpInProduction(GameDevProcName procName, List<int> staffIds)
     {
         float exp = 0;
