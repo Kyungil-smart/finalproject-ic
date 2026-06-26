@@ -80,7 +80,7 @@ public class T11MarketingRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerEx
 
         var tail = new MarketingTailData()
         {
-            num = 1,
+            num = 2,
             nextCallback = GoCheckSelectMarketingToWaitingAnimation,
             previousCallback = GoCheckSelectMarketingToBack
         };
@@ -142,10 +142,20 @@ public class T11MarketingRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerEx
     {
         _waiting = false;
     }
-
+    
     private async UniTask CheckMarketing()
     {
         _waiting = true;
+
+        MarketingRenderData FinalmarketingRD = new MarketingRenderData();
+        FinalmarketingRD.marketingData = new List<MarketingData>();
+
+        foreach (var idx in _selectedMarketingIndex)
+        {
+            FinalmarketingRD.marketingData.Add(_marketingRenderData.marketingData[idx]);
+            _marketingRenderData.marketingData[idx].selected = true;
+        }
+        await UniTask.Yield();
 
         // 마케팅 완료 및 UI 에 랜더 데이터 제공
         var tail = new MarketingTailData()
@@ -154,14 +164,14 @@ public class T11MarketingRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerEx
             nextCallback = GoToNextProcess,
         };
 
+        FinalmarketingRD.tailType = tail;
+        FinalmarketingRD.selectable = false;
 
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.MarketingUI, FinalmarketingRD);
 
-
-
-        await UniTask.Yield();
         await WaitProcess();
     }
-
+    
     private async UniTaskVoid GoToNextProcess()
     {
         _waiting = false;
