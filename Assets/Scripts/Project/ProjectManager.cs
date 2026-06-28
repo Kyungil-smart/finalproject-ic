@@ -14,6 +14,13 @@ public class ProjectManager : Manager, IProjectManager
     public ProjectCostCalculate CostCalculator { get; private set; }
     public float TotalQuality => _projectData.Qualities.Value.total;
 
+    private float _qaResult;
+    public float QAResult 
+    {
+        get => _qaResult;
+        set => _qaResult = value;
+    }
+    
     public float DevQuality
     {
         get => _projectData.Qualities.Value.development;
