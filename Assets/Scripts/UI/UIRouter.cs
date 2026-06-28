@@ -11,6 +11,8 @@ public class UIRouter : IUIRouter, IDisposable
 {
     private Dictionary<UIType, IUIRender> _renders = new ();
     ICanvasController _canvasController;
+    
+    public bool HasCanvas => _canvasController != null;
 
     public void ConnectCanvasController(ICanvasController canvasController)
     {
@@ -38,7 +40,7 @@ public class UIRouter : IUIRouter, IDisposable
     public void NavigateTo(UIType uiType, UIRenderData data)
     {
         Debug.Log("[UIRouter] NavigateTo " + uiType);
-        _canvasController.Enable(uiType);
+        _canvasController?.Enable(uiType);
         _renders[uiType].Render(data);
     }
 

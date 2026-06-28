@@ -1,9 +1,18 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Staff : MonoBehaviour
 {
     private StaffEntity _entity;
     private StaffMovement _movement;
+    
+    private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
+        
+    private void OnDisable()=> SceneManager.sceneLoaded -= OnSceneLoaded;   // 누수/중복 방지
+    
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) => UpdateStaffVisibility(scene.name);
+    
+    private void UpdateStaffVisibility(string sceneName) => gameObject.SetActive(sceneName == "MainScene");
     
     public void SetEntity(StaffEntity entity, StaffMovement movement)
     {
