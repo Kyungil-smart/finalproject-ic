@@ -44,10 +44,12 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
             if (item.isPositiveComment)
             {
                 data.commentId = item.userReviewRow.positiveCommentId;
+                data.isPositive = true;
             }
             else
             {
                 data.commentId = item.userReviewRow.negativeCommentId;
+                data.isPositive = false;
             }
 
             reviewRD.reviews.Add(data);
