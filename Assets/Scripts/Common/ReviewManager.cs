@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.AddressableAssets;
 
 [Serializable]
 public struct ReviewResult
@@ -31,6 +32,7 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
     private Dictionary<string, bool> _readyStatus = new();
     public Dictionary<string, bool> ReadyStatus => _readyStatus;
 
+    private const string FACEIMG_LABEL = "Staff_Thumnail";
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
@@ -162,6 +164,27 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
 
         // 외부에 전달하기
         return resultList;
+    }
+
+    // 어드레서블로 faceimg 로드
+    public async UniTask<List<Sprite>> RandomUserImgLoad(int count)
+    {
+        var result = new List<Sprite>();
+        
+        var imgHandle = Addressables.LoadResourceLocationsAsync(FACEIMG_LABEL, typeof(Sprite));
+        var location = await imgHandle.ToUniTask();
+        
+        var pickImg = location.OrderBy(x => Random.value).Take(count).ToList();
+        
+        Addressables.Release(imgHandle);
+
+        foreach (var loc in pickImg)
+        {
+            var sprite = await Addressables.LoadAssetAsync<Sprite>(loc).ToUniTask();
+            result.Add(sprite);
+        }
+        
+        return result;
     }
 
 
