@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ReviewData
 {
-    public Sprite iconImg;
+    // public Sprite iconImg;
     public Sprite profileImg;
+    public bool isPositive;
     public int nickNameId;
     public int commentId;
 }
