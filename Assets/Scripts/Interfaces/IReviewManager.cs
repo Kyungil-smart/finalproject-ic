@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IReviewManager
 {
     public List<ReviewResult> CheckRequirements();
-    public UniTask<List<Sprite>> RandomUserImgLoad(int count);
+    public UniTask<Sprite> RandomUserImgLoad();
 }

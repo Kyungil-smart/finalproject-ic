@@ -167,24 +167,16 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
     }
 
     // 어드레서블로 faceimg 로드
-    public async UniTask<List<Sprite>> RandomUserImgLoad(int count)
+    public async UniTask<Sprite> RandomUserImgLoad()
     {
-        var result = new List<Sprite>();
-        
         var imgHandle = Addressables.LoadResourceLocationsAsync(FACEIMG_LABEL, typeof(Sprite));
         var location = await imgHandle.ToUniTask();
         
-        var pickImg = location.OrderBy(x => Random.value).Take(count).ToList();
+        var pickImg = location[Random.Range(0, location.Count)];
         
         Addressables.Release(imgHandle);
-
-        foreach (var loc in pickImg)
-        {
-            var sprite = await Addressables.LoadAssetAsync<Sprite>(loc).ToUniTask();
-            result.Add(sprite);
-        }
         
-        return result;
+        return await Addressables.LoadAssetAsync<Sprite>(pickImg).ToUniTask();
     }
 
 
