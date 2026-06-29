@@ -16,6 +16,11 @@ public interface IProjectManager
     public uint Income {get; set;}
     public uint StaffsCost {get; }
     public uint Earnings { get; }
+    public uint MarketingCost { get; set; }
+    public uint MarketingBonus { get; set; }
+    public float QAResult  {get; set;}
+    public List<ReviewResult> ReviewResults { get; set; }
+
     public void UpdateTotalQuality(float value, float ratio = 1f);
     public void UpdateDesignQuality(float value, float ratio = 1f);
     public void UpdateArtQuality(float value, float ratio = 1f);
@@ -25,8 +30,6 @@ public interface IProjectManager
     public void SetProjectName(string projectName);
     public void NewProject();
     public ProjectData FinishProject();
-    public void LoadProject(string jsonData);
-    public string ToJsonData();
     public ProjectData GetProjectData();
     public void SetAwards(AwardsData awardsData);
     public ProjectCostCalculate CostCalculator {get;}
@@ -36,6 +39,9 @@ public interface IProjectManager
     public void AssignStaff(GameDevProcName procName, int staffId);
     public void ClearStaffs();
     public IReadOnlyList<int> GetAssignedStaffIds(GameDevProcName procName);
+    
+    // Loading Data Part
     public ProjectManagerSaveData CaptureSaveData();
     public void RestoreSaveData(ProjectManagerSaveData dto);
+    public bool IsLoaded();
 }

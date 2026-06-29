@@ -219,6 +219,16 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         // 후보 리스트에서 제거 후 정식 고용 리스트 및 딕셔너리로 이사 
         _recruitCandidates.Remove(targetData); 
         _staffList.Add(targetData);
+
+        // 자리 부여.
+        foreach (var seat in _slots)
+        {
+            if (seat.staffId == SlotState.EmptyStaffId && !seat.IsRoom)
+            {
+                seat.SetStaffToSlot(targetData);
+                break;
+            }
+        }
         
         // 빌더 파이프라인으로 실제 캐릭터 프리팹 생성 및 배치
         (IStaffInfo newStaff, GameObject go) = await new StaffBuilder()
@@ -239,6 +249,19 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         // 고용 리스트에서 삭제.
         var staff = _staffList.Find(x => x.init.Staff_ID == targetStaffID);
         if (staff == null) return;
+        // 자리 비우기 (잘가여)
+        var seatId = staff.GetSeatId();
+        foreach (var seat in _slots)
+        {
+            if (seat.id == seatId)
+            {
+                seat.staffId = 0;
+                break;
+            }
+        }
+        staff.SetSeatId(0);
+        
+        // staff list 에서 삭제 및 각종 리소스 해제
         _staffList.Remove(staff);
         staff.ReleaseThumbnail(); 
         staff.ReleaseVisualInstance();
@@ -431,6 +454,14 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
                 if (slot == null) continue;
                 slot.unlocked = sd.unlocked;
                 slot.staffId  = sd.staffId;
+                if (slot.staffId != SlotState.EmptyStaffId)
+                {
+                    var occupant = _staffList.Find(e => e.init.Staff_ID == slot.staffId);
+                    if (occupant != null)
+                        occupant.SetSeatId(slot.id);
+                    else
+                        Debug.LogWarning($"[StaffManager] 슬롯 {slot.id}의 점유자 {slot.staffId}를 _staffList에서 못 찾음(데이터 불일치)");
+                }
             }
         if (_slotIndex >= 0 && _slotIndex < _slots.Count)
             _currentSlot = _slots[_slotIndex];
@@ -468,6 +499,14 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         }
         // Player 경험치 증가
         ServiceLocater.Get<IGameManager>().AddExp(exp);
+    }
+    
+    public Transform GetSeatTransform(int staffId)
+    {
+        var staff = _staffList.Find(x => x.init.Staff_ID == staffId);
+        if (staff == null) return null;
+        var slot = _slots.Find(s => s.id == staff.GetSeatId());
+        return slot?.pos;
     }
     
     public void GetExpInProduction(GameDevProcName procName, List<int> staffIds)

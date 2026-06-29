@@ -35,9 +35,12 @@ public class ProjectData
     public uint cost;  // 투자된 금액
     public uint income;  // 매출 금액
     public uint staffCost;  // 직원 연봉 합산
+    public uint marketingCost;  // 마케팅 비용
+    public uint marketingBonus;  // 마케팅 보너스 수익
     public AwardsData award;  // 수상 경력
     public NameTag trendGenre;  // 트랜드장르
     public NameTag trendTheme;  // 트랜드테마
+    public List<ReviewResult> reviewResults = new();    // 유저 평점
 }
 
 

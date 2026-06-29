@@ -132,6 +132,13 @@ public class QualityCalculate
         float avgCom = (float)staffList.Average(s => s.Final_Common_Communication);
         qt.UpdateTotalQuality(qt.TotalQuality * (1 + (avgCom / data.commSynergy)));
     }
+
+    public void ApplyTotalQualityWithQAResult()
+    {
+        var qt = ServiceLocater.Get<IProjectManager>();
+        var totalQuality = qt.TotalQuality * (1 + qt.QAResult);
+        qt.UpdateTotalQuality(totalQuality);
+    }
     
     // 소통 시너지 적용
     // Todo. 따로 적용될수도 있다고 하셨어서 구현은 해두고 주석처리해둠

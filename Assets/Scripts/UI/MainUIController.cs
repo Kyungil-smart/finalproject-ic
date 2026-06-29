@@ -60,12 +60,14 @@ public class MainUIController : MonoBehaviour
     [SerializeField] private ConfirmMsgController confirmMsgController;
     
     private bool _isDataReady;
+    private string _projectName;
     
     // R3 구독 해제를 관리하기 위한 디스포저 컨테이너
     private readonly CompositeDisposable _disposables = new();
     private IGameManager _gameManager;   
     private IMainStateMachine _stateMachine;
     private IPostManager _postManager;
+    private IProjectManager _projectManager;
     
     private void Awake() => Initialize();
 
@@ -88,18 +90,18 @@ public class MainUIController : MonoBehaviour
         _gameManager = ServiceLocater.Get<IGameManager>();      
         _stateMachine = ServiceLocater.Get<IMainStateMachine>();
         _postManager = ServiceLocater.Get<IPostManager>();
-        playerName.text = _gameManager.PlayerName;
+        _projectManager = ServiceLocater.Get<IProjectManager>();
+        Debug.Log($"[MainUIController] Player Name: {_gameManager.PlayerName}");
         UpdateGoldUI();
         UpdateDateUI();
         Debug.Log($"[MainUIController] {_gameManager.ProcName.CurrentValue}");
         staffSlotPanel.gameObject.SetActive(_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources);
         if (_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources) ProjectText.text = "미정";
         if (_gameManager.InputProjectNameActive) OpenInputProjectNamePanel();
-        
         CloseLoadingScreen().Forget();
     }
 
-    public void MainUIWorkaround()
+    public void MainUIPostProcessing()
     {   // Save Data Loading 후 진행해야 할 것들
         for (int i = 0; i < staffSlots.Length; i++)
         {
@@ -107,9 +109,17 @@ public class MainUIController : MonoBehaviour
             if (slot.unlocked) UnlockActions(i);
             else break;
         }
+        ServiceLocater.Get<IStaffRegister>().SetSlotPos(seatAndRoomPos);
         staffSlotPanel.gameObject.SetActive(_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources);
         var data = _postManager.Request<bool, StateViewData>(Channel.ProcessUIUpdate, true);
+        ServiceLocater.Get<IStaffAIManager>()?.Begin();
         UpdateProcessData(data);
+        playerName.text = _gameManager.PlayerName;
+        UniTask.Void(async () =>
+        {
+            await UniTask.WaitUntil(() => _projectManager.IsLoaded());
+            ProjectText.text = _projectManager.GetProjectData().name;
+        });
     }
 
     private void OnDisable()
@@ -138,7 +148,7 @@ public class MainUIController : MonoBehaviour
 
     private void IsReady(bool ready)
     {
-        MainUIWorkaround();
+        MainUIPostProcessing();
         _isDataReady = ready;
     } 
    
@@ -251,24 +261,26 @@ public class MainUIController : MonoBehaviour
 
     private async UniTask ConfirmProjectName()
     {   // ToDO. Text 데이터 외부에서 받도록 준비하기.
+        _projectName = String.Empty;
         var emptyWarning = "최소 1글자 이상의 이름을 입력해주세요.";
         var lengthWarning = "20자 이내로 입력해 주시기 바랍니다.";
         var specificWordWarning = "띄어쓰기는 불가하며, 특수문자는 `-_` 만 사용 가능합니다. \n특수문자로 시작할 수는 없습니다.";
         string pattern = @"^[a-zA-Z0-9가-힣]([a-zA-Z0-9가-힣_-])*$";
         
-        var name = projectNameInputField.text;
-        if      (name.Length <= 0) await OpenWarningMessagePanel(emptyWarning);
-        else if (name.Length > 20) await OpenWarningMessagePanel(lengthWarning);
-        else if (!Regex.IsMatch(name, pattern)) await OpenWarningMessagePanel(specificWordWarning);
+        _projectName = projectNameInputField.text;
+        if      (_projectName.Length <= 0) await OpenWarningMessagePanel(emptyWarning);
+        else if (_projectName.Length > 20) await OpenWarningMessagePanel(lengthWarning);
+        else if (!Regex.IsMatch(_projectName, pattern)) await OpenWarningMessagePanel(specificWordWarning);
         else    confirmMsgController.Render(9900040, SetProjectName);
         
     }
 
     private void SetProjectName()
     {
-        ServiceLocater.Get<IProjectManager>().SetProjectName(name);
-        ProjectText.text = name;
+        ServiceLocater.Get<IProjectManager>().SetProjectName(_projectName);
+        ProjectText.text = _projectName;
         ServiceLocater.Get<IGameManager>().UpdateInputProjectNameActive(false);
+        ServiceLocater.Get<ISaveManager>().Save();
         inputProjectPanel.SetActive(false);    
     }
     
