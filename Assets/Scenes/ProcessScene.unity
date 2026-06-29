@@ -29242,7 +29242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8035819924460677806, guid: 381133183f6f0e04792ecdfbad33f8b6, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -36154,7 +36154,7 @@ MonoBehaviour:
   m_text: Button
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e33da2ed35a2607458b7274f3b10efce, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 6149625765283235433, guid: e33da2ed35a2607458b7274f3b10efce, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -41785,8 +41785,8 @@ MonoBehaviour:
   tail2Panel: {fileID: 100012773}
   previousBtn: {fileID: 1831055196}
   nextBtn: {fileID: 1310890831}
-  tail3Panel: {fileID: 0}
-  okBtn: {fileID: 0}
+  tail3Panel: {fileID: 1668244858}
+  okBtn: {fileID: 563280750}
 --- !u!1 &1210527588
 GameObject:
   m_ObjectHideFlags: 0
@@ -57465,8 +57465,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 198.5, y: -369.697}
-  m_SizeDelta: {x: 397, y: 200}
+  m_AnchoredPosition: {x: 541, y: -169.69699}
+  m_SizeDelta: {x: 1082, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1669124087
 GameObject:
@@ -70492,7 +70492,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 541, y: -569.697}
+  m_AnchoredPosition: {x: 541, y: -169.69699}
   m_SizeDelta: {x: 1082, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2034788539
