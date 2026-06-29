@@ -101,6 +101,12 @@ public class ProjectManager : Manager, IProjectManager
         set => _projectData.marketingBonus = value;
     }
 
+    public List<ReviewResult> ReviewResults
+    {
+        get => _projectData.reviewResults;
+        set => _projectData.reviewResults = value;
+    }
+
     public AwardsData Awards => _projectData.award;
     
     public uint StaffsCost => _projectData.staffCost;

@@ -19,6 +19,7 @@ public interface IProjectManager
     public uint MarketingCost { get; set; }
     public uint MarketingBonus { get; set; }
     public float QAResult  {get; set;}
+    public List<ReviewResult> ReviewResults { get; set; }
 
     public void UpdateTotalQuality(float value, float ratio = 1f);
     public void UpdateDesignQuality(float value, float ratio = 1f);
