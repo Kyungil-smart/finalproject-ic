@@ -29,7 +29,6 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         _waiting = true;
 
         List<ReviewResult> reviewResults = ServiceLocater.Get<IReviewManager>().CheckRequirements();
-
         // 유저 리뷰 UI 랜더 데이터 보내기
         T12ReviewUIRenderData reviewRD = new T12ReviewUIRenderData();
         reviewRD.reviews = new List<ReviewData>();
@@ -38,7 +37,7 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         foreach (var item in reviewResults)
         {
             ReviewData data = new ReviewData();
-
+            data.profileImg = await ServiceLocater.Get<IReviewManager>().RandomUserImgLoad();
             data.nickNameId = item.userReviewRow.userId;
 
             // 긍정/부정 분기
