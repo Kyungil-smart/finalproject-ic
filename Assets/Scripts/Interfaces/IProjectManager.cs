@@ -39,6 +39,9 @@ public interface IProjectManager
     public void AssignStaff(GameDevProcName procName, int staffId);
     public void ClearStaffs();
     public IReadOnlyList<int> GetAssignedStaffIds(GameDevProcName procName);
+    
+    // Loading Data Part
     public ProjectManagerSaveData CaptureSaveData();
     public void RestoreSaveData(ProjectManagerSaveData dto);
+    public bool IsLoaded();
 }
