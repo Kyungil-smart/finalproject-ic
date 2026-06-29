@@ -9,6 +9,7 @@ public class ProjectManager : Manager, IProjectManager
     [SerializeField] private GenreThemeTypeDataSO _genreThemeDataSO;
     [SerializeField] private IncomeRatioDataSO _incomeRatioDataSO;
     private Dictionary<GameDevProcName, List<int>> _assignedStaff = new();
+    private bool _isLoaded;
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
     public ProjectCostCalculate CostCalculator { get; private set; }
@@ -206,7 +207,12 @@ public class ProjectManager : Manager, IProjectManager
 
     public void RestoreSaveData(ProjectManagerSaveData dto)
     {
-        if (dto == null) return;
+        _isLoaded = false;
+        if (dto == null)
+        {
+            _isLoaded = true;
+            return;
+        }
 
         // 진행 중 프로젝트 (없으면 null = NewProject 전 상태와 동일)
         _projectData = dto.currentProject?.ToProjectData();
@@ -215,5 +221,20 @@ public class ProjectManager : Manager, IProjectManager
         if (dto.assignedStaff != null)
             foreach (var (proc, ids) in dto.assignedStaff)
                 _assignedStaff[proc] = new List<int>(ids);
+        _isLoaded = true;
+    }
+
+    public bool IsLoaded() => _isLoaded;
+
+    [ContextMenu("프로젝트 데이터 확인")]
+    private void ShowProjectData()
+    {
+        Debug.Log("[ProjectManager] ------- 프로젝트 데이터 --------");
+        if (_projectData == null) Debug.Log("[ProjectManager] 데이터 없음 ");
+        else
+        {
+            Debug.Log("[ProjectManager] Name: " + _projectData.name);
+        }
+        Debug.Log("[ProjectManager] -----------------------------");
     }
 }

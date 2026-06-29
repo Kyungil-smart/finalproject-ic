@@ -95,4 +95,12 @@ public class GameManager : Manager, IGameManager
         _projects.Clear();
         foreach (var p in dto.projects) _projects.Add(p.ToProjectData());
     }
+
+    [ContextMenu("게임 데이터 확인")]
+    private void ShowGameData()
+    {
+        Debug.Log("[GameManager] ------ 게임 매니저 데이터 확인 ------");
+        Debug.Log("[GameManager] PlayerName: " + PlayerName);
+        Debug.Log("[GameManager] ---------------------------------");
+    }
 }
