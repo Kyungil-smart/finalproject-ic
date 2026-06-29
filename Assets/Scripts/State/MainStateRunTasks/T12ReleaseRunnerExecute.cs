@@ -4,22 +4,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO : 랜더 데이터 나오면 삭제 필요
-public class ReviewData
-{
-    public Sprite iconImg;
-    public Sprite profileImg;
-    public int nickNameId;
-    public int commentId;
-}
-
-// TODO : 랜더 데이터 나오면 삭제 필요
-public class T12ReviewUIRenderData : UIRenderData
-{
-    public List<ReviewData> reviews;
-    public Action btCallback;
-}
-
 
 /// <summary>
 /// 출시(T12)
@@ -51,20 +35,20 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         reviewRD.reviews = new List<ReviewData>();
 
         // reviewRD.reviews에 맞게 reviewResults 변환하기(일단 nickNameId 와 commentId 만 넣기)
-        foreach (var result in reviewResults)
+        foreach (var item in reviewResults)
         {
             ReviewData data = new ReviewData();
 
-            data.nickNameId = result.userReviewRow.userId;
+            data.nickNameId = item.userReviewRow.userId;
 
             // 긍정/부정 분기
-            if (result.isPositiveComment)
+            if (item.isPositiveComment)
             {
-                data.commentId = result.userReviewRow.positiveCommentId;
+                data.commentId = item.userReviewRow.positiveCommentId;
             }
             else
             {
-                data.commentId = result.userReviewRow.negativeCommentId;
+                data.commentId = item.userReviewRow.negativeCommentId;
             }
 
             reviewRD.reviews.Add(data);
@@ -74,7 +58,8 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
 
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ReleaseUI, reviewRD);
 
-        // TODO : 리뷰 매니저에게도 보내주기(출시 이후에도 보여줘야해서 저장 필요)
+        // 리뷰 매니저에게도 보내주기(출시 이후에도 이전 프로젝트 보여줘야해서 저장 필요)
+        ServiceLocater.Get<IProjectManager>().ReviewResults = reviewResults;
 
         await WaitProcess();
         await CalculateRevenue();
