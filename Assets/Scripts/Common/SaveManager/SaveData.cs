@@ -18,6 +18,7 @@ public class ProjectSaveData
     public AwardsData award;
     public NameTag trendGenre;
     public NameTag trendTheme;
+    public List<ReviewResult> reviewResults;
 
     public static ProjectSaveData From(ProjectData p) => new()
     {
@@ -26,6 +27,7 @@ public class ProjectSaveData
         name = p.name, genre = p.genre, theme = p.theme, grade = p.grade,
         cost = p.cost, income = p.income, staffCost = p.staffCost,
         award = p.award, trendGenre = p.trendGenre, trendTheme = p.trendTheme,
+        reviewResults = p.reviewResults != null ? new List<ReviewResult>(p.reviewResults) : null,
     };
 
     public ProjectData ToProjectData() => new()
@@ -35,6 +37,7 @@ public class ProjectSaveData
         name = name, genre = genre, theme = theme, grade = grade,
         cost = cost, income = income, staffCost = staffCost,
         award = award, trendGenre = trendGenre, trendTheme = trendTheme,
+        reviewResults = reviewResults != null ? new List<ReviewResult>(reviewResults) : null,
     };
 }
 

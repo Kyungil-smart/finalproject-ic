@@ -151,17 +151,6 @@ public class ProjectManager : Manager, IProjectManager
         _assignedStaff.Clear();
     }
 
-    public void LoadProject(string jsonData)
-    {
-        // ToDo. 현재 진행중인 프로젝트의 JSON Data Load
-        _projectData = JsonUtility.FromJson<ProjectData>(jsonData);
-    }
-
-    public string ToJsonData()
-    {
-        return JsonUtility.ToJson(_projectData);
-    }
-
     public ProjectData FinishProject()
     {
         _projectData.IsCompleted.Value = true;

@@ -1,9 +1,11 @@
+using System;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-
+[Serializable]
 public struct ReviewResult
 {
     public UserReviewRow userReviewRow;
