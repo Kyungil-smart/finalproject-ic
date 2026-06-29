@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a006653a7680948458035a9d93b1fa89, type: 3}
+  m_Name: UserReviewDataSO
+  m_EditorClassIdentifier: Assembly-CSharp::UserReviewDataSO
+  userReviewList:
+  - mediaId: 1
+    userId: 11
+    genreId: 60001
+    themeId: 61001
+    positiveCommentId: 111
+    negativeCommentId: 1111
+    reqType: 1
+    reqValue: 10
+  - mediaId: 2
+    userId: 22
+    genreId: 60001
+    themeId: 61001
+    positiveCommentId: 222
+    negativeCommentId: 2222
+    reqType: 2
+    reqValue: 10
+  - mediaId: 3
+    userId: 33
+    genreId: 60001
+    themeId: 61001
+    positiveCommentId: 333
+    negativeCommentId: 3333
+    reqType: 3
+    reqValue: 10
+  - mediaId: 4
+    userId: 44
+    genreId: 60001
+    themeId: 61001
+    positiveCommentId: 444
+    negativeCommentId: 4444
+    reqType: 4
+    reqValue: 10
+  - mediaId: 5
+    userId: 55
+    genreId: 60001
+    themeId: 61001
+    positiveCommentId: 555
+    negativeCommentId: 5555
+    reqType: 4
+    reqValue: 100000
+  - mediaId: 6
+    userId: 66
+    genreId: 60001
+    themeId: 61001
+    positiveCommentId: 666
+    negativeCommentId: 6666
+    reqType: 1
+    reqValue: 10000
+  - mediaId: 7
+    userId: 77
+    genreId: 60001
+    themeId: 61002
+    positiveCommentId: 777
+    negativeCommentId: 7777
+    reqType: 1
+    reqValue: 10
+  - mediaId: 8
+    userId: 88
+    genreId: 60001
+    themeId: 61002
+    positiveCommentId: 888
+    negativeCommentId: 8888
+    reqType: 2
+    reqValue: 10
+  - mediaId: 9
+    userId: 99
+    genreId: 60001
+    themeId: 61002
+    positiveCommentId: 999
+    negativeCommentId: 9999
+    reqType: 3
+    reqValue: 10

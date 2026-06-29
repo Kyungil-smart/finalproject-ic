@@ -40,6 +40,7 @@ public class ProjectData
     public AwardsData award;  // 수상 경력
     public NameTag trendGenre;  // 트랜드장르
     public NameTag trendTheme;  // 트랜드테마
+    public List<ReviewResult> reviewResults = new();    // 유저 평점
 }
 
 

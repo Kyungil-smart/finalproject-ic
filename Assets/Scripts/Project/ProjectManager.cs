@@ -101,6 +101,12 @@ public class ProjectManager : Manager, IProjectManager
         set => _projectData.marketingBonus = value;
     }
 
+    public List<ReviewResult> ReviewResults
+    {
+        get => _projectData.reviewResults;
+        set => _projectData.reviewResults = value;
+    }
+
     public AwardsData Awards => _projectData.award;
     
     public uint StaffsCost => _projectData.staffCost;
@@ -143,17 +149,6 @@ public class ProjectManager : Manager, IProjectManager
     {
         _projectData = new ProjectData();
         _assignedStaff.Clear();
-    }
-
-    public void LoadProject(string jsonData)
-    {
-        // ToDo. 현재 진행중인 프로젝트의 JSON Data Load
-        _projectData = JsonUtility.FromJson<ProjectData>(jsonData);
-    }
-
-    public string ToJsonData()
-    {
-        return JsonUtility.ToJson(_projectData);
     }
 
     public ProjectData FinishProject()

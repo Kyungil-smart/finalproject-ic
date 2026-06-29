@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,31 +28,44 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
     {
         _waiting = true;
 
-        // TODO : 유저 리뷰 UI 랜더 데이터 보내기
-        GoProcessF();
+        List<ReviewResult> reviewResults = ServiceLocater.Get<IReviewManager>().CheckRequirements();
 
-        await WaitProcess();
-        await CriticReview();
-    }
+        // 유저 리뷰 UI 랜더 데이터 보내기
+        T12ReviewUIRenderData reviewRD = new T12ReviewUIRenderData();
+        reviewRD.reviews = new List<ReviewData>();
 
-    private void GoProcessF()
-    {
-        _waiting = false;
-    }
+        // reviewRD.reviews에 맞게 reviewResults 변환하기(일단 nickNameId 와 commentId 만 넣기)
+        foreach (var item in reviewResults)
+        {
+            ReviewData data = new ReviewData();
 
-    // 평론가 리뷰
-    private async UniTask CriticReview()
-    {
-        _waiting = true;
+            data.nickNameId = item.userReviewRow.userId;
 
-        // TODO : 평론가 리뷰 UI 랜더 데이터 보내기
-        GoProcessG();
+            // 긍정/부정 분기
+            if (item.isPositiveComment)
+            {
+                data.commentId = item.userReviewRow.positiveCommentId;
+            }
+            else
+            {
+                data.commentId = item.userReviewRow.negativeCommentId;
+            }
+
+            reviewRD.reviews.Add(data);
+        }
+
+        reviewRD.btCallback = GoProcessF;
+
+        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ReleaseUI, reviewRD);
+
+        // 리뷰 매니저에게도 보내주기(출시 이후에도 이전 프로젝트 보여줘야해서 저장 필요)
+        ServiceLocater.Get<IProjectManager>().ReviewResults = reviewResults;
 
         await WaitProcess();
         await CalculateRevenue();
     }
 
-    private void GoProcessG()
+    private void GoProcessF()
     {
         _waiting = false;
     }
@@ -71,6 +85,7 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcAnimationUI, data);
 
         // TODO: 매출 건내주는 기능이 나오면 수정이 필요할 수도 있음
+
 
         await WaitProcess();
         await CheckRevenue();
