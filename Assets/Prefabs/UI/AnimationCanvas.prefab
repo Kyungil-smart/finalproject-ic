@@ -366,7 +366,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5564476678653317466
 RectTransform:
   m_ObjectHideFlags: 0
@@ -802,7 +802,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4226087051792036151
 RectTransform:
   m_ObjectHideFlags: 0
@@ -879,7 +879,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4682983157427963850
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1023,3 +1023,21 @@ MonoBehaviour:
   staticImage: {fileID: 3260830769388487163}
   progressImage: {fileID: 3395719476980430968}
   progressText: {fileID: 3030432581565721458}
+  progressInterval: 1.5
+  animationPanel: {fileID: 0}
+  leftStaffPos: {fileID: 0}
+  rightStaffPos: {fileID: 0}
+  leftTalkBalloon:
+    talkBalloon: {fileID: 0}
+    talkBalloonSprites:
+    - {fileID: 423768246671499271, guid: f0e7b16151199de4e8c2be287f9bd46f, type: 3}
+    - {fileID: 533174988045438731, guid: 22932876687d9644d8a9263cbf454b04, type: 3}
+    - {fileID: -7103667917886904107, guid: 082097d75c173ef4ebf3d6b6953da6ef, type: 3}
+  rightTalkBalloon:
+    talkBalloon: {fileID: 0}
+    talkBalloonSprites:
+    - {fileID: -7827855243438673760, guid: 061f17207f90d734ead6e2b005fb3f05, type: 3}
+    - {fileID: -6077061869258137154, guid: bec0d1e7d095aa7448179a045d8c3318, type: 3}
+    - {fileID: -424903259754837630, guid: fef3b013443c105489c644bdd6c35fb9, type: 3}
+  leftSpum: {fileID: 0}
+  rightSpum: {fileID: 0}

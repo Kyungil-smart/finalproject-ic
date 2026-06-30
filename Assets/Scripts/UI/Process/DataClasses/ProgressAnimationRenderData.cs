@@ -8,4 +8,5 @@ public class ProgressAnimationRenderData : UIRenderData
     public List<string> progressTexts;
     public Sprite staticImage;
     public Action callback;
+    public List<GameObject> staffIds;
 }
