@@ -5,16 +5,10 @@
 /// </summary>
 public class SimpleUIRenderData : UIRenderData
 {
-    public int mainTextId;
+    public int titleTextId;
+    public string mainText;
+    public string imageId;
     public int btTextId;
     public Action btCallback;
     public string text;
-
-    public SimpleUIRenderData(int mainTextId, int btTextId, Action btCallback, string text = "")
-    {
-        this.mainTextId = mainTextId;
-        this.btTextId = btTextId;
-        this.btCallback = btCallback;
-        this.text = text;
-    }
 }

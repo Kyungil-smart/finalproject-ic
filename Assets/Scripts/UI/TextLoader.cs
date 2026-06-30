@@ -9,6 +9,8 @@ using Channel = DataDispatcher.Channel;
 public class TextLoader : MonoBehaviour
 {
     [SerializeField] private int textId = -1;
+    [Tooltip("데이터 확인용")]
+    [SerializeField] private string inputText;
     private TextMeshProUGUI _textGui;
     private IPostManager _postManager;
     // text ID 가 없는 경우를 대비한 임시 string 입력
@@ -52,7 +54,10 @@ public class TextLoader : MonoBehaviour
 
     private void OverrideText(string text)
     {
+        Debug.Log($"[TextLoader] input text = {text}");
+        if (_textGui == null) _textGui = GetComponent<TextMeshProUGUI>();
         _textGui.text = text;
+        inputText = text;
     }
     
     private UniTask ChangeText()
@@ -63,7 +68,8 @@ public class TextLoader : MonoBehaviour
         if (textId != 0)
         {
             var text = _postManager?.Request<int, string>(Channel.GetUIText, textId);
-            _textGui.text = text;    
+            _textGui.text = text;
+            inputText = text;
         }
         else
         {
