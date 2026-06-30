@@ -79,6 +79,7 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
                             var choice = _choices[(int)Math.Round(scrollbar.value)];
                             choice.callback?.Invoke(choice.id);
                             mainPanel.SetActive(false);
+                            gameObject.SetActive(false);
                         },
                         () => { 
                             scrollbar.value = 0.5f;

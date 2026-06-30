@@ -50,6 +50,7 @@ public class NewEventUIRenderer : MonoBehaviour, IUIRender
         List<EventEffectData> effectDataList = new();
         if (data.choices.Count == 1)
         {
+            oneScrollBarController.gameObject.SetActive(true);
             var choice = data.choices[0];
             oneScrollBarController.SetData(choice.id, choice.textId, data.callback);
             effectDataList.Add(choice.effectData);
@@ -57,6 +58,7 @@ public class NewEventUIRenderer : MonoBehaviour, IUIRender
         }
         else if (data.choices.Count == 2)
         {
+            twoScrollBarController.gameObject.SetActive(true);
             for (int i = 0; i < data.choices.Count; i++)
             {
                 effectDataList.Add(data.choices[i].effectData);
