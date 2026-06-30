@@ -11,6 +11,7 @@ public class LoadingTitleUIController : MonoBehaviour
     [SerializeField] private GameObject[] managers;
     [SerializeField] private Image progressBar;
     [SerializeField] private TextMeshProUGUI progressBarText;
+    [SerializeField] private AudioClip bgmClip;
     
     private List<IReadyStatus> _readyStatuses = new ();
     private float totalProgressCount;
@@ -34,7 +35,8 @@ public class LoadingTitleUIController : MonoBehaviour
         finally
         {
             await UniTask.WaitForSeconds(1f);
-            loadingPage.SetActive(false);    
+            loadingPage.SetActive(false);
+            ServiceLocater.Get<ISoundManager>().PlayBgm(bgmClip);
         }
     }
     
