@@ -133,12 +133,18 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
 
         Debug.Log("SelectLeaderProcessing() 시작");
 
-        // ToDO. Animation 추가 작업 필요.
+        var staffManager = ServiceLocater.Get<IStaffRegister>();
+        List<StaffEntity> staffs = new();
+        staffs.Add(staffManager.GetStaffEntity(selectedStaffs.leaderList[0].Staff_ID));
+        staffs.Add(staffManager.GetStaffEntity(selectedStaffs.leaderList[1].Staff_ID));
+        
         var data = new ProgressAnimationRenderData()
         {
+            gameDevProcName = curGameDevProcName,
             staticImage = null,
             progressTexts = ProductionAnimationTexts(),
             callback = GoProcess,
+            staffIds = staffs
         };
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcAnimationUI, data);
 

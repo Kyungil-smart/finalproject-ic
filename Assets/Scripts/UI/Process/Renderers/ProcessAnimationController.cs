@@ -35,10 +35,6 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
     [SerializeField] private TalkBalloonData leftTalkBalloon;
     [SerializeField] private TalkBalloonData rightTalkBalloon;
     
-    [Header("Animation - Test 용")]
-    [SerializeField] private GameObject leftSpum;
-    [SerializeField] private GameObject rightSpum;
-    
     private bool _runTalking;
     
     private void OnEnable() => ServiceLocater.Get<IUIRouter>()?.RegisterUIRender(UIType.ProcAnimationUI, this);
@@ -75,15 +71,18 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
         }
     }
 
-    private UniTask StaffController(List<GameObject> spums)
+    private UniTask StaffController(List<StaffEntity> staffs)
     {
-        StaffAnimController(spums[0], leftStaffPos, true).Forget();
-        StaffAnimController(spums[1], rightStaffPos, false).Forget();
+        
+        StaffAnimController(staffs[0], leftStaffPos, true).Forget();
+        StaffAnimController(staffs[1], rightStaffPos, false).Forget();
         return UniTask.CompletedTask;
     }
 
-    private async UniTask StaffAnimController(GameObject spumObj, Transform pos, bool isLeft)
+    private async UniTask StaffAnimController(StaffEntity staffEntity, Transform pos, bool isLeft)
     {
+        var spumObj = staffEntity.GetAvatar();
+        staffEntity.GetGameObject().SetActive(true);
         SPUM_Prefabs spum = spumObj.GetComponent<SPUM_Prefabs>();
         spumObj.transform.position = pos.position;
 
@@ -98,6 +97,7 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
             await UniTask.WaitForSeconds(UnityEngine.Random.Range(0.8f, 1.5f));
             spum.PlayAnimation(PlayerState.IDLE, 0);
         }
+        staffEntity.GetGameObject().SetActive(false);
     }
 
     private void SetFacing(SortingGroup sortingGroup, bool faceLeft)
@@ -140,29 +140,5 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
             await UniTask.WaitForSeconds(progressInterval);
         }
         progressImage.fillAmount = 1f;
-    }
-
-    [ContextMenu("Test/Basic")]
-    private void BasicTest()
-    {
-        var data = new ProgressAnimationRenderData()
-        {
-            staticImage = null,
-            progressTexts = new() { "기존 직원 해고", "새 직원 고용", "사무실 자리 셋팅", "월 컴투 헬" }
-        };
-        Render(data);
-    }
-    
-    [ContextMenu("Test/Animation")]
-    private void AnimationTest()
-    {
-        var data = new ProgressAnimationRenderData()
-        {
-            gameDevProcName = GameDevProcName.ArtFullProduction,
-            staticImage = null,
-            progressTexts = new() { "뭥미", "살려줘", "갈아만든 작품", "죽여줘..." },
-            staffIds = new () { leftSpum, rightSpum }
-        };
-        Render(data);
     }
 }
