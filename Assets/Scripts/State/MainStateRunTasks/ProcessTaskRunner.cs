@@ -1,6 +1,8 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using DataDispatcher;
 using UnityEngine;
+using Channel = DataDispatcher.Channel;
 
 public class ProcessTaskRunner : MonoBehaviour, IProcessTaskRunnerEnterExit
 {
@@ -12,7 +14,13 @@ public class ProcessTaskRunner : MonoBehaviour, IProcessTaskRunnerEnterExit
     {
         await UniTask.WaitForSeconds(1f);
         psSO = so;
-        var data = new SimpleUIRenderData(so.stateNameId, 9900007, GoProcess);
+        var data = new SimpleUIRenderData()
+        {
+            btCallback =  GoProcess,
+            titleTextId = so.stateNameId,
+            imageId = so.imageID,
+            btTextId = 9900043
+        };
         Debug.Log($"[ProcessTaskRunner:Enter] {so.eventType}");
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
         await UniTask.WaitUntil(() => _canGoing);
@@ -52,7 +60,17 @@ public class ProcessTaskRunner : MonoBehaviour, IProcessTaskRunnerEnterExit
     
     public async UniTask Exit()
     {
-        var data = new SimpleUIRenderData(psSO.stateNameId, 9900008, GoProcess);
+        // var ptm = ServiceLocater.Get<IPostManager>();
+        // string fmt = ptm.Request<int, string>(Channel.GetUIText, 9900045);
+        // string procName = ptm.Request<int, string>(Channel.GetUIText, psSO.stateNameId);
+        
+        var data = new SimpleUIRenderData()
+        {
+            titleTextId = psSO.stateNameId,
+            imageId = "rimg_staff_2",
+            btTextId = 9900044,
+            btCallback =  GoProcess,
+        };
         Debug.Log($"[ProcessTaskRunner:Exit] {psSO.eventType}");
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
         await UniTask.WaitUntil(() => _canGoing);

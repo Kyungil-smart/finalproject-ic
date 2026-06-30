@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using DataDispatcher;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,13 +9,13 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 [RequireComponent(typeof(Image))]
 public class ImageLoader : MonoBehaviour
 {
-     [SerializeField] private int imageId = -1;         
+    [SerializeField] private string imageId = "";         
 
     private Image _image;
     private AsyncOperationHandle<Sprite> _handle;
     private bool _hasHandle;
 
-    public int ImageId
+    public string ImageId
     {
         set { imageId = value; LoadImage(); }     
     }
@@ -30,9 +31,9 @@ public class ImageLoader : MonoBehaviour
 
     private async UniTask ChangeImageAsync()
     {
-        if (imageId < 0) return;                                   // -1: 아무것도 안 함
+        if (imageId == String.Empty) return;                                   // -1: 아무것도 안 함
         if (_image == null) _image = GetComponent<Image>();
-        if (imageId == 0)                                          // 0: 비우기
+        if (imageId == null)                                          // 0: 비우기
         {
             ReleaseHandle();
             _image.sprite = null;
@@ -40,7 +41,7 @@ public class ImageLoader : MonoBehaviour
         }
         
         ReleaseHandle();                                           // 이전 이미지 핸들 정리
-        var handle = Addressables.LoadAssetAsync<Sprite>(imageId.ToString());
+        var handle = Addressables.LoadAssetAsync<Sprite>(imageId);
         _handle = handle;
         _hasHandle = true;
 

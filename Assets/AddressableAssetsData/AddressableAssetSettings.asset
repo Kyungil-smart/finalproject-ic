@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 746e93037475fb949ac4d37bf62e3972
   m_currentHash:
     serializedVersion: 2
-    Hash: ab05ff021fa86898965f03eda26898f6
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -61,6 +61,7 @@ MonoBehaviour:
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
   - {fileID: 11400000, guid: ab55200791d0610428f39125ce8fa0a6, type: 2}
+  - {fileID: 11400000, guid: b8a83fe028e45a74f9302ad9fa530b12, type: 2}
   - {fileID: 11400000, guid: 4ab6951440a1fb94788276fb67c40e4d, type: 2}
   - {fileID: 11400000, guid: 2ba3122f05cbb1540a7f59d49b77037f, type: 2}
   m_BuildSettings:
@@ -104,6 +105,7 @@ MonoBehaviour:
     - default
     - Staff_Thumnail
     - Staff_Prefab
+    - RelatedImages
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 00ab82fa737679a4aadec1b6d071dfd3, type: 2}
