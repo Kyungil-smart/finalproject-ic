@@ -17,3 +17,6 @@ MonoBehaviour:
   stateNameId: 9900033
   prevState: {fileID: 11400000, guid: fdcafc9419f27ec4ebbd9fdee999564c, type: 2}
   nextState: {fileID: 11400000, guid: 21cd1334cd8340444935fbf1c3014d94, type: 2}
+  imageID: rimg_t10_1
+  eventType: 
+  resetEvent: 0
