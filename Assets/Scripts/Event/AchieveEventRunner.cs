@@ -24,7 +24,14 @@ public class AchieveEventRunner
         for (int i = 0; i < _taskData.buttons.Count; i++)
         {
             var btn = _taskData.buttons[i];
-            if (btn.textId != 0) renderData.choices.Add((i, btn.textId));
+            EventEffectData effectData = new()
+            {
+                btId = i,
+                ratio = _taskData.buttons[i].effectRatio,
+                target = _taskData.buttons[i].target,
+                value = btn.effectValue
+            };
+            if (btn.textId != 0) renderData.choices.Add((i, btn.textId, effectData));
         }
         
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.EventUI, renderData);
