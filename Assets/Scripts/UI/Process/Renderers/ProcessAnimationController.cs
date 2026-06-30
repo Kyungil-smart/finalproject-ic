@@ -10,6 +10,14 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
     [SerializeField] private Image staticImage;
     [SerializeField] private Image progressImage;
     [SerializeField] private TextMeshProUGUI progressText;
+
+    [Header("Staff Control")]
+    [SerializeField] private Transform leftStaffPos;
+    [SerializeField] private Transform rightStaffPos;
+    
+    [Header("Talk Balloon")]
+    [SerializeField] private Image leftTalkBalloon;
+    [SerializeField] private Image rightTalkBalloon;
     
     private void OnEnable() => ServiceLocater.Get<IUIRouter>()?.RegisterUIRender(UIType.ProcAnimationUI, this);
 
@@ -37,8 +45,19 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
         }
     }
 
-    [ContextMenu("Render")]
-    private void Test()
+    [ContextMenu("Test/Basic")]
+    private void BasicTest()
+    {
+        var data = new ProgressAnimationRenderData()
+        {
+            staticImage = null,
+            progressTexts = new() { "기존 직원 해고", "새 직원 고용", "사무실 자리 셋팅", "월 컴투 헬" }
+        };
+        Render(data);
+    }
+    
+    [ContextMenu("Test/Animation")]
+    private void AnimationTest()
     {
         var data = new ProgressAnimationRenderData()
         {
