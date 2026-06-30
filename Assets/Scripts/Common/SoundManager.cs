@@ -47,6 +47,7 @@ public class SoundManager : Manager, ISoundManager
     
     public UniTaskVoid PlayBgm(AudioClip bgm, float duration = 1)
     {
+        Debug.Log("[SoundManager] PlayBgm");
         bgmSource.Stop();
         bgmSource.clip = bgm;
         bgmSource.volume = _bgmVolume;
@@ -56,6 +57,7 @@ public class SoundManager : Manager, ISoundManager
 
     public void PlaySfx(AudioClip sfx)
     {
+        Debug.Log("[SoundManager] PlaySfx");
         sfxSource.PlayOneShot(sfx, _sfxVolume);
     }
 }
