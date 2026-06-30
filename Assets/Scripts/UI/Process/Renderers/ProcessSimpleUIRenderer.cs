@@ -39,15 +39,15 @@ public class ProcessSimpleUIRenderer : MonoBehaviour, IUIRender
             titleTl.TextId = data.titleTextId;
             if (!String.IsNullOrEmpty(data.mainText))
             {
+                mainTxtLd.Text = data.mainText;
                 imageLoader.gameObject.SetActive(false);
                 mainTxtLd.gameObject.SetActive(true);
-                mainTxtLd.Text = data.mainText;
             }
             else if (imageLoader != null)
             {
+                imageLoader.ImageId = data.imageId;
                 imageLoader.gameObject.SetActive(true);
                 mainTxtLd.gameObject.SetActive(false);
-                imageLoader.ImageId = data.imageId;
             }
             confirmBtTxtLd.TextId = data.btTextId;
             if (data.btTextId < 0)

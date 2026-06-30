@@ -56,11 +56,11 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
                 if ((int)renderData.gameDevProcName <= 9 && (int)renderData.gameDevProcName >= 4)
                 {
                     staticImage.gameObject.SetActive(false);
-                    animationPanel.SetActive(true);
                     _runTalking = true;
                     StaffController(renderData.staffIds).Forget();
                     TalkBalloonController(leftTalkBalloon).Forget();
                     TalkBalloonController(rightTalkBalloon).Forget();
+                    animationPanel.SetActive(true);
                 }
                 await ProgressBarController(renderData);
                 _runTalking = false;
