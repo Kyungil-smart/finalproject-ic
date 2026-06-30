@@ -65,6 +65,7 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
                         {
                             _callback?.Invoke(_btnId);
                             mainPanel.SetActive(false);
+                            gameObject.SetActive(false);
                         },
                         () => { 
                             scrollbar.value = 0f;
