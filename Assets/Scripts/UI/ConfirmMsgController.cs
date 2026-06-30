@@ -12,14 +12,15 @@ public class ConfirmMsgController : MonoBehaviour
     private void OnEnable()
     {
         cancelBtn.onClick.RemoveAllListeners();
-        cancelBtn.onClick.AddListener(() => gameObject.SetActive(false));
         confirmBtn.onClick.RemoveAllListeners();
     }
     
-    public void Render(int textId, Action okCallback)
+    public void Render(int textId, Action okCallback, Action cancelCallback = null)
     {
         gameObject.SetActive(true);
         msg.TextId = textId;
+        cancelBtn.onClick.AddListener(() => cancelCallback?.Invoke());
+        cancelBtn.onClick.AddListener(() => gameObject.SetActive(false));
         confirmBtn.onClick.AddListener(() => okCallback?.Invoke());
         confirmBtn.onClick.AddListener(() => gameObject.SetActive(false));
     }
