@@ -18,11 +18,11 @@ public class SoundManager : Manager, ISoundManager
 
     protected override void Register()
     {
-        ServiceLocater.Register(this);
+        ServiceLocater.Register<ISoundManager>(this);
         LoadVolume();
     }
 
-    protected override void Unregister() => ServiceLocater.Unregister(this);
+    protected override void Unregister() => ServiceLocater.Unregister<ISoundManager>(this);
 
     public float GetSfxVolume() => _sfxVolume;
     public float GetBgmVolume() => _bgmVolume;
