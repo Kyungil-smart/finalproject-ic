@@ -57,8 +57,6 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
 
     private async UniTaskVoid DownloadData()
     {
-        // TODO : 현재 gsheet 구버젼이라, 기획에서 gsheet 수정된 이후 주석 해제 후 테스트 필요
-        /*
         if (!Utils.Environment.isDevelopment) return;
         _readyStatus["ReviewData"] = false;
 
@@ -70,31 +68,33 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
         {
             reviewTasks.userReviewList.Add(new UserReviewRow()
             {
-                mediaId = int.Parse(data["MediaId"]),
-                userId = int.Parse(data["UserId"]),
-                genreId = int.Parse(data["GenreId"]),
-                themeId = int.Parse(data["ThemeId"]),
-                positiveCommentId = int.Parse(data["PositiveCommentId"]),
-                negativeCommentId = int.Parse(data["NegativeCommentId"]),
+                mediaId = int.Parse(data["Review_ID"]),
+                userId = int.Parse(data["User_ID"]),
+                genreId = int.Parse(data["Genere_ID"]),
+                themeId = int.Parse(data["Theme_ID"]),
+                positiveCommentId = int.Parse(data["Positive_Comment_ID"]),
+                negativeCommentId = int.Parse(data["Nagative_Comment_ID"]),
                 reqType = System.Enum.Parse<RequireReviewType>(data["ReqType"].ToString()),
                 reqValue = int.Parse(data["ReqValue"]),
             });
         }
+
         _readyStatus["ReviewData"] = true;
-        */
     }
 
     // 대상 리뷰 골라내 넣는 기능
     public List<ReviewResult> CheckRequirements()
     {
         List<ReviewResult> tempResultList = new List<ReviewResult>();   // 대상이 되는 모든 리뷰 가져오기
-        List<ReviewResult> resultList = new List<ReviewResult>();   // 대상이 되는 모든 리뷰 중 3개만 최종적으로 골라내기(단순 랜덤ㄴ)
+        List<ReviewResult> resultList = new List<ReviewResult>();   // 대상이 되는 모든 리뷰 중 3개만 최종적으로 골라내기(단순 랜덤)
 
         // 기존에 선택된 장르와 테마 가져오기
         NameTag currentGenre = ServiceLocater.Get<IProjectManager>().Genre;
         NameTag currentTheme = ServiceLocater.Get<IProjectManager>().Theme;
         int targetGenreId = currentGenre.id;
         int targetThemeId = currentTheme.id;
+
+        Debug.Log($"[ReviewManager] : 현재 장르 - {ServiceLocater.Get<IProjectManager>().Genre.id} | 현재 테마 - {ServiceLocater.Get<IProjectManager>().Theme.id}");
 
         // and 조건으로 장르랑 테마 확인해서 리스트화
         foreach (var item in reviewTasks.userReviewList)
