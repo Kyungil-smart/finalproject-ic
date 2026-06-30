@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -11,7 +12,10 @@ public class SoundManager : Manager, ISoundManager
     
     private const string BGMKEY = "BGM";
     private const string SFXKEY = "SFX";
-    
+
+    private void OnEnable() => Register();
+    private void OnDisable() => Unregister();
+
     protected override void Register()
     {
         ServiceLocater.Register(this);
