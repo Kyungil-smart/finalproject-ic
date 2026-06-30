@@ -25,7 +25,6 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
     [SerializeField] private UserReviewDataSO reviewTasks;
 
 
-    // TODO : SO 를 ghseet 에서 받아와야함 (현재 gsheet 구버젼이라 갱신되면 확인 필요)
     [SerializeField] private string gSheetId;
     [SerializeField] private string gid;
 
@@ -180,7 +179,6 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
     }
 
 
-    // TODO : SO 다운로드 받기 기능 추가 필요
     [ContextMenu("데이터 다운로드")]
     private void DataDownload()
     {
