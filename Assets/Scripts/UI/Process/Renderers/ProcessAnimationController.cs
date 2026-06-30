@@ -48,13 +48,14 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
             UniTask.Void(async () =>
             {
                 mainPanel.SetActive(true);
+                staticImage.gameObject.SetActive(true);
                 if (renderData.staticImage != null)
                 {
-                    staticImage.gameObject.SetActive(true);
                     progressImage.sprite = renderData.staticImage;
                 }
-                if ((int)renderData.gameDevProcName <= 9 || (int)renderData.gameDevProcName >= 4)
+                if ((int)renderData.gameDevProcName <= 9 && (int)renderData.gameDevProcName >= 4)
                 {
+                    staticImage.gameObject.SetActive(false);
                     animationPanel.SetActive(true);
                     _runTalking = true;
                     StaffController(renderData.staffIds).Forget();
@@ -73,7 +74,6 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
 
     private UniTask StaffController(List<StaffEntity> staffs)
     {
-        
         StaffAnimController(staffs[0], leftStaffPos, true).Forget();
         StaffAnimController(staffs[1], rightStaffPos, false).Forget();
         return UniTask.CompletedTask;

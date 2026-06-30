@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +10,9 @@ public class ProcessSimpleUIRenderer : MonoBehaviour, IUIRender
 {
     [Header("UI Elements - Panel")]
     [SerializeField] private GameObject panelObject;
-    
-    [Header("UI Elements - Main Session")]
+
+    [Header("UI Elements - Main Session")] 
+    [SerializeField] private TextLoader titleTl;
     [SerializeField] private TextLoader mainTxtLd;
     [SerializeField] private ImageLoader imageLoader;
     
@@ -33,9 +35,21 @@ public class ProcessSimpleUIRenderer : MonoBehaviour, IUIRender
     {
         if (renderData is SimpleUIRenderData data)
         {
-            mainTxtLd.TextId = data.mainTextId;
+            mainTxtLd.gameObject.SetActive(false);
+            titleTl.TextId = data.titleTextId;
+            if (!String.IsNullOrEmpty(data.mainText))
+            {
+                imageLoader.gameObject.SetActive(false);
+                mainTxtLd.gameObject.SetActive(true);
+                mainTxtLd.Text = data.mainText;
+            }
+            else if (imageLoader != null)
+            {
+                imageLoader.gameObject.SetActive(true);
+                mainTxtLd.gameObject.SetActive(false);
+                imageLoader.ImageId = data.imageId;
+            }
             confirmBtTxtLd.TextId = data.btTextId;
-            if (imageLoader != null) imageLoader.ImageId = data.imageId;
             if (data.btTextId < 0)
                 confirmBtTxtLd.GetComponent<TextMeshProUGUI>().text = data.text;
             confirmBt.onClick.RemoveAllListeners();
