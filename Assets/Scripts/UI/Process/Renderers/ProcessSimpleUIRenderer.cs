@@ -8,14 +8,15 @@ using UnityEngine.UI;
 public class ProcessSimpleUIRenderer : MonoBehaviour, IUIRender
 {
     [Header("UI Elements - Panel")]
-    [SerializeField] private GameObject _panelObject;
+    [SerializeField] private GameObject panelObject;
     
     [Header("UI Elements - Main Session")]
-    [SerializeField] private TextLoader _mainTxtLd;
+    [SerializeField] private TextLoader mainTxtLd;
+    [SerializeField] private ImageLoader imageLoader;
     
     [Header("UI Elements - Button Session")]
-    [SerializeField] private Button _confirmBt;
-    [SerializeField] private TextLoader _confirmBtTxtLd;
+    [SerializeField] private Button confirmBt;
+    [SerializeField] private TextLoader confirmBtTxtLd;
     
     private void OnEnable()
     {
@@ -32,14 +33,15 @@ public class ProcessSimpleUIRenderer : MonoBehaviour, IUIRender
     {
         if (renderData is SimpleUIRenderData data)
         {
-            _mainTxtLd.TextId = data.mainTextId;
-            _confirmBtTxtLd.TextId = data.btTextId;
+            mainTxtLd.TextId = data.mainTextId;
+            confirmBtTxtLd.TextId = data.btTextId;
+            if (imageLoader != null) imageLoader.ImageId = data.imageId;
             if (data.btTextId < 0)
-                _confirmBtTxtLd.GetComponent<TextMeshProUGUI>().text = data.text;
-            _confirmBt.onClick.RemoveAllListeners();
-            _confirmBt.onClick.AddListener(() => data.btCallback());
-            _confirmBt.onClick.AddListener(() => _panelObject.SetActive(false));
-            _panelObject.SetActive(true);
+                confirmBtTxtLd.GetComponent<TextMeshProUGUI>().text = data.text;
+            confirmBt.onClick.RemoveAllListeners();
+            confirmBt.onClick.AddListener(() => data.btCallback());
+            confirmBt.onClick.AddListener(() => panelObject.SetActive(false));
+            panelObject.SetActive(true);
         }
         else
         {
