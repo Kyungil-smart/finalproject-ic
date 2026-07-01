@@ -46,8 +46,9 @@ public class SlotUIButtonRender : MonoBehaviour
         }
     }
 
-    private void ConfirmDelete()=> confirmMsgController.Render(9900038, DeleteSlotData);
+    private void ConfirmDelete() => confirmMsgController.Render(9900038, DeleteSlotData);
     
+
     private void DeleteSlotData()
     {
         ServiceLocater.Get<ISaveManager>().DeleteSlot(_slotIndex);
