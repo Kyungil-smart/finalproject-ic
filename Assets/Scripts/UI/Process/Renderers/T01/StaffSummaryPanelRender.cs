@@ -21,6 +21,7 @@ public class StaffSummaryPanelRender : MonoBehaviour
     [SerializeField] private Button detailButton;
     [SerializeField] private Color trueColor = new Color(0.7f, 0.9f, 0.7f, 0.5f);  // 켜졌을 때 (예: 연녹색)
     [SerializeField] private Color falseColor = new Color(1.0f, 1.0f, 1.0f, 0.0f); // 꺼졌을 때 (예: 흰색)
+    [SerializeField] private AudioClip btnClip;
 
     [Header("Detail")] 
     [SerializeField] private StaffDatailUIRenderer detailPanel;
@@ -49,6 +50,7 @@ public class StaffSummaryPanelRender : MonoBehaviour
                 .Subscribe(isOn =>
                 {
                     if (_isRendering) return;
+                    ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip);
                     if (_selectable) imageToggle.color = isOn ? trueColor : falseColor;
                     onItemSelected.OnNext((isOn, _itemIndex));
                 })

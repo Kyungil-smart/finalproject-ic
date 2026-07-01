@@ -555,6 +555,7 @@ GameObject:
   - component: {fileID: 4664730818596336063}
   - component: {fileID: 7077871625279635772}
   - component: {fileID: 1557374498437964127}
+  - component: {fileID: 4932998752718825643}
   m_Layer: 5
   m_Name: DataSlideCanvas
   m_TagString: Untagged
@@ -647,6 +648,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4932998752718825643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3131767947715389839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &3252834959212242391
 GameObject:
   m_ObjectHideFlags: 0
