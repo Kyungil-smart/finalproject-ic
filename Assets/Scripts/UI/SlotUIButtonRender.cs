@@ -7,6 +7,7 @@ public class SlotUIButtonRender : MonoBehaviour
     [SerializeField] private GameObject slotOn;
     [SerializeField] private GameObject slotOff;
     [SerializeField] private Button deleteBtn;
+    [SerializeField] private AudioClip btnClip;
     
     [Header("Slot On Info")]
     [SerializeField] private TextMeshProUGUI playerName;
@@ -46,11 +47,16 @@ public class SlotUIButtonRender : MonoBehaviour
         }
     }
 
-    private void ConfirmDelete()=> confirmMsgController.Render(9900038, DeleteSlotData);
-    
+    private void ConfirmDelete()
+    {
+        ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip);
+        confirmMsgController.Render(9900038, DeleteSlotData);
+    }
+
     private void DeleteSlotData()
     {
         ServiceLocater.Get<ISaveManager>().DeleteSlot(_slotIndex);
+        ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip);
         Render(_slotIndex, null);
     }
 }

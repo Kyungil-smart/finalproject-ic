@@ -600,6 +600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &130840882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1522,6 +1523,7 @@ MonoBehaviour:
   slotOn: {fileID: 1694234025}
   slotOff: {fileID: 1395877833}
   deleteBtn: {fileID: 71193001}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   playerName: {fileID: 1430592535}
   floor: {fileID: 1959524602}
   projectCount: {fileID: 1134441345}
@@ -3144,6 +3146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &602011503
 GameObject:
   m_ObjectHideFlags: 0
@@ -3297,6 +3300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &650928511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3757,6 +3761,7 @@ MonoBehaviour:
   slotOn: {fileID: 2147248760}
   slotOff: {fileID: 771499583}
   deleteBtn: {fileID: 1654656409}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   playerName: {fileID: 974963540}
   floor: {fileID: 707998874}
   projectCount: {fileID: 2122152218}
@@ -7798,6 +7803,7 @@ MonoBehaviour:
   slotOn: {fileID: 42341188}
   slotOff: {fileID: 602011503}
   deleteBtn: {fileID: 667217331}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   playerName: {fileID: 842920855}
   floor: {fileID: 404826133}
   projectCount: {fileID: 1655676977}
@@ -9173,6 +9179,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9095091214397837265, guid: 5102c7124887df046a1a1e8ca4cae501, type: 3}
+      propertyPath: btnClip
+      value: 
+      objectReference: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10341,6 +10351,7 @@ MonoBehaviour:
   - {fileID: 309839479}
   - {fileID: 710419587}
   checkValidatePanel: {fileID: 236271385}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   inputPlayerNamePanel: {fileID: 1578033902}
   playerNameInputField: {fileID: 443190206}
   cancelButton: {fileID: 83721125}

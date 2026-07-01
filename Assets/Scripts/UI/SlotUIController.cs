@@ -8,7 +8,8 @@ public class SlotUIController : MonoBehaviour
 {
     [SerializeField] private SlotUIButtonRender[] slotButtons;
     [SerializeField] private GameObject checkValidatePanel;
-
+    [SerializeField] private AudioClip btnClip;
+    
     [Header("Player Name Input Panel Control")] 
     [SerializeField] private GameObject inputPlayerNamePanel;
     [SerializeField] private TMP_InputField playerNameInputField;
@@ -50,7 +51,11 @@ public class SlotUIController : MonoBehaviour
             slotButtons[i].GetComponent<Button>().onClick.AddListener(() => OnSlotClicked(idx));
         }
 
-        cancelButton.onClick.AddListener(() => inputPlayerNamePanel.SetActive(false));
+        cancelButton.onClick.AddListener(() =>
+        {
+            ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip);
+            inputPlayerNamePanel.SetActive(false);
+        });
         confirmButton.onClick.AddListener(OpenConfirmButton);
         goBackButton.onClick.AddListener(GoBackButton);
         goMainSceneButton.onClick.AddListener(UpdateInputPlayerName);
@@ -70,6 +75,7 @@ public class SlotUIController : MonoBehaviour
     
     private void OnSlotClicked(int slot)
     {
+        ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip);
         _saveManager.SelectSlot(slot);          // _currentSlot = slot (빈/찬 공통)
         if (_saveManager.IsEmpty(slot))
             OpenInputPlayerName();               // 빈 슬롯 → 새 게임 이름 입력 (D에서 패널 내부 완성)
@@ -92,6 +98,7 @@ public class SlotUIController : MonoBehaviour
     private void OpenInputPlayerName()
     {
         _playerName.Value = "";
+        ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip);
         inputPlayerNamePanel.SetActive(true);
     }
     
@@ -100,6 +107,7 @@ public class SlotUIController : MonoBehaviour
 
     private void OpenConfirmButton()
     {
+        ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip);
         if (!IsValidPlayerName(playerNameInputField.text))
         {
             ShowValidateWarning().Forget();   // 1.5초 경고
@@ -111,11 +119,13 @@ public class SlotUIController : MonoBehaviour
 
     private void GoBackButton()
     {
+        ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip);
         confirmPanel.SetActive(false);
     }
 
     private void UpdateInputPlayerName()
     {
+        ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip);
         ServiceLocater.Get<IGameManager>().SetPlayerName(_playerName.Value);
         GoToNextScene();
     }
