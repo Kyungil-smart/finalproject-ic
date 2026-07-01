@@ -126,14 +126,11 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
         for (int i = 0; i < data.choices.Count; i++)
         {
             var choice = choices[i];
+            var clip = data.choices[i].effectData?.target == "Money"? _goldClip : _btnClip;
             choice.textLoader.TextId = data.choices[i].textId;
             choice.button.onClick.RemoveAllListeners();
             choice.btId = data.choices[i].id;
-            choice.button.onClick.AddListener(() =>
-            {
-                var clip = data.choices[i].effectData?.target == "Money" ? _goldClip : _btnClip;
-                ServiceLocater.Get<ISoundManager>().PlaySfx(clip);
-            });
+            choice.button.onClick.AddListener(() => ServiceLocater.Get<ISoundManager>().PlaySfx(clip));
             choice.button.onClick.AddListener(() => data.callback(choice.btId));
             choice.button.onClick.AddListener(Close);
         }
