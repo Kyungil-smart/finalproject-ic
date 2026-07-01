@@ -1477,7 +1477,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8109875063831389293}
   m_Layer: 5
-  m_Name: SoundPanel
+  m_Name: SettingPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
