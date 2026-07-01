@@ -526,6 +526,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 237018181}
   m_CullTransparentMesh: 1
+--- !u!82 &290990321 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8154195326206815182, guid: 501e41585a53ae243b18d1842b9c7620, type: 3}
+  m_PrefabInstance: {fileID: 1771675262}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &379374175
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1030,7 +1035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
-  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &620550705
 GameObject:
   m_ObjectHideFlags: 0
@@ -1090,6 +1095,11 @@ Transform:
   - {fileID: 518269134}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &709269966 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1899673253414231036, guid: 501e41585a53ae243b18d1842b9c7620, type: 3}
+  m_PrefabInstance: {fileID: 1771675262}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &742315640
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,7 +1145,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TitleUIController
   loginButton: {fileID: 1350056132}
-  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &761028644
 GameObject:
   m_ObjectHideFlags: 0
@@ -2107,6 +2116,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9179274275318471531, guid: 501e41585a53ae243b18d1842b9c7620, type: 3}
+      propertyPath: _bgmSource
+      value: 
+      objectReference: {fileID: 709269966}
+    - target: {fileID: 9179274275318471531, guid: 501e41585a53ae243b18d1842b9c7620, type: 3}
+      propertyPath: _sfxSource
+      value: 
+      objectReference: {fileID: 290990321}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

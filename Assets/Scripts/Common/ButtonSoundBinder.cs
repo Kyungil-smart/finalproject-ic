@@ -9,6 +9,9 @@ public class ButtonSoundBinder : MonoBehaviour
     private void Start()
     {
         foreach (var btn in GetComponentsInChildren<Button>(true))
+        {
+            if (btn.CompareTag("NoAutoSound")) continue;
             btn.onClick.AddListener(() => ServiceLocater.Get<ISoundManager>().PlaySfx(_btnClip));
+        }
     }
 }

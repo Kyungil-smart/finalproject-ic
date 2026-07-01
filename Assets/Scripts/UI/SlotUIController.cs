@@ -8,6 +8,7 @@ public class SlotUIController : MonoBehaviour
 {
     [SerializeField] private SlotUIButtonRender[] slotButtons;
     [SerializeField] private GameObject checkValidatePanel;
+    [SerializeField] private AudioClip confirmSound;
     
     [Header("Player Name Input Panel Control")] 
     [SerializeField] private GameObject inputPlayerNamePanel;
@@ -113,6 +114,7 @@ public class SlotUIController : MonoBehaviour
 
     private void UpdateInputPlayerName()
     {
+        ServiceLocater.Get<ISoundManager>().PlaySfx(confirmSound);
         ServiceLocater.Get<IGameManager>().SetPlayerName(_playerName.Value);
         GoToNextScene();
     }
