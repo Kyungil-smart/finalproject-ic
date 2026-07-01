@@ -1618,6 +1618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &1851274776017634625
 GameObject:
   m_ObjectHideFlags: 0
@@ -1916,6 +1917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &3068344618121916703
 GameObject:
   m_ObjectHideFlags: 0
@@ -2498,6 +2500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &4673061932472022131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3467,6 +3470,7 @@ GameObject:
   - component: {fileID: 5611893370954609990}
   - component: {fileID: 5189996174609853356}
   - component: {fileID: 2557190778872271386}
+  - component: {fileID: 2157655621204554413}
   m_Layer: 5
   m_Name: MarketResearchCanvas
   m_TagString: Untagged
@@ -3558,6 +3562,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2157655621204554413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4713439197549693091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &4785083198101520120
 GameObject:
   m_ObjectHideFlags: 0
@@ -6241,6 +6258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &4965140688129417266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6392,6 +6410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &5580130668258486000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6543,6 +6562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &2274290850072365192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7156,6 +7176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &8344017439551746128
 GameObject:
   m_ObjectHideFlags: 0
@@ -7427,6 +7448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &1389359316556819229
 MonoBehaviour:
   m_ObjectHideFlags: 0
