@@ -495,6 +495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &100544613
 GameObject:
   m_ObjectHideFlags: 0
@@ -1175,7 +1176,7 @@ SpriteRenderer:
   m_Size: {x: 0.74, y: 0.69}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &140717358
 GameObject:
@@ -1403,6 +1404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &151192065
 GameObject:
   m_ObjectHideFlags: 0
@@ -1671,6 +1673,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 161815909}
+  - component: {fileID: 161815910}
   m_Layer: 0
   m_Name: 2F
   m_TagString: Untagged
@@ -1699,6 +1702,19 @@ Transform:
   - {fileID: 806372242}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &161815910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161815908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &167951521
 GameObject:
   m_ObjectHideFlags: 0
@@ -2020,6 +2036,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &193131701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4179,7 +4196,7 @@ MonoBehaviour:
   m_text: "\uBBF8\uC815"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e33da2ed35a2607458b7274f3b10efce, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: ea5d5da0bd610a44b83897b3efe3827e, type: 2}
+  m_sharedMaterial: {fileID: 6149625765283235433, guid: e33da2ed35a2607458b7274f3b10efce, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4269,6 +4286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &347140590
 GameObject:
   m_ObjectHideFlags: 0
@@ -4705,6 +4723,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &389129284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6406,6 +6425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &639597073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7017,7 +7037,7 @@ SpriteRenderer:
   m_Size: {x: 13.69, y: 11.3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &691658332
 Transform:
@@ -7203,6 +7223,7 @@ GameObject:
   - component: {fileID: 754421945}
   - component: {fileID: 754421944}
   - component: {fileID: 754421943}
+  - component: {fileID: 754421947}
   m_Layer: 5
   m_Name: TagSelectCanvas
   m_TagString: Untagged
@@ -7294,6 +7315,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &754421947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754421942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &778149513
 GameObject:
   m_ObjectHideFlags: 0
@@ -8373,6 +8407,7 @@ GameObject:
   - component: {fileID: 914898091}
   - component: {fileID: 914898090}
   - component: {fileID: 914898089}
+  - component: {fileID: 914898093}
   m_Layer: 5
   m_Name: MainCanvas
   m_TagString: Untagged
@@ -8468,6 +8503,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &914898093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914898088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &916767387
 GameObject:
   m_ObjectHideFlags: 0
@@ -10287,6 +10335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!222 &1119553487
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10582,6 +10631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!222 &1162732485
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10999,7 +11049,7 @@ SpriteRenderer:
   m_Size: {x: 0.62, y: 0.83}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1236538013
 GameObject:
@@ -11090,7 +11140,7 @@ SpriteRenderer:
   m_Size: {x: 2.19, y: 0.77}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1257586339
 GameObject:
@@ -11181,7 +11231,7 @@ SpriteRenderer:
   m_Size: {x: 3.81, y: 0.89}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1258709941
 GameObject:
@@ -11916,7 +11966,7 @@ SpriteRenderer:
   m_Size: {x: 0.4, y: 0.72}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1352035236
 GameObject:
@@ -12801,7 +12851,7 @@ SpriteRenderer:
   m_Size: {x: 13.69, y: 11.3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1464961871 stripped
 Transform:
@@ -12972,7 +13022,7 @@ SpriteRenderer:
   m_Size: {x: 13.69, y: 11.3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1512444536
 GameObject:
@@ -13148,6 +13198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!222 &1516746236
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13576,6 +13627,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!222 &1554956984
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14058,6 +14110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!222 &1574264960
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14300,6 +14353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!222 &1589884612
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14473,7 +14527,7 @@ SpriteRenderer:
   m_Size: {x: 13.69, y: 11.3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1598831652
 Transform:
@@ -17258,6 +17312,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1816030235}
+  - component: {fileID: 1816030236}
   m_Layer: 0
   m_Name: 3F
   m_TagString: Untagged
@@ -17284,6 +17339,19 @@ Transform:
   - {fileID: 217318718}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1816030236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816030234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &1816628946
 GameObject:
   m_ObjectHideFlags: 0
@@ -17555,7 +17623,7 @@ SpriteRenderer:
   m_Size: {x: 0.52, y: 0.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1829221113
 GameObject:
@@ -18266,6 +18334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &1872095800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18584,7 +18653,7 @@ MonoBehaviour:
   m_text: 'Project:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e33da2ed35a2607458b7274f3b10efce, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: ea5d5da0bd610a44b83897b3efe3827e, type: 2}
+  m_sharedMaterial: {fileID: 6149625765283235433, guid: e33da2ed35a2607458b7274f3b10efce, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -18674,6 +18743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &1891570383
 GameObject:
   m_ObjectHideFlags: 0
@@ -20111,6 +20181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &2060933149
 GameObject:
   m_ObjectHideFlags: 0
@@ -20120,6 +20191,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2060933150}
+  - component: {fileID: 2060933151}
   m_Layer: 0
   m_Name: 1F
   m_TagString: Untagged
@@ -20148,6 +20220,19 @@ Transform:
   - {fileID: 1143759252}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2060933151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060933149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &2085823916
 GameObject:
   m_ObjectHideFlags: 0
@@ -20612,8 +20697,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3131767947715389839, guid: 0e9d4d18b33e40d4b8d58f95c75d2d78, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4903216548062806553}
   m_SourcePrefab: {fileID: 100100000, guid: 0e9d4d18b33e40d4b8d58f95c75d2d78, type: 3}
+--- !u!1 &2900376531088770566 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3131767947715389839, guid: 0e9d4d18b33e40d4b8d58f95c75d2d78, type: 3}
+  m_PrefabInstance: {fileID: 2900376531088770565}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4202507552552514063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20731,6 +20824,19 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 4664730818596336063, guid: 0e9d4d18b33e40d4b8d58f95c75d2d78, type: 3}
   m_PrefabInstance: {fileID: 2900376531088770565}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4903216548062806553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2900376531088770566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1001 &7144120982181054467
 PrefabInstance:
   m_ObjectHideFlags: 0

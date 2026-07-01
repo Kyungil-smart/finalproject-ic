@@ -39,6 +39,8 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
     [SerializeField] private NormalEventChoices[] _confirm;
     [SerializeField] private NormalEventChoices[] _2choices;
     [SerializeField] private NormalEventChoices[] _3choices;
+    [SerializeField] private AudioClip _goldClip;
+    [SerializeField] private AudioClip _btnClip;
 
     [Header("Reward Event")]
     [SerializeField] private GameObject _rewardPanel;
@@ -127,6 +129,11 @@ public class EventUIRenderer : MonoBehaviour, IUIRender
             choice.textLoader.TextId = data.choices[i].textId;
             choice.button.onClick.RemoveAllListeners();
             choice.btId = data.choices[i].id;
+            choice.button.onClick.AddListener(() =>
+            {
+                var clip = data.choices[i].effectData?.target == "Money" ? _goldClip : _btnClip;
+                ServiceLocater.Get<ISoundManager>().PlaySfx(clip);
+            });
             choice.button.onClick.AddListener(() => data.callback(choice.btId));
             choice.button.onClick.AddListener(Close);
         }

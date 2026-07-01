@@ -1693,6 +1693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &1079332965
 GameObject:
   m_ObjectHideFlags: 0
@@ -1919,6 +1920,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &1232753813
 GameObject:
   m_ObjectHideFlags: 0
@@ -2207,6 +2209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &1730910675
 GameObject:
   m_ObjectHideFlags: 0
@@ -2395,6 +2398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &1751806442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3481,6 +3485,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 246814178848326941, guid: 964065813ffd4624a81d4092b9dc516c, type: 3}
+      propertyPath: _btnClip
+      value: 
+      objectReference: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
+    - target: {fileID: 246814178848326941, guid: 964065813ffd4624a81d4092b9dc516c, type: 3}
+      propertyPath: _goldClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 83dfbe98c630b1f46a0571f03fd58251, type: 3}
     - target: {fileID: 1605907728962321083, guid: 964065813ffd4624a81d4092b9dc516c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
