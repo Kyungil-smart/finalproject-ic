@@ -17,5 +17,6 @@ MonoBehaviour:
   stateNameId: 9900024
   prevState: {fileID: 0}
   nextState: {fileID: 11400000, guid: b49967aab8a6a0b4b8f65ee4683dabd5, type: 2}
+  imageID: rimg_t01_1
   eventType: 
   resetEvent: 1

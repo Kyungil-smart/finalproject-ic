@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,14 +9,16 @@ using UnityEngine.UI;
 public class ProcessSimpleUIRenderer : MonoBehaviour, IUIRender
 {
     [Header("UI Elements - Panel")]
-    [SerializeField] private GameObject _panelObject;
-    
-    [Header("UI Elements - Main Session")]
-    [SerializeField] private TextLoader _mainTxtLd;
+    [SerializeField] private GameObject panelObject;
+
+    [Header("UI Elements - Main Session")] 
+    [SerializeField] private TextLoader titleTl;
+    [SerializeField] private TextLoader mainTxtLd;
+    [SerializeField] private ImageLoader imageLoader;
     
     [Header("UI Elements - Button Session")]
-    [SerializeField] private Button _confirmBt;
-    [SerializeField] private TextLoader _confirmBtTxtLd;
+    [SerializeField] private Button confirmBt;
+    [SerializeField] private TextLoader confirmBtTxtLd;
     
     private void OnEnable()
     {
@@ -32,14 +35,27 @@ public class ProcessSimpleUIRenderer : MonoBehaviour, IUIRender
     {
         if (renderData is SimpleUIRenderData data)
         {
-            _mainTxtLd.TextId = data.mainTextId;
-            _confirmBtTxtLd.TextId = data.btTextId;
+            mainTxtLd.gameObject.SetActive(false);
+            titleTl.TextId = data.titleTextId;
+            if (!String.IsNullOrEmpty(data.mainText))
+            {
+                mainTxtLd.Text = data.mainText;
+                imageLoader.gameObject.SetActive(false);
+                mainTxtLd.gameObject.SetActive(true);
+            }
+            else if (imageLoader != null)
+            {
+                imageLoader.ImageId = data.imageId;
+                imageLoader.gameObject.SetActive(true);
+                mainTxtLd.gameObject.SetActive(false);
+            }
+            confirmBtTxtLd.TextId = data.btTextId;
             if (data.btTextId < 0)
-                _confirmBtTxtLd.GetComponent<TextMeshProUGUI>().text = data.text;
-            _confirmBt.onClick.RemoveAllListeners();
-            _confirmBt.onClick.AddListener(() => data.btCallback());
-            _confirmBt.onClick.AddListener(() => _panelObject.SetActive(false));
-            _panelObject.SetActive(true);
+                confirmBtTxtLd.GetComponent<TextMeshProUGUI>().text = data.text;
+            confirmBt.onClick.RemoveAllListeners();
+            confirmBt.onClick.AddListener(() => data.btCallback());
+            confirmBt.onClick.AddListener(() => panelObject.SetActive(false));
+            panelObject.SetActive(true);
         }
         else
         {
