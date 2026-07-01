@@ -1714,7 +1714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
-  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &167951521
 GameObject:
   m_ObjectHideFlags: 0
@@ -7327,7 +7327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
-  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
+  _btnClip: {fileID: 0}
 --- !u!1 &778149513
 GameObject:
   m_ObjectHideFlags: 0
@@ -8515,7 +8515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
-  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &916767387
 GameObject:
   m_ObjectHideFlags: 0
@@ -17351,7 +17351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
-  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &1816628946
 GameObject:
   m_ObjectHideFlags: 0
@@ -20232,7 +20232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
-  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &2085823916
 GameObject:
   m_ObjectHideFlags: 0
@@ -20694,6 +20694,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DataSlideCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 6896619125038171663, guid: 0e9d4d18b33e40d4b8d58f95c75d2d78, type: 3}
+      propertyPath: clostClip
+      value: 
+      objectReference: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20836,7 +20840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
-  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1001 &7144120982181054467
 PrefabInstance:
   m_ObjectHideFlags: 0
