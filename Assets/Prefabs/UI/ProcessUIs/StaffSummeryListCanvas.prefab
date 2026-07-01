@@ -469,6 +469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &5557206810086300414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1002,6 +1003,7 @@ MonoBehaviour:
   detailButton: {fileID: 5086996120442879562}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &327475985056523271
 GameObject:
@@ -2011,6 +2013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &7591090635618717658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3512,6 +3515,7 @@ MonoBehaviour:
   detailButton: {fileID: 6706213693739506099}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &918923709448298127
 GameObject:
@@ -4724,6 +4728,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &4684831730859889698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5912,6 +5917,7 @@ MonoBehaviour:
   detailButton: {fileID: 8961665470527447670}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &1653848501879141740
 GameObject:
@@ -6809,6 +6815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &2211841311701167573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7391,6 +7398,7 @@ MonoBehaviour:
   detailButton: {fileID: 5940300336855200631}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &2056588173904283560
 GameObject:
@@ -7595,6 +7603,7 @@ MonoBehaviour:
   detailButton: {fileID: 6791965859686510108}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &2258376067718316339
 GameObject:
@@ -8371,6 +8380,7 @@ MonoBehaviour:
   detailButton: {fileID: 3637371560258445524}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &2418539815346350946
 GameObject:
@@ -9175,6 +9185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &7532647286721671188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9607,6 +9618,7 @@ MonoBehaviour:
   detailButton: {fileID: 4820873767350509288}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &2585282383244685888
 GameObject:
@@ -9965,6 +9977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &1534661093279742373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10536,6 +10549,7 @@ MonoBehaviour:
   detailButton: {fileID: 6587896228899742522}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &2796874689527930460
 GameObject:
@@ -11124,6 +11138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &205492474190722807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11536,6 +11551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &3688138961373922621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12972,6 +12988,7 @@ MonoBehaviour:
   detailButton: {fileID: 2259717810062350836}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &3403073563002925018
 GameObject:
@@ -14007,6 +14024,7 @@ MonoBehaviour:
   detailButton: {fileID: 638167285242282885}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &3954860796524557555
 GameObject:
@@ -15343,6 +15361,7 @@ MonoBehaviour:
   detailButton: {fileID: 8653150908195726522}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &4353349185671103477
 GameObject:
@@ -15942,6 +15961,7 @@ MonoBehaviour:
   detailButton: {fileID: 5310131908724175893}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &4459454589093235486
 GameObject:
@@ -17592,6 +17612,7 @@ MonoBehaviour:
   detailButton: {fileID: 2576439732606212473}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &4920630768194062870
 GameObject:
@@ -20472,6 +20493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &5206447670527628180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20735,6 +20757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &3147275717580999722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21497,6 +21520,7 @@ MonoBehaviour:
   detailButton: {fileID: 8165020746227432893}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &6042137101009286828
 GameObject:
@@ -21557,6 +21581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &2587749273409579147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24385,6 +24410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &2957635814845947480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25225,6 +25251,7 @@ GameObject:
   - component: {fileID: 696203676829329009}
   - component: {fileID: 8761969286587842334}
   - component: {fileID: 7625886058872389010}
+  - component: {fileID: 6199790503791316296}
   m_Layer: 5
   m_Name: StaffSummeryListCanvas
   m_TagString: Untagged
@@ -25317,6 +25344,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6199790503791316296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6937317512015416767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &6938004737542742975
 GameObject:
   m_ObjectHideFlags: 0
@@ -25729,6 +25769,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &5603627390006567871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25887,6 +25928,7 @@ MonoBehaviour:
   detailButton: {fileID: 5344708975717324973}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &7169542026748728299
 GameObject:
@@ -26133,6 +26175,7 @@ MonoBehaviour:
   detailButton: {fileID: 2516631094941349124}
   trueColor: {r: 0.7264151, g: 0.7229886, b: 0.7229886, a: 0.24705882}
   falseColor: {r: 1, g: 1, b: 1, a: 0}
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   detailPanel: {fileID: 2183436914249128820}
 --- !u!1 &7315892283300674161
 GameObject:
@@ -27926,6 +27969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &15660724915380306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28545,6 +28589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &4995273372899396465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29144,6 +29189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &2848410778414296350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30267,6 +30313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &1185772119566383176
 MonoBehaviour:
   m_ObjectHideFlags: 0

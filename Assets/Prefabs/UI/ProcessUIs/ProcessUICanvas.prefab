@@ -255,6 +255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &7049056161416838103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,6 +445,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &4906599716267309230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -595,6 +597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &5267416054691541926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -810,6 +813,7 @@ GameObject:
   - component: {fileID: 3814092676798033617}
   - component: {fileID: 3302458186291315857}
   - component: {fileID: 6978511976515538119}
+  - component: {fileID: 2240305148980434717}
   m_Layer: 5
   m_Name: ProcessUICanvas
   m_TagString: Untagged
@@ -907,6 +911,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2240305148980434717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3297149402758463704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &3426370817133132977
 GameObject:
   m_ObjectHideFlags: 0
@@ -966,6 +983,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &6467265358322724782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1238,6 +1256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &6507450539596918701
 MonoBehaviour:
   m_ObjectHideFlags: 0

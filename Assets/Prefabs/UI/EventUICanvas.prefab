@@ -59,6 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &2696121708206071606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,6 +332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &845589605671010588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,6 +573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &2138214972925040227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1087,6 +1090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &8301135447846595994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1365,6 +1369,8 @@ MonoBehaviour:
   - btId: 0
     button: {fileID: 4793504076279492017}
     textLoader: {fileID: 4535746037163150712}
+  _goldClip: {fileID: 8300000, guid: 83dfbe98c630b1f46a0571f03fd58251, type: 3}
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
   _rewardPanel: {fileID: 2412388190444947997}
   _rewardMainTextLoader: {fileID: 5787732666704142241}
   _gradeImage: {fileID: 2440823331763654824}
@@ -1678,6 +1684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &5510531663366459062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1829,6 +1836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &6618763295614476657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1980,6 +1988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &9077008849169195053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2403,6 +2412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &416022259041824595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2712,6 +2722,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &1372845267577189317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3021,6 +3032,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &5207225357936902132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3331,6 +3343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &3362437408354677886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3890,6 +3903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &1549081255050390010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3994,6 +4008,7 @@ GameObject:
   - component: {fileID: 8209999024568988967}
   - component: {fileID: 1517103150027209470}
   - component: {fileID: 7470225291182360141}
+  - component: {fileID: 2672081809961934930}
   m_Layer: 5
   m_Name: EventUICanvas
   m_TagString: Untagged
@@ -4085,6 +4100,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2672081809961934930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7419438143337254465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &7996657966883664443
 GameObject:
   m_ObjectHideFlags: 0
@@ -4452,6 +4480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: 0
+  inputText: 
 --- !u!114 &8739953780902773552
 MonoBehaviour:
   m_ObjectHideFlags: 0
