@@ -36,7 +36,7 @@ namespace Utils
     
     public static class Environment
     {
-        public static bool isDevelopment = false;
+        public static bool isDevelopment = true;
     }
 
     /// <summary>
