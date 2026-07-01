@@ -169,7 +169,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
     {
         _readyStates.Add("StaffDownloadData", false);
         Debug.Log("런타임 실시간 데이터 동기화 시작...");
-        await Utils.TaskAsync.WaitUntilOrThrowAsync(() =>
+        await Utils.TaskAsync.WaitUntilOrThrowAsync("StaffData", () =>
         {
             var textMgr = ServiceLocater.Get<IUITextManager>();
             return textMgr != null && textMgr.IsDataUpdated;
@@ -315,7 +315,8 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
     {
         SyncDataFromSheetAsync().Forget();
     }
-    
+
+#if UNITY_EDITOR
     [ContextMenu("Tools/Addressables/Rename StaffImgs → sfth_")]
     private void RenameThumbnails()
     {
@@ -343,4 +344,5 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
         }
         AssetDatabase.SaveAssets();
     }
+#endif
 }

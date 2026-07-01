@@ -1185,6 +1185,7 @@ GameObject:
   - component: {fileID: 6660232995208062525}
   - component: {fileID: 3665567139407277245}
   - component: {fileID: 6871761487912858866}
+  - component: {fileID: 5866913954587495448}
   m_Layer: 5
   m_Name: MarketingCanvas
   m_TagString: Untagged
@@ -1276,6 +1277,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5866913954587495448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3009422383964187803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &3123139864275468484
 GameObject:
   m_ObjectHideFlags: 0
@@ -5528,6 +5542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!1 &9211321578119704668
 GameObject:
   m_ObjectHideFlags: 0

@@ -153,4 +153,15 @@ public class StaffMovement : MonoBehaviour
         s.x = Mathf.Abs(_visualBaseScale.x) * sign;
         _visual.localScale = s;     // UnitRoot만 반전 → 콜라이더/물리 영향 없음
     }
+    
+    public void ResetMotion()
+    {
+        _moving   = false;
+        IsSeated  = false;
+        transform.DOKill();                 // 진행 중 DOJump 등 트윈 강제 종료
+        _rb.linearVelocity  = Vector2.zero; // 관성 제거
+        _rb.angularVelocity = 0f;
+        _rb.gravityScale    = 0f;           // 낙하 방지(애니메이션 중 고정)
+        if (_spum != null) _spum.PlayAnimation(PlayerState.IDLE, 0);
+    }
 }

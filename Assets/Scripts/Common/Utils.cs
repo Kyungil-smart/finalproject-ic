@@ -47,7 +47,7 @@ namespace Utils
     /// <exception cref="TimeoutException">제한 시간 내에 조건을 만족하지 못했을 때 발생</exception>
     public static class TaskAsync
     {
-        public static async UniTask WaitUntilOrThrowAsync(Func<bool> condition, float timeoutSeconds = 5f)
+        public static async UniTask WaitUntilOrThrowAsync(string taskName, Func<bool> condition, float timeoutSeconds = 5f)
         {
             // 1. 시간 기반 취소 토큰 소스 생성
             using (var cts = new CancellationTokenSource())
@@ -63,7 +63,7 @@ namespace Utils
                 catch (OperationCanceledException)
                 {
                     // 3. 시간이 초과되어 토큰이 취소되면 이 예외가 발생함 -> TimeoutException으로 전환하여 throw
-                    throw new TimeoutException($"[TaskUtil] {timeoutSeconds}초 동안 조건을 만족하지 못해 대기가 중단되었습니다.");
+                    throw new TimeoutException($"[TaskUtil:{taskName}] {timeoutSeconds}초 동안 조건을 만족하지 못해 대기가 중단되었습니다.");
                 }
             }
         }

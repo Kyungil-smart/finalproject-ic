@@ -62,17 +62,23 @@ public class SlideUIController : MonoBehaviour, IUIRender
                 _projectCnt = projectList.Count;
                 UniTask.Void(async () =>
                 {
-                    foreach (var project in projectList)
+                    for (int i = 0; i < _projectCnt; i++)
+                    {
+                        var project = projectList[i];
                         await AddProject(new ProjectDetailRenderData()
                         {
+                            index = i,
+                            projectName = project.name,
                             cost = project.cost,
                             income = project.income,
                             title = project.name,
                             genre = project.genre.name,
                             theme = project.theme.name,
                             grade = project.grade.ToString(),
-                            rewards = project.award.name.name
-                        });    
+                            rewards = project.award.name.name,
+                            reviews = project.reviewResults
+                        });
+                    } 
                 });
             }
             else if (projectList.Count != _projectCnt)
@@ -82,13 +88,16 @@ public class SlideUIController : MonoBehaviour, IUIRender
                 {
                     await AddProject(new ProjectDetailRenderData()
                     {
+                        index = projectList.Count - 1,
+                        projectName = project.name,
                         cost = project.cost,
                         income = project.income,
                         title = project.name,
                         genre = project.genre.name,
                         theme = project.theme.name,
                         grade = project.grade.ToString(),
-                        rewards = project.award.name.name
+                        rewards = project.award.name.name,
+                        reviews = project.reviewResults
                     });    
                 });
             }

@@ -23,8 +23,6 @@ public struct ReviewResult
 public class ReviewManager : Manager, IReviewManager, IReadyStatus
 {
     [SerializeField] private UserReviewDataSO reviewTasks;
-
-
     [SerializeField] private string gSheetId;
     [SerializeField] private string gid;
 
@@ -60,7 +58,7 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
         _readyStatus["ReviewData"] = false;
 
         GSheetManager gsManager = new GSheetManager(gSheetId, gid);
-        await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsManager.IsDownload);
+        await Utils.TaskAsync.WaitUntilOrThrowAsync("ReviewData", () => gsManager.IsDownload);
         var dataList = gsManager.GetData();
         reviewTasks.userReviewList.Clear();
         foreach (var data in dataList)

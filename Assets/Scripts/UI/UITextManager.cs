@@ -46,7 +46,7 @@ public class UITextManager : Manager, IUITextManager, IReadyStatus
             if (Utils.Environment.isDevelopment)
             {
                 var gsManager = new GSheetManager(_gSheetId, textType.gid);
-                await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsManager.IsDownload);
+                await Utils.TaskAsync.WaitUntilOrThrowAsync("UIText", () => gsManager.IsDownload);
                 _gSheetManagers.Add((textType.language, gsManager));    
             }
         }
@@ -70,7 +70,7 @@ public class UITextManager : Manager, IUITextManager, IReadyStatus
 
     private async UniTaskVoid SubscribeChannel()
     {
-        await Utils.TaskAsync.WaitUntilOrThrowAsync(() => ServiceLocater.Get<IPostManager>() != null);
+        await Utils.TaskAsync.WaitUntilOrThrowAsync("UIText.PostManager", () => ServiceLocater.Get<IPostManager>() != null);
         ServiceLocater.Get<IPostManager>().Subscribe<int, string>(Channel.GetUIText, GetText);
     }
 
