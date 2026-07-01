@@ -15,7 +15,7 @@ public class GameManager : Manager, IGameManager
     private ReactiveProperty<GameDevProcName> _procName = new();
     private bool _inputProjectNameActive;
     private int _floor = 2;  // 현재 층수
-
+   
     public string PlayerName { get; private set; } // 회사 이름
     public ReadOnlyReactiveProperty<int> PlayerLevel => _playerLevel;
     private float _exp;
@@ -27,6 +27,9 @@ public class GameManager : Manager, IGameManager
     public bool InputProjectNameActive => _inputProjectNameActive;
     public int Floor => _floor;
     private int _maxSlotNum = 8;
+
+    public bool IsNeedTutorial { get; set; } = true;    // 튜토리얼 발동 여부 (제어는 SlotUIController 에서 함)
+
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();

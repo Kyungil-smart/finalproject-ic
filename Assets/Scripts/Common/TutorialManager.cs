@@ -14,9 +14,9 @@ public class TutorialManager : Manager, ITutorialManager
     // 튜토리얼 시작
     public void Start()
     {
-        Debug.Log($"[TutorialManager] : Tutorial Start {ServiceLocater.Get<IGameManager>().IsFinishTutorial}");
-        if (!ServiceLocater.Get<IGameManager>().IsFinishTutorial)
+        if (ServiceLocater.Get<IGameManager>().IsNeedTutorial)
         {
+            Debug.Log($"[TutorialManager] : Tutorial Start");
             StartTutorial();
         }
     }
@@ -49,10 +49,9 @@ public class TutorialManager : Manager, ITutorialManager
         tutorialUIIndex++;
     }
 
-    // 튜토리얼 끝나면 안 나오도록 처리
+    // 튜토리얼 끝남
     private void CompleteTutorial()
     {
-        ServiceLocater.Get<IGameManager>().SetBoolTutorial(true);
-        Debug.Log($"[TutorialManager] : Tutorial Finished {ServiceLocater.Get<IGameManager>().IsFinishTutorial}");
+        Debug.Log($"[TutorialManager] : Tutorial Finished");
     }
 }
