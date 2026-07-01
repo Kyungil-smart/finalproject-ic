@@ -4,11 +4,11 @@ using UnityEngine.UI;
 
 public class ButtonSoundBinder : MonoBehaviour
 {
-    [SerializeField] private AudioClip btnClip;
+    [SerializeField] private AudioClip _btnClip;
 
     private void Start()
     {
         foreach (var btn in GetComponentsInChildren<Button>(true))
-            btn.onClick.AddListener(() => ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip));
+            btn.onClick.AddListener(() => ServiceLocater.Get<ISoundManager>().PlaySfx(_btnClip));
     }
 }
