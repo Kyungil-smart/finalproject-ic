@@ -19,8 +19,8 @@ public class SceneChanger : Manager, ISceneChanger
         {
             await UniTask.WaitUntil(() => SceneManager.GetSceneByName(sceneName).isLoaded);
             _currentSceneName = sceneName;
-            await TaskAsync.WaitUntilOrThrowAsync(() => ServiceLocater.Get<IUIRouter>() != null);
-            await TaskAsync.WaitUntilOrThrowAsync(() => ServiceLocater.Get<IUIRouter>().IsCanvasConnected());
+            await TaskAsync.WaitUntilOrThrowAsync("SceneChanger.IUIRouter", () => ServiceLocater.Get<IUIRouter>() != null);
+            await TaskAsync.WaitUntilOrThrowAsync("SceneChanger.Canvas", () => ServiceLocater.Get<IUIRouter>().IsCanvasConnected());
             await OpenLoadingPage();
         });
     }

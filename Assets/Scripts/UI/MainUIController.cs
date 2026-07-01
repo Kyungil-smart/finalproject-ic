@@ -225,7 +225,7 @@ public class MainUIController : MonoBehaviour
     private async UniTaskVoid CloseLoadingScreen()
     {
         Debug.Log("[MainUIController] CloseLoadingScreen 감지 시작");
-        await Utils.TaskAsync.WaitUntilOrThrowAsync(() => _isDataReady, 10f);
+        await Utils.TaskAsync.WaitUntilOrThrowAsync("CloseLoading", () => _isDataReady, 10f);
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.LoadingUI, new LoadingUIRenderData(false));
     }
 
