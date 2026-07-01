@@ -820,6 +820,8 @@ MonoBehaviour:
   - {fileID: 1910999241}
   - {fileID: 379374177}
   - {fileID: 884207802}
+  - {fileID: 518269133}
+  - {fileID: 781123755}
   progressBar: {fileID: 1863448752}
   progressBarText: {fileID: 1022763657}
 --- !u!1 &540937918

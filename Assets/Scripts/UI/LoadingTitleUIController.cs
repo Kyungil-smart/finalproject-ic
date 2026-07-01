@@ -28,7 +28,7 @@ public class LoadingTitleUIController : MonoBehaviour
     {
         try
         {
-            await Utils.TaskAsync.WaitUntilOrThrowAsync(GetReadyStatus, 20f);
+            await Utils.TaskAsync.WaitUntilOrThrowAsync("LoadingTitle", GetReadyStatus, 20f);
             progressBar.fillAmount = 1f;
         }
         finally

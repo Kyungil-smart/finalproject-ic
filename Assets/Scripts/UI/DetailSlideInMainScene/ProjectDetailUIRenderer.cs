@@ -54,7 +54,8 @@ public class ProjectDetailUIRenderer : MonoBehaviour
             rightArrow.SetActive(true);
             leftArrow.SetActive(true);
         }
-        
+
+        company.text = ServiceLocater.Get<IGameManager>().PlayerName;
         projectName.text = data.projectName;
         genre.text = data.genre;
         theme.text = data.theme;

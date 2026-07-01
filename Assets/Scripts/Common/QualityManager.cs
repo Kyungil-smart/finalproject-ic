@@ -36,9 +36,9 @@ public class QualityManager : Manager, IQualityManager, IReadyStatus
         var gsQuality = new GSheetManager(_gSheetId, _gidQuality);
         var gsTarget = new GSheetManager(_gSheetId, _gidTarget);
         var gsAchieve = new GSheetManager(_gsheetReward, _gidReward);
-        await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsQuality.IsDownload);
-        await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsTarget.IsDownload);
-        await Utils.TaskAsync.WaitUntilOrThrowAsync(() => gsAchieve.IsDownload);
+        await Utils.TaskAsync.WaitUntilOrThrowAsync("QualityManager.gsQuality", () => gsQuality.IsDownload);
+        await Utils.TaskAsync.WaitUntilOrThrowAsync("QualityManager.gsTarget", () => gsTarget.IsDownload);
+        await Utils.TaskAsync.WaitUntilOrThrowAsync("QualityManager.gsTarget", () => gsAchieve.IsDownload);
         loader.LoadQualityData(gsQuality);
         loader.LoadTargetData(gsTarget);
         achieveLoader.LoadAchieveData(gsAchieve);
