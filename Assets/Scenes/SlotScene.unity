@@ -5772,6 +5772,7 @@ GameObject:
   - component: {fileID: 1118044040}
   - component: {fileID: 1118044039}
   - component: {fileID: 1118044038}
+  - component: {fileID: 1118044042}
   m_Layer: 5
   m_Name: SlotCanvas
   m_TagString: Untagged
@@ -5867,6 +5868,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1118044042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118044037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &1134441343
 GameObject:
   m_ObjectHideFlags: 0

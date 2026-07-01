@@ -21,12 +21,10 @@ public class ConfirmMsgController : MonoBehaviour
         gameObject.SetActive(true);
         msg.TextId = textId;
         cancelBtn.onClick.AddListener(() => cancelCallback?.Invoke());
-        cancelBtn.onClick.AddListener(() =>
-        {
-            ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip);
-            gameObject.SetActive(false);
-        });
+        cancelBtn.onClick.AddListener(() => gameObject.SetActive(false));
+        cancelBtn.onClick.AddListener(() => ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip));
         confirmBtn.onClick.AddListener(() => okCallback?.Invoke());
         confirmBtn.onClick.AddListener(() => gameObject.SetActive(false));
+        confirmBtn.onClick.AddListener(() => ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip));
     }
 }
