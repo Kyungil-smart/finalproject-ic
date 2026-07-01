@@ -22,7 +22,6 @@ public class SlideUIController : MonoBehaviour, IUIRender
     [SerializeField] private Scrollbar scrollbar;
     [SerializeField] private float swipeTime = 0.2f;
     [SerializeField] private float swipeDistance = 50.0f;
-    [SerializeField] private AudioClip clostClip;
     
     private float[] _scrollPageValues;
     private float _valueDistance = 0;
@@ -99,7 +98,6 @@ public class SlideUIController : MonoBehaviour, IUIRender
 
     private void Close()
     {
-        ServiceLocater.Get<ISoundManager>().PlaySfx(clostClip);
         staffMainPanel.SetActive(false);
         foreach (var staffUI in staffDatailUIRenderers)
             staffUI.gameObject.SetActive(false);
