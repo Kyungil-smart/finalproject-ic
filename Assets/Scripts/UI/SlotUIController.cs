@@ -32,7 +32,15 @@ public class SlotUIController : MonoBehaviour
     {
         _saveManager = ServiceLocater.Get<ISaveManager>();
         for (int i = 0; i < slotButtons.Length; i++)
+        {
             slotButtons[i].Render(i, _saveManager.GetMeta(i));   // 빈 슬롯이면 GetMeta=null → Render가 slotOff
+
+            // 하나라도 슬롯이 비어있지 않으면 튜토리얼 false로
+            if (_saveManager.GetMeta(i) != null)
+            {
+                ServiceLocater.Get<IGameManager>().IsNeedTutorial = false;
+            }
+        }
 
         inputPlayerNamePanel.SetActive(false);
         confirmPanel.SetActive(false);

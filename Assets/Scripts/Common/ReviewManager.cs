@@ -177,7 +177,6 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
     }
 
 
-    // TODO : SO 다운로드 받기 기능 추가 필요
     [ContextMenu("데이터 다운로드")]
     private void DataDownload()
     {
