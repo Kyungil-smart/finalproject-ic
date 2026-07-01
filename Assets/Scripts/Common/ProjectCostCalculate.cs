@@ -27,6 +27,7 @@ public class ProjectCostCalculate
 
         uint gtCost = (uint)(genRow.GT_Cost * theRow.GT_Cost_Ratio);
         pm.Cost = gtCost + pm.StaffsCost;
+        Debug.Log($"[CalculateCost] pm.Cost: {pm.Cost}");
     }
 
     public void CalculateIncome()
@@ -39,5 +40,6 @@ public class ProjectCostCalculate
 
         // Todo. 계산식 현재 마케팅이 없어서 간단하게만 계산했습니다. 나중에 마케팅 추가되면 계산식 수정할 예정입니다.
         pm.Income = (uint)(pm.Cost * income.moneyRatio);
+        Debug.Log($"[CalculateIncome] pm.Income: {pm.Income}");
     }
 }

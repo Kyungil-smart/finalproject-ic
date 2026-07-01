@@ -1062,7 +1062,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &838259824
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3533,6 +3533,22 @@ PrefabInstance:
     - target: {fileID: 3536870432906340410, guid: 74b7562352786ba45b49ae4d68051806, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665567139407277245, guid: 74b7562352786ba45b49ae4d68051806, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665567139407277245, guid: 74b7562352786ba45b49ae4d68051806, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665567139407277245, guid: 74b7562352786ba45b49ae4d68051806, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1080
+      objectReference: {fileID: 0}
+    - target: {fileID: 3665567139407277245, guid: 74b7562352786ba45b49ae4d68051806, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 2400
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

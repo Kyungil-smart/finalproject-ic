@@ -2785,6 +2785,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainStateMachine
       objectReference: {fileID: 0}
+    - target: {fileID: 7773939888276878176, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
+      propertyPath: mainBgm
+      value: 
+      objectReference: {fileID: 8300000, guid: 24ed897ec53af19499cf9675e78ae0dd, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
