@@ -2136,6 +2136,7 @@ MonoBehaviour:
   slotGId: 296026410
   staffContainer: {fileID: 1708940382}
   tempCbtPrefab: {fileID: 7873112891841811078, guid: b2fcf728ef76d2d46b3db3e792b1418d, type: 3}
+  levelUpClip: {fileID: 8300000, guid: b9d5182086251b74480e9eecabc84466, type: 3}
 --- !u!1 &1863448750
 GameObject:
   m_ObjectHideFlags: 0
