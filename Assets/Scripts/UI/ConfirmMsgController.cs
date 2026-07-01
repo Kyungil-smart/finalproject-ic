@@ -8,7 +8,6 @@ public class ConfirmMsgController : MonoBehaviour
     [SerializeField] private TextLoader msg;
     [SerializeField] private Button confirmBtn;
     [SerializeField] private Button cancelBtn;
-    [SerializeField] private AudioClip btnClip;
 
     private void OnEnable()
     {
@@ -22,9 +21,7 @@ public class ConfirmMsgController : MonoBehaviour
         msg.TextId = textId;
         cancelBtn.onClick.AddListener(() => cancelCallback?.Invoke());
         cancelBtn.onClick.AddListener(() => gameObject.SetActive(false));
-        cancelBtn.onClick.AddListener(() => ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip));
         confirmBtn.onClick.AddListener(() => okCallback?.Invoke());
         confirmBtn.onClick.AddListener(() => gameObject.SetActive(false));
-        confirmBtn.onClick.AddListener(() => ServiceLocater.Get<ISoundManager>().PlaySfx(btnClip));
     }
 }
