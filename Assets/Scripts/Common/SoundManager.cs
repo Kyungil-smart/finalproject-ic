@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SoundManager : Manager, ISoundManager
 {
-    [SerializeField] private AudioSource bgmSource;
-    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioSource _bgmSource;
+    [SerializeField] private AudioSource _sfxSource;
     
     private float _bgmVolume = 1f;
     private float _sfxVolume = 1f;
@@ -31,41 +31,41 @@ public class SoundManager : Manager, ISoundManager
     {
         _sfxVolume = PlayerPrefs.GetFloat(SFXKEY, 0.5f);
         _bgmVolume = PlayerPrefs.GetFloat(BGMKEY, 0.5f);
-        bgmSource.volume = _bgmVolume;
-        sfxSource.volume = _sfxVolume;
+        _bgmSource.volume = _bgmVolume;
+        _sfxSource.volume = _sfxVolume;
     }
     
     public void SetSfxVolume(float volume)
     {
         _sfxVolume = volume;
-        sfxSource.volume = volume;
+        _sfxSource.volume = volume;
         PlayerPrefs.SetFloat(SFXKEY, volume);
     }
 
     public void SetBgmVolume(float volume)
     {
         _bgmVolume = volume;
-        bgmSource.volume = volume;
+        _bgmSource.volume = volume;
         PlayerPrefs.SetFloat(BGMKEY, volume);
     }
     
     public UniTaskVoid PlayBgm(AudioClip bgm, float duration = 1)
     {
         Debug.Log("[SoundManager] PlayBgm");
-        bgmSource.Stop();
-        bgmSource.clip = bgm;
-        bgmSource.volume = _bgmVolume;
-        bgmSource.Play();
+        _bgmSource.Stop();
+        _bgmSource.clip = bgm;
+        _bgmSource.volume = _bgmVolume;
+        _bgmSource.Play();
         return default;
     }
 
     public void PlaySfx(AudioClip sfx)
     {
         Debug.Log("[SoundManager] PlaySfx");
-        sfxSource.PlayOneShot(sfx, _sfxVolume);
+        _sfxSource.PlayOneShot(sfx, _sfxVolume);
     }
 
-    public void PauseBgm() => bgmSource.Pause();
+    public void PauseBgm() => _bgmSource.Pause();
 
-    public void ResumeBgm() => bgmSource.UnPause();
+    public void ResumeBgm() => _bgmSource.UnPause();
 }
