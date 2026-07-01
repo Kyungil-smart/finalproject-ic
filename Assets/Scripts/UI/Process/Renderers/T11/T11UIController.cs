@@ -51,7 +51,7 @@ public class T11UIController : MonoBehaviour, IUIRender
         if (data is MarketingRenderData renderData)
         {
             mainPanel.SetActive(true);
-            _selectedMarketings.Clear();
+            _selectedMarketings = new List<int>();
             var cnt = 0;
 
             for (int i = 0; i < marketingPanels.Count; i++)

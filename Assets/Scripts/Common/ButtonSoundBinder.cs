@@ -12,7 +12,6 @@ public class ButtonSoundBinder : MonoBehaviour
         foreach (var btn in GetComponentsInChildren<Button>(true))
         {
             if (btn.CompareTag("NoAutoSound")) continue;
-            Debug.Log("버튼 효과음 재생");
             var trigger = btn.gameObject.AddComponent<SoundTrigger>();
             trigger.Init(_btnClip);
         }

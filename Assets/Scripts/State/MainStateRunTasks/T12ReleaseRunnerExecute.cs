@@ -74,9 +74,12 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
     // 매출 받아오기 및 매출 집계 애니메이션 완료 대기
     private async UniTask CalculateRevenue()
     {
+        var calculate = ServiceLocater.Get<IProjectManager>().CostCalculator;
+        calculate.CalculateCost();
+        calculate.CalculateIncome();
         _waiting = true;
         // ToDO. Animation 추가 작업 필요.
-
+        
         var data = new ProgressAnimationRenderData()
         {
             staticImage = null,

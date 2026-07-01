@@ -9,6 +9,7 @@ public class SoundTrigger : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Debug.Log("버튼 효과음 재생");
         ServiceLocater.Get<ISoundManager>().PlaySfx(_audioClip);
     }
 }

@@ -29,6 +29,9 @@ public class MinigameManager : Manager, IMinigameManager
     [SerializeField] private int maxConcurrentBugs = 5;    // 동시 출현 Bug 개수
     [SerializeField] private float gamePlayTime = 60f;     // 게임 플레이 시간 지정
     [SerializeField] private SpawnPosition spawnPos;
+    [SerializeField] private AudioClip startBgmClip;
+    [SerializeField] private AudioClip bugClip;
+    [SerializeField] private AudioClip countdownClip;
 
     // R3 리액티브 프로퍼티 (UI 및 시스템이 구독)
     public ReactiveProperty<int> TotalBugs { get; private set; } = new();
@@ -77,6 +80,7 @@ public class MinigameManager : Manager, IMinigameManager
     private async UniTask Init()
     {
         // 데이터 초기화
+        Debug.Log("Init MinigameManager");
         TotalBugs.Value = totalBugCount;
         CatchBugs.Value = 0;
         CurrentTime.Value = gamePlayTime;
@@ -88,10 +92,12 @@ public class MinigameManager : Manager, IMinigameManager
         for (int i = 3; i >= 0; i--)
         {
             CountDown.Value = i;
+            ServiceLocater.Get<ISoundManager>().PlaySfx(countdownClip);
             await UniTask.Delay(1000);
         }
         
         await UniTask.WaitUntil(() => _gameStart);
+        ServiceLocater.Get<ISoundManager>().PlayBgm(startBgmClip);
         // 초기에 동시 출현 개수만큼 버그 스폰 시도
         for (int i = 0; i < maxConcurrentBugs; i++)
         {
@@ -161,7 +167,7 @@ public class MinigameManager : Manager, IMinigameManager
     public void OnBugCaught(GameObject bugInstance)
     {
         if (IsGameOver.Value) return;
-
+        ServiceLocater.Get<ISoundManager>().PlaySfx(bugClip);
         // 데이터 업데이트 (R3 전송)
         CatchBugs.Value++;
 
@@ -190,6 +196,7 @@ public class MinigameManager : Manager, IMinigameManager
     private void EndGame()
     {
         IsGameOver.Value = true;
+        ServiceLocater.Get<ISoundManager>().PauseBgm();
         // 추후 UIManager가 IsGameOver를 Subscribe하여 팝업을 띄우게 됨
         AllBugsGoToPool();
         Time.timeScale = 0;

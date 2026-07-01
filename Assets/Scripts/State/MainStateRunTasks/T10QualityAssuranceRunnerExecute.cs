@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class T10QualityAssuranceRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExecute
 {
+    [SerializeField] private AudioClip mainBgm;
     public async UniTask Execute()
     {
         await StartQAMiniGame();
@@ -14,8 +15,10 @@ public class T10QualityAssuranceRunnerExecute : ProcessTaskRunner, IProcessTaskR
     private async UniTask StartQAMiniGame()
     {
         Debug.Log($"[T10] : QA 미니게임 시작");
+        ServiceLocater.Get<ISoundManager>().PauseBgm();
         await SceneManager.LoadSceneAsync("MinigameScene").ToUniTask();
         await UniTask.WaitUntil(() => SceneManager.GetActiveScene().name == "ProcessScene");
+        ServiceLocater.Get<ISoundManager>().PlayBgm(mainBgm);
         Debug.Log("[T10] 돌아왔다.");
     }
 
