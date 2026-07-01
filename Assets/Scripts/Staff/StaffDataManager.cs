@@ -315,7 +315,8 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
     {
         SyncDataFromSheetAsync().Forget();
     }
-    
+
+#if UNITY_EDITOR
     [ContextMenu("Tools/Addressables/Rename StaffImgs → sfth_")]
     private void RenameThumbnails()
     {
@@ -343,4 +344,5 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
         }
         AssetDatabase.SaveAssets();
     }
+#endif
 }

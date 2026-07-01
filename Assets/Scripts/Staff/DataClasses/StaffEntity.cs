@@ -29,6 +29,7 @@ public class StaffEntity : IStaffInfo, ISavableStaff
     private bool _hasThumbnailHandle;
     
     // IStaffInfo 구현 (읽기 전용)
+    public StaffMovement GetMovement() => _visualInstance.GetComponent<StaffMovement>();
     public GameObject GetGameObject() => _gameObject;
     public GameObject GetAvatar() => _visualInstance;
     public int GetStaffID() => init.Staff_ID;
