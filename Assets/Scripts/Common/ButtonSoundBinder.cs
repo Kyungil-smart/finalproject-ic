@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,9 @@ public class ButtonSoundBinder : MonoBehaviour
         foreach (var btn in GetComponentsInChildren<Button>(true))
         {
             if (btn.CompareTag("NoAutoSound")) continue;
-            btn.onClick.AddListener(() => ServiceLocater.Get<ISoundManager>().PlaySfx(_btnClip));
+            Debug.Log("버튼 효과음 재생");
+            var trigger = btn.gameObject.AddComponent<SoundTrigger>();
+            trigger.Init(_btnClip);
         }
     }
 }
