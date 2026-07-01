@@ -75,7 +75,7 @@ public class T11MarketingRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerEx
         foreach (var idx in _selectedMarketingIndex)
         {
             selectedmarketingRD.marketingData.Add(_marketingRenderData.marketingData[idx]);
-            _marketingRenderData.marketingData[idx].selected = true;
+            _marketingRenderData.marketingData[idx].selected = false;
         }
 
         var tail = new MarketingTailData()
@@ -153,7 +153,7 @@ public class T11MarketingRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerEx
         foreach (var idx in _selectedMarketingIndex)
         {
             FinalmarketingRD.marketingData.Add(_marketingRenderData.marketingData[idx]);
-            _marketingRenderData.marketingData[idx].selected = true;
+            _marketingRenderData.marketingData[idx].selected = false;
         }
         await UniTask.Yield();
 
