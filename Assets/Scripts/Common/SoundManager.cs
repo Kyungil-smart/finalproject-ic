@@ -64,4 +64,8 @@ public class SoundManager : Manager, ISoundManager
         Debug.Log("[SoundManager] PlaySfx");
         sfxSource.PlayOneShot(sfx, _sfxVolume);
     }
+
+    public void PauseBgm() => bgmSource.Pause();
+
+    public void ResumeBgm() => bgmSource.UnPause();
 }
