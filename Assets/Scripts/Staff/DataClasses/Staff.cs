@@ -12,8 +12,13 @@ public class Staff : MonoBehaviour
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) => UpdateStaffVisibility(scene.name);
     
-    private void UpdateStaffVisibility(string sceneName) => gameObject.SetActive(sceneName == "MainScene");
-    
+    private void UpdateStaffVisibility(string sceneName)
+    {
+        bool inMain = sceneName == "MainScene";
+        if (!inMain) _movement?.ResetMotion();   // MainScene 이탈 시 관성/트윈/중력 정지
+        gameObject.SetActive(inMain);
+    }
+
     public void SetEntity(StaffEntity entity, StaffMovement movement)
     {
         _entity = entity;

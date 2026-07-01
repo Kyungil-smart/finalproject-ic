@@ -83,6 +83,7 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
     {
         var spumObj = staffEntity.GetAvatar();
         staffEntity.GetGameObject().SetActive(true);
+        staffEntity.GetMovement().ResetMotion();
         SPUM_Prefabs spum = spumObj.GetComponent<SPUM_Prefabs>();
         spumObj.transform.position = pos.position;
 
