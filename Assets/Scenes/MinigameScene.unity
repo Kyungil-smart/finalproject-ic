@@ -843,6 +843,9 @@ MonoBehaviour:
     maxX: 7.28
     minY: -18.33
     maxY: 12.59
+  startBgmClip: {fileID: 8300000, guid: e7992e1273c9d8241a433c6f8103dc1d, type: 3}
+  bugClip: {fileID: 8300000, guid: fb9e4437650a334409e88b4f400aa477, type: 3}
+  countdownClip: {fileID: 8300000, guid: a06528aef6398cc428de5b75a7f783fc, type: 3}
 --- !u!4 &239922511
 Transform:
   m_ObjectHideFlags: 0
@@ -933,7 +936,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &582583212
 Transform:
@@ -2084,7 +2087,7 @@ MonoBehaviour:
   m_text: "\uBC84\uADF8\uB97C \uC7A1\uC544\uB77C!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afef1dceecddcca4faa6a9d2b45e8723, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: eed2bdcc9600651449a9a296ffdc7afe, type: 2}
+  m_sharedMaterial: {fileID: -2299011776855091030, guid: afef1dceecddcca4faa6a9d2b45e8723, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
