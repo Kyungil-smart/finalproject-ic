@@ -14,8 +14,10 @@ public class T10QualityAssuranceRunnerExecute : ProcessTaskRunner, IProcessTaskR
     private async UniTask StartQAMiniGame()
     {
         Debug.Log($"[T10] : QA 미니게임 시작");
+        ServiceLocater.Get<ISoundManager>().PauseBgm();
         await SceneManager.LoadSceneAsync("MinigameScene").ToUniTask();
         await UniTask.WaitUntil(() => SceneManager.GetActiveScene().name == "ProcessScene");
+        ServiceLocater.Get<ISoundManager>().ResumeBgm();
         Debug.Log("[T10] 돌아왔다.");
     }
 
