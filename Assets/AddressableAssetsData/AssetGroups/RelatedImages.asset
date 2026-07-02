@@ -1,0 +1,173 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: RelatedImages
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: RelatedImages
+  m_GUID: 761b1bf9635a17042acc42e11ac1a592
+  m_SerializeEntries:
+  - m_GUID: 0115e3d854488134ab57590d5fb22a85
+    m_Address: rimg_t08_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0df135661b2d2c94db272d812a981047
+    m_Address: rimg_t05_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1214e05ada6bd034e954593234aafb06
+    m_Address: rimg_t02_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1fd7bd668ea46d8499ce2ac7c988eb73
+    m_Address: rimg_staff_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a90d843b8454e44f98c051398a742ed
+    m_Address: rimg_t01_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2bd99e426822c104185049633a2ef0a4
+    m_Address: rimg_t02_2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 364d4a5595e1ff443b1664282e1c207d
+    m_Address: pimg_T11
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37a2ba8564b0d20479619cc0e6a77273
+    m_Address: rimg_t12_award_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 434a768bffb15684cbfb7a5415b4e254
+    m_Address: rimg_t10_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a255719db6f2df48ae0159b1571d196
+    m_Address: rimg_t09_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b7826c0c54c4cf48b6c5377653b9dc2
+    m_Address: rimg_milestone_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b2ed475d73d922408bdcd451d27ffdf
+    m_Address: rimg_issue_2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6113d7425e162594d9593e515c56df3b
+    m_Address: pimg_T02
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62baa5477197d4c4b8d562ee9a907550
+    m_Address: rimg_milestone_2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d0e96e10c22db54c8da2baf3b9e3a09
+    m_Address: rimg_t11_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d17b641532e104459031d5b70d817d8
+    m_Address: rimg_t07_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f214e883b1b282449362c443f53fdb5
+    m_Address: rimg_staff_2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab747d230827ce448a2f860797c7fa46
+    m_Address: pimg_T01
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb40a7ef5e17c614ba3a44a491440267
+    m_Address: rimg_soon
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: beb1e78f75d3faa4dabc860b8bbcb84b
+    m_Address: rimg_t12_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c5d741a49b172b849bfac191bbdd3435
+    m_Address: rimg_t06_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df202d558794cd046bb88f413746f94c
+    m_Address: rimg_t11_2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e665dee0271ca1640b9abe17a3515ceb
+    m_Address: rimg_t04_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7cacaebbc362924caeb4ed384815e08
+    m_Address: rimg_t03_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff1648882e68bc7489eeac9698ebde6d
+    m_Address: rimg_issue_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 6b89002968670604599498e0473ba096, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: cad8f0115f446d648bcd82a485969116, type: 2}
+    - {fileID: 11400000, guid: f903f28fe23412e4bb2d49003b42ba23, type: 2}

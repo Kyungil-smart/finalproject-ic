@@ -56,7 +56,8 @@ public class T11MarketingRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerEx
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.MarketingUI, _marketingRenderData);
 
         await WaitProcess();
-        await CheckSelectMarketing();
+        // await CheckSelectMarketing();
+        await MarketingProcessing();
     }
 
     private async UniTaskVoid SelectedMarketingCallback(List<int> index)
