@@ -141,7 +141,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         var data = new ProgressAnimationRenderData()
         {
             gameDevProcName = curGameDevProcName,
-            staticImage = null,
+            staticImageId = null,
             progressTexts = ProductionAnimationTexts(),
             callback = GoProcess,
             staffIds = staffs
