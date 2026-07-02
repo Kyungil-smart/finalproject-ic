@@ -16,12 +16,17 @@ public class SettingUIContorller : MonoBehaviour
     
     [Header("Sound Panel")]
     [SerializeField] private GameObject soundPanel;
+    [SerializeField] private Button closeSoundBtn;
 
     [Header("Confirm Msg")] 
     [SerializeField] private ConfirmMsgController cmc;
     private void Start()
     {
-        
+        settingBtn.onClick.AddListener(OpenSettingPanel);
+        continueBtn.onClick.AddListener(CloseSettingPanel);
+        soundBtn.onClick.AddListener(OpenSoundPanel);
+        firstBtn.onClick.AddListener(GoFirst);
+        closeSoundBtn.onClick.AddListener(CloseSoundPanel);
     }
 
     private void OpenSettingPanel()
