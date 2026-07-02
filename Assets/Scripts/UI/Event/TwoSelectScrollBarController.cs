@@ -25,6 +25,13 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
     [SerializeField] private float holdDuration   = 1f;
     [SerializeField] private float returnTweenTime = 0.3f;
     [SerializeField] private ConfirmMsgController confirmMsgController;
+    [SerializeField] private TextLoader infoTl;
+    
+    [Header("ProgressBar Controller")]
+    [SerializeField] private GameObject progressBarObject;
+    [SerializeField] private Image progressBar;
+    [SerializeField] private Sprite progressBarRightImg;
+    [SerializeField] private Sprite progressBarLeftImg;
     
     public ReactiveProperty<float> scrollValue = new ();
     private Vector2 _leftStartPos;
@@ -66,6 +73,17 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
         if (_isHolding && atEnd)
         {
             _holdTimer += Time.deltaTime;
+            if (_holdTimer > 0)
+            {
+                progressBar.sprite = scrollbar.value >= 0.5 ? progressBarRightImg : progressBarLeftImg;
+                progressBarObject.SetActive(true);
+                progressBar.fillAmount = _holdTimer / holdDuration;
+            }
+            else
+            {
+                progressBarObject.SetActive(false);
+                progressBar.fillAmount = 0f;
+            }
             if (!_confirmed && _holdTimer >= holdDuration)
             {
                 _confirmed = true;
@@ -93,11 +111,15 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
             _holdTimer = 0f;   // 끝에서 벗어나거나 손 떼면 리셋
         }
     }
+    
+    private void HoldInfoText() => infoTl.TextId = 9900057;
+    private void RestoreInfoText() => infoTl.TextId = 9900055;
 
     public void SetData(int index, int id, int textId, Action<int> callback)
     {
         msgTls[index].TextId = textId;
         _choices.Add((id, callback));
+        RestoreInfoText();
     }
     
     private void MovePanel(EventScrollTransform view, Vector2 startPos, float t, bool innerIsLeftEdge)
@@ -121,6 +143,7 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
         _isHolding  = true;
         _confirmed  = false;
         _holdTimer  = 0f;
+        progressBar.fillAmount = 0f;
         _returnTween?.Kill();   // 복귀 트윈 도중 다시 잡으면 취소
     }
 
@@ -131,6 +154,9 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
     {
         if (!_isHolding) return;   // PointerUp+EndDrag 동시 호출 중복 방지
         _isHolding = false;
+        progressBar.fillAmount = 0f;
+        progressBarObject.SetActive(false);
+        RestoreInfoText();
         if (!_confirmed) ReturnToHalf();
     }
     

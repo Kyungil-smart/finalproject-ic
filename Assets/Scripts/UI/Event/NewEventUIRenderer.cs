@@ -4,6 +4,7 @@ using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class NewEventUIRenderer : MonoBehaviour, IUIRender
 {
@@ -13,7 +14,7 @@ public class NewEventUIRenderer : MonoBehaviour, IUIRender
     [Header("Context Items")] 
     [SerializeField] private TextLoader title;
     [SerializeField] private TextLoader descriptionTl;
-    [SerializeField] private Image image;
+    [SerializeField] private ImageLoader imageLoader;
     [SerializeField] private EventAbilityUIHandler eventAbilityUIHandler;
     
     [Header("Select Sliders")]
@@ -22,12 +23,12 @@ public class NewEventUIRenderer : MonoBehaviour, IUIRender
     
     public void OnEnable()
     {
-        ServiceLocater.Get<IUIRouter>().RegisterUIRender(UIType.EventUI, this);
+        ServiceLocater.Get<IUIRouter>()?.RegisterUIRender(UIType.EventUI, this);
     }
     
     public void OnDisable()
     {
-        ServiceLocater.Get<IUIRouter>().UnregisterUIRender(UIType.EventUI);
+        ServiceLocater.Get<IUIRouter>()?.UnregisterUIRender(UIType.EventUI);
     }
     
     public void Render(UIRenderData renderData)
@@ -36,7 +37,9 @@ public class NewEventUIRenderer : MonoBehaviour, IUIRender
         if (renderData is NormalEventUIRenderData normalEventParams)
         {
             descriptionTl.TextId = normalEventParams.mainTextId;
-            // image.sprite =  // ToDo. 그냥 종류마다 다를듯? related image 참조 하면 될 듯?
+            imageLoader.ImageId = normalEventParams.eventType == EventType.Regular
+                ? $"rimg_issue_{Random.Range(1, 3)}"
+                : $"rimg_milestone_{Random.Range(1, 3)}";
             RenderNormalEvent(normalEventParams);
         }
         else
@@ -67,4 +70,54 @@ public class NewEventUIRenderer : MonoBehaviour, IUIRender
             eventAbilityUIHandler.SetData(effectDataList);
         }
     }
+    
+    [ContextMenu("SetTestData/TwoData")]
+    public void SetTestTwoData()
+    {
+        var dataA = new EventEffectData
+        {
+            btId = 0,
+            target = "Design_Quality",
+            value = 12,
+            ratio = 1
+        };
+        var dataB = new EventEffectData
+        {
+            btId = 1,
+            target = "Design_Quality",
+            value = -12,
+            ratio = 1
+        };
+        var renderData = new NormalEventUIRenderData
+        (
+            eventType: EventType.Reward,
+            mainTextId: 1210252,
+            callback: TestCallback
+        );
+        renderData.choices.Add((0, 1210253, dataA));
+        renderData.choices.Add((0, 1210254, dataB));
+        Render(renderData);
+    }
+    
+    [ContextMenu("SetTestData/OneData")]
+    public void SetTestOneData()
+    {
+        var dataA = new EventEffectData
+        {
+            btId = 0,
+            target = "Money",
+            value = -250,
+            ratio = 1
+        };
+        var renderData = new NormalEventUIRenderData
+        (
+            eventType: EventType.Regular,
+            mainTextId: 1230782,
+            callback: TestCallback
+        );
+        renderData.choices.Add((0, 1210253, dataA));
+        Render(renderData);
+    }
+
+    private void TestCallback(int btnId) => Debug.Log($"TestCallback => {btnId}");
 }

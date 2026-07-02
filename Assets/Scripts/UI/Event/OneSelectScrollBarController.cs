@@ -16,6 +16,12 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
     [SerializeField] private float holdDuration   = 1f;
     [SerializeField] private float returnTweenTime = 0.3f;
     [SerializeField] private ConfirmMsgController confirmMsgController;
+    [SerializeField] private TextLoader infoTl;
+    
+    [Header("ProgressBar Controller")]
+    [SerializeField] private GameObject progressBarObject;
+    [SerializeField] private Image progressBar;
+    [SerializeField] private Sprite progressBarRightImg;
     
     public ReactiveProperty<float> scrollValue = new ();
     private Vector2 _rightStartPos;
@@ -40,7 +46,7 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
         scrollbar.value = initScrollValue;
         confirmMsgController.gameObject.SetActive(false);
     }
-
+    
     private void Update()
     {
         float value = scrollbar.value;
@@ -53,6 +59,17 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
         if (_isHolding && atEnd)
         {
             _holdTimer += Time.deltaTime;
+            if (_holdTimer > 0)
+            {
+                progressBar.sprite = progressBarRightImg;
+                progressBarObject.SetActive(true);
+                progressBar.fillAmount = _holdTimer / holdDuration;
+            }
+            else
+            {
+                progressBarObject.SetActive(false);
+                progressBar.fillAmount = 0f;
+            }
             if (!_confirmed && _holdTimer >= holdDuration)
             {
                 _confirmed = true;
@@ -80,11 +97,15 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
         }
     }
 
+    private void HoldInfoText() => infoTl.TextId = 9900057;
+    private void RestoreInfoText() => infoTl.TextId = 9900056;
+
     public void SetData(int id, int textId, Action<int> callback)
     {
         _btnId = id;
         _callback = callback;
         msgTl.TextId = textId;
+        RestoreInfoText();
     }
     
     private void MovePanel(EventScrollTransform view, Vector2 startPos, float t, bool innerIsLeftEdge)
@@ -118,6 +139,9 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
     {
         if (!_isHolding) return;   // PointerUp+EndDrag 동시 호출 중복 방지
         _isHolding = false;
+        progressBar.fillAmount = 0f;
+        progressBarObject.SetActive(false);
+        RestoreInfoText();
         if (!_confirmed) ReturnToHalf();
     }
     

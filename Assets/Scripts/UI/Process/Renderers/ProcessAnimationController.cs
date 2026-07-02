@@ -47,7 +47,6 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
         {
             UniTask.Void(async () =>
             {
-                mainPanel.SetActive(true);
                 staticImage.gameObject.SetActive(true);
                 if (renderData.staticImageId != null)
                 {
@@ -62,6 +61,7 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
                     TalkBalloonController(rightTalkBalloon).Forget();
                     animationPanel.SetActive(true);
                 }
+                mainPanel.SetActive(true);
                 await ProgressBarController(renderData);
                 _runTalking = false;
                 await UniTask.WaitForSeconds(1f);

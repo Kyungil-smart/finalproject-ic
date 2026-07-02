@@ -54,7 +54,7 @@ public class MainUIController : MonoBehaviour
     [SerializeField] private Button inputProjectConfirmBtn;
     [SerializeField] private GameObject warningMessagePanel;
     [SerializeField] private TextMeshProUGUI warningMessageText;
-    [SerializeField][Range(1f, 3f)] private float popUpInterval; 
+    [SerializeField][Range(1f, 5f)] private float popUpInterval; 
 
     [Header("ConfirmMsg Panel")]
     [SerializeField] private ConfirmMsgController confirmMsgController;
