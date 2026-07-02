@@ -36,7 +36,7 @@ public class T02MarketResearchRunnerExecute : ProcessTaskRunner, IProcessTaskRun
 
         var data = new ProgressAnimationRenderData()
         {
-            staticImageId = null,
+            staticImageId = "pimg_T02",
             progressTexts = new() { "스토어 인가 차트 분석", "키워드 검색량 추적", "수명 주기 평가", "매니아/대중성 조율" },
             callback = GoProcess,
         };
