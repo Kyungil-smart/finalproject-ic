@@ -1034,7 +1034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProcessAnimationController
   mainPanel: {fileID: 8268472106488118512}
-  staticImage: {fileID: 3260830769388487163}
+  staticImage: {fileID: 6167107803429457316}
   progressImage: {fileID: 3395719476980430968}
   progressText: {fileID: 3030432581565721458}
   progressInterval: 1.5
