@@ -29,7 +29,6 @@ public class SettingUIContorller : MonoBehaviour
     [Header("Confirm Msg")] 
     [SerializeField] private ConfirmMsgController cmc;
     
-    private GraphicRaycaster[] _raycasters;
     private void Start()
     {
         settingBtn.onClick.AddListener(OpenSettingPanel);
@@ -52,9 +51,6 @@ public class SettingUIContorller : MonoBehaviour
             ServiceLocater.Get<ISoundManager>().SetSfxVolume(v);
             sfxVolume.text = $"{(int)(v * 100)}%";
         });
-        var mainRaycaster = GetComponentInParent<GraphicRaycaster>();
-        _raycasters = FindObjectsByType<GraphicRaycaster>(FindObjectsSortMode.None);
-        _raycasters = System.Array.FindAll(_raycasters, r => r != mainRaycaster);
     }
 
     private void OpenSettingPanel()
@@ -62,8 +58,7 @@ public class SettingUIContorller : MonoBehaviour
         Time.timeScale = 0;
         settingPanel.SetActive(true);
         bgImg.SetActive(true);
-        foreach (var r in _raycasters)
-            r.enabled = false;
+        settingBtn.gameObject.SetActive(false);
     }
 
     private void CloseSettingPanel()
@@ -71,8 +66,7 @@ public class SettingUIContorller : MonoBehaviour
         Time.timeScale = 1;
         settingPanel.SetActive(false);
         bgImg.SetActive(false);
-        foreach (var r in _raycasters)
-            r.enabled = true;
+        settingBtn.gameObject.SetActive(true);
     }
     
     private void OpenSoundPanel()
