@@ -9,9 +9,11 @@ public class SoundManager : Manager, ISoundManager
     
     private float _bgmVolume = 1f;
     private float _sfxVolume = 1f;
+    private float _mastervolume = 1f;
     
     private const string BGMKEY = "BGM";
     private const string SFXKEY = "SFX";
+    private const string MASTERKEY = "MASTER";
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
@@ -31,6 +33,7 @@ public class SoundManager : Manager, ISoundManager
     {
         _sfxVolume = PlayerPrefs.GetFloat(SFXKEY, 0.5f);
         _bgmVolume = PlayerPrefs.GetFloat(BGMKEY, 0.5f);
+        _mastervolume = PlayerPrefs.GetFloat(MASTERKEY, 0.5f);
         _bgmSource.volume = _bgmVolume;
         _sfxSource.volume = _sfxVolume;
     }
@@ -38,14 +41,14 @@ public class SoundManager : Manager, ISoundManager
     public void SetSfxVolume(float volume)
     {
         _sfxVolume = volume;
-        _sfxSource.volume = volume;
+        _sfxSource.volume = _mastervolume * volume;
         PlayerPrefs.SetFloat(SFXKEY, volume);
     }
 
     public void SetBgmVolume(float volume)
     {
         _bgmVolume = volume;
-        _bgmSource.volume = volume;
+        _bgmSource.volume = _mastervolume * volume;
         PlayerPrefs.SetFloat(BGMKEY, volume);
     }
     
@@ -54,7 +57,7 @@ public class SoundManager : Manager, ISoundManager
         Debug.Log("[SoundManager] PlayBgm");
         _bgmSource.Stop();
         _bgmSource.clip = bgm;
-        _bgmSource.volume = _bgmVolume;
+        _bgmSource.volume = _mastervolume * _bgmVolume;
         _bgmSource.Play();
         return default;
     }
@@ -62,10 +65,18 @@ public class SoundManager : Manager, ISoundManager
     public void PlaySfx(AudioClip sfx)
     {
         Debug.Log("[SoundManager] PlaySfx");
-        _sfxSource.PlayOneShot(sfx, _sfxVolume);
+        _sfxSource.PlayOneShot(sfx, _mastervolume * _sfxVolume);
     }
 
     public void PauseBgm() => _bgmSource.Pause();
-
     public void ResumeBgm() => _bgmSource.UnPause();
+    public void SetMasterVolume(float volume)
+    {
+        
+    }
+
+    public float GetMasterVolume()
+    {
+        throw new NotImplementedException();
+    }
 }
