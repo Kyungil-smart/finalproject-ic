@@ -12,20 +12,10 @@ public class T11UIController : MonoBehaviour, IUIRender
 
     [Header("Header Panels")] 
     [SerializeField] private TextLoader titleTl;
-    // [SerializeField] private TextMeshProUGUI selectedCountText;
     
     [Header("Tail 1 Panels")]
     [SerializeField] private GameObject tail1Panel;
     [SerializeField] private Button selectBtn;
-    
-    [Header("Tail 2 Panels")]
-    [SerializeField] private GameObject tail2Panel;
-    [SerializeField] private Button previousBtn;
-    [SerializeField] private Button nextBtn;
-
-    [Header("Tail 3 Panels")]
-    [SerializeField] private GameObject tail3Panel;
-    [SerializeField] private Button okBtn;
 
 
     private List<int> _selectedMarketings = new();
@@ -51,7 +41,7 @@ public class T11UIController : MonoBehaviour, IUIRender
         if (data is MarketingRenderData renderData)
         {
             mainPanel.SetActive(true);
-            _selectedMarketings.Clear();
+            _selectedMarketings = new List<int>();
             var cnt = 0;
 
             for (int i = 0; i < marketingPanels.Count; i++)
@@ -85,22 +75,6 @@ public class T11UIController : MonoBehaviour, IUIRender
                     selectBtn.onClick.AddListener(() => mainPanel.SetActive(false));
                     selectBtn.onClick.AddListener(Close);
                     break;
-                case 2:
-                    tail2Panel.SetActive(true);
-                    previousBtn.onClick.RemoveAllListeners();
-                    previousBtn.onClick.AddListener(() => renderData.tailType.previousCallback?.Invoke());
-                    previousBtn.onClick.AddListener(Close);
-                    
-                    nextBtn.onClick.RemoveAllListeners();
-                    nextBtn.onClick.AddListener(() => renderData.tailType.nextCallback?.Invoke());
-                    nextBtn.onClick.AddListener(Close);
-                    break;
-                case 3:
-                    tail3Panel.SetActive(true);
-                    okBtn.onClick.RemoveAllListeners();
-                    okBtn.onClick.AddListener(() => renderData.tailType.nextCallback?.Invoke());
-                    okBtn.onClick.AddListener(Close);
-                    break;
             }
         }
     }
@@ -131,8 +105,6 @@ public class T11UIController : MonoBehaviour, IUIRender
             marketingPanel.gameObject.SetActive(false);
         }
         tail1Panel.SetActive(false);
-        tail2Panel.SetActive(false);
-        tail3Panel.SetActive(false);
         mainPanel.SetActive(false);
     }
 }

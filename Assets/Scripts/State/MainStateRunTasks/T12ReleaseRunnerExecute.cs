@@ -74,12 +74,15 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
     // 매출 받아오기 및 매출 집계 애니메이션 완료 대기
     private async UniTask CalculateRevenue()
     {
+        var calculate = ServiceLocater.Get<IProjectManager>().CostCalculator;
+        calculate.CalculateCost();
+        calculate.CalculateIncome();
         _waiting = true;
         // ToDO. Animation 추가 작업 필요.
-
+        
         var data = new ProgressAnimationRenderData()
         {
-            staticImage = null,
+            staticImageId = null,
             progressTexts = new() { "플랫폼 수수료 제외 수익 집계", "광고 효율 산출", "프로젝트 비용 및 임금 계산", "공유용 최종 매출 리포트 작성" },
             callback = GoProcessD,
         };
@@ -162,7 +165,7 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
 
         var data = new ProgressAnimationRenderData()
         {
-            staticImage = null,
+            staticImageId = null,
             progressTexts = new() { "시상 후보 명단 등재", "비공개 기술 심사 진행", "유저 투표 점수 합산", "최종 수상작 발표" },
             callback = GoProcessE,
         };

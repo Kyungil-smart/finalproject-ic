@@ -14,7 +14,8 @@ public interface IGameManager
     public ReadOnlyReactiveProperty<GameDevProcName> ProcName {get; }
     public bool InputProjectNameActive { get; }
     public int Floor { get; }
-    
+    public bool IsNeedTutorial { get; set; }
+
     public void SetPlayerName(string playerName);
     public void AddPlayerLevel(int playerLevel);
     public void AddMoney(int money);

@@ -75,7 +75,7 @@ public class T11MarketingRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerEx
         foreach (var idx in _selectedMarketingIndex)
         {
             selectedmarketingRD.marketingData.Add(_marketingRenderData.marketingData[idx]);
-            _marketingRenderData.marketingData[idx].selected = true;
+            _marketingRenderData.marketingData[idx].selected = false;
         }
 
         var tail = new MarketingTailData()
@@ -111,13 +111,11 @@ public class T11MarketingRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerEx
     {
         _waiting = true;
 
-        // ToDO. Animation 추가 작업 필요.
-
         var data = new ProgressAnimationRenderData()
         {
-            staticImage = null,
+            staticImageId = "pimg_T11",
             progressTexts = new() { "홍보 페이지 오픈", "트레일러 영상 제작", "데모 배포 및 인플루언서 섭외", "게임쇼 출품" },
-            callback = GoProcessB,
+            callback = GoToNextProcess,
         };
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcAnimationUI, data);
 
@@ -135,44 +133,9 @@ public class T11MarketingRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerEx
 
         await UniTask.Yield();
         await WaitProcess();
-        await CheckMarketing();
-    }
-
-    private void GoProcessB()
-    {
-        _waiting = false;
     }
     
-    private async UniTask CheckMarketing()
-    {
-        _waiting = true;
-
-        MarketingRenderData FinalmarketingRD = new MarketingRenderData();
-        FinalmarketingRD.marketingData = new List<MarketingData>();
-
-        foreach (var idx in _selectedMarketingIndex)
-        {
-            FinalmarketingRD.marketingData.Add(_marketingRenderData.marketingData[idx]);
-            _marketingRenderData.marketingData[idx].selected = true;
-        }
-        await UniTask.Yield();
-
-        // 마케팅 완료 및 UI 에 랜더 데이터 제공
-        var tail = new MarketingTailData()
-        {
-            num = 3,
-            nextCallback = GoToNextProcess,
-        };
-
-        FinalmarketingRD.tailType = tail;
-        FinalmarketingRD.selectable = false;
-
-        ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.MarketingUI, FinalmarketingRD);
-
-        await WaitProcess();
-    }
-    
-    private async UniTaskVoid GoToNextProcess()
+    private void GoToNextProcess()
     {
         _waiting = false;
         _endProcess = true;

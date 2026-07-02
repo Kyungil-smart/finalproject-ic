@@ -136,7 +136,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         
         var data = new ProgressAnimationRenderData()
         {
-            staticImage = null,
+            staticImageId = "pimg_T01",
             progressTexts = new() { "기존 직원 해고", "새 직원 고용", "사무실 자리 셋팅", "Welcome 킷 제공" },
             callback = GoProcess,
         };

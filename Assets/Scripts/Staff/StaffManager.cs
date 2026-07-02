@@ -35,7 +35,8 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
     private List<StaffEntity> _recruitCandidates = new ();
     private StaffDataFactory _dataFactory = new ();
     private IStaffDataManager _staffDataManager;
-
+    [SerializeField] private AudioClip levelUpClip;
+    
     private Dictionary<string, bool> _readyStatus = new();
     public Dictionary<string, bool> ReadyStatus => _readyStatus;
     
@@ -548,9 +549,12 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
             var levelExpData = _staffDataManager
                 .LevelExpList
                 .Find(x => x.level == staffData.init.Level + 1);
-            
-            if (levelExpData.requiredExp >= staffData.init.Exp) 
+            if (levelExpData.requiredExp <= staffData.init.Exp)
+            {
+                Debug.Log("레벨업");
+                ServiceLocater.Get<ISoundManager>().PlaySfx(levelUpClip);
                 await staffData.LevelUp(levelExpData.isTag);
+            } 
         }
     }
     
@@ -620,5 +624,11 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         {
             staff.LevelUp(true);
         }
+    }
+
+    [ContextMenu("GetLevel")]
+    private void GetLevel()
+    {
+        LevelUpStaffs();
     }
 }

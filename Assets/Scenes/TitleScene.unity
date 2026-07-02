@@ -2136,6 +2136,7 @@ MonoBehaviour:
   slotGId: 296026410
   staffContainer: {fileID: 1708940382}
   tempCbtPrefab: {fileID: 7873112891841811078, guid: b2fcf728ef76d2d46b3db3e792b1418d, type: 3}
+  levelUpClip: {fileID: 8300000, guid: b9d5182086251b74480e9eecabc84466, type: 3}
 --- !u!1 &1863448750
 GameObject:
   m_ObjectHideFlags: 0
@@ -2784,6 +2785,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainStateMachine
       objectReference: {fileID: 0}
+    - target: {fileID: 7773939888276878176, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
+      propertyPath: mainBgm
+      value: 
+      objectReference: {fileID: 8300000, guid: 24ed897ec53af19499cf9675e78ae0dd, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

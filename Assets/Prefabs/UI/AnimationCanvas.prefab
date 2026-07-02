@@ -872,6 +872,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4682983157427963850}
   - component: {fileID: 3567977395467452226}
+  - component: {fileID: 6167107803429457316}
   - component: {fileID: 3260830769388487163}
   m_Layer: 5
   m_Name: StaticImage
@@ -907,6 +908,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8345223984428713685}
   m_CullTransparentMesh: 1
+--- !u!114 &6167107803429457316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8345223984428713685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad0390e91b84e378c40d6f705fbb3fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ImageLoader
+  imageId: 
 --- !u!114 &3260830769388487163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1020,7 +1034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProcessAnimationController
   mainPanel: {fileID: 8268472106488118512}
-  staticImage: {fileID: 3260830769388487163}
+  staticImage: {fileID: 6167107803429457316}
   progressImage: {fileID: 3395719476980430968}
   progressText: {fileID: 3030432581565721458}
   progressInterval: 1.5
@@ -1039,5 +1053,3 @@ MonoBehaviour:
     - {fileID: -7827855243438673760, guid: 061f17207f90d734ead6e2b005fb3f05, type: 3}
     - {fileID: -6077061869258137154, guid: bec0d1e7d095aa7448179a045d8c3318, type: 3}
     - {fileID: -424903259754837630, guid: fef3b013443c105489c644bdd6c35fb9, type: 3}
-  leftSpum: {fileID: 0}
-  rightSpum: {fileID: 0}
