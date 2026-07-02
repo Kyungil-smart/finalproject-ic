@@ -6390,6 +6390,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8620416290320913936}
   - component: {fileID: 1153175473596801173}
+  - component: {fileID: 666939282760187168}
   - component: {fileID: 4197698309543696401}
   m_Layer: 5
   m_Name: UserImg
@@ -6425,6 +6426,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3533706635773329687}
   m_CullTransparentMesh: 1
+--- !u!114 &666939282760187168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3533706635773329687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad0390e91b84e378c40d6f705fbb3fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ImageLoader
+  imageId: 
 --- !u!114 &4197698309543696401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14488,6 +14502,7 @@ GameObject:
   m_Component:
   - component: {fileID: 672872256630897053}
   - component: {fileID: 6454067980048474164}
+  - component: {fileID: 185484734946671757}
   - component: {fileID: 5099977007467029637}
   m_Layer: 5
   m_Name: UserImg
@@ -14523,6 +14538,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6814964884129333080}
   m_CullTransparentMesh: 1
+--- !u!114 &185484734946671757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6814964884129333080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad0390e91b84e378c40d6f705fbb3fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ImageLoader
+  imageId: 
 --- !u!114 &5099977007467029637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19029,6 +19057,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2928631461688356388}
   - component: {fileID: 5038993904803091791}
+  - component: {fileID: 6163128147929291006}
   - component: {fileID: 3835789600974927964}
   m_Layer: 5
   m_Name: UserImg
@@ -19064,6 +19093,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8566286608992776320}
   m_CullTransparentMesh: 1
+--- !u!114 &6163128147929291006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8566286608992776320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad0390e91b84e378c40d6f705fbb3fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ImageLoader
+  imageId: 
 --- !u!114 &3835789600974927964
 MonoBehaviour:
   m_ObjectHideFlags: 0
