@@ -17,7 +17,7 @@ public class TalkBalloonData
 public class ProcessAnimationController : MonoBehaviour, IUIRender
 {
     [SerializeField] private GameObject mainPanel;
-    [SerializeField] private Image staticImage;
+    [SerializeField] private ImageLoader staticImage;
     
     [Header("Progress Bar Control")]
     [SerializeField] private Image progressImage;
@@ -49,9 +49,9 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
             {
                 mainPanel.SetActive(true);
                 staticImage.gameObject.SetActive(true);
-                if (renderData.staticImage != null)
+                if (renderData.staticImageId != null)
                 {
-                    progressImage.sprite = renderData.staticImage;
+                    staticImage.ImageId = renderData.staticImageId;
                 }
                 if ((int)renderData.gameDevProcName <= 9 && (int)renderData.gameDevProcName >= 4)
                 {
