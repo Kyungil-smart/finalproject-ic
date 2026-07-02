@@ -129,7 +129,6 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
         _isHolding  = true;
         _confirmed  = false;
         _holdTimer  = 0f;
-        progressBar.fillAmount = 0f;
         _returnTween?.Kill();   // 복귀 트윈 도중 다시 잡으면 취소
     }
 
@@ -140,6 +139,8 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
     {
         if (!_isHolding) return;   // PointerUp+EndDrag 동시 호출 중복 방지
         _isHolding = false;
+        progressBar.fillAmount = 0f;
+        progressBarObject.SetActive(false);
         RestoreInfoText();
         if (!_confirmed) ReturnToHalf();
     }

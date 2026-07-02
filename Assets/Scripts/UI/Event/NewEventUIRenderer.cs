@@ -104,6 +104,7 @@ public class NewEventUIRenderer : MonoBehaviour, IUIRender
     {
         var dataA = new EventEffectData
         {
+            btId = 0,
             target = "Money",
             value = -250,
             ratio = 1
@@ -115,6 +116,7 @@ public class NewEventUIRenderer : MonoBehaviour, IUIRender
             callback: TestCallback
         );
         renderData.choices.Add((0, 1210253, dataA));
+        Render(renderData);
     }
 
     private void TestCallback(int btnId) => Debug.Log($"TestCallback => {btnId}");

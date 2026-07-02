@@ -635,7 +635,7 @@ RectTransform:
   m_Father: {fileID: 5473227770967135982}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.3, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -839,6 +839,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6364821883143297461}
   - component: {fileID: 8447303360107018814}
+  - component: {fileID: 8742528103761949829}
   - component: {fileID: 1129645917190407677}
   - component: {fileID: 150136692855864128}
   m_Layer: 5
@@ -875,6 +876,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1717338489368522512}
   m_CullTransparentMesh: 1
+--- !u!114 &8742528103761949829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717338489368522512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad0390e91b84e378c40d6f705fbb3fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ImageLoader
+  imageId: 
 --- !u!114 &1129645917190407677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1324,7 +1338,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -976, y: 0}
+  m_AnchoredPosition: {x: -1040, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3986283202910627035
@@ -2047,7 +2061,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 980, y: 0}
+  m_AnchoredPosition: {x: 1040, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6148145431023870669
@@ -2232,8 +2246,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2451798238614123496}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.35, y: 0}
-  m_AnchorMax: {x: 0.65, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3662,7 +3676,7 @@ MonoBehaviour:
   msgTls:
   - {fileID: 5565031598323889139}
   - {fileID: 2687464324630787609}
-  holdDuration: 1
+  holdDuration: 2
   returnTweenTime: 0.3
   confirmMsgController: {fileID: 8987279939526865077}
   infoTl: {fileID: 7896797520982789755}
@@ -4124,7 +4138,7 @@ MonoBehaviour:
     panelTf: {fileID: 6556346736200480327}
     goalTf: {fileID: 8649617720114026636}
   msgTl: {fileID: 2687464324630787609}
-  holdDuration: 1
+  holdDuration: 2
   returnTweenTime: 0.3
   confirmMsgController: {fileID: 8987279939526865077}
   infoTl: {fileID: 7896797520982789755}

@@ -154,6 +154,8 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
     {
         if (!_isHolding) return;   // PointerUp+EndDrag 동시 호출 중복 방지
         _isHolding = false;
+        progressBar.fillAmount = 0f;
+        progressBarObject.SetActive(false);
         RestoreInfoText();
         if (!_confirmed) ReturnToHalf();
     }
