@@ -17,6 +17,9 @@ public class SettingUIContorller : MonoBehaviour
     [Header("Sound Panel")]
     [SerializeField] private GameObject soundPanel;
     [SerializeField] private Button closeSoundBtn;
+    [SerializeField] private Slider masterSlider;
+    [SerializeField] private Slider sfxSlider;
+    [SerializeField] private Slider bgmSlider;
 
     [Header("Confirm Msg")] 
     [SerializeField] private ConfirmMsgController cmc;
@@ -27,6 +30,9 @@ public class SettingUIContorller : MonoBehaviour
         soundBtn.onClick.AddListener(OpenSoundPanel);
         firstBtn.onClick.AddListener(GoFirst);
         closeSoundBtn.onClick.AddListener(CloseSoundPanel);
+        masterSlider.onValueChanged.AddListener(v => ServiceLocater.Get<ISoundManager>().SetMasterVolume(v));
+        bgmSlider.onValueChanged.AddListener(v => ServiceLocater.Get<ISoundManager>().SetBgmVolume(v));
+        sfxSlider.onValueChanged.AddListener(v => ServiceLocater.Get<ISoundManager>().SetSfxVolume(v));
     }
 
     private void OpenSettingPanel()
@@ -43,6 +49,10 @@ public class SettingUIContorller : MonoBehaviour
     
     private void OpenSoundPanel()
     {
+        var sound = ServiceLocater.Get<ISoundManager>();
+        masterSlider.value = sound.GetMasterVolume();
+        sfxSlider.value = sound.GetSfxVolume();
+        bgmSlider.value = sound.GetBgmVolume();
         settingPanel.SetActive(false);
         soundPanel.SetActive(true);
     }
