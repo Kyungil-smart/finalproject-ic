@@ -28,6 +28,7 @@ public class SoundManager : Manager, ISoundManager
 
     public float GetSfxVolume() => _sfxVolume;
     public float GetBgmVolume() => _bgmVolume;
+    public float GetMasterVolume() => _mastervolume;
     
     public void LoadVolume()
     {
@@ -36,6 +37,14 @@ public class SoundManager : Manager, ISoundManager
         _mastervolume = PlayerPrefs.GetFloat(MASTERKEY, 0.5f);
         _bgmSource.volume = _bgmVolume;
         _sfxSource.volume = _sfxVolume;
+    }
+    
+    public void SetMasterVolume(float volume)
+    {
+        _mastervolume = volume;
+        _bgmSource.volume = _mastervolume * volume;
+        _sfxSource.volume = _mastervolume * volume;
+        PlayerPrefs.SetFloat(MASTERKEY, volume);
     }
     
     public void SetSfxVolume(float volume)
@@ -70,13 +79,4 @@ public class SoundManager : Manager, ISoundManager
 
     public void PauseBgm() => _bgmSource.Pause();
     public void ResumeBgm() => _bgmSource.UnPause();
-    public void SetMasterVolume(float volume)
-    {
-        
-    }
-
-    public float GetMasterVolume()
-    {
-        throw new NotImplementedException();
-    }
 }
