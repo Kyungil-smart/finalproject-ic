@@ -29,7 +29,7 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
     private Dictionary<string, bool> _readyStatus = new();
     public Dictionary<string, bool> ReadyStatus => _readyStatus;
 
-    private const string FACEIMG_LABEL = "Staff_Thumnail";
+    private const string FACEIMG_LABEL = "Reviewers";
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
