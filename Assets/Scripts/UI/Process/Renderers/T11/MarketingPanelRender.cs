@@ -48,7 +48,7 @@ public class MarketingPanelRender : MonoBehaviour
     public void Render(MarketingData data, bool selectable)
     {
         _isRendering = true;
-        marketName.text = data.marketType;
+        // marketName.text = data.marketType;
         marketCost.text = $"{data.rateMarket}";
         marketEffect.text = $"{data.moneyResultType}";
         if (panelToggle)
