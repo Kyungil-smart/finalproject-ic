@@ -221,4 +221,85 @@ public class SlideUIController : MonoBehaviour, IUIRender
         }
         _isSwapeMode = false;
     }
+
+    [ContextMenu("Test/Render Staff Data")]
+    private void TestRenderStaffData()
+    {
+        List<StaffViewData> staffDataList = new();
+        staffDataList.Add(new StaffViewData()
+        {
+            Staff_ID = 001,
+            Staff_Name = "맹꽁이",
+            Job_Name = $"{JobType.Designer}",
+            Job_Type = JobType.Designer,
+            Thumbnail = null,
+            Grade = "A",
+            DISC_Type = DiscType.D,
+            Current_State = "",
+            Level = 1,
+            Exp = 100f,
+            Salary = 10_000_000,
+            Hire_Cost = 10_000_000,
+            Final_Career = 1,
+            Final_Common_Communication = 30,
+            Final_Common_Creativity = 10,
+            Final_Common_Concentration = 20,
+            Final_Job_Planning = 40,
+            Final_Job_Development = 50,
+            Final_Job_Art = 60,
+            All_Tags = new List<string>() { "테그 1 입니다.", "테그 2 입니다.", "테그 3 입니다." }
+        });
+        staffDataList.Add(new StaffViewData()
+        {
+            Staff_ID = 002,
+            Staff_Name = "무야호",
+            Job_Name = $"{JobType.Artist}",
+            Job_Type = JobType.Artist,
+            Thumbnail = null,
+            Grade = "S",
+            DISC_Type = DiscType.D,
+            Current_State = "",
+            Level = 2,
+            Exp = 100f,
+            Salary = 20_000_000,
+            Hire_Cost = 20_000_000,
+            Final_Career = 1,
+            Final_Common_Communication = 30,
+            Final_Common_Creativity = 10,
+            Final_Common_Concentration = 20,
+            Final_Job_Planning = 40,
+            Final_Job_Development = 50,
+            Final_Job_Art = 60,
+            All_Tags = new List<string>() { "테그 4 입니다.", "테그 5 입니다." }
+        });
+        staffDataList.Add(new StaffViewData()
+        {
+            Staff_ID = 003,
+            Staff_Name = "너드남",
+            Job_Name = $"{JobType.Developer}",
+            Job_Type = JobType.Developer,
+            Thumbnail = null,
+            Grade = "F",
+            DISC_Type = DiscType.D,
+            Current_State = "",
+            Level = 3,
+            Exp = 100f,
+            Salary = 30_000_000,
+            Hire_Cost = 30_000_000,
+            Final_Career = 1,
+            Final_Common_Communication = 30,
+            Final_Common_Creativity = 10,
+            Final_Common_Concentration = 20,
+            Final_Job_Planning = 40,
+            Final_Job_Development = 50,
+            Final_Job_Art = 60,
+            All_Tags = new List<string>() { "테그 1 입니다.", "테그 2 입니다.", "테그 3 입니다.", "테그 3 입니다." }
+        });
+        var data = new StaffDetailRenderData()
+        {
+            btnCallback = null,
+            staffDataList = staffDataList,
+        };
+        Render(data);
+    }
 }
