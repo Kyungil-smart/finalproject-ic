@@ -904,7 +904,7 @@ MonoBehaviour:
   - {fileID: 781123755}
   progressBar: {fileID: 1863448752}
   progressBarText: {fileID: 1022763657}
-  bgmClip: {fileID: 8300000, guid: 24ed897ec53af19499cf9675e78ae0dd, type: 3}
+  bgmClip: {fileID: 8300000, guid: 9437e77a90c4dce42870c1363ce0b8c7, type: 3}
 --- !u!1 &540937918
 GameObject:
   m_ObjectHideFlags: 0
