@@ -3439,6 +3439,7 @@ GameObject:
   - component: {fileID: 6732153167352428272}
   - component: {fileID: 8521301883751989720}
   - component: {fileID: 7670153080701683806}
+  - component: {fileID: 3886452667292410240}
   m_Layer: 5
   m_Name: MainPanel
   m_TagString: Untagged
@@ -3535,6 +3536,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3886452667292410240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8670414340178688612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &8849090395069626962
 GameObject:
   m_ObjectHideFlags: 0
