@@ -1,4 +1,6 @@
+using DataDispatcher;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +15,9 @@ public class TutorialUIController : MonoBehaviour, IUIRender
     [SerializeField] private Button nextBtn;
     [SerializeField] private Button previousBtn;
     [SerializeField] private Button completeBtn;
+
+    [Header("[Variable Text]")]
+    [SerializeField] private TextMeshProUGUI lastTutorialText;
 
     // 현재 UI에서 보여주고 있는 로컬 페이지 인덱스 (0부터 시작)
     private int _currentLocalIndex = 0;
@@ -36,6 +41,13 @@ public class TutorialUIController : MonoBehaviour, IUIRender
         if (nextBtn != null) nextBtn.onClick.RemoveListener(HandleNextButtonClick);
         if (previousBtn != null) previousBtn.onClick.RemoveListener(HandlePreviousButtonClick);
         if (completeBtn != null) completeBtn.onClick.RemoveListener(HandleCompleteButtonClick);
+    }
+
+    private void Start()
+    {
+        var postManager = ServiceLocater.Get<IPostManager>();
+
+        lastTutorialText.text = ServiceLocater.Get<IGameManager>().PlayerName + " " + postManager.Request<int, string>(DataDispatcher.Channel.GetUIText, 9910005);
     }
 
 
