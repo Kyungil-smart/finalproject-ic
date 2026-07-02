@@ -31,6 +31,7 @@ public class SettingUIContorller : MonoBehaviour
     
     private void Start()
     {
+        if (SceneManager.GetActiveScene().name == "ProcessScene") firstBtn.interactable = false;
         settingBtn.onClick.AddListener(OpenSettingPanel);
         continueBtn.onClick.AddListener(CloseSettingPanel);
         soundBtn.onClick.AddListener(OpenSoundPanel);
