@@ -14,6 +14,8 @@ public class StaffSummaryPanelRender : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gradeTxt;
     [SerializeField] private TextMeshProUGUI tag1Txt;
     [SerializeField] private TextMeshProUGUI tag2Txt;
+    [SerializeField] private GameObject genderMale;
+    [SerializeField] private GameObject genderFemale;
     
     [Header("Toggle")]
     [SerializeField] private Toggle panelToggle;
@@ -66,6 +68,11 @@ public class StaffSummaryPanelRender : MonoBehaviour
         _data = data;
         faceImage.sprite = data.Thumbnail;
         staffIdText.text = StaffId(data.Staff_ID);
+        if (genderMale != null && genderFemale != null)
+        {
+            genderMale.SetActive(data.Staff_Gender);
+            genderFemale.SetActive(!data.Staff_Gender);
+        }
         nameTxt.text = data.Staff_Name;
         hiredText.text = Hired(hired);
         jobTxt.text = data.Job_Name;
