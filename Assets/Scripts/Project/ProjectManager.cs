@@ -111,8 +111,12 @@ public class ProjectManager : Manager, IProjectManager
     public AwardsData Awards => _projectData.award;
     
     public uint StaffsCost => _projectData.staffCost;
-    
-    public uint Earnings => _projectData.income - _projectData.cost; // 수익
+
+    public uint Earnings => _projectData.income
+                            + _projectData.marketingBonus
+                            - _projectData.marketingCost
+                            - _projectData.cost
+                            - _projectData.staffCost;
 
     protected override void Init() => CostCalculator = new ProjectCostCalculate(_genreThemeDataSO, _incomeRatioDataSO);
 
@@ -234,6 +238,8 @@ public class ProjectManager : Manager, IProjectManager
         else
         {
             Debug.Log("[ProjectManager] Name: " + _projectData.name);
+            Debug.Log("[ProjectManager] Marketing Cost: " + _projectData.marketingCost);
+            Debug.Log("[ProjectManager] Marketing Bonus: " + _projectData.marketingBonus);
         }
         Debug.Log("[ProjectManager] -----------------------------");
     }

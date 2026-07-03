@@ -111,7 +111,7 @@ public class T11MarketingRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerEx
     private async UniTask MarketingProcessing()
     {
         _waiting = true;
-
+        Debug.Log("마케팅 단계 진입");
         var data = new ProgressAnimationRenderData()
         {
             staticImageId = "pimg_T11",
@@ -119,17 +119,15 @@ public class T11MarketingRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerEx
             callback = GoToNextProcess,
         };
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcAnimationUI, data);
-
+        
         // 선택된 광고 저장
-        foreach(var marketing in _marketingRenderData.marketingData)
+        foreach(var index in _selectedMarketingIndex)
         {
-            if(marketing.selected)
-            {
-                ServiceLocater.Get<IProjectManager>().MarketingCost = marketing.rateMarket;
-                ServiceLocater.Get<IProjectManager>().MarketingBonus = marketing.moneyMarket;
-
-                Debug.Log($"[T11] 저장된 코스트 : {ServiceLocater.Get<IProjectManager>().MarketingCost} | 저장된 보너스 : {ServiceLocater.Get<IProjectManager>().MarketingBonus}");
-            }
+            var marketing = _marketingRenderData.marketingData[index];
+            Debug.Log($"{ServiceLocater.Get<IProjectManager>().Cost}");
+            ServiceLocater.Get<IProjectManager>().MarketingCost = marketing.rateMarket;
+            ServiceLocater.Get<IProjectManager>().MarketingBonus = marketing.moneyMarket;
+            Debug.Log($"[T11] 저장된 코스트 : {ServiceLocater.Get<IProjectManager>().MarketingCost} | 저장된 보너스 : {ServiceLocater.Get<IProjectManager>().MarketingBonus}");
         }
 
         await UniTask.Yield();
