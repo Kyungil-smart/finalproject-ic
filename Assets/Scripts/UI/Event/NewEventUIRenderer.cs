@@ -51,15 +51,7 @@ public class NewEventUIRenderer : MonoBehaviour, IUIRender
     private void RenderNormalEvent(NormalEventUIRenderData data)
     {
         List<EventEffectData> effectDataList = new();
-        if (data.choices.Count == 1)
-        {
-            oneScrollBarController.gameObject.SetActive(true);
-            var choice = data.choices[0];
-            oneScrollBarController.SetData(choice.id, choice.textId, data.callback);
-            effectDataList.Add(choice.effectData);
-            eventAbilityUIHandler.SetData(effectDataList);
-        }
-        else if (data.choices.Count == 2)
+        if (data.choices.Count == 2)
         {
             twoScrollBarController.gameObject.SetActive(true);
             for (int i = 0; i < data.choices.Count; i++)
@@ -67,6 +59,14 @@ public class NewEventUIRenderer : MonoBehaviour, IUIRender
                 effectDataList.Add(data.choices[i].effectData);
                 twoScrollBarController.SetData(i, data.choices[i].id, data.choices[i].textId, data.callback);
             }
+            eventAbilityUIHandler.SetData(effectDataList);
+        }
+        else
+        {
+            oneScrollBarController.gameObject.SetActive(true);
+            var choice = data.choices[0];
+            oneScrollBarController.SetData(choice.id, choice.textId, data.callback);
+            effectDataList.Add(choice.effectData);
             eventAbilityUIHandler.SetData(effectDataList);
         }
     }

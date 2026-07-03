@@ -44,6 +44,7 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
     private void OnEnable()
     {
         scrollbar.value = initScrollValue;
+        RestoreInfoText();
         confirmMsgController.gameObject.SetActive(false);
     }
     
@@ -58,6 +59,7 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
 
         if (_isHolding && atEnd)
         {
+            HoldInfoText();
             _holdTimer += Time.deltaTime;
             if (_holdTimer > 0)
             {
