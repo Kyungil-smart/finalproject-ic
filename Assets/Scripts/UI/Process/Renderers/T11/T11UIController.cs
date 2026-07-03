@@ -70,10 +70,11 @@ public class T11UIController : MonoBehaviour, IUIRender
                     selectBtn.onClick.RemoveAllListeners();
                     selectBtn.onClick.AddListener(() =>
                     {
+                        if (_selectedMarketings.Count == 0) return;
                         renderData.tailType.confirmCallback(_selectedMarketings);
+                        mainPanel.SetActive(false);
+                        Close();
                     });
-                    selectBtn.onClick.AddListener(() => mainPanel.SetActive(false));
-                    selectBtn.onClick.AddListener(Close);
                     break;
             }
         }
