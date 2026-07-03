@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: T08ArtFullProductionStateSO
   m_EditorClassIdentifier: Assembly-CSharp::DevStateSO
   StateID: 8
-  gameDevProcName: 9
+  gameDevProcName: 8
   stateNameId: 9900031
   prevState: {fileID: 11400000, guid: 28f21367c6093674f84a57cc09a45785, type: 2}
   nextState: {fileID: 11400000, guid: fdcafc9419f27ec4ebbd9fdee999564c, type: 2}

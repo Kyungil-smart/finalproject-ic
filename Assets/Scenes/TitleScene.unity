@@ -2694,6 +2694,22 @@ PrefabInstance:
     m_TransformParent: {fileID: 620550707}
     m_Modifications:
     - target: {fileID: 2260435113564390512, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
+      propertyPath: _mainStates.Array.data[4].name
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2260435113564390512, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
+      propertyPath: _mainStates.Array.data[5].name
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2260435113564390512, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
+      propertyPath: _mainStates.Array.data[7].name
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2260435113564390512, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
+      propertyPath: _mainStates.Array.data[8].name
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2260435113564390512, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
       propertyPath: _mainStates.Array.data[0].taskRunner
       value: 
       objectReference: {fileID: 7177486120331458440}
