@@ -12,6 +12,7 @@ public class SlotUIButtonRender : MonoBehaviour
     [SerializeField] private TextMeshProUGUI playerName;
     [SerializeField] private TextMeshProUGUI floor;
     [SerializeField] private TextMeshProUGUI projectCount;
+    [SerializeField] private TextLoader currentProc;
     [SerializeField] private TextMeshProUGUI yearCount;
     [SerializeField] private TextMeshProUGUI saveAt;
     [SerializeField] private TextMeshProUGUI money;
@@ -40,6 +41,7 @@ public class SlotUIButtonRender : MonoBehaviour
             playerName.text   = meta.playerName;
             floor.text        = $"{meta.floor} F";    // "1F"/"2F" 라벨은 포맷/UI로 -> 데이터 잘못 매핑. 변경필요.
             projectCount.text = $"Projects: {meta.completedProjectCount}개";
+            currentProc.TextId = meta.procNameId;
             yearCount.text    = $"{meta.year} 년차";
             saveAt.text       = meta.savedAt;
             money.text        = meta.money.ToString("N0");
