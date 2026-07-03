@@ -17,7 +17,7 @@ public class AchieveEventRunner
 
         var renderData = new NormalEventUIRenderData(
             eventType: EventType.Reward,
-            mainTextId: _taskData.titleTextId,
+            mainTextId: _taskData.descTextId,
             callback: (selectedId) => tcs.TrySetResult(selectedId)
         );
 
