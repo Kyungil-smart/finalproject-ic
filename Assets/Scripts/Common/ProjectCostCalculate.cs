@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ProjectCostCalculate
@@ -16,7 +17,7 @@ public class ProjectCostCalculate
         var genre = _genreThemeData.genreThemeList.Find(r => r.GT_ID == genreId);
         var theme = _genreThemeData.genreThemeList.Find(r => r.GT_ID == themeId);
         if (genre == null || theme == null) return 0;
-        return (uint)(genre.GT_Cost * theme.GT_Cost_Ratio);
+        return (uint)Math.Round(genre.GT_Cost * theme.GT_Cost_Ratio);
     }
     
     public void CalculateCost()
