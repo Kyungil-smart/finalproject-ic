@@ -18,6 +18,7 @@ public class EventAbilityUIHandler : MonoBehaviour
     [SerializeField] private AbilityUI designUI;
     [SerializeField] private AbilityUI devUI;
     [SerializeField] private AbilityUI totalUI;
+    [SerializeField] private AbilityUI costUI;
 
     [Header("민감도 > +,- 등장 시기")] 
     [SerializeField] [Range(0f, 0.5f)] private float single;
@@ -67,6 +68,8 @@ public class EventAbilityUIHandler : MonoBehaviour
         devUI.minus.SetActive(false);
         totalUI.plus.SetActive(false);
         totalUI.minus.SetActive(false);
+        costUI.plus.SetActive(false);
+        costUI.minus.SetActive(false);
     }
     
     private void Render(EventEffectData data)
@@ -79,41 +82,7 @@ public class EventAbilityUIHandler : MonoBehaviour
         devUI.minus.SetActive(data.target == "Dev_Quality" && data.value < 0);
         totalUI.plus.SetActive(data.target == "Total_Quality" && (data.value > 0 || data.ratio > 1));
         totalUI.minus.SetActive(data.target == "Total_Quality" && data.value < 0);
-    }
-
-    [ContextMenu("SetTestData/TwoData")]
-    public void SetTestTwoData()
-    {
-        var dataA = new EventEffectData
-        {
-            target = "Art_Quality",
-            value = 12,
-            ratio = 1
-        };
-        var dataB = new EventEffectData
-        {
-            target = "Design_Quality",
-            value = -12,
-            ratio = 1
-        };
-        var k = new List<EventEffectData>
-        {
-            dataA,
-            dataB
-        };
-        SetData(k);
-    }
-    
-    [ContextMenu("SetTestData/OneData")]
-    public void SetTestOneData()
-    {
-        var dataA = new EventEffectData
-        {
-            target = "Total_Quality",
-            value = 12,
-            ratio = 1
-        };
-        var k = new List<EventEffectData> { dataA };
-        SetData(k);
+        costUI.plus.SetActive(data.target == "Money" && (data.value > 0 || data.ratio > 1));
+        costUI.minus.SetActive(data.target == "Money" && data.value < 0);
     }
 }

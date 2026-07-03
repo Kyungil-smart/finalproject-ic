@@ -11,4 +11,6 @@ public interface ISoundManager
     public void PlaySfx(AudioClip sfx);
     public void PauseBgm();
     public void ResumeBgm();
+    public void SetMasterVolume(float volume);
+    public float GetMasterVolume();
 }

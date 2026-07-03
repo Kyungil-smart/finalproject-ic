@@ -904,7 +904,7 @@ MonoBehaviour:
   - {fileID: 781123755}
   progressBar: {fileID: 1863448752}
   progressBarText: {fileID: 1022763657}
-  bgmClip: {fileID: 8300000, guid: 24ed897ec53af19499cf9675e78ae0dd, type: 3}
+  bgmClip: {fileID: 8300000, guid: 9437e77a90c4dce42870c1363ce0b8c7, type: 3}
 --- !u!1 &540937918
 GameObject:
   m_ObjectHideFlags: 0
@@ -2693,6 +2693,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 620550707}
     m_Modifications:
+    - target: {fileID: 2260435113564390512, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
+      propertyPath: _mainStates.Array.data[4].name
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2260435113564390512, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
+      propertyPath: _mainStates.Array.data[5].name
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2260435113564390512, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
+      propertyPath: _mainStates.Array.data[7].name
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2260435113564390512, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
+      propertyPath: _mainStates.Array.data[8].name
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 2260435113564390512, guid: 4a571e6cb8c7fe04287ef08b0ba8fdc3, type: 3}
       propertyPath: _mainStates.Array.data[0].taskRunner
       value: 

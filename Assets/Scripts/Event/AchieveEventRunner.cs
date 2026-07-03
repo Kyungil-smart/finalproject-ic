@@ -17,7 +17,7 @@ public class AchieveEventRunner
 
         var renderData = new NormalEventUIRenderData(
             eventType: EventType.Reward,
-            mainTextId: _taskData.titleTextId,
+            mainTextId: _taskData.descTextId,
             callback: (selectedId) => tcs.TrySetResult(selectedId)
         );
 
@@ -37,6 +37,8 @@ public class AchieveEventRunner
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.EventUI, renderData);
         
         var selectedIndex = await tcs.Task;
+        Debug.Log($"[Achieve] tcs 완료 idx={selectedIndex}, target={_taskData.buttons[selectedIndex].target}");
         ServiceLocater.Get<IEventRouter>().Apply(_taskData.buttons[selectedIndex]);
+        Debug.Log("[Achieve] Apply 완료");
     }
 }
