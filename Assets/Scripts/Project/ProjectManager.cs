@@ -234,6 +234,8 @@ public class ProjectManager : Manager, IProjectManager
         else
         {
             Debug.Log("[ProjectManager] Name: " + _projectData.name);
+            Debug.Log("[ProjectManager] Marketing Cost: " + _projectData.marketingCost);
+            Debug.Log("[ProjectManager] Marketing Bonus: " + _projectData.marketingBonus);
         }
         Debug.Log("[ProjectManager] -----------------------------");
     }
