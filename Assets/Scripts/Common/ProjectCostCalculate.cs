@@ -39,7 +39,7 @@ public class ProjectCostCalculate
         var income = _incomeRatioDataSO.ratioList.Find(i => achieve >= i.achieveMin && achieve < i.achieveMax);
         if (income == null) return;
         
-        pm.Income = (uint)((pm.Cost * income.moneyRatio) + ServiceLocater.Get<IProjectManager>().MarketingBonus);
+        pm.Income = (uint)Math.Round((pm.Cost * income.moneyRatio) + ServiceLocater.Get<IProjectManager>().MarketingBonus);
         Debug.Log($"[CalculateIncome] pm.Income: {pm.Income}");
     }
 }
