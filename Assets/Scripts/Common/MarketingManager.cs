@@ -87,8 +87,8 @@ public class MarketingManager : Manager, IMarketingManager, IReadyStatus
                 result.typeName = item.marketingType;
                 result.bonusName = postManager.Request<int, string>(DataDispatcher.Channel.GetUIText, item.effectIDMarketing);
 
-                result.costResult = (uint)(ServiceLocater.Get<IProjectManager>().Cost * (item.moneyMarketing - 1));
-                result.bonusResult = (uint)(ServiceLocater.Get<IProjectManager>().Income * (item.rateMarketing - 1));
+                result.costResult = (uint)(ServiceLocater.Get<IProjectManager>().Cost * (item.rateMarketing));
+                result.bonusResult = (uint)(ServiceLocater.Get<IProjectManager>().Cost * (item.moneyMarketing - 1));
 
                 resultList.Add(result);
             }

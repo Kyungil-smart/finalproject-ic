@@ -15,6 +15,8 @@ public class ProjectSaveData
     public uint cost;
     public uint income;
     public uint staffCost;
+    public uint marketingCost;
+    public uint marketingBonus;
     public AwardsData award;
     public NameTag trendGenre;
     public NameTag trendTheme;
@@ -25,7 +27,8 @@ public class ProjectSaveData
         quality = p.Qualities.Value,
         isCompleted = p.IsCompleted.Value,
         name = p.name, genre = p.genre, theme = p.theme, grade = p.grade,
-        cost = p.cost, income = p.income, staffCost = p.staffCost,
+        cost = p.cost, income = p.income, staffCost = p.staffCost, 
+        marketingCost = p.marketingCost, marketingBonus = p.marketingBonus,
         award = p.award, trendGenre = p.trendGenre, trendTheme = p.trendTheme,
         reviewResults = p.reviewResults != null ? new List<ReviewResult>(p.reviewResults) : null,
     };
@@ -36,6 +39,7 @@ public class ProjectSaveData
         IsCompleted = new ReactiveProperty<bool>(isCompleted),
         name = name, genre = genre, theme = theme, grade = grade,
         cost = cost, income = income, staffCost = staffCost,
+        marketingCost = marketingCost, marketingBonus = marketingBonus,
         award = award, trendGenre = trendGenre, trendTheme = trendTheme,
         reviewResults = reviewResults != null ? new List<ReviewResult>(reviewResults) : null,
     };
