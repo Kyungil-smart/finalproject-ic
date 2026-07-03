@@ -48,6 +48,7 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
             UniTask.Void(async () =>
             {
                 staticImage.gameObject.SetActive(true);
+                animationPanel.SetActive(false);
                 if (renderData.staticImageId != null)
                 {
                     staticImage.ImageId = renderData.staticImageId;
