@@ -20,6 +20,8 @@ public class T12IncomeUIRender : MonoBehaviour
         projectCostValue.text = $"{projectManager.Cost} 원";
         staffsCostValue.text = $"{projectManager.StaffsCost} 원";
         earningsValue.text = $"{projectManager.Earnings} 원";
+        marketCostValue.text = $"{projectManager.MarketingCost} 원";
+        marketBonusValue.text = $"{projectManager.MarketingBonus} 원";
         
         incomeConfirmBtn.onClick.RemoveAllListeners();
         incomeConfirmBtn.onClick.AddListener(() => data.btCallback?.Invoke());
