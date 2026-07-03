@@ -27,7 +27,13 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
     [SerializeField] private GameObject tail3Panel;
     [SerializeField] private Button okBtn;
     
+    [Header("Warning Message")]
+    [SerializeField] private GameObject warningMessagePanel;
+    [SerializeField] private TextMeshProUGUI warningMessageText;
+    [SerializeField][Range(1f, 5f)] private float popUpInterval;
+    
     private List<int> _selectedStaffs = new();
+    private const int MinHire = 2;
 
     private void Awake()
     {
@@ -44,6 +50,18 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
     private void OnDisable()
     {
         ServiceLocater.Get<IUIRouter>().UnregisterUIRender(UIType.StaffCandidateUI);
+    }
+    
+    private void OnClickSelectConfirm(StaffSummaryRenderData renderData)
+    {
+        if (_selectedStaffs.Count < MinHire)
+        {
+            OpenWarningMessagePanel($"직원은 최소 {MinHire} 명 필요합니다.").Forget();
+            return;
+        }
+        Close();
+        renderData.tailType.confirmCallback(_selectedStaffs);
+        mainPanel.SetActive(false);
     }
     
     public void Render(UIRenderData data)
@@ -72,9 +90,7 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
                 case 1:
                     tail1Panel.SetActive(true);
                     selectBtn.onClick.RemoveAllListeners();
-                    selectBtn.onClick.AddListener(Close);
-                    selectBtn.onClick.AddListener(() => renderData.tailType.confirmCallback(_selectedStaffs));
-                    selectBtn.onClick.AddListener(() => mainPanel.SetActive(false));
+                    selectBtn.onClick.AddListener(() => OnClickSelectConfirm(renderData));
                     break;
                 case 2:
                     tail2Panel.SetActive(true);
@@ -169,5 +185,13 @@ public class StaffSummaryListController : MonoBehaviour, IUIRender
         
         sd.tailType = new StaffSummaryTailData() { confirmCallback = GetData};
         Render(sd);
+    }
+    
+    private async UniTask OpenWarningMessagePanel(string warningMessage)
+    {
+        warningMessageText.text = warningMessage;
+        warningMessagePanel.SetActive(true);
+        await UniTask.WaitForSeconds(popUpInterval);
+        warningMessagePanel.SetActive(false);
     }
 }

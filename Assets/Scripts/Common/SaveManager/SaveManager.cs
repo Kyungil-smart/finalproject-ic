@@ -61,7 +61,7 @@ public class SaveManager : Manager, ISaveManager, IReadyStatus
 
     // 새 게임: 빈 슬롯 잡고 현재 슬롯 지정
     public void SelectSlot(int slot) => _currentSlot = slot;
-
+    
     private SaveRoot CaptureCurrentGame()
     {
         var gm = ServiceLocater.Get<IGameManager>();   
@@ -76,9 +76,10 @@ public class SaveManager : Manager, ISaveManager, IReadyStatus
                 playerName = game.playerName,
                 floor = gm.Floor,
                 completedProjectCount = game.projects.Count,
+                procNameId = (int)game.procName + 9900023,
                 year = gm.GetCalendarYear(),
                 money = game.money,
-                savedAt = DateTime.Now.ToString("yyyy.MM.dd HH:mm"),  // 실제 저장 시각
+                savedAt = DateTime.Now.ToString("yyyy년\nMM월dd일\nHH:mm"),  // 실제 저장 시각
             },
             game = game,
             events = ServiceLocater.Get<IEventManager>().CaptureSaveData(),
