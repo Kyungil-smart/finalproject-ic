@@ -33,6 +33,7 @@ public class EventRandom
             return UniTask.FromResult<EventTaskData>(null);
 
         var task = pool[Random.Range(0, pool.Count)];
+        Debug.Log($"[EventManger:TaskSelecter] {proc} {task.categoryId}");
         return UniTask.FromResult(task);
     }
 
