@@ -20,7 +20,7 @@ public class StaffEventTaskRunner : IEventTaskRunner
         
         var renderData = new NormalEventUIRenderData(
             eventType: EventType.Regular,
-            mainTextId: _taskData.titleTextId,
+            mainTextId: _taskData.descTextId,
             callback: (selectedId) => tcs.TrySetResult(selectedId)
         );
         

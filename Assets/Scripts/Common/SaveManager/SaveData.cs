@@ -110,6 +110,7 @@ public class SaveMeta              // 슬롯 카드 표시용 스냅샷 (저장 
     public string playerName;          // 회사 이름 (구분 + 표시)
     public int    floor;         // 2F / 1F
     public int    completedProjectCount; // 완성한 프로젝트 N개
+    public int    procNameId;          // 현재 진행중인 개발 절차
     public int    year;                // N년차
     public int    money;               // 보유 재화
     public string savedAt;             // 저장 시각(표시/정렬용)  
