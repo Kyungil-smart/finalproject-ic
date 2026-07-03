@@ -110,7 +110,7 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         t12IncomeUIRenderData.btCallback = GoProcessA;
 
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ReleaseUI, t12IncomeUIRenderData);
-
+        ServiceLocater.Get<IGameManager>().AddMoney((int)ServiceLocater.Get<IProjectManager>().Earnings);
         await WaitProcess();
         await CalculateAwards();
     }
@@ -154,10 +154,7 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         ServiceLocater.Get<IProjectManager>().SetAwards(awardsList[index]);
 
         // 수상에 따른 금액 추가하기
-        if(awardsList[index].target == "Money")
-        {
-            ServiceLocater.Get<IGameManager>().AddMoney(awardsList[index].value);
-        }
+        // Todo. 다른곳에서 사용하여 지움(어워즈 보상)
 
         Debug.Log($"[T12ReleaseRunnerExecute] 어워즈 번호 : {awardsList[index]} | 보상 {awardsList[index].target} | {awardsList[index].value}");
 
@@ -171,8 +168,9 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         };
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcAnimationUI, data);
 
-
         await WaitProcess();
+        if (awardsList[index].target == "Money")
+            ServiceLocater.Get<IGameManager>().AddMoney(awardsList[index].value);
         await CheckAwards();
     }
 
