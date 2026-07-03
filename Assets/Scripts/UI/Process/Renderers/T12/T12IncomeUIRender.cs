@@ -25,7 +25,6 @@ public class T12IncomeUIRender : MonoBehaviour
         
         incomeConfirmBtn.onClick.RemoveAllListeners();
         incomeConfirmBtn.onClick.AddListener(() => data.btCallback?.Invoke());
-        incomeConfirmBtn.onClick.AddListener(() => ServiceLocater.Get<IGameManager>().AddMoney((int)projectManager.Earnings));
         incomeConfirmBtn.onClick.AddListener(() => gameObject.SetActive(false));
     }
 }
