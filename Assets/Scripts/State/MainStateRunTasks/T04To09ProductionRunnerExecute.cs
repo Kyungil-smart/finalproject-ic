@@ -167,6 +167,11 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
 
         // T06 이면 EmitResultEvent 로 가고, 아니면 CheckResult 로
         if (curGameDevProcName == GameDevProcName.DevelopmentPreProduction) await EmitResultEvent();
+        else if (curGameDevProcName == GameDevProcName.DevelopmentFullProduction)
+        {
+            ServiceLocater.Get<IQualityManager>().Calculator.CalculateTotal();
+            await CheckResult();
+        }
         else await CheckResult();
     }
 

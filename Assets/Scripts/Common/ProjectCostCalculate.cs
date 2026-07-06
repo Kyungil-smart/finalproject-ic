@@ -27,7 +27,7 @@ public class ProjectCostCalculate
         var theRow = _genreThemeData.genreThemeList.Find(r => r.GT_ID == pm.Theme.id);
 
         uint gtCost = (uint)(genRow.GT_Cost * theRow.GT_Cost_Ratio);
-        pm.Cost = gtCost + pm.StaffsCost;
+        pm.Cost = gtCost;
         Debug.Log($"[CalculateCost] pm.Cost: {pm.Cost}");
     }
 

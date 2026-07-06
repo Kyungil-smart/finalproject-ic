@@ -183,6 +183,7 @@ public class T01HumanResourceRunnerExecute : ProcessTaskRunner, IProcessTaskRunn
         sd.tailType = tail;
         sd.selectable = false;
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.StaffCandidateUI, sd);
+        ServiceLocater.Get<IProjectManager>().SetStaffsCost();
         await WaitProcess();
     }
 

@@ -75,6 +75,7 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
     private async UniTask CalculateRevenue()
     {
         var calculate = ServiceLocater.Get<IProjectManager>().CostCalculator;
+        ServiceLocater.Get<IQualityManager>().Calculator.ApplyGenreAndTheme();
         calculate.CalculateCost();
         calculate.CalculateIncome();
         _waiting = true;
