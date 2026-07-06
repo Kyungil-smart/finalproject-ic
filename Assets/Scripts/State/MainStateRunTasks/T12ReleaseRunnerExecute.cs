@@ -89,9 +89,6 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         };
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcAnimationUI, data);
 
-        // TODO: 매출 건내주는 기능이 나오면 수정이 필요할 수도 있음
-
-
         await WaitProcess();
         await CheckRevenue();
     }
@@ -154,9 +151,6 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         // 프로젝트 매니저에 수상 넣어주기
         ServiceLocater.Get<IProjectManager>().SetAwards(awardsList[index]);
 
-        // 수상에 따른 금액 추가하기
-        // Todo. 다른곳에서 사용하여 지움(어워즈 보상)
-
         Debug.Log($"[T12ReleaseRunnerExecute] 어워즈 번호 : {awardsList[index]} | 보상 {awardsList[index].target} | {awardsList[index].value}");
 
         // ToDO. Animation 추가 작업 필요.
@@ -204,8 +198,6 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
     private async UniTask CheckTotal()
     {
         _waiting = true;
-
-        // TODO : 장르테마 & 등급 & 투자비 & 매출 & 시상기록 받아오기
 
         T12ProjectDetailUIRenderData t12ProjectDetailUIRenderData = new T12ProjectDetailUIRenderData();
         t12ProjectDetailUIRenderData.btCallback = GoProcessC;
