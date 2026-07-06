@@ -70,7 +70,7 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
                 genreId = int.Parse(data["Genere_ID"]),
                 themeId = int.Parse(data["Theme_ID"]),
                 positiveCommentId = int.Parse(data["Positive_Comment_ID"]),
-                negativeCommentId = int.Parse(data["Nagative_Comment_ID"]),
+                negativeCommentId = int.Parse(data["Negative_Comment_ID"]),
                 reqType = System.Enum.Parse<RequireReviewType>(data["ReqType"].ToString()),
                 reqValue = int.Parse(data["ReqValue"]),
             });
