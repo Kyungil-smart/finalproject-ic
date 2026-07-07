@@ -9,7 +9,7 @@ public class GSheetManager : IGsheetManager
     private const int MAX_ATTEMPTS = 3;
     private const int TIMEOUT_SECONDS = 15;
     private const int BASE_RETRY_DELAY_MS = 500;
-    
+    public static int MAX_TIMEOUT_SECONDS => MAX_ATTEMPTS * TIMEOUT_SECONDS;
     private string gSheetId;
     private string gid;
     private List<Dictionary<string, string>> data = new();

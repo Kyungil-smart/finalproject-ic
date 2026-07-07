@@ -67,7 +67,8 @@ public class EventManager : Manager, IEventManager, IReadyStatus
             regularTaskSO = regularTasks,
         };
         var gsManager = new GSheetManager(gSheetId, gid);
-        await Utils.TaskAsync.WaitUntilOrThrowAsync("EventManager", () => gsManager.IsDownload);
+        await Utils.TaskAsync.WaitUntilOrThrowAsync(
+            "EventManager", () => gsManager.IsDownload, GSheetManager.MAX_TIMEOUT_SECONDS);
         loader.LoadEvent(gsManager);
         _wasDownloaded = true;
         _readyStatus["EventData"] = true;
