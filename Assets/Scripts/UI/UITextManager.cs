@@ -46,7 +46,8 @@ public class UITextManager : Manager, IUITextManager, IReadyStatus
             if (Utils.Environment.isDevelopment)
             {
                 var gsManager = new GSheetManager(_gSheetId, textType.gid);
-                await Utils.TaskAsync.WaitUntilOrThrowAsync("UIText", () => gsManager.IsDownload);
+                await Utils.TaskAsync.WaitUntilOrThrowAsync(
+                    "UIText", () => gsManager.IsDownload, GSheetManager.MAX_TIMEOUT_SECONDS);
                 _gSheetManagers.Add((textType.language, gsManager));    
             }
         }
