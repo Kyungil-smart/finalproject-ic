@@ -2902,6 +2902,8 @@ MonoBehaviour:
   nightBuildingRobby: {fileID: 120508926, guid: c3b223efe59e96446b954ba531ef927b, type: 3}
   dayBuildingRoof: {fileID: 279296180, guid: 5557fb9f9d40362478a2900a97fe2124, type: 3}
   nightBuildingRoof: {fileID: 1626925538, guid: c3b223efe59e96446b954ba531ef927b, type: 3}
+  enableTestMode: 0
+  isNight: 0
 --- !u!4 &370052372
 Transform:
   m_ObjectHideFlags: 0
