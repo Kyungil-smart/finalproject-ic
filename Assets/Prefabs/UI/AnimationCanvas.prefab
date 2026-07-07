@@ -1038,6 +1038,7 @@ MonoBehaviour:
   progressImage: {fileID: 3395719476980430968}
   progressText: {fileID: 3030432581565721458}
   progressInterval: 1.5
+  rawImagePanel: {fileID: 4848563077704348628}
   animationPanel: {fileID: 0}
   leftStaffPos: {fileID: 0}
   rightStaffPos: {fileID: 0}

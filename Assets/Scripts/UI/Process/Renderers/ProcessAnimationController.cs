@@ -25,6 +25,7 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
     [SerializeField][Range(1f, 2f)] private float progressInterval = 1.5f;
 
     [Header("Animation Panel")]
+    [SerializeField] private GameObject rawImagePanel;
     [SerializeField] private GameObject animationPanel;
     
     [Header("Animation - Staff Control")]
@@ -49,6 +50,7 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
             {
                 staticImage.gameObject.SetActive(true);
                 animationPanel.SetActive(false);
+                rawImagePanel.SetActive(false);
                 if (renderData.staticImageId != null)
                 {
                     staticImage.ImageId = renderData.staticImageId;
@@ -56,6 +58,7 @@ public class ProcessAnimationController : MonoBehaviour, IUIRender
                 if ((int)renderData.gameDevProcName <= 9 && (int)renderData.gameDevProcName >= 4)
                 {
                     staticImage.gameObject.SetActive(false);
+                    rawImagePanel.SetActive(true);
                     _runTalking = true;
                     StaffController(renderData.staffIds).Forget();
                     TalkBalloonController(leftTalkBalloon).Forget();
