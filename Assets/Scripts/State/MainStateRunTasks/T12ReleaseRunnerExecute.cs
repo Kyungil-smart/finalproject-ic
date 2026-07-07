@@ -75,6 +75,7 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
     private async UniTask CalculateRevenue()
     {
         var calculate = ServiceLocater.Get<IProjectManager>().CostCalculator;
+        ServiceLocater.Get<IQualityManager>().Calculator.ApplyGenreAndTheme();
         calculate.CalculateCost();
         calculate.CalculateIncome();
         _waiting = true;
@@ -87,9 +88,6 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
             callback = GoProcessD,
         };
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcAnimationUI, data);
-
-        // TODO: 매출 건내주는 기능이 나오면 수정이 필요할 수도 있음
-
 
         await WaitProcess();
         await CheckRevenue();
@@ -110,7 +108,7 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         t12IncomeUIRenderData.btCallback = GoProcessA;
 
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ReleaseUI, t12IncomeUIRenderData);
-
+        ServiceLocater.Get<IGameManager>().AddMoney((int)ServiceLocater.Get<IProjectManager>().Earnings);
         await WaitProcess();
         await CalculateAwards();
     }
@@ -153,12 +151,6 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         // 프로젝트 매니저에 수상 넣어주기
         ServiceLocater.Get<IProjectManager>().SetAwards(awardsList[index]);
 
-        // 수상에 따른 금액 추가하기
-        if(awardsList[index].target == "Money")
-        {
-            ServiceLocater.Get<IGameManager>().AddMoney(awardsList[index].value);
-        }
-
         Debug.Log($"[T12ReleaseRunnerExecute] 어워즈 번호 : {awardsList[index]} | 보상 {awardsList[index].target} | {awardsList[index].value}");
 
         // ToDO. Animation 추가 작업 필요.
@@ -171,8 +163,9 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         };
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcAnimationUI, data);
 
-
         await WaitProcess();
+        if (awardsList[index].target == "Money")
+            ServiceLocater.Get<IGameManager>().AddMoney(awardsList[index].value);
         await CheckAwards();
     }
 
@@ -206,7 +199,7 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
     {
         _waiting = true;
 
-        // TODO : 장르테마 & 등급 & 투자비 & 매출 & 시상기록 받아오기
+        ServiceLocater.Get<IProjectManager>().CalculateGrade(); // 프로젝트 등급 계산
 
         T12ProjectDetailUIRenderData t12ProjectDetailUIRenderData = new T12ProjectDetailUIRenderData();
         t12ProjectDetailUIRenderData.btCallback = GoProcessC;

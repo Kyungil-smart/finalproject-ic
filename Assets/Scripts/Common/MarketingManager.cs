@@ -54,7 +54,8 @@ public class MarketingManager : Manager, IMarketingManager, IReadyStatus
         _readyStatus["MarketingData"] = false;
 
         GSheetManager gsManager = new GSheetManager(gSheetId, gid);
-        await Utils.TaskAsync.WaitUntilOrThrowAsync("MarketingData", () => gsManager.IsDownload);
+        await Utils.TaskAsync.WaitUntilOrThrowAsync(
+            "MarketingData", () => gsManager.IsDownload, GSheetManager.MAX_TIMEOUT_SECONDS);
         var dataList = gsManager.GetData();
         marketingTasks.marketingList.Clear();
         foreach (var data in dataList)

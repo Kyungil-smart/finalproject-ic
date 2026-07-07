@@ -27,9 +27,11 @@ public class LoadingTitleUIController : MonoBehaviour
     
     private async UniTask CheckReadyStatus()
     {
+        int numOfManagers = managers.Length;
+        float waitTime = numOfManagers * GSheetManager.MAX_TIMEOUT_SECONDS;
         try
         {
-            await Utils.TaskAsync.WaitUntilOrThrowAsync("LoadingTitle", GetReadyStatus, 20f);
+            await Utils.TaskAsync.WaitUntilOrThrowAsync("LoadingTitle", GetReadyStatus, waitTime);
             progressBar.fillAmount = 1f;
         }
         finally

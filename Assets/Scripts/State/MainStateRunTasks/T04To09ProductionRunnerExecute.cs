@@ -107,7 +107,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         // 투입한 직원 ID 보내기
         ServiceLocater.Get<IProjectManager>().AssignStaff(curGameDevProcName, selectedStaffs.leaderList[0].Staff_ID);
         ServiceLocater.Get<IProjectManager>().AssignStaff(curGameDevProcName, selectedStaffs.leaderList[1].Staff_ID);
-        Debug.Log($"직원 투입 : {selectedStaffs.leaderList[0].Staff_ID} : {selectedStaffs.leaderList[0].Staff_Name}, " +
+        Debug.Log($"[PreProduction] : 직원 투입 - {selectedStaffs.leaderList[0].Staff_ID} : {selectedStaffs.leaderList[0].Staff_Name} | " +
             $"{selectedStaffs.leaderList[1].Staff_ID} : {selectedStaffs.leaderList[1].Staff_Name} ");
 
         _waiting = false;
@@ -122,7 +122,6 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         await ServiceLocater.Get<IEventManager>().OccurEvent(EventType.Staff);  // 직원간 이벤트 발생
 
         await UniTask.Yield();
-        // await WaitProcess();
         await SelectLeaderProcessing();
     }
 
@@ -131,7 +130,7 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     {
         _waiting = true;
 
-        Debug.Log("SelectLeaderProcessing() 시작");
+        Debug.Log("[PreProduction] : SelectLeaderProcessing() 시작");
 
         var staffManager = ServiceLocater.Get<IStaffRegister>();
         List<StaffEntity> staffs = new();
@@ -153,11 +152,9 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         // 점수 계산 진행   
         Debug.Log($"{curGameDevProcName} | {selectedStaffs.leaderList[0].Staff_Name} | {selectedStaffs.leaderList[1].Staff_Name}"); // 테스트용 임시 로그
         await UniTask.Yield();
-        // Todo. 한번에 불러오는 시스템 만들어서 원래 있던거 지움.
         ServiceLocater.Get<IQualityManager>().Calculator.CalculateQuality(curGameDevProcName);
         await UniTask.Yield();
         // 배치된 스태프 경험치 주기 기능 추가 필요 (누적 되어야 함)
-        // ServiceLocater.Get<IStaffDataManager>().GetExpList();    // TODO : Staff 경험치 주는 함수 수정되었는지 확인 필요
         List<int> staffList = new List<int>
         {
             selectedStaffs.leaderList[0].Staff_ID,
@@ -170,6 +167,11 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
 
         // T06 이면 EmitResultEvent 로 가고, 아니면 CheckResult 로
         if (curGameDevProcName == GameDevProcName.DevelopmentPreProduction) await EmitResultEvent();
+        else if (curGameDevProcName == GameDevProcName.DevelopmentFullProduction)
+        {
+            ServiceLocater.Get<IQualityManager>().Calculator.CalculateTotal();
+            await CheckResult();
+        }
         else await CheckResult();
     }
 
@@ -183,15 +185,14 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
     private async UniTask EmitResultEvent()
     {
         _waiting = true;
-        // Todo. 어디서 넣어야할지 몰라서 일단 Total을 여기서 넣어서 확인했습니다.
+
         ServiceLocater.Get<IQualityManager>().Calculator.CalculateTotal();
         Debug.Log($"[PreProduction] 계산 완료 달성률 : {ServiceLocater.Get<IQualityManager>().Calculator.CalculateAchieve()}");
-        Debug.Log("EmitResultEvent() 시작");
+        Debug.Log("[PreProduction] : EmitResultEvent() 시작");
 
         await ServiceLocater.Get<IQualityManager>().ShowAchieveResult(); // 지표 이벤트 발생
         
         await UniTask.Yield();
-        // await WaitProcess();
         await GoProcessForT06();
         await CheckResult();
     }
@@ -202,24 +203,17 @@ public class T04To09ProductionRunnerExecute : ProcessTaskRunner, IProcessTaskRun
         return UniTask.CompletedTask;
     }
 
-
+    // T06이 아니면 바로 넘어오고, T06은 EmitResultEvent()에서 이벤트 발생 후 넘어오는 기능
     private async UniTask CheckResult()
     {
         _waiting = true;
 
-        Debug.Log("CheckResult() 시작");
+        Debug.Log("[PreProduction] : CheckResult() 시작");
 
-        GameDevProcName curGameDevProcName = ServiceLocater.Get<IGameManager>().ProcName.CurrentValue;
-
-        if (curGameDevProcName == GameDevProcName.DevelopmentPreProduction)
-        {
-            // TODO : T06 이면 추가로 지표 달성 이벤트 결과 UI가 떠야 함 -> 기다렸다 만들어지면 하기
-        }
-
-        await UniTask.Yield();
         await GoToNextProcess();
         await WaitProcess();
     }
+    
 
     // 마지막에 다음 프로세스 상태로 가기 위한 기능
     private async UniTask GoToNextProcess()

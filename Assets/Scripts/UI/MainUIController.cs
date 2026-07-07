@@ -118,7 +118,10 @@ public class MainUIController : MonoBehaviour
         UniTask.Void(async () =>
         {
             await UniTask.WaitUntil(() => _projectManager.IsLoaded());
-            ProjectText.text = _projectManager.GetProjectData().name;
+            if (_projectManager.GetProjectData() == null)
+                ProjectText.text = "미정";   // ToDo. Localization
+            else 
+                ProjectText.text = _projectManager.GetProjectData().name;
         });
     }
 

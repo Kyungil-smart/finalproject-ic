@@ -58,7 +58,8 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
         _readyStatus["ReviewData"] = false;
 
         GSheetManager gsManager = new GSheetManager(gSheetId, gid);
-        await Utils.TaskAsync.WaitUntilOrThrowAsync("ReviewData", () => gsManager.IsDownload);
+        await Utils.TaskAsync.WaitUntilOrThrowAsync(
+            "ReviewData", () => gsManager.IsDownload, GSheetManager.MAX_TIMEOUT_SECONDS);
         var dataList = gsManager.GetData();
         reviewTasks.userReviewList.Clear();
         foreach (var data in dataList)
@@ -70,7 +71,7 @@ public class ReviewManager : Manager, IReviewManager, IReadyStatus
                 genreId = int.Parse(data["Genere_ID"]),
                 themeId = int.Parse(data["Theme_ID"]),
                 positiveCommentId = int.Parse(data["Positive_Comment_ID"]),
-                negativeCommentId = int.Parse(data["Nagative_Comment_ID"]),
+                negativeCommentId = int.Parse(data["Negative_Comment_ID"]),
                 reqType = System.Enum.Parse<RequireReviewType>(data["ReqType"].ToString()),
                 reqValue = int.Parse(data["ReqValue"]),
             });

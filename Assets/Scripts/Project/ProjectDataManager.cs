@@ -31,7 +31,7 @@ public class ProjectData
     public string name;  // 프로젝트 이름
     public NameTag genre;  // 장르
     public NameTag theme;  // 테마
-    public ProjectGrade grade;  // 등급 F ~ SSSS
+    public ProjectGrade grade;  // 등급 D ~ S
     public uint cost;  // 투자된 금액
     public uint income;  // 매출 금액
     public uint staffCost;  // 직원 연봉 합산

@@ -17,6 +17,7 @@ public class T11UIController : MonoBehaviour, IUIRender
     [SerializeField] private GameObject tail1Panel;
     [SerializeField] private Button selectBtn;
 
+    [SerializeField] private AudioClip panelSound;
 
     private List<int> _selectedMarketings = new();
     
@@ -70,10 +71,11 @@ public class T11UIController : MonoBehaviour, IUIRender
                     selectBtn.onClick.RemoveAllListeners();
                     selectBtn.onClick.AddListener(() =>
                     {
+                        if (_selectedMarketings.Count == 0) return;
                         renderData.tailType.confirmCallback(_selectedMarketings);
+                        mainPanel.SetActive(false);
+                        Close();
                     });
-                    selectBtn.onClick.AddListener(() => mainPanel.SetActive(false));
-                    selectBtn.onClick.AddListener(Close);
                     break;
             }
         }
@@ -89,6 +91,7 @@ public class T11UIController : MonoBehaviour, IUIRender
     {
         if (data.isOn)
         {
+            ServiceLocater.Get<ISoundManager>().PlaySfx(panelSound);
             if (_selectedMarketings.Contains(data.index)) return;
             _selectedMarketings.Add(data.index);
         }

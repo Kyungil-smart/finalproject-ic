@@ -53,11 +53,13 @@
 
 ## 🧩 아키텍처 하이라이트
 
-> 포트폴리오에서 보여주고 싶은 "구조적 고민"을 강조하는 섹션입니다.
-
-- **ServiceLocator 패턴** — 매니저/순수 클래스를 타입 기반으로 등록·조회하여 전역 의존성을 느슨하게 결합
+- **ServiceLocator + 인터페이스 결합** — 매니저/순수 클래스를 타입(인터페이스) 기반으로 등록·조회하여 시스템 간 의존성을 느슨하게 결합
 - **상태 머신 기반 게임 진행** — `MainProcessStateMachine` + 공정별 `TaskRunner`(T01~T12)로 제작 흐름을 단계별 모듈로 분리
 - **데이터 드리븐 설계** — 기획 수치(이벤트·품질·마케팅 등)를 Google Sheets에서 CSV로 받아오고 ScriptableObject로 관리해, **코드 수정 없이 밸런싱 가능**
+- **게임 내 이벤트 파이프라인** — `EventManager.OccurEvent(EventType)`로 정기·직원 이벤트를 발생시키고, `EventRandom`이 시너지·중복방지(runIds)로 후보를 선별해 `IEventTaskRunner`가 실행. 선택지 효과는 `EventRouter`가 target 키 → 보상 핸들러로 디스패치
+- **UI 렌더링 라우팅 정규화** — 모든 UI가 `IUIRender.Render(UIRenderData)`를 구현하고 `UIType`로 `UIRouter`에 자가 등록, `NavigateTo(UIType, data)` 단일 경로로 캔버스 전환·렌더를 통일
+- **비동기 준비상태 게이팅** — 각 매니저가 `IReadyStatus`로 데이터 로딩 완료 여부를 표준화해, 부트스트랩이 준비 완료를 대기한 뒤 다음 단계로 진행
+- **세이브 / 로드 Capture–Restore** — 매니저별 `CaptureSaveData / RestoreSaveData(DTO)` 규약으로 런타임 상태를 3슬롯 JSON에 직렬화·복원
 - **부트스트랩 기반 초기화** — `InGameBootstrap`에서 세이브 로딩·렌더링·매니저 등록을 UniTask 비동기로 순차 구성
 - **R3 + UniTask** — 리액티브 프로퍼티로 데이터 변경을 UI에 전파, 네트워크/로딩은 전부 비동기 처리
 
