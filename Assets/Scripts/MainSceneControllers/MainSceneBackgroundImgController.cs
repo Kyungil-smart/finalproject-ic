@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class MainSceneBackgroundImgController : MonoBehaviour
 {
@@ -14,11 +15,21 @@ public class MainSceneBackgroundImgController : MonoBehaviour
     [SerializeField] private Sprite dayBuildingRoof;
     [SerializeField] private Sprite nightBuildingRoof;
 
+    [Header("Controller")] 
+    [SerializeField] private bool enableTestMode;
+    [SerializeField] private bool isNight;
+
     private void Update()
     {
-        bgImage.sprite = Utils.DayCheck.IsDaytime() ? dayBackground : nightBackground;
-        foreach (var buildingRobby in buildingRobbyImages)
-            buildingRobby.sprite = Utils.DayCheck.IsDaytime() ? dayBuildingRobby : nightBuildingRobby;
-        buildingRoofImage.sprite = Utils.DayCheck.IsDaytime() ? dayBuildingRoof : nightBuildingRoof;
+        if (enableTestMode) Render(!isNight);
+        else Render(Utils.DayCheck.IsDaytime());
     }
+
+    private void Render(bool flag)
+    {
+        bgImage.sprite = flag ? dayBackground : nightBackground;
+        foreach (var buildingRobby in buildingRobbyImages)
+            buildingRobby.sprite = flag ? dayBuildingRobby : nightBuildingRobby;
+        buildingRoofImage.sprite = flag ? dayBuildingRoof : nightBuildingRoof;
+    } 
 }
