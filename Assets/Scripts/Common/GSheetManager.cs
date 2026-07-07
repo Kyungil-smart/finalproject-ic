@@ -6,6 +6,10 @@ using UnityEngine.Networking;
 public class GSheetManager : IGsheetManager
 {
     private const string BASE_URL = "https://docs.google.com/spreadsheets/d";
+    private const int MAX_ATTEMPTS = 3;
+    private const int TIMEOUT_SECONDS = 15;
+    private const int BASE_RETRY_DELAY_MS = 500;
+    public static int MAX_TIMEOUT_SECONDS => MAX_ATTEMPTS * TIMEOUT_SECONDS;
     private string gSheetId;
     private string gid;
     private List<Dictionary<string, string>> data = new();
@@ -26,37 +30,57 @@ public class GSheetManager : IGsheetManager
     // 3. 받아온 JSON string 을 JObject 화 시켜서 private JObject 에 저장한다. => 함수
     private async UniTask LoadDataFromGsheet()
     {
-        _isDownload = false;
-        Debug.Log($"[GSheetManager] Loading sheet: {gSheetId}");
-        UnityWebRequest request = UnityWebRequest.Get(CombineURL());
-        var operation = request.SendWebRequest();
-        while (!operation.isDone)
+        try
         {
-            await UniTask.Yield();
-        }
-        
-        if (request.result != UnityWebRequest.Result.Success) 
-            Debug.LogError($"[GSheetManager] Failed to load sheet: {request.error}");
-        else
-        {
-            string csvString = request.downloadHandler.text;
-            string[] lines = csvString.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
-            Debug.Log($"[GSheetManager] Download Success => {lines.Length}");
-            // Header
-            string[] headers = lines[0].Split(",");
-            
-            // dataList
-            for (int i = 1; i < lines.Length; i++)
+            for (int attempt = 1; attempt <= MAX_ATTEMPTS; attempt++)
             {
-                var items = lines[i].Split(",");
-                Dictionary<string, string> row = new Dictionary<string, string>();
-                for (int j = 0; j < headers.Length; j++)
-                    row.Add(headers[j], items[j]);
-                data.Add(row);
+                using UnityWebRequest request = UnityWebRequest.Get(CombineURL());
+                request.timeout = TIMEOUT_SECONDS;
+                var operation = request.SendWebRequest();
+                while (!operation.isDone)
+                    await UniTask.Yield();
+                // 성공
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                    ParseCsv(request.downloadHandler.text);
+                    Debug.Log($"[GSheetManager] Success (attempt {attempt}) => {data.Count} rows");
+                    return; // finally 에서 _isDownload = true
+                }
+                // 재시도 불가(4xx): 시트 공유설정/ID 오류 → 즉시 중단
+                if (request.result == UnityWebRequest.Result.ProtocolError
+                    && request.responseCode >= 400 && request.responseCode < 500)
+                {
+                    Debug.LogError($"[GSheetManager] Non-retriable HTTP {request.responseCode}: {request.error}. 시트 공유설정/ID 확인 필요.");
+                    return;
+                }
+                // 재시도 가능(네트워크/타임아웃/5xx/429)
+                Debug.LogWarning($"[GSheetManager] Attempt {attempt}/{MAX_ATTEMPTS} failed: {request.error} (code {request.responseCode})");
+                if (attempt < MAX_ATTEMPTS)
+                    await UniTask.Delay(BASE_RETRY_DELAY_MS * (int)Mathf.Pow(2, attempt - 1));
             }
+            Debug.LogError($"[GSheetManager] All {MAX_ATTEMPTS} attempts failed. sheet={gSheetId}, gid={gid}");
         }
-        Debug.Log("[GSheetManager] Finish to Load");
-        _isDownload = true;
+        finally
+        {
+            Debug.Log("[GSheetManager] Finish to Load");
+            _isDownload = true;
+        }
+    }
+    
+    private void ParseCsv(string csvString)
+    {
+        data.Clear();
+        string[] lines = csvString.Split(new[] { "\r\n", "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+        if (lines.Length == 0) return;
+        string[] headers = lines[0].Split(",");
+        for (int i = 1; i < lines.Length; i++)
+        {
+            var items = lines[i].Split(",");
+            var row = new Dictionary<string, string>();
+            for (int j = 0; j < headers.Length; j++)
+                row.Add(headers[j], j < items.Length ? items[j] : string.Empty); // 열 수 방어
+            data.Add(row);
+        }
     }
     
     public List<Dictionary<string, string>> GetData() => data;

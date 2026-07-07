@@ -173,7 +173,7 @@ public class StaffDataManager : Manager, IStaffDataManager, IStaffCodex, IReadyS
         {
             var textMgr = ServiceLocater.Get<IUITextManager>();
             return textMgr != null && textMgr.IsDataUpdated;
-        }); // Post 기다리는 시간 
+        }, GSheetManager.MAX_TIMEOUT_SECONDS); // Post 기다리는 시간 
         StaffDataFetcher fetcher = new StaffDataFetcher();
         var fetchedData = await fetcher.FetchAllDataAsync(); //fetchedData에 시트에서 가져온 파싱값들 저장. 
 
