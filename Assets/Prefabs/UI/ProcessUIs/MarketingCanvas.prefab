@@ -327,6 +327,7 @@ MonoBehaviour:
   titleTl: {fileID: 6242181681481152682}
   tail1Panel: {fileID: 5660591983323267912}
   selectBtn: {fileID: 3916358104621083695}
+  panelSound: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &293130396039204403
 GameObject:
   m_ObjectHideFlags: 0
