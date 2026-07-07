@@ -14,6 +14,7 @@ public struct StaffTagUIRenderData
 
 public class T12ProjectDetailUIRender : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI companyNameTxt;
     [SerializeField] private TextMeshProUGUI projectNameTxt;    
     [SerializeField] private TextMeshProUGUI genreTxt;
     [SerializeField] private TextMeshProUGUI themeTxt;
@@ -28,6 +29,8 @@ public class T12ProjectDetailUIRender : MonoBehaviour
     
     public void Render(T12ProjectDetailUIRenderData data)
     {
+        companyNameTxt.text = ServiceLocater.Get<IGameManager>().PlayerName;
+
         var projectManager = ServiceLocater.Get<IProjectManager>();
 
         projectNameTxt.text = projectManager.GetProjectData().name;
@@ -52,7 +55,7 @@ public class T12ProjectDetailUIRender : MonoBehaviour
         MakeStaffTagList(GameDevProcName.DevelopmentFullProduction, staffList);
         MakeStaffTagList(GameDevProcName.ArtFullProduction, staffList);
 
-        for (int i = 0; i < staffList.Count; i++) // 총 12개.
+        for (int i = 0; i < staffList.Count; i++) // 중복 제거하고 최대 8명, 리더만
         {
             staffTags[i].Render(staffList[i].staffSprite, staffList[i].staffName, staffList[i].staffLevel);
             staffTags[i].gameObject.SetActive(true);

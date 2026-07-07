@@ -3363,8 +3363,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10234,6 +10234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce98bcbe6c04ec4a67f6e1190ac4dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12ProjectDetailUIRender
+  companyNameTxt: {fileID: 892993446221039833}
   projectNameTxt: {fileID: 8820539799884216737}
   genreTxt: {fileID: 3336416649117779232}
   themeTxt: {fileID: 7501970215190956856}
