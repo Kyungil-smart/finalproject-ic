@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 2439817516619905960}
   - component: {fileID: 5546582347301092220}
   - component: {fileID: 9095091214397837265}
+  - component: {fileID: 4886497572787879243}
   m_Layer: 5
   m_Name: ConfirmMsg
   m_TagString: Untagged
@@ -171,6 +172,19 @@ MonoBehaviour:
   msg: {fileID: 2101675241240534540}
   confirmBtn: {fileID: 6501742535487296082}
   cancelBtn: {fileID: 7971226591200708864}
+--- !u!114 &4886497572787879243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4889755093342830984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9979e6062176c42a5479b10e471c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundBinder
+  _btnClip: {fileID: 8300000, guid: a0419032326f4944b918d8335bd2c496, type: 3}
 --- !u!1 &6287237543321805792
 GameObject:
   m_ObjectHideFlags: 0
