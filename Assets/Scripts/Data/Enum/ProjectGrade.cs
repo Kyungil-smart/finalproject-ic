@@ -1,4 +1,8 @@
 ﻿public enum ProjectGrade
 {
-    F, E, D, C, B, A, S, SS, SSS, SSSS    
+    D = 0,
+    C = 1,
+    B = 2,
+    A = 3,
+    S = 4    
 }

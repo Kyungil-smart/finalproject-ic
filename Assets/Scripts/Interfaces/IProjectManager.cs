@@ -33,6 +33,7 @@ public interface IProjectManager
     public ProjectData GetProjectData();
     public void SetAwards(AwardsData awardsData);
     public ProjectCostCalculate CostCalculator {get;}
+    public void CalculateGrade();
 
     // Staff Part
     public void SetStaffsCost();  // 직원 고용 마지막에 한번 실행해놓기.
