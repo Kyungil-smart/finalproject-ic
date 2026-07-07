@@ -10234,6 +10234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce98bcbe6c04ec4a67f6e1190ac4dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12ProjectDetailUIRender
+  companyNameTxt: {fileID: 892993446221039833}
   projectNameTxt: {fileID: 8820539799884216737}
   genreTxt: {fileID: 3336416649117779232}
   themeTxt: {fileID: 7501970215190956856}
