@@ -32,9 +32,9 @@ public class SoundManager : Manager, ISoundManager
     
     public void LoadVolume()
     {
-        _sfxVolume = PlayerPrefs.GetFloat(SFXKEY, 0.5f);
-        _bgmVolume = PlayerPrefs.GetFloat(BGMKEY, 0.5f);
-        _masterVolume = PlayerPrefs.GetFloat(MASTERKEY, 0.5f);
+        _sfxVolume = PlayerPrefs.GetFloat(SFXKEY, 1f);
+        _bgmVolume = PlayerPrefs.GetFloat(BGMKEY, 1f);
+        _masterVolume = PlayerPrefs.GetFloat(MASTERKEY, 1f);
         _bgmSource.volume = _bgmVolume * _masterVolume;
         _sfxSource.volume = _sfxVolume * _masterVolume;
     }

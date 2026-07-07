@@ -192,6 +192,7 @@ public class ProjectManager : Manager, IProjectManager
         foreach (var staff in staffManager.GetAllHiredStaffList())
             staffCost += (uint)staff.Salary;
         _projectData.staffCost = staffCost;
+        Debug.Log($"[ProjectManager - Set StaffsCost] 직원들 연봉 계산 완료 {_projectData.staffCost}");
     }
     
     public void ClearStaffs() => _assignedStaff.Clear();

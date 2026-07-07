@@ -140,17 +140,6 @@ public class QualityCalculate
         qt.UpdateTotalQuality(totalQuality);
     }
     
-    // 소통 시너지 적용
-    // Todo. 따로 적용될수도 있다고 하셨어서 구현은 해두고 주석처리해둠
-    // public void ApplySynergy()
-    // {
-    //     var data = _qualityData.rates[0];
-    //     var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
-    //     float avgCom = (float)staffList.Average(s => s.Final_Common_Communication);
-    //     var qt = ServiceLocater.Get<IProjectManager>();
-    //     qt.UpdateTotalQuality(qt.TotalQuality * (1 + (avgCom / data.commSynergy)));
-    // }
-    
     // PreTotal퀄리티 달성률 계산
     public float CalculateAchieve()
     {

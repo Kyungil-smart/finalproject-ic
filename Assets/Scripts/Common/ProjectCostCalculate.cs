@@ -27,7 +27,7 @@ public class ProjectCostCalculate
         var theRow = _genreThemeData.genreThemeList.Find(r => r.GT_ID == pm.Theme.id);
 
         uint gtCost = (uint)(genRow.GT_Cost * theRow.GT_Cost_Ratio);
-        pm.Cost = gtCost + pm.StaffsCost;
+        pm.Cost = gtCost;
         Debug.Log($"[CalculateCost] pm.Cost: {pm.Cost}");
     }
 
@@ -39,7 +39,7 @@ public class ProjectCostCalculate
         var income = _incomeRatioDataSO.ratioList.Find(i => achieve >= i.achieveMin && achieve < i.achieveMax);
         if (income == null) return;
         
-        pm.Income = (uint)Math.Round((pm.Cost * income.moneyRatio) + ServiceLocater.Get<IProjectManager>().MarketingBonus);
+        pm.Income = (uint)Math.Round((pm.Cost + pm.StaffsCost) * income.moneyRatio + ServiceLocater.Get<IProjectManager>().MarketingBonus);
         Debug.Log($"[CalculateIncome] pm.Income: {pm.Income}");
     }
 }

@@ -948,7 +948,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProjectDetailUIRenderer
   company: {fileID: 605336864772738634}
   projectName: {fileID: 2335781072311670592}
-  genre: {fileID: 8930081177984432428}
+  genre: {fileID: 6535571397886599996}
   theme: {fileID: 8436107519400123421}
   grade: {fileID: 6743594776978963093}
   rewards: {fileID: 6743594776978963093}

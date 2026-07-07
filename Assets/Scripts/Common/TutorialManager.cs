@@ -52,6 +52,7 @@ public class TutorialManager : Manager, ITutorialManager
     // 튜토리얼 끝남
     private void CompleteTutorial()
     {
+        ServiceLocater.Get<IGameManager>().IsNeedTutorial = false;
         Debug.Log($"[TutorialManager] : Tutorial Finished");
     }
 }
