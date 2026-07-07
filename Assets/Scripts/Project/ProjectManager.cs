@@ -164,7 +164,25 @@ public class ProjectManager : Manager, IProjectManager
 
     public void CalculateGrade()
     {
-        // ToDo. 등급 받는 계산 식 넣기
+        float totalQuality = ServiceLocater.Get<IQualityManager>().Calculator.CalculateFullAchieve();
+        int gradeEnumCount = System.Enum.GetValues(typeof(ProjectGrade)).Length;    // 현재 enum에 정의된 등급의 총 개수 가져옴
+
+        ProjectGrade totalGrade = ProjectGrade.S;   // 기본 값은 가장 높은 등급으로
+
+        for (int i = 0; i < _incomeRatioDataSO.ratioList.Count; i++)
+        {
+            IncomeRatioRow row = _incomeRatioDataSO.ratioList[i];
+
+            // 현재 점수가 기준치 미만이면 해당 등급을 부여
+            if (totalQuality < row.achieveMax)
+            {
+                totalGrade = (ProjectGrade)i;
+                break;
+            }
+        }
+
+        _projectData.grade = totalGrade;
+        Debug.Log($"[ProjectManager - CalculateGrade] : 등급 산출 완료 -> 최종 등급: {totalGrade} (TotalQuality: {totalQuality})");
     }
 
     public void SetAwards(AwardsData awardsData)

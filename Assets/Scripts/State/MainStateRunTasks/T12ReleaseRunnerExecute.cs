@@ -199,6 +199,8 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
     {
         _waiting = true;
 
+        ServiceLocater.Get<IProjectManager>().CalculateGrade(); // 프로젝트 등급 계산
+
         T12ProjectDetailUIRenderData t12ProjectDetailUIRenderData = new T12ProjectDetailUIRenderData();
         t12ProjectDetailUIRenderData.btCallback = GoProcessC;
 
