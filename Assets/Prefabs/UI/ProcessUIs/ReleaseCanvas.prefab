@@ -356,6 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e377970c381640e3866a9304b3eef271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12IncomeUIRender
+  gameTitleValue: {fileID: 2074088960014850179}
   incomeValue: {fileID: 328832047036023}
   marketBonusValue: {fileID: 6779426049814354969}
   marketCostValue: {fileID: 1066862793184083891}

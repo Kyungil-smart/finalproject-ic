@@ -41,6 +41,7 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
     private float  _holdTimer;
     private bool   _confirmed;
     private Tween  _returnTween;
+    private bool   _holdScreen;
     private List<(int id, Action<int> callback)> _choices = new();
 
     private const float Eps = 0.001f;   // 0/1 도달 판정 여유
@@ -55,12 +56,14 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
     {
         RestoreInfoText();
         scrollbar.value = initScrollValue;
+        scrollbar.interactable = true;
         _choices.Clear();
         confirmMsgController.gameObject.SetActive(false);
     }
 
     private void Update()
     {
+        if (_holdScreen) return;
         float value = scrollbar.value;
         scrollValue.Value = value;
         
@@ -90,6 +93,9 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
             if (!_confirmed && _holdTimer >= holdDuration)
             {
                 _confirmed = true;
+                _holdScreen = true;
+                scrollbar.interactable = false;
+                int confirmedIndex = (int)Math.Round(scrollbar.value);
                 Debug.Log($"[ScrollBar] 확정! value = {value}");
                 if (!confirmMsgController.gameObject.activeSelf)
                 {
@@ -97,12 +103,18 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
                         9900042, 
                         () =>
                         {
-                            var choice = _choices[(int)Math.Round(scrollbar.value)];
+                            var choice = _choices[confirmedIndex];
                             choice.callback?.Invoke(choice.id);
+                            _holdScreen = false;
                             mainPanel.SetActive(false);
                             gameObject.SetActive(false);
                         },
-                        () => { 
+                        () =>
+                        {
+                            progressBarObject.SetActive(false);
+                            progressBar.fillAmount = 0f;
+                            _holdScreen = false;
+                            scrollbar.interactable = true;
                             scrollbar.value = 0.5f;
                             scrollValue.Value = 0.5f; 
                         });
@@ -111,6 +123,7 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
         }
         else
         {
+            RestoreInfoText();
             _holdTimer = 0f;   // 끝에서 벗어나거나 손 떼면 리셋
         }
     }
@@ -155,7 +168,7 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
 
     private void EndHold()
     {
-        if (!_isHolding) return;   // PointerUp+EndDrag 동시 호출 중복 방지
+        if (!_isHolding || _holdScreen) return;   // PointerUp+EndDrag 동시 호출 중복 방지
         _isHolding = false;
         progressBar.fillAmount = 0f;
         progressBarObject.SetActive(false);

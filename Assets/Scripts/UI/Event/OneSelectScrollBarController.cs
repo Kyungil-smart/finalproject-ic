@@ -30,6 +30,7 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
     private float  _holdTimer;
     private bool   _confirmed;
     private Tween  _returnTween;
+    private bool   _holdScreen;
     
     private Action<int> _callback;
     private int _btnId;
@@ -44,12 +45,14 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
     private void OnEnable()
     {
         scrollbar.value = initScrollValue;
+        scrollbar.interactable = true;
         RestoreInfoText();
         confirmMsgController.gameObject.SetActive(false);
     }
     
     private void Update()
     {
+        if (_holdScreen) return; 
         float value = scrollbar.value;
         scrollValue.Value = value;
 
@@ -76,6 +79,8 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
             {
                 _confirmed = true;
                 Debug.Log($"[ScrollBar] 확정! value = {value}");
+                _holdScreen = true;
+                scrollbar.interactable = false;
                 if (!confirmMsgController.gameObject.activeSelf)
                 {
                     confirmMsgController.Render(
@@ -83,10 +88,16 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
                         () =>
                         {
                             _callback?.Invoke(_btnId);
+                            _holdScreen = false;
                             mainPanel.SetActive(false);
                             gameObject.SetActive(false);
                         },
-                        () => { 
+                        () =>
+                        {
+                            progressBarObject.SetActive(false);
+                            progressBar.fillAmount = 0f;
+                            _holdScreen = false;
+                            scrollbar.interactable = true; 
                             scrollbar.value = 0f;
                             scrollValue.Value = 0f; 
                         });
@@ -95,6 +106,7 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
         }
         else
         {
+            RestoreInfoText();
             _holdTimer = 0f;   // 끝에서 벗어나거나 손 떼면 리셋
         }
     }
@@ -139,7 +151,7 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
 
     private void EndHold()
     {
-        if (!_isHolding) return;   // PointerUp+EndDrag 동시 호출 중복 방지
+        if (!_isHolding || _holdScreen) return;   // PointerUp+EndDrag 동시 호출 중복 방지
         _isHolding = false;
         progressBar.fillAmount = 0f;
         progressBarObject.SetActive(false);
