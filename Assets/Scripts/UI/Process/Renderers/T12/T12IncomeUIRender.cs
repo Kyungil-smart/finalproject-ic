@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class T12IncomeUIRender : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI gameTitleValue;
     [SerializeField] private TextMeshProUGUI incomeValue;
     [SerializeField] private TextMeshProUGUI marketBonusValue;
     [SerializeField] private TextMeshProUGUI marketCostValue;
@@ -16,6 +17,7 @@ public class T12IncomeUIRender : MonoBehaviour
     {
         // ToDo. 마케팅은 추후에.
         var projectManager = ServiceLocater.Get<IProjectManager>();
+        gameTitleValue.text = $"{projectManager.GetProjectData()?.name}";
         incomeValue.text = $"{projectManager.Income} 원";
         projectCostValue.text = $"{projectManager.Cost} 원";
         staffsCostValue.text = $"{projectManager.StaffsCost} 원";
