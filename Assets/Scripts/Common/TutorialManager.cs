@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public class TutorialManager : Manager, ITutorialManager
+public class TutorialManager : Manager, ITutorialManager, IResettable
 {
     private int tutorialUIIndex = 0;
-
 
     private void OnEnable() => Register();
     private void OnDisable() => Unregister();
@@ -55,4 +54,6 @@ public class TutorialManager : Manager, ITutorialManager
         ServiceLocater.Get<IGameManager>().IsNeedTutorial = false;
         Debug.Log($"[TutorialManager] : Tutorial Finished");
     }
+
+    public void ResetData() => tutorialUIIndex = 0;
 }

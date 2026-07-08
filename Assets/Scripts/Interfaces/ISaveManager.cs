@@ -11,4 +11,5 @@ public interface ISaveManager
     public UniTask Load(int slot);
     public void SelectSlot(int slot);
     public void DeleteSlot(int slot);
+    public void ResetAll();
 }

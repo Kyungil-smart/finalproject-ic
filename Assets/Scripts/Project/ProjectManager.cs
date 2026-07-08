@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectManager : Manager, IProjectManager
+public class ProjectManager : Manager, IProjectManager, IResettable
 {
     private ProjectData _projectData;
     private ProjectDataManager _projectDataManager;
@@ -261,5 +261,13 @@ public class ProjectManager : Manager, IProjectManager
             Debug.Log("[ProjectManager] Marketing Bonus: " + _projectData.marketingBonus);
         }
         Debug.Log("[ProjectManager] -----------------------------");
+    }
+
+    public void ResetData()
+    {
+        _projectData = null;
+        _assignedStaff.Clear();
+        _qaResult = 0f;
+        _isLoaded = false;
     }
 }
