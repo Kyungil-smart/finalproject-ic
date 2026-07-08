@@ -158,7 +158,6 @@ public class QualityCalculate
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
         var qt = ServiceLocater.Get<IProjectManager>();
         return Attainment(qt.TotalQuality, target.targetTotal);
-
     }
     
     // 파트별 달성률 계산
