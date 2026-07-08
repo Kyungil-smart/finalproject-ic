@@ -46,7 +46,6 @@
 | **애니메이션** | DOTween, Unity Timeline |
 | **데이터 로딩** | Addressables, Google Sheets(CSV) 런타임 임포트, ScriptableObject |
 | **입력** | Input System |
-| **분석** | Firebase Analytics |
 | **직렬화 / 기타** | Newtonsoft.Json, SerializeReference Extensions, NuGetForUnity |
 
 ---

@@ -32,7 +32,7 @@ public struct StateViewData
 }
 
 
-public class MainProcessStateMachine : Manager, IMainStateMachine
+public class MainProcessStateMachine : Manager, IMainStateMachine, IResettable
 {
     [Header("테스트 플래그")] 
     [SerializeField] private bool isTest = true;
@@ -171,6 +171,12 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         ServiceLocater.Unregister<IMainStateMachine>(this);
         _postManager.Unsubscribe<bool, StateViewData>(Channel.ProcessUIUpdate, UpdateStateInformation);
     }
+
+    public void ResetData()
+    {
+        _curStateData = default;
+        stateViewData = default;
+    }
     
     [ContextMenu("테스트용 메인 상태 머신 실행")]
     private void TestStateMachine()
@@ -178,4 +184,5 @@ public class MainProcessStateMachine : Manager, IMainStateMachine
         SetCurrentMainState(GameDevProcName.HumanResources);
         Run();
     }
+
 }
