@@ -104,4 +104,14 @@ public class SaveManager : Manager, ISaveManager, IReadyStatus
         _metas[slot] = null;                            // 메타 비움 → 빈 슬롯
         if (_currentSlot == slot) _currentSlot = -1;    // 현재 선택 슬롯이면 선택 해제(방어)
     }
+    
+    public void ResetAll()
+    {
+        (ServiceLocater.Get<IGameManager>() as IResettable)?.ResetData();
+        (ServiceLocater.Get<IProjectManager>() as IResettable)?.ResetData();
+        (ServiceLocater.Get<IStaffRegister>() as IResettable)?.ResetData();
+        (ServiceLocater.Get<IEventManager>() as IResettable)?.ResetData();
+        (ServiceLocater.Get<ITutorialManager>() as IResettable)?.ResetData();
+        (ServiceLocater.Get<IMainStateMachine>() as IResettable)?.ResetData();
+    }
 }

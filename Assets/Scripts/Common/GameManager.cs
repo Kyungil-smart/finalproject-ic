@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using R3;
 using UnityEngine;
 
-public class GameManager : Manager, IGameManager
+public class GameManager : Manager, IGameManager, IResettable
 {
-    private ReactiveProperty<int> _playerLevel = new(1); // 회사 레벨
-    private int _playerMaxLevel = 15; // 최대 회사 레벨
-    private ReactiveProperty<int> _money = new(1000000); // 재화 ; Test 목적으로 일단 많이 넣어둠.
-    private ReactiveProperty<int> _heart = new(0);
+    private const int   InitLevel = 1;
+    private const int   InitMoney = 1000000;
+    private const int   InitHeart = 0;
+    private const int   InitFloor = 2;
     private const int StartYear = 2026;
+    
+    private ReactiveProperty<int> _playerLevel = new(InitLevel); // 회사 레벨
+    private int _playerMaxLevel = 15; // 최대 회사 레벨
+    private ReactiveProperty<int> _money = new(InitMoney); // 재화 ; Test 목적으로 일단 많이 넣어둠.
+    private ReactiveProperty<int> _heart = new(InitHeart);
+    
     private ReactiveProperty<DateTime> _date = new(new DateTime(StartYear, 1, 1));
     private List<ProjectData> _projects = new(); // 프로젝트 리스트
     private ReactiveProperty<GameDevProcName> _procName = new();
     private bool _inputProjectNameActive;
-    private int _floor = 2;  // 현재 층수
+    private int _floor = InitFloor;  // 현재 층수
    
     public string PlayerName { get; private set; } // 회사 이름
     public ReadOnlyReactiveProperty<int> PlayerLevel => _playerLevel;
@@ -29,6 +35,8 @@ public class GameManager : Manager, IGameManager
     private int _maxSlotNum = 8;
 
     public bool IsNeedTutorial { get; set; } = true;    // 튜토리얼 발동 여부 (제어는 SlotUIController 에서 함)
+    
+    // ======================= 변수 입력 부 완료 ======================== //
 
 
     private void OnEnable() => Register();
@@ -105,5 +113,20 @@ public class GameManager : Manager, IGameManager
         Debug.Log("[GameManager] ------ 게임 매니저 데이터 확인 ------");
         Debug.Log("[GameManager] PlayerName: " + PlayerName);
         Debug.Log("[GameManager] ---------------------------------");
+    }
+
+    public void ResetData()
+    {
+        _playerLevel.Value = InitLevel;
+        _money.Value       = InitMoney;
+        _heart.Value       = InitHeart;
+        _date.Value        = new DateTime(StartYear, 1, 1);
+        _procName.Value    = default;
+
+        _exp        = 0f;
+        _floor      = InitFloor;
+        PlayerName  = null;
+        _inputProjectNameActive = false;
+        _projects.Clear();
     }
 }

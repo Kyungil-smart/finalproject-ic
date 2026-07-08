@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 
-public class EventManager : Manager, IEventManager, IReadyStatus
+public class EventManager : Manager, IEventManager, IReadyStatus, IResettable
 {
     [Serializable]
     public class EventDataStruct
@@ -195,9 +195,22 @@ public class EventManager : Manager, IEventManager, IReadyStatus
         }
     }
     
+    public void ResetData()
+    {
+        if (_eventTasks != null)
+            foreach (var kv in _eventTasks)
+                kv.Value.runIds.Clear();   // 실행 이력 초기화
+
+        _cts?.Cancel();
+        _cts?.Dispose();
+        _cts = null;
+        _running = false;
+    }
+    
     [ContextMenu("데이터 다운로드")]
     private void DataDownload()
     {
         DownloadData();
     }
+
 }
