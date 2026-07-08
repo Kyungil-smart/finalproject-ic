@@ -79,11 +79,10 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         calculate.CalculateCost();
         calculate.CalculateIncome();
         _waiting = true;
-        // ToDO. Animation 추가 작업 필요.
         
         var data = new ProgressAnimationRenderData()
         {
-            staticImageId = null,
+            staticImageId = "pimg_T12_P1",
             progressTexts = new() { "플랫폼 수수료 제외 수익 집계", "광고 효율 산출", "프로젝트 비용 및 임금 계산", "공유용 최종 매출 리포트 작성" },
             callback = GoProcessD,
         };
@@ -152,12 +151,10 @@ public class T12ReleaseRunnerExecute : ProcessTaskRunner, IProcessTaskRunnerExec
         ServiceLocater.Get<IProjectManager>().SetAwards(awardsList[index]);
 
         Debug.Log($"[T12ReleaseRunnerExecute] 어워즈 번호 : {awardsList[index]} | 보상 {awardsList[index].target} | {awardsList[index].value}");
-
-        // ToDO. Animation 추가 작업 필요.
-
+        
         var data = new ProgressAnimationRenderData()
         {
-            staticImageId = null,
+            staticImageId = "pimg_T12_P2",
             progressTexts = new() { "시상 후보 명단 등재", "비공개 기술 심사 진행", "유저 투표 점수 합산", "최종 수상작 발표" },
             callback = GoProcessE,
         };

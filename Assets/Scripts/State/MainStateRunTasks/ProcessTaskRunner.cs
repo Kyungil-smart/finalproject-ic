@@ -67,9 +67,9 @@ public class ProcessTaskRunner : MonoBehaviour, IProcessTaskRunnerEnterExit
         var data = new SimpleUIRenderData()
         {
             titleTextId = psSO.stateNameId,
-            imageId = "rimg_staff_2",
+            imageId = "rimg_TA_E",
             btTextId = 9900044,
-            btCallback =  GoProcess,
+            btCallback = GoProcess,
         };
         Debug.Log($"[ProcessTaskRunner:Exit] {psSO.eventType}");
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.ProcessSimpleUI, data);
