@@ -80,6 +80,7 @@ public class SlotUIController : MonoBehaviour
     private void OnSlotClicked(int slot)
     {
         _saveManager.SelectSlot(slot);          // _currentSlot = slot (빈/찬 공통)
+        _saveManager.ResetAll(); 
         if (_saveManager.IsEmpty(slot))
             OpenInputPlayerName();               // 빈 슬롯 → 새 게임 이름 입력 (D에서 패널 내부 완성)
         else

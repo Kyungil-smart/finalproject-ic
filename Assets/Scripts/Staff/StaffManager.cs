@@ -12,7 +12,7 @@ using Random = UnityEngine.Random;
 // 채용 관리 역할
 // 고용된 스태프의 StaffInitData, StaffRunTimeData, StaffEntity 저장. 
 // 고용된 스태프의 데이터 읽기(GetAllHiredStaffList), 쓰기(ModifyStaffData) 가능. 
-public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRecruit, IReadyStatus
+public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRecruit, IReadyStatus, IResettable
 {
     // Slot Data
     [Header("슬롯 데이터")]
@@ -630,5 +630,26 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
     private void GetLevel()
     {
         LevelUpStaffs();
+    }
+
+    public void ResetData()
+    {
+        // 고용 직원 정리 (RestoreSaveData의 정리 블록과 동일)
+        foreach (var e in _staffList)
+        {
+            e.ReleaseThumbnail();
+            e.ReleaseVisualInstance();
+            if (e.GetGameObject() != null) Destroy(e.GetGameObject());
+        }
+        _staffList.Clear();
+
+        // 채용 후보 정리 (썸네일 핸들 해제)
+        foreach (var c in _recruitCandidates) c.ReleaseThumbnail();
+        _recruitCandidates.Clear();
+
+        // 슬롯 상태 원복 (SO 기준 재생성)
+        _slotIndex   = 2;
+        _currentSlot = null;
+        InitSlot().Forget();   // InitSlot 본문에 실제 await 없음 → 사실상 동기 완료
     }
 }
