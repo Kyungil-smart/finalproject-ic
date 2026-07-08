@@ -51,6 +51,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - RelatedImages
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2df1da7a7f9c19941ae0acf48b95ecb6
+    m_Address: pimg_T12_P2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 364d4a5595e1ff443b1664282e1c207d
     m_Address: pimg_T11
     m_ReadOnly: 0
@@ -123,6 +129,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - RelatedImages
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6ddacb6fab3e044ab24647b79169981
+    m_Address: pimg_T12_P1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bb40a7ef5e17c614ba3a44a491440267
     m_Address: rimg_soon
     m_ReadOnly: 0
@@ -137,6 +149,12 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c5d741a49b172b849bfac191bbdd3435
     m_Address: rimg_t06_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - RelatedImages
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3f40c9ad13ce6444884965cf41a4146
+    m_Address: rimg_TA_E
     m_ReadOnly: 0
     m_SerializedLabels:
     - RelatedImages
