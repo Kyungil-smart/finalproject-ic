@@ -144,7 +144,7 @@ public class QualityCalculate
     public float CalculateAchieve()
     {
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
-        float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
+        float avgLevel = (float)Math.Round((float)staffList.Sum(s => s.Level) / staffList.Count, 1);
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
         var qt = ServiceLocater.Get<IProjectManager>();
         return Attainment(qt.TotalQuality, target.targetTotalPre);
@@ -154,7 +154,7 @@ public class QualityCalculate
     public float CalculateFullAchieve()
     {
         var staffList = ServiceLocater.Get<IStaffRegister>().GetAllHiredStaffList();
-        float avgLevel = (float)staffList.Sum(s => s.Level) / staffList.Count;
+        float avgLevel = (float)Math.Round((float)staffList.Sum(s => s.Level) / staffList.Count, 1);
         var target = _qualityData.targets.Find(t => t.avgLevel == avgLevel);
         var qt = ServiceLocater.Get<IProjectManager>();
         return Attainment(qt.TotalQuality, target.targetTotal);
