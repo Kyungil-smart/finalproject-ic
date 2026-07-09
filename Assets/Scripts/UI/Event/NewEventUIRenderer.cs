@@ -53,7 +53,9 @@ public class NewEventUIRenderer : MonoBehaviour, IUIRender
         List<EventEffectData> effectDataList = new();
         if (data.choices.Count == 2)
         {
+            // Todo. 혹시 몰라서 끄는거 넣어둠.
             twoScrollBarController.gameObject.SetActive(true);
+            oneScrollBarController.gameObject.SetActive(false);
             for (int i = 0; i < data.choices.Count; i++)
             {
                 effectDataList.Add(data.choices[i].effectData);
@@ -63,7 +65,9 @@ public class NewEventUIRenderer : MonoBehaviour, IUIRender
         }
         else
         {
+            // Todo. 혹시몰라서 끄는거 넣어둠.
             oneScrollBarController.gameObject.SetActive(true);
+            twoScrollBarController.gameObject.SetActive(false);
             var choice = data.choices[0];
             oneScrollBarController.SetData(choice.id, choice.textId, data.callback);
             effectDataList.Add(choice.effectData);
