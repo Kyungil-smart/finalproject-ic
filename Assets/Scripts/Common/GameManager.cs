@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameManager : Manager, IGameManager, IResettable
 {
     private const int   InitLevel = 1;
-    private const int   InitMoney = 1000000;
+    private const int   InitMoney = 30000;
     private const int   InitHeart = 0;
     private const int   InitFloor = 2;
     private const int StartYear = 2026;

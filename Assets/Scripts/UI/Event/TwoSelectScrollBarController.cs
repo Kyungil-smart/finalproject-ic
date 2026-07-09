@@ -57,6 +57,8 @@ public class TwoSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
         RestoreInfoText();
         scrollbar.value = initScrollValue;
         scrollbar.interactable = true;
+        progressBarObject.SetActive(false);
+        progressBar.fillAmount = 0f;
         _choices.Clear();
         confirmMsgController.gameObject.SetActive(false);
     }
