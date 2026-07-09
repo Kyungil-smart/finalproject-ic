@@ -35,7 +35,7 @@ public class RegularEventTaskRunner : IEventTaskRunner
                 target = _taskData.buttons[i].target,
                 value = btn.effectValue
             };
-            if (btn.textId != 0) renderData.choices.Add((i, btn.textId, effectData));
+            if (btn.textId != 0 && btn.target != "None") renderData.choices.Add((i, btn.textId, effectData));
         }
         
         ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.EventUI, renderData);

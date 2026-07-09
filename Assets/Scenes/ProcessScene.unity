@@ -3665,7 +3665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5649127506261825577, guid: d9a5d347d0b1ff240896f5a52c702dfc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6387956581176510039, guid: d9a5d347d0b1ff240896f5a52c702dfc, type: 3}
       propertyPath: btnClip
