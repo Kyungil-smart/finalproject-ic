@@ -47,6 +47,7 @@ MonoBehaviour:
   incomeUIRender: {fileID: 2776342515052327165}
   awardsUIRender: {fileID: 8141663973014444471}
   projectDetailUIRender: {fileID: 5108431520157915791}
+  reviewUIRender: {fileID: 0}
 --- !u!1 &121654772904706845
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,10 +157,10 @@ RectTransform:
   - {fileID: 3473074001415144956}
   m_Father: {fileID: 862195904896554648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 281.265, y: -160.91}
-  m_SizeDelta: {x: 150, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6507914123633227711
 MonoBehaviour:
@@ -173,10 +174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc59a33cd38f4112a9642e0eae1650f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12StaffRenderer
-  sprites: []
-  bgImage: {fileID: 5218720784400768460}
+  staffFaceImg: {fileID: 0}
   staffNameTxt: {fileID: 6701662128805289216}
-  staffLevelTxt: {fileID: 5141998869823729864}
 --- !u!1 &516925114211585105
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,10 +208,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 786076705822973692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142.954, y: -160.91}
-  m_SizeDelta: {x: 220, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5349052017299687082
 CanvasRenderer:
@@ -510,6 +509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &831871671159389865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,10 +634,10 @@ RectTransform:
   - {fileID: 2301594132904971378}
   m_Father: {fileID: 7059542929913065692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160.5, y: -117.497314}
-  m_SizeDelta: {x: 300, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &837393996522009466
 GameObject:
@@ -959,7 +959,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.86700004}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.48440552}
+  m_AnchoredPosition: {x: 0, y: -0.484375}
   m_SizeDelta: {x: 0, y: 0.9688988}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1119573749119426552
@@ -996,10 +996,10 @@ RectTransform:
   - {fileID: 8080482039639217828}
   m_Father: {fileID: 862195904896554648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 281.265, y: -130.91}
-  m_SizeDelta: {x: 150, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6542949775340444889
 MonoBehaviour:
@@ -1013,10 +1013,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc59a33cd38f4112a9642e0eae1650f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12StaffRenderer
-  sprites: []
-  bgImage: {fileID: 3637954377698840577}
+  staffFaceImg: {fileID: 0}
   staffNameTxt: {fileID: 3870715848230388750}
-  staffLevelTxt: {fileID: 7161140089239436166}
 --- !u!1 &1404098051594468774
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085,10 +1083,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 786076705822973692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142.954, y: -130.91}
-  m_SizeDelta: {x: 220, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8311477087828487303
 CanvasRenderer:
@@ -1249,6 +1247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &2184083279401898545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1439,10 +1438,10 @@ RectTransform:
   - {fileID: 3170671737099419962}
   m_Father: {fileID: 7059542929913065692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 500.5, y: -67.497314}
-  m_SizeDelta: {x: 300, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1745805907121835181
 GameObject:
@@ -1640,6 +1639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &6958349486346601033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2288,10 +2288,10 @@ RectTransform:
   - {fileID: 7655290548278357865}
   m_Father: {fileID: 862195904896554648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 111.265, y: -10.910004}
-  m_SizeDelta: {x: 150, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3866800403413554358
 MonoBehaviour:
@@ -2305,10 +2305,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc59a33cd38f4112a9642e0eae1650f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12StaffRenderer
-  sprites: []
-  bgImage: {fileID: 7117926611196971869}
+  staffFaceImg: {fileID: 0}
   staffNameTxt: {fileID: 4076272073596001307}
-  staffLevelTxt: {fileID: 5176173448721509351}
 --- !u!1 &2789968880385308952
 GameObject:
   m_ObjectHideFlags: 0
@@ -2368,6 +2366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &4711016694870991177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3391,6 +3390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &8388674348262071860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3617,6 +3617,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &8002412320833135007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3916,10 +3917,10 @@ RectTransform:
   - {fileID: 1237356939715483467}
   m_Father: {fileID: 862195904896554648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 111.265, y: -160.91}
-  m_SizeDelta: {x: 150, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1853400728782911657
 MonoBehaviour:
@@ -3933,10 +3934,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc59a33cd38f4112a9642e0eae1650f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12StaffRenderer
-  sprites: []
-  bgImage: {fileID: 7119440616711128800}
+  staffFaceImg: {fileID: 0}
   staffNameTxt: {fileID: 5569216521858277763}
-  staffLevelTxt: {fileID: 3068256006012754370}
 --- !u!1 &4276263539376863378
 GameObject:
   m_ObjectHideFlags: 0
@@ -3996,6 +3995,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &1354995145933777547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4120,10 +4120,10 @@ RectTransform:
   - {fileID: 8303780932284428239}
   m_Father: {fileID: 7059542929913065692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 500.5, y: -17.497314}
-  m_SizeDelta: {x: 300, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4405930414066292147
 GameObject:
@@ -4157,10 +4157,10 @@ RectTransform:
   - {fileID: 6837445695067587889}
   m_Father: {fileID: 7059542929913065692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160.5, y: -67.497314}
-  m_SizeDelta: {x: 300, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4411604942298375340
 GameObject:
@@ -4221,6 +4221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &5984797697721484885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5208,10 +5209,10 @@ RectTransform:
   - {fileID: 6592607907061978573}
   m_Father: {fileID: 862195904896554648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 281.265, y: -10.910004}
-  m_SizeDelta: {x: 150, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4259348532197866496
 MonoBehaviour:
@@ -5225,10 +5226,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc59a33cd38f4112a9642e0eae1650f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12StaffRenderer
-  sprites: []
-  bgImage: {fileID: 6780518335017516794}
+  staffFaceImg: {fileID: 0}
   staffNameTxt: {fileID: 7113541865331571358}
-  staffLevelTxt: {fileID: 6532666731572491618}
 --- !u!1 &4877705153424970014
 GameObject:
   m_ObjectHideFlags: 0
@@ -5562,6 +5561,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &3908805891932770228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5823,10 +5823,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 786076705822973692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142.954, y: -40.910004}
-  m_SizeDelta: {x: 220, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8917925038381183536
 CanvasRenderer:
@@ -5962,10 +5962,10 @@ RectTransform:
   - {fileID: 391803658635922399}
   m_Father: {fileID: 862195904896554648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 111.265, y: -40.910004}
-  m_SizeDelta: {x: 150, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &54827136401828403
 MonoBehaviour:
@@ -5979,10 +5979,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc59a33cd38f4112a9642e0eae1650f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12StaffRenderer
-  sprites: []
-  bgImage: {fileID: 2842409883460863457}
+  staffFaceImg: {fileID: 0}
   staffNameTxt: {fileID: 8100625863203563849}
-  staffLevelTxt: {fileID: 6653829019243667931}
 --- !u!1 &5152901208129777942
 GameObject:
   m_ObjectHideFlags: 0
@@ -6179,6 +6177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &7126126663980661763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6330,6 +6329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &8884253484929017431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6556,6 +6556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &3274923017449524864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6680,10 +6681,10 @@ RectTransform:
   - {fileID: 2510566008751920006}
   m_Father: {fileID: 7059542929913065692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 500.5, y: -117.497314}
-  m_SizeDelta: {x: 300, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5410586793359105427
 GameObject:
@@ -7093,6 +7094,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &7640090763024554278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7560,6 +7562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e377970c381640e3866a9304b3eef271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12IncomeUIRender
+  gameTitleValue: {fileID: 0}
   incomeValue: {fileID: 6958349486346601033}
   marketBonusValue: {fileID: 2738153695282599643}
   marketCostValue: {fileID: 6020521182333685894}
@@ -8098,10 +8101,10 @@ RectTransform:
   - {fileID: 2827252537971303603}
   m_Father: {fileID: 7059542929913065692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160.5, y: -17.497314}
-  m_SizeDelta: {x: 300, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6260789465673548109
 GameObject:
@@ -8178,10 +8181,10 @@ RectTransform:
   - {fileID: 5195660326293618691}
   m_Father: {fileID: 862195904896554648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 281.265, y: -40.910004}
-  m_SizeDelta: {x: 150, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2973761547405753196
 MonoBehaviour:
@@ -8195,10 +8198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc59a33cd38f4112a9642e0eae1650f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12StaffRenderer
-  sprites: []
-  bgImage: {fileID: 9083604499245095770}
+  staffFaceImg: {fileID: 0}
   staffNameTxt: {fileID: 5475981587913792139}
-  staffLevelTxt: {fileID: 2622404872126769537}
 --- !u!1 &6355007715866038819
 GameObject:
   m_ObjectHideFlags: 0
@@ -9016,7 +9017,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.85600007}
-  m_AnchoredPosition: {x: 0, y: -0.04901123}
+  m_AnchoredPosition: {x: 0, y: -0.049072266}
   m_SizeDelta: {x: 0, y: -0.09700012}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6760088155850631305
@@ -9051,10 +9052,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 786076705822973692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142.954, y: -100.91}
-  m_SizeDelta: {x: 220, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2441098002710472742
 CanvasRenderer:
@@ -9190,10 +9191,10 @@ RectTransform:
   - {fileID: 6102312121224148650}
   m_Father: {fileID: 862195904896554648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 281.265, y: -100.91}
-  m_SizeDelta: {x: 150, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5075589926534559820
 MonoBehaviour:
@@ -9207,10 +9208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc59a33cd38f4112a9642e0eae1650f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12StaffRenderer
-  sprites: []
-  bgImage: {fileID: 2362094699957712099}
+  staffFaceImg: {fileID: 0}
   staffNameTxt: {fileID: 2341947193990501728}
-  staffLevelTxt: {fileID: 298173987584848097}
 --- !u!1 &6769531865350045281
 GameObject:
   m_ObjectHideFlags: 0
@@ -9243,10 +9242,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 786076705822973692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142.954, y: -10.910004}
-  m_SizeDelta: {x: 220, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8841038807136520117
 CanvasRenderer:
@@ -9544,6 +9543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &18113054485113231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9807,10 +9807,10 @@ RectTransform:
   - {fileID: 1910558608226820108}
   m_Father: {fileID: 862195904896554648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 111.265, y: -130.91}
-  m_SizeDelta: {x: 150, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4633041109830483442
 MonoBehaviour:
@@ -9824,10 +9824,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc59a33cd38f4112a9642e0eae1650f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12StaffRenderer
-  sprites: []
-  bgImage: {fileID: 2583834793119383395}
+  staffFaceImg: {fileID: 0}
   staffNameTxt: {fileID: 4226793352785398051}
-  staffLevelTxt: {fileID: 213443101052793292}
 --- !u!1 &7231620783327589310
 GameObject:
   m_ObjectHideFlags: 0
@@ -10060,6 +10058,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &8815316784713352247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10211,6 +10210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &5550000070810393988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10668,7 +10668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4048418477922611360
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10703,6 +10703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce98bcbe6c04ec4a67f6e1190ac4dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12ProjectDetailUIRender
+  companyNameTxt: {fileID: 0}
   projectNameTxt: {fileID: 2021745494176447850}
   genreTxt: {fileID: 6147415257306586110}
   themeTxt: {fileID: 2120788826004475270}
@@ -10881,7 +10882,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.19900002}
   m_AnchorMax: {x: 1, y: 0.86700004}
-  m_AnchoredPosition: {x: 0, y: -2.9100037}
+  m_AnchoredPosition: {x: 0, y: -2.9100342}
   m_SizeDelta: {x: 0, y: 3.1790009}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8227077636705419610
@@ -10918,10 +10919,10 @@ RectTransform:
   - {fileID: 3700966555593431496}
   m_Father: {fileID: 862195904896554648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 281.265, y: -70.91}
-  m_SizeDelta: {x: 150, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2912764102224284162
 MonoBehaviour:
@@ -10935,10 +10936,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc59a33cd38f4112a9642e0eae1650f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12StaffRenderer
-  sprites: []
-  bgImage: {fileID: 2851624236727153578}
+  staffFaceImg: {fileID: 0}
   staffNameTxt: {fileID: 4176460924310845947}
-  staffLevelTxt: {fileID: 8997928195262211919}
 --- !u!1 &8293023769629266105
 GameObject:
   m_ObjectHideFlags: 0
@@ -10998,6 +10997,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &5233487106392608552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11442,10 +11442,10 @@ RectTransform:
   - {fileID: 1492697693369394830}
   m_Father: {fileID: 862195904896554648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 111.265, y: -70.91}
-  m_SizeDelta: {x: 150, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3464386983794246936
 MonoBehaviour:
@@ -11459,10 +11459,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc59a33cd38f4112a9642e0eae1650f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12StaffRenderer
-  sprites: []
-  bgImage: {fileID: 874565094467965565}
+  staffFaceImg: {fileID: 0}
   staffNameTxt: {fileID: 2075209357674094130}
-  staffLevelTxt: {fileID: 6268983300677504223}
 --- !u!1 &8527047756577465131
 GameObject:
   m_ObjectHideFlags: 0
@@ -11597,6 +11595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &8023617057338776482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11757,10 +11756,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 786076705822973692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 142.954, y: -70.91}
-  m_SizeDelta: {x: 220, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5360389480022739103
 CanvasRenderer:
@@ -12332,6 +12331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &7515290477384300512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12483,6 +12483,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TextLoader
   textId: -1
+  inputText: 
 --- !u!114 &9053671190419114823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12609,10 +12610,10 @@ RectTransform:
   - {fileID: 6534815986657387084}
   m_Father: {fileID: 862195904896554648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 111.265, y: -100.91}
-  m_SizeDelta: {x: 150, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &897313079489976262
 MonoBehaviour:
@@ -12626,7 +12627,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc59a33cd38f4112a9642e0eae1650f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12StaffRenderer
-  sprites: []
-  bgImage: {fileID: 6325782627846909035}
+  staffFaceImg: {fileID: 0}
   staffNameTxt: {fileID: 7535762639023291213}
-  staffLevelTxt: {fileID: 6254384569819452086}
