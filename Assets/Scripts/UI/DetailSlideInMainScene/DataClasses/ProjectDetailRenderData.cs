@@ -7,7 +7,7 @@ public class ProjectDetailRenderData
     public string projectName;
     public string genre;
     public string theme;
-    public string grade;
+    public ProjectGrade grade;
     public string rewards;
     public uint cost;
     public uint income;

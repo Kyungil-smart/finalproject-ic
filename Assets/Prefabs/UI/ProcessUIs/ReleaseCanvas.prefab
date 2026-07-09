@@ -3355,7 +3355,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e33da2ed35a2607458b7274f3b10efce, type: 2}
   m_sharedMaterial: {fileID: 6149625765283235433, guid: e33da2ed35a2607458b7274f3b10efce, type: 2}
@@ -19814,11 +19814,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce98bcbe6c04ec4a67f6e1190ac4dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::T12ProjectDetailUIRender
+  gradeImg:
+  - {fileID: -1611700064163295678, guid: b862a0637f3c23445abe4f5e19593df1, type: 3}
+  - {fileID: -8530116080421057280, guid: 4d6785e25bcca764484cc1d8a0bc8247, type: 3}
+  - {fileID: -567236392211765821, guid: 12dc5036eb3803445a3eea41a4443a79, type: 3}
+  - {fileID: 349056023955157249, guid: 4dcf702df3db9a449a4882f6b2ad7753, type: 3}
+  - {fileID: -166991787576166406, guid: 639982c1324e2d7459c1df4cb0c1dade, type: 3}
   companyNameTxt: {fileID: 892993446221039833}
   projectNameTxt: {fileID: 8820539799884216737}
   genreTxt: {fileID: 3336416649117779232}
   themeTxt: {fileID: 7501970215190956856}
-  gradeTxt: {fileID: 1888614283727714475}
+  grade: {fileID: 1914871461379084057}
   costTxt: {fileID: 9094003708672317776}
   incomeTxt: {fileID: 1092083219006727275}
   awardsTxt: {fileID: 7403328448614234662}

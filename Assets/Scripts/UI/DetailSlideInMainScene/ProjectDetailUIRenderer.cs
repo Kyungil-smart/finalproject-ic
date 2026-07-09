@@ -16,11 +16,12 @@ public class UserReviewShow
 
 public class ProjectDetailUIRenderer : MonoBehaviour
 {
+    [SerializeField] private Sprite[] gradeImg;
     [SerializeField] private TextMeshProUGUI company;
     [SerializeField] private TextMeshProUGUI projectName;
     [SerializeField] private TextMeshProUGUI genre;
     [SerializeField] private TextMeshProUGUI theme;
-    [SerializeField] private TextMeshProUGUI grade;
+    [SerializeField] private Image grade;
     [SerializeField] private TextMeshProUGUI rewards;
     [SerializeField] private TextMeshProUGUI cost;
     [SerializeField] private TextMeshProUGUI income;
@@ -58,7 +59,7 @@ public class ProjectDetailUIRenderer : MonoBehaviour
         projectName.text = data.projectName;
         genre.text = data.genre;
         theme.text = data.theme;
-        grade.text = data.grade;
+        grade.sprite = gradeImg[(int)data.grade];
         rewards.text = data.rewards;
         cost.text = data.cost.ToString("N0");
         income.text = data.income.ToString("N0");
