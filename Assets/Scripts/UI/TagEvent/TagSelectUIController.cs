@@ -45,6 +45,12 @@ public class TagSelectUIController : MonoBehaviour, IUIRender
         {
             if (tag == null) tagConfirmBtn.gameObject.SetActive(false);
             else tagConfirmBtn.gameObject.SetActive(true);
+
+            foreach (var panel in tagPanels)
+            {
+                // 패널이 가진 데이터가 현재 매니저가 선택한 데이터와 같은지 판별하여 전달
+                panel.SetHighlight(panel.CurrentTag == tag);
+            }
         }).AddTo(this);
     }
     
