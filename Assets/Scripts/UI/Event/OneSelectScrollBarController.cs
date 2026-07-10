@@ -58,7 +58,8 @@ public class OneSelectScrollBarController : MonoBehaviour, IPointerDownHandler, 
 
         MovePanel(rightView, _rightStartPos, Mathf.InverseLerp(0f, 1f, value), true);
         
-        bool atEnd = value <= Eps || value >= 1f - Eps;
+        // Todo. OneScrollbar는 왼쪽에서는 나오면 안되기에 삭제함.
+        bool atEnd = value >= 1f - Eps;
 
         if (_isHolding && atEnd)
         {
