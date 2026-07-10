@@ -12,7 +12,7 @@ public interface IStaffRegister
     public StaffEntity GetStaffEntity(int staffId);
     public void GetExpInProduction(GameDevProcName name, List<int> staffIds);
     public void GetExpAllStaffs();
-    public UniTask LevelUpStaffs();
+    public UniTask<bool> LevelUpStaffs();
     public void SetSlotPos(Transform[] transforms);
     public UniTask RestoreSaveData(StaffManagerSaveData dto);
     public StaffManagerSaveData CaptureSaveData();
