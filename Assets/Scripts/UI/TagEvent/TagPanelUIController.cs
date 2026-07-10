@@ -10,12 +10,27 @@ public class TagPanelUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _tagEffectBName;
     [SerializeField] private Button _selectBtn;
 
+    [Header("Highlight Settings")]
+    [SerializeField] private Image _imageToggle;
+    [SerializeField] private Color _trueColor = new Color(0.7f, 0.9f, 0.7f, 0.5f);  // 선택되었을 때 (연녹색)
+    [SerializeField] private Color _falseColor = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+
     private TagSelectUIController _mainController;
     private TagRow _tagRow;
-    
+    private bool _isSelected = false;
+
+    public TagRow CurrentTag => _tagRow;    // 하이라이트를 TagSelectUIController 에서 처리하기 위해 현재 선택된 TagRow 를 외부에서 접근 가능하도록 함
+
     private void OnEnable() => _selectBtn.onClick.AddListener(OnSelect);
     private void OnDisable() => _selectBtn.onClick.RemoveListener(OnSelect);
     
+    private void Awake()
+    {
+        if (_imageToggle != null)
+            _imageToggle.color = _falseColor;
+    }
+
+
     public void Render(TagRow tag, TagSelectUIController mainController)
     {
         // _icon ; Addressable 이나 다른 거 이용...해서! icon 가져오기. matching 으로는 아무래도....
@@ -25,6 +40,14 @@ public class TagPanelUIController : MonoBehaviour
         RenderTagEffect(_tagEffectAName, tag.Tag_A_Effect_Name);
         RenderTagEffect(_tagEffectBName, tag.Tag_B_Effect_Name);
         _mainController = mainController;
+    }
+
+    public void SetHighlight(bool isSelected)
+    {
+        _isSelected = isSelected;
+
+        if (_imageToggle != null)
+            _imageToggle.color = _isSelected ? _trueColor : _falseColor;
     }
 
     private void OnSelect()

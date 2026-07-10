@@ -37,5 +37,5 @@ public class TagPanelUITargetStaffRender : MonoBehaviour
         }
     }
 
-    private void UpdateMoney(int money) => moneyText.text = $"자금\n{money}";
+    private void UpdateMoney(int money) => moneyText.text = $"{money:N0}";
 }
