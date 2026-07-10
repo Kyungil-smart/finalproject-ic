@@ -314,7 +314,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
             Final_Common_Concentration = data.init.Base_Common_Concentration + data.runtime.Added_Common_Concentration,
             Final_Common_Creativity = data.init.Base_Common_Creativity + data.runtime.Added_Common_Creativity,
             Final_Common_Communication = data.init.Base_Common_Communication + data.runtime.Added_Common_Communication,
-            Final_Job_Planning = data.init.Base_Job_Planning + data.runtime.Added_Job_Design,
+            Final_Job_Planning = data.init.Base_Job_Design + data.runtime.Added_Job_Design,
             Final_Job_Development = data.init.Base_Job_Development + data.runtime.Added_Job_Development,
             Final_Job_Art = data.init.Base_Job_Art + data.runtime.Added_Job_Art
         };

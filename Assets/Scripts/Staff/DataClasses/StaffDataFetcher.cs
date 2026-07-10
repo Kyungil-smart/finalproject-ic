@@ -81,10 +81,10 @@ public class StaffDataFetcher
                 Tag_Name = GetString(row["Tag_Name_ID"]),
                 Tag_Desc_ID = row["Tag_Desc_ID"],
                 Tag_Desc = GetString(row["Tag_Desc_ID"]),
-                Tag_A_Effect_Name = GetString(row["Tag_A_Effect_ID"]),
+                Tag_A_Effect_Name = row["Tag_A_Effect_Name"],
                 Tag_A_Effect_Value = int.Parse(row["Tag_A_Effect_Value"]),
                 Tag_A_Effect_Ratio = float.Parse(row["Tag_A_Effect_Ratio"]),
-                Tag_B_Effect_Name = GetString(row["Tag_B_Effect_ID"]),
+                Tag_B_Effect_Name = row["Tag_B_Effect_Name"],
                 Tag_B_Effect_Value = int.Parse(row["Tag_B_Effect_Value"]),
                 Tag_B_Effect_Ratio = float.Parse(row["Tag_B_Effect_Ratio"])
             });
@@ -124,7 +124,8 @@ public class StaffDataFetcher
                 Tag_Min = int.Parse(row["Tag_Min"]),
                 Tag_Max = int.Parse(row["Tag_Max"]),
                 Grade_XP = float.Parse(row["Grade_XP"]),
-                Grade_Cost = float.Parse(row["Grade_Cost"])
+                Grade_Cost = float.Parse(row["Grade_Cost"]),
+                Grade_Ratio = float.Parse(row["Grade_Stat"]),
             });
         }
         Debug.Log("[StaffDataFetcher] Grade Data ... Done");

@@ -56,7 +56,7 @@ public class StaffDataFactory
         data.Base_Common_Concentration = Random.Range(levelData.Common_Min, levelData.Common_Max + 1);
         data.Base_Common_Creativity = Random.Range(levelData.Common_Min, levelData.Common_Max + 1);
         data.Base_Common_Communication = Random.Range(levelData.Common_Min, levelData.Common_Max + 1);
-        data.Base_Job_Planning = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
+        data.Base_Job_Design = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
         data.Base_Job_Development = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
         data.Base_Job_Art = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
         
@@ -110,7 +110,7 @@ public class StaffDataFactory
                 break;
             case "Staff_Design":
                 runtime.Added_Job_Design += addValue;
-                runtime.Added_Job_Design += Mathf.RoundToInt(init.Base_Job_Planning * ratioValue);
+                runtime.Added_Job_Design += Mathf.RoundToInt(init.Base_Job_Design * ratioValue);
                 break;
             case "Staff_Dev":
                 runtime.Added_Job_Development += addValue;
@@ -136,7 +136,7 @@ public class StaffDataFactory
     {
         var dataManager = ServiceLocater.Get<IStaffDataManager>();
         float gradeCost = dataManager.GradeList.Find(x => x.Grade == data.Grade.ToString()).Grade_Cost;
-        int totalBaseStats = data.Base_Common_Concentration + data.Base_Common_Creativity + data.Base_Job_Planning; // 약식 합산
+        int totalBaseStats = data.Base_Common_Concentration + data.Base_Common_Creativity + data.Base_Job_Design; // 약식 합산
         // totalBaseStats 식은 나중에 직업군 별 스탯 배율?을 적용 (자신의 직업과 연관되지 않은 스탯 * 0.X)
         
         data.Salary = Mathf.RoundToInt((2000 + (totalBaseStats * gradeCost)) / 100f) * 100;
@@ -149,14 +149,15 @@ public class StaffDataFactory
         var runtime = new StaffRuntimeData();
         var dataManager = ServiceLocater.Get<IStaffDataManager>();
         
-        GradeRow gradeData = RollGradeFromTable(dataManager);
+        // Todo. CreateDataByStaffIDAsync 이 함수에서 먼저 등급을 뽑는거 같아서 주석처리함 계산은 맞는것 같긴함.
+        // GradeRow gradeData = RollGradeFromTable(dataManager);
+        var gradeData = dataManager.GradeList.Find(x => x.GradeEnum == init.Grade);
         // 등급 스탯 보너스 배율 적용
-        float gradeMultiplier = gradeData.Grade_XP;
-        if (gradeMultiplier > 1) gradeMultiplier -= 1f;
+        float gradeMultiplier = gradeData.Grade_Ratio - 1f;
         runtime.Added_Common_Concentration = Mathf.RoundToInt(init.Base_Common_Concentration * gradeMultiplier);
         runtime.Added_Common_Creativity = Mathf.RoundToInt(init.Base_Common_Creativity * gradeMultiplier);
         runtime.Added_Common_Communication = Mathf.RoundToInt(init.Base_Common_Communication * gradeMultiplier);
-        runtime.Added_Job_Design = Mathf.RoundToInt(init.Base_Job_Planning * gradeMultiplier);
+        runtime.Added_Job_Design = Mathf.RoundToInt(init.Base_Job_Design * gradeMultiplier);
         runtime.Added_Job_Development = Mathf.RoundToInt(init.Base_Job_Development * gradeMultiplier);
         runtime.Added_Job_Art = Mathf.RoundToInt(init.Base_Job_Art * gradeMultiplier);
 
@@ -181,10 +182,15 @@ public class StaffDataFactory
         {
             foreach (var tag in runtime.Added_Tags)
             {
+                Debug.Log($"[Tag] {tag.Tag_Name} | A_Name:{tag.Tag_A_Effect_Name} A_Val:{tag.Tag_A_Effect_Value} A_Ratio:{tag.Tag_A_Effect_Ratio}");
+                Debug.Log($"[Tag] {tag.Tag_Name} | B_Name:{tag.Tag_B_Effect_Name} A_Val:{tag.Tag_B_Effect_Value} A_Ratio:{tag.Tag_B_Effect_Ratio}");
                 ApplyTagEffect(init, runtime, tag.Tag_A_Effect_Name, tag.Tag_A_Effect_Value, tag.Tag_A_Effect_Ratio);
                 ApplyTagEffect(init, runtime, tag.Tag_B_Effect_Name, tag.Tag_B_Effect_Value, tag.Tag_B_Effect_Ratio);
             }
         }
+        Debug.Log($"[StaffFactory] {init.Staff_Name} | Base_Concentration:{init.Base_Common_Concentration} | Added_Concentration:{runtime.Added_Common_Concentration}");
+        Debug.Log($"[StaffFactory] {init.Staff_Name} | Base_Concentration:{init.Base_Common_Communication} | Added_Concentration:{runtime.Added_Common_Communication}");
+        Debug.Log($"[StaffFactory] {init.Staff_Name} | Base_Concentration:{init.Base_Common_Creativity} | Added_Concentration:{runtime.Added_Common_Creativity}");
         return runtime;
     }
 }

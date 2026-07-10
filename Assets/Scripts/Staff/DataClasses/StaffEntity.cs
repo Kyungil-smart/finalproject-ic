@@ -59,14 +59,14 @@ public class StaffEntity : IStaffInfo, ISavableStaff
 
     public int GetCommunication()
     {
-        int state = init.Base_Job_Art;
-        state += runtime.Added_Job_Art;
+        int state = init.Base_Common_Communication;
+        state += runtime.Added_Common_Communication;
         return state;
     }
 
     public int GetDesign()
     {
-        int state = init.Base_Job_Planning;
+        int state = init.Base_Job_Design;
         state += runtime.Added_Job_Design;
         return state;
     }
@@ -102,7 +102,7 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         // Apply Job Status
         init.Base_Job_Art = ApplyState(init.Base_Job_Art, isCommon: false);
         init.Base_Job_Development = ApplyState(init.Base_Job_Development, isCommon: false);
-        init.Base_Job_Planning = ApplyState(init.Base_Job_Planning, isCommon: false);
+        init.Base_Job_Design = ApplyState(init.Base_Job_Design, isCommon: false);
         
         _staffDataFactory.CalculateCosts(init);
         // LevelUP UI 발생
