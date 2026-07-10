@@ -149,10 +149,11 @@ public class StaffDataFactory
         var runtime = new StaffRuntimeData();
         var dataManager = ServiceLocater.Get<IStaffDataManager>();
         
-        GradeRow gradeData = RollGradeFromTable(dataManager);
+        // Todo. CreateDataByStaffIDAsync 이 함수에서 먼저 등급을 뽑는거 같아서 주석처리함 계산은 맞는것 같긴함.
+        // GradeRow gradeData = RollGradeFromTable(dataManager);
+        var gradeData = dataManager.GradeList.Find(x => x.GradeEnum == init.Grade);
         // 등급 스탯 보너스 배율 적용
-        float gradeMultiplier = gradeData.Grade_XP;
-        if (gradeMultiplier > 1) gradeMultiplier -= 1f;
+        float gradeMultiplier = gradeData.Grade_Ratio - 1f;
         runtime.Added_Common_Concentration = Mathf.RoundToInt(init.Base_Common_Concentration * gradeMultiplier);
         runtime.Added_Common_Creativity = Mathf.RoundToInt(init.Base_Common_Creativity * gradeMultiplier);
         runtime.Added_Common_Communication = Mathf.RoundToInt(init.Base_Common_Communication * gradeMultiplier);
@@ -181,10 +182,15 @@ public class StaffDataFactory
         {
             foreach (var tag in runtime.Added_Tags)
             {
+                Debug.Log($"[Tag] {tag.Tag_Name} | A_Name:{tag.Tag_A_Effect_Name} A_Val:{tag.Tag_A_Effect_Value} A_Ratio:{tag.Tag_A_Effect_Ratio}");
+                Debug.Log($"[Tag] {tag.Tag_Name} | B_Name:{tag.Tag_B_Effect_Name} A_Val:{tag.Tag_B_Effect_Value} A_Ratio:{tag.Tag_B_Effect_Ratio}");
                 ApplyTagEffect(init, runtime, tag.Tag_A_Effect_Name, tag.Tag_A_Effect_Value, tag.Tag_A_Effect_Ratio);
                 ApplyTagEffect(init, runtime, tag.Tag_B_Effect_Name, tag.Tag_B_Effect_Value, tag.Tag_B_Effect_Ratio);
             }
         }
+        Debug.Log($"[StaffFactory] {init.Staff_Name} | Base_Concentration:{init.Base_Common_Concentration} | Added_Concentration:{runtime.Added_Common_Concentration}");
+        Debug.Log($"[StaffFactory] {init.Staff_Name} | Base_Concentration:{init.Base_Common_Communication} | Added_Concentration:{runtime.Added_Common_Communication}");
+        Debug.Log($"[StaffFactory] {init.Staff_Name} | Base_Concentration:{init.Base_Common_Creativity} | Added_Concentration:{runtime.Added_Common_Creativity}");
         return runtime;
     }
 }
