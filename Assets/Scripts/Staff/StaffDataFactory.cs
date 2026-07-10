@@ -56,7 +56,7 @@ public class StaffDataFactory
         data.Base_Common_Concentration = Random.Range(levelData.Common_Min, levelData.Common_Max + 1);
         data.Base_Common_Creativity = Random.Range(levelData.Common_Min, levelData.Common_Max + 1);
         data.Base_Common_Communication = Random.Range(levelData.Common_Min, levelData.Common_Max + 1);
-        data.Base_Job_Planning = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
+        data.Base_Job_Design = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
         data.Base_Job_Development = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
         data.Base_Job_Art = Random.Range(levelData.Job_Min, levelData.Job_Max + 1);
         
@@ -110,7 +110,7 @@ public class StaffDataFactory
                 break;
             case "Staff_Design":
                 runtime.Added_Job_Design += addValue;
-                runtime.Added_Job_Design += Mathf.RoundToInt(init.Base_Job_Planning * ratioValue);
+                runtime.Added_Job_Design += Mathf.RoundToInt(init.Base_Job_Design * ratioValue);
                 break;
             case "Staff_Dev":
                 runtime.Added_Job_Development += addValue;
@@ -136,7 +136,7 @@ public class StaffDataFactory
     {
         var dataManager = ServiceLocater.Get<IStaffDataManager>();
         float gradeCost = dataManager.GradeList.Find(x => x.Grade == data.Grade.ToString()).Grade_Cost;
-        int totalBaseStats = data.Base_Common_Concentration + data.Base_Common_Creativity + data.Base_Job_Planning; // 약식 합산
+        int totalBaseStats = data.Base_Common_Concentration + data.Base_Common_Creativity + data.Base_Job_Design; // 약식 합산
         // totalBaseStats 식은 나중에 직업군 별 스탯 배율?을 적용 (자신의 직업과 연관되지 않은 스탯 * 0.X)
         
         data.Salary = Mathf.RoundToInt((2000 + (totalBaseStats * gradeCost)) / 100f) * 100;
@@ -156,7 +156,7 @@ public class StaffDataFactory
         runtime.Added_Common_Concentration = Mathf.RoundToInt(init.Base_Common_Concentration * gradeMultiplier);
         runtime.Added_Common_Creativity = Mathf.RoundToInt(init.Base_Common_Creativity * gradeMultiplier);
         runtime.Added_Common_Communication = Mathf.RoundToInt(init.Base_Common_Communication * gradeMultiplier);
-        runtime.Added_Job_Design = Mathf.RoundToInt(init.Base_Job_Planning * gradeMultiplier);
+        runtime.Added_Job_Design = Mathf.RoundToInt(init.Base_Job_Design * gradeMultiplier);
         runtime.Added_Job_Development = Mathf.RoundToInt(init.Base_Job_Development * gradeMultiplier);
         runtime.Added_Job_Art = Mathf.RoundToInt(init.Base_Job_Art * gradeMultiplier);
 
