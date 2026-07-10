@@ -542,8 +542,9 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         }
     }
 
-    public async UniTask LevelUpStaffs()
+    public async UniTask<bool> LevelUpStaffs()
     {   // Main 씬으로 넘어간 후에 현재 Staff 들의 경험치를 토대로 렙업을 일괄/순차적으로 진행해야함.
+        bool levelUp = false;
         foreach (var staffData in _staffList)
         {
             var levelExpData = _staffDataManager
@@ -554,8 +555,10 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
                 Debug.Log("레벨업");
                 ServiceLocater.Get<ISoundManager>().PlaySfx(levelUpClip);
                 await staffData.LevelUp(levelExpData.isTag);
+                levelUp = true;
             } 
         }
+        return levelUp;
     }
     
     // 라벨에 묶인 썸네일들의 "존재하는 Staff_ID 집합"을 가져온다 (실제 이미지는 아직 로드 안 함)
