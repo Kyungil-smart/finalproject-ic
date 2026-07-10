@@ -372,6 +372,9 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         _slots = slotUnlockData.slots.Select(def => new SlotState(def)).ToList();
         for (int i = 0; i < _slotIndex; i++)
             _slots[i].unlocked = true;
+        // Todo. 기존의 슬롯해금하고 데이터 삭제하고 다시 생성하면 슬롯 해금되어있는데 버튼은 남아있어서 추가했습니다.
+        if (_slotIndex < _slots.Count)
+            _currentSlot = _slots[_slotIndex];
     }
 
     public void SetSlotPos(Transform[] transforms)

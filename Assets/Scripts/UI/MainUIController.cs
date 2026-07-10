@@ -241,8 +241,9 @@ public class MainUIController : MonoBehaviour
 
     private void UnlockSlotConfirm(bool isRoom)
     {
-        if (isRoom) confirmMsgController.Render(9900041, UnlockSlot);
-        else confirmMsgController.Render(9900039, UnlockSlot);
+        var cost = ServiceLocater.Get<IStaffRegister>().CurrentSlot.cost;
+        if (isRoom) confirmMsgController.Render(9900041, UnlockSlot, null, $"가격 : {cost:N0}원");
+        else confirmMsgController.Render(9900039, UnlockSlot, null, $"가격 : {cost:N0}원");
     }
 
     private void UnlockSlot()
