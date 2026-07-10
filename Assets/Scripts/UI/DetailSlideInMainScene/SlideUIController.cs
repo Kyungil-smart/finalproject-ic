@@ -74,7 +74,7 @@ public class SlideUIController : MonoBehaviour, IUIRender
                             title = project.name,
                             genre = project.genre.name,
                             theme = project.theme.name,
-                            grade = project.grade.ToString(),
+                            grade = project.grade,
                             rewards = project.award.name.name,
                             reviews = project.reviewResults
                         });
@@ -95,7 +95,7 @@ public class SlideUIController : MonoBehaviour, IUIRender
                         title = project.name,
                         genre = project.genre.name,
                         theme = project.theme.name,
-                        grade = project.grade.ToString(),
+                        grade = project.grade,
                         rewards = project.award.name.name,
                         reviews = project.reviewResults
                     });    

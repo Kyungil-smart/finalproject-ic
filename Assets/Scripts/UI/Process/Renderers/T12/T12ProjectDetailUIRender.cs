@@ -14,11 +14,12 @@ public struct StaffTagUIRenderData
 
 public class T12ProjectDetailUIRender : MonoBehaviour
 {
+    [SerializeField] private Sprite[] gradeImg;
     [SerializeField] private TextMeshProUGUI companyNameTxt;
     [SerializeField] private TextMeshProUGUI projectNameTxt;    
     [SerializeField] private TextMeshProUGUI genreTxt;
     [SerializeField] private TextMeshProUGUI themeTxt;
-    [SerializeField] private TextMeshProUGUI gradeTxt;
+    [SerializeField] private Image grade;
     [SerializeField] private TextMeshProUGUI costTxt;
     [SerializeField] private TextMeshProUGUI incomeTxt;
     [SerializeField] private TextMeshProUGUI awardsTxt;
@@ -36,7 +37,7 @@ public class T12ProjectDetailUIRender : MonoBehaviour
         projectNameTxt.text = projectManager.GetProjectData().name;
         genreTxt.text = projectManager.Genre.name;
         themeTxt.text = projectManager.Theme.name;
-        gradeTxt.text = projectManager.GetProjectData().grade.ToString();
+        grade.sprite = gradeImg[(int)projectManager.GetProjectData().grade];
         costTxt.text = projectManager.Cost.ToString();
         incomeTxt.text = projectManager.Income.ToString();
         awardsTxt.text = projectManager.Awards.name.name;
