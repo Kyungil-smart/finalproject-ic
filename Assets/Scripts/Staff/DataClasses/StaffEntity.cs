@@ -59,14 +59,14 @@ public class StaffEntity : IStaffInfo, ISavableStaff
 
     public int GetCommunication()
     {
-        int state = init.Base_Job_Art;
-        state += runtime.Added_Job_Art;
+        int state = init.Base_Common_Communication;
+        state += runtime.Added_Common_Communication;
         return state;
     }
 
     public int GetDesign()
     {
-        int state = init.Base_Job_Planning;
+        int state = init.Base_Job_Design;
         state += runtime.Added_Job_Design;
         return state;
     }
@@ -90,7 +90,7 @@ public class StaffEntity : IStaffInfo, ISavableStaff
     public int SetSeatId(int seatId) => _seatId = seatId;
     public void SetGameObject(GameObject gameObject) => _gameObject = gameObject;
     
-    public UniTask LevelUp(bool isAttachTag)
+    public async UniTask LevelUp(bool isAttachTag)
     {
         init.Level++;
         
@@ -102,7 +102,7 @@ public class StaffEntity : IStaffInfo, ISavableStaff
         // Apply Job Status
         init.Base_Job_Art = ApplyState(init.Base_Job_Art, isCommon: false);
         init.Base_Job_Development = ApplyState(init.Base_Job_Development, isCommon: false);
-        init.Base_Job_Planning = ApplyState(init.Base_Job_Planning, isCommon: false);
+        init.Base_Job_Design = ApplyState(init.Base_Job_Design, isCommon: false);
         
         _staffDataFactory.CalculateCosts(init);
         // LevelUP UI 발생
@@ -118,12 +118,11 @@ public class StaffEntity : IStaffInfo, ISavableStaff
             isSelectingTag = true;
             ServiceLocater.Get<IUIRouter>().NavigateTo(UIType.TagSelectUI, entity);
         }
-        UniTask.WaitUntil(() => !isSelectingTag);
+        await UniTask.WaitUntil(() => !isSelectingTag);
         
         // 만렙 고정치
         if (init.Level >= 15)
             init.Exp = _staffDataManager.LevelExpList.Find(x => x.level == init.Level).cumulativeExp;
-        return UniTask.CompletedTask;
     }
 
     private int ApplyState(int baseValue, bool isCommon)

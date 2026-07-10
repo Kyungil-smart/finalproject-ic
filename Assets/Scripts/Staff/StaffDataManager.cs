@@ -61,7 +61,8 @@ public class GradeRow
     public int Tag_Min;        // 태그 최소 개수
     public int Tag_Max;        // 태그 최대 
     public float Grade_XP;
-    public float Grade_Cost;  
+    public float Grade_Cost;
+    public float Grade_Ratio;
     
     public StaffGrade GradeEnum => (StaffGrade)System.Enum.Parse(typeof(StaffGrade), Grade);
 }

@@ -314,7 +314,7 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
             Final_Common_Concentration = data.init.Base_Common_Concentration + data.runtime.Added_Common_Concentration,
             Final_Common_Creativity = data.init.Base_Common_Creativity + data.runtime.Added_Common_Creativity,
             Final_Common_Communication = data.init.Base_Common_Communication + data.runtime.Added_Common_Communication,
-            Final_Job_Planning = data.init.Base_Job_Planning + data.runtime.Added_Job_Design,
+            Final_Job_Planning = data.init.Base_Job_Design + data.runtime.Added_Job_Design,
             Final_Job_Development = data.init.Base_Job_Development + data.runtime.Added_Job_Development,
             Final_Job_Art = data.init.Base_Job_Art + data.runtime.Added_Job_Art
         };
@@ -372,6 +372,9 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         _slots = slotUnlockData.slots.Select(def => new SlotState(def)).ToList();
         for (int i = 0; i < _slotIndex; i++)
             _slots[i].unlocked = true;
+        // Todo. 기존의 슬롯해금하고 데이터 삭제하고 다시 생성하면 슬롯 해금되어있는데 버튼은 남아있어서 추가했습니다.
+        if (_slotIndex < _slots.Count)
+            _currentSlot = _slots[_slotIndex];
     }
 
     public void SetSlotPos(Transform[] transforms)
@@ -542,8 +545,9 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
         }
     }
 
-    public async UniTask LevelUpStaffs()
+    public async UniTask<bool> LevelUpStaffs()
     {   // Main 씬으로 넘어간 후에 현재 Staff 들의 경험치를 토대로 렙업을 일괄/순차적으로 진행해야함.
+        bool levelUp = false;
         foreach (var staffData in _staffList)
         {
             var levelExpData = _staffDataManager
@@ -554,8 +558,10 @@ public class StaffManager : Manager, IStaffHireService, IStaffRegister, IStaffRe
                 Debug.Log("레벨업");
                 ServiceLocater.Get<ISoundManager>().PlaySfx(levelUpClip);
                 await staffData.LevelUp(levelExpData.isTag);
+                levelUp = true;
             } 
         }
+        return levelUp;
     }
     
     // 라벨에 묶인 썸네일들의 "존재하는 Staff_ID 집합"을 가져온다 (실제 이미지는 아직 로드 안 함)

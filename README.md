@@ -13,8 +13,18 @@
 | **개발 기간** | 2026.05.06 ~ 2026.07.16 |
 | **인원** | 총 10명(개발 3인 / 기획 8인) |
 
-🔗 **플레이 영상 / 빌드**: (준비중)
+---
 
+## 🔗 **주요 플레이 스크린 샷**
+
+|  |  |
+|--|--|
+| 메인 화면 | 직원 관리 프로세스 화면 |
+|![img001](./Docs/Imgs/PlaySnapshot/mainScene.png)|![img001](./Docs/Imgs/PlaySnapshot/process01.png)|
+| 프로세스 진행 화면 | 직원 레벨업 후 태그 선택 화면 |
+|![img001](./Docs/Imgs/PlaySnapshot/process01-a.png)|![img001](./Docs/Imgs/PlaySnapshot/tagSelection.png)|
+| QA 미니 게임 | 출시 화면 |
+|![img001](./Docs/Imgs/PlaySnapshot/process10.png)|![img001](./Docs/Imgs/PlaySnapshot/process12.png)|
 ---
 
 ## 📖 게임 소개
@@ -126,9 +136,3 @@ Docs/ # 시스템 설계 문서 모음
 | 트러블슈팅 | 가능성 후보 제시·소거 | 실제 환경 검증·최종 판단 |
 
 상세 내용은 우측 링크 참조 바랍니다: [링크](/Docs/WithAI.md)
-
----
-
-## 👤 제작
-
-🔸 

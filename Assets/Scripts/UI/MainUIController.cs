@@ -77,7 +77,7 @@ public class MainUIController : MonoBehaviour
         goNextProcessButton.onClick.AddListener(OnClickNextProcess);
         staffListButton.onClick.AddListener(OnClickViewStaffList);
         inputProjectConfirmBtn.onClick.AddListener(() => ConfirmProjectName());
-        ServiceLocater.Get<IPostManager>().Subscribe<bool>(Channel.CloseLoading, IsReady);
+        ServiceLocater.Get<IPostManager>().Subscribe<bool>(Channel.CloseLoading, OnMainSceneReady);
         foreach (var slotBtn in staffSlots)
             slotBtn.btn.onClick.AddListener(() => UnlockSlotConfirm(slotBtn.isRoom));
         staffSlots[0].btn.gameObject.SetActive(false);
@@ -133,7 +133,7 @@ public class MainUIController : MonoBehaviour
         inputProjectConfirmBtn.onClick.RemoveAllListeners();
         foreach (var slotBtn in staffSlots)
             slotBtn.btn.onClick.RemoveAllListeners();
-        ServiceLocater.Get<IPostManager>().Unsubscribe<bool>(Channel.CloseLoading, IsReady);
+        ServiceLocater.Get<IPostManager>().Unsubscribe<bool>(Channel.CloseLoading, OnMainSceneReady);
     }
     
     private void Initialize()
@@ -149,10 +149,16 @@ public class MainUIController : MonoBehaviour
         }
     }
 
-    private void IsReady(bool ready)
+    private void OnMainSceneReady(bool ready)
     {
         MainUIPostProcessing();
         _isDataReady = ready;
+        
+        UniTask.Void(async () =>
+        {
+            bool leveledUp = await ServiceLocater.Get<IStaffRegister>().LevelUpStaffs();
+            if (leveledUp) ServiceLocater.Get<ISaveManager>().Save();
+        });
     } 
    
     // ------------ R3 Property Bind 할 것들 -------------
@@ -234,8 +240,9 @@ public class MainUIController : MonoBehaviour
 
     private void UnlockSlotConfirm(bool isRoom)
     {
-        if (isRoom) confirmMsgController.Render(9900041, UnlockSlot);
-        else confirmMsgController.Render(9900039, UnlockSlot);
+        var cost = ServiceLocater.Get<IStaffRegister>().CurrentSlot.cost;
+        if (isRoom) confirmMsgController.Render(9900041, UnlockSlot, null, $"가격 : {cost:N0}원");
+        else confirmMsgController.Render(9900039, UnlockSlot, null, $"가격 : {cost:N0}원");
     }
 
     private void UnlockSlot()

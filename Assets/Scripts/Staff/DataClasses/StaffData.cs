@@ -33,7 +33,7 @@ public class StaffInitData
     public int Base_Common_Concentration;
     public int Base_Common_Creativity;
     public int Base_Common_Communication;
-    public int Base_Job_Planning;
+    public int Base_Job_Design;
     public int Base_Job_Development;
     public int Base_Job_Art;
 
