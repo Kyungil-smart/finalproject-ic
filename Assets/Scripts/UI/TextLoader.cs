@@ -77,4 +77,15 @@ public class TextLoader : MonoBehaviour
         }
         return UniTask.CompletedTask;
     }
+    
+    public string GetString(string textId)
+    {
+        var postManager = ServiceLocater.Get<IPostManager>();
+        if (postManager == null)
+        {
+            Debug.LogError("유니티 게임 실행을 한 후 진행 바랍니다.");
+            return null;
+        }
+        return postManager.Request<int, string>(Channel.GetUIText, int.Parse(textId));
+    }
 }
