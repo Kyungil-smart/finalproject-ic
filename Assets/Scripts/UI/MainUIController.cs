@@ -91,13 +91,10 @@ public class MainUIController : MonoBehaviour
         _stateMachine = ServiceLocater.Get<IMainStateMachine>();
         _postManager = ServiceLocater.Get<IPostManager>();
         _projectManager = ServiceLocater.Get<IProjectManager>();
-        Debug.Log($"[MainUIController] Player Name: {_gameManager.PlayerName}");
         UpdateGoldUI();
         UpdateDateUI();
-        Debug.Log($"[MainUIController] {_gameManager.ProcName.CurrentValue}");
         staffSlotPanel.gameObject.SetActive(_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources);
         if (_gameManager.ProcName.CurrentValue == GameDevProcName.HumanResources) ProjectText.text = "미정";
-        if (_gameManager.InputProjectNameActive) OpenInputProjectNamePanel();
         CloseLoadingScreen().Forget();
     }
 
@@ -153,11 +150,20 @@ public class MainUIController : MonoBehaviour
     {
         MainUIPostProcessing();
         _isDataReady = ready;
-        
+        Debug.Log($"[MainUIController] Player Name: {_gameManager.PlayerName}");
+        Debug.Log($"[MainUIController] Current Proc: {_gameManager.ProcName.CurrentValue}");
         UniTask.Void(async () =>
         {
             bool leveledUp = await ServiceLocater.Get<IStaffRegister>().LevelUpStaffs();
             if (leveledUp) ServiceLocater.Get<ISaveManager>().Save();
+            var projectData = _projectManager.GetProjectData();
+            if (_gameManager.InputProjectNameActive ||  
+                (projectData != null && 
+                 String.IsNullOrEmpty(projectData.name) && 
+                 _gameManager.ProcName.CurrentValue == GameDevProcName.ConceptPreProduction))
+            {
+                OpenInputProjectNamePanel();
+            }
         });
     } 
    
