@@ -1,6 +1,6 @@
 # RewardEvent 시스템
 
-![alt text](RewardAchieve.png)
+![alt text](./Imgs/RewardAchieve.png)
 
 ## 개요
 - 프리프로덕션 종료시 발생
