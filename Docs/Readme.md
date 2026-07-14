@@ -18,6 +18,7 @@
 | [EventDataLoader.md](./EventDataLoader.md) | 구글시트에서 이벤트 데이터 로드·타입별 분류·ID 범위 관리 |
 | [이벤트시스템_기술문서.md](./이벤트시스템_기술문서.md) | 이벤트 시스템 기술 아키텍처(데이터 로딩→실행→보상) 전체 흐름 |
 | [Minigame.md](./Minigame.md) | QA 프로세스를 위한 미니 게임 관련 기술 문서 |
+| [Tutorial.md](./Tutorial.md) | 튜토리얼 시스템 관련 기술 문서 |
 
 ## 📐 설계문서
 > 시스템 컨셉·아이디어·구조 설계와 계획을 담은 문서
@@ -38,7 +39,6 @@
 | [R3_UniTask_Guide.md](./R3_UniTask_Guide.md) | UniTask & R3 도입 기준과 프로젝트 시스템 구조 명세 |
 | [SlideDetailUI.md](./SlideDetailUI.md) | 슬라이드형 리스트 상세 UI 컨셉과 GC 문제·개선 방향 |
 | [MermaidDoc.md](./MermaidDoc.md) | 주요 클래스 구조를 Mermaid 다이어그램으로 표현 |
-| [Tutorial.md](./Tutorial.md) | 튜토리얼 시스템 관련 기술 문서 |
 
 ## 🔍 리뷰
 > 코드/구조 분석 및 리뷰 문서
