@@ -53,8 +53,8 @@
 |------|-----------|
 | **엔진 / 렌더링** | Unity 6, Universal Render Pipeline (URP), 2D Feature, Pixel Perfect |
 | **비동기 / 반응형** | [UniTask](https://github.com/Cysharp/UniTask), [R3](https://github.com/Cysharp/R3) |
-| **애니메이션** | DOTween, Unity Timeline |
-| **데이터 로딩** | Addressables, Google Sheets(CSV) 런타임 임포트, ScriptableObject |
+| **애니메이션** | DOTween |
+| **데이터 로딩** | Addressables, Google Sheets(CSV) 런타임 임포트 (dev branch 기준), ScriptableObject |
 | **입력** | Input System |
 | **직렬화 / 기타** | Newtonsoft.Json, SerializeReference Extensions, NuGetForUnity |
 
@@ -109,12 +109,12 @@ Docs/ # 시스템 설계 문서 모음
 
 ## 📚 설계 문서
 
-세부 시스템 설계는 [`Docs/`](./Docs) 폴더에 정리되어 있습니다.
-
 - [폴더 가이드](./Docs/FolderGuide.md) · [컨벤션 가이드](./Docs/ConventionGuide.md)
 - 이벤트 시스템 — [EventManager](./Docs/EventManager.md) · [EventRouter](./Docs/EventRouter.md) · [EventUI](./Docs/EventUI.md)
 - [품질 계산](./Docs/QualityCalculate.md) · [보상 이벤트](./Docs/RewardEvent.md) · [스태프 빌더](./Docs/StaffBuilder.md)
 - [ServiceLocator](./Docs/ServiceLocater.md) · [SO 상태 머신](./Docs/ScriptableObjectStateMachine.md) · [R3 & UniTask 가이드](./Docs/R3_UniTask_Guide.md)
+
+외 기타 설계 및 기술 문서는 [`Docs/`](./Docs) 를 참고해 주시기 바랍니다.
 
 ---
 
