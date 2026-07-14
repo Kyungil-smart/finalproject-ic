@@ -17,6 +17,7 @@
 | [Setting.md](./Setting.md) | BGM/SFX 볼륨·환경설정 UI. SoundManager 등 구성, PlayerPrefs 저장 |
 | [EventDataLoader.md](./EventDataLoader.md) | 구글시트에서 이벤트 데이터 로드·타입별 분류·ID 범위 관리 |
 | [이벤트시스템_기술문서.md](./이벤트시스템_기술문서.md) | 이벤트 시스템 기술 아키텍처(데이터 로딩→실행→보상) 전체 흐름 |
+| [minigame.md](./Minigame.md) | QA 프로세스를 위한 미니 게임 관련 기술 문서 |
 
 ## 📐 설계문서
 > 시스템 컨셉·아이디어·구조 설계와 계획을 담은 문서
